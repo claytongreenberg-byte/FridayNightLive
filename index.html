@@ -113,6 +113,7 @@
         button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--btn);outline-offset:2px;}
         @media(max-width:900px){.game-grid{flex-direction:column;}.roster-layout{grid-template-columns:1fr;}.team-sidebar{max-height:150px;}}
         @media(max-width:600px){.parse-area{height:120px;}.scorebug{gap:6px;padding:4px 12px;font-size:0.85rem;}.header-left{flex:1;}}
+        .unsaved-indicator{color:#f97316;font-weight:bold;display:none;margin-left:8px;}
     </style>
 </head>
 <body>
@@ -153,6 +154,7 @@
 <footer>
     <span>🏈</span><span>Friday Night Live</span><span>© 2026 Clayton E. Greenberg | VoiceofDFW.com</span>
     <span class="last-saved" id="lastSaved"></span>
+    <span class="unsaved-indicator" id="unsavedIndicator" aria-live="polite">⚠️ Unsaved changes</span>
 </footer>
 
 <script>
@@ -170,8 +172,11 @@
 
     function defaultGameState(){
         return {
-            awayName:'Away Team', homeName:'Home Team',
-            awayScore:0, homeScore:0, quarter:1,
+            awayTeamId:'away_default',
+            homeTeamId:'home_default',
+            awayScore:0,
+            homeScore:0,
+            quarter:1,
             teams:[
                 {id:'away_default',name:'Away Team',players:[]},
                 {id:'home_default',name:'Home Team',players:[]}
@@ -179,7 +184,8 @@
             currentTeamId:'away_default',
             scriptContent:'',
             scriptScrollPos:0,
-            history:[]
+            history:[],
+            scriptDirty: false
         };
     }
 
@@ -207,10 +213,10 @@
     };
     function s(){ return state.sports.football; }
 
-    const STORAGE_KEY = 'fridaynightlive_v4';
+    const STORAGE_KEY = 'fridaynightlive_v5'; // bumped version for data migration
 
     // ═══════════════════════════════════════════════
-    // UTILITY
+    // UTILITY – XSS-safe escaping
     // ═══════════════════════════════════════════════
     function generatePlayerId(){
         return Date.now().toString(36) + Math.random().toString(36).substring(2);
@@ -222,7 +228,39 @@
         setTimeout(()=>t.classList.remove('show'), 2500);
     }
 
-    function esc(s){ if(!s)return''; return s.replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
+    // Fully escape all dangerous characters for HTML attribute and content
+    function esc(s){
+        if(!s) return '';
+        return String(s).replace(/[&<>"']/g, m => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        })[m]);
+    }
+
+    // ═══════════════════════════════════════════════
+    // CONTRAST CHECKER (WCAG)
+    // ═══════════════════════════════════════════════
+    function getLuminance(hex) {
+        const c = hex.substring(1);      // strip #
+        const rgb = parseInt(c, 16);
+        const r = (rgb >> 16) & 0xff;
+        const g = (rgb >> 8) & 0xff;
+        const b = (rgb >> 0) & 0xff;
+        const [rs, gs, bs] = [r,g,b].map(v => {
+            v /= 255;
+            return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+        });
+        return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
+    }
+    function contrastRatio(fg, bg) {
+        const lum1 = getLuminance(fg);
+        const lum2 = getLuminance(bg);
+        const brightest = Math.max(lum1, lum2);
+        const darkest = Math.min(lum1, lum2);
+        return (brightest + 0.05) / (darkest + 0.05);
+    }
+    function checkContrast(fg, bg) {
+        return contrastRatio(fg, bg) >= 4.5;
+    }
 
     function updateTheme(){
         const root = document.documentElement;
@@ -300,8 +338,32 @@
     updateClock();
 
     // ═══════════════════════════════════════════════
-    // SAVE / LOAD
+    // SAVE / LOAD (with migration)
     // ═══════════════════════════════════════════════
+    function normalizeStateAfterLoad() {
+        const sp = s();
+        const defaultGame = defaultGameState();
+        // Ensure all top-level keys exist
+        for (const key of Object.keys(defaultGame)) {
+            if (sp[key] === undefined) sp[key] = defaultGame[key];
+        }
+        // Migrate from old name-based to ID-based if needed
+        if (!sp.awayTeamId && sp.awayName) {
+            // try to find team by name
+            const awayTeam = sp.teams.find(t => t.name === sp.awayName);
+            sp.awayTeamId = awayTeam ? awayTeam.id : (sp.teams[0] ? sp.teams[0].id : 'away_default');
+            delete sp.awayName;
+        }
+        if (!sp.homeTeamId && sp.homeName) {
+            const homeTeam = sp.teams.find(t => t.name === sp.homeName);
+            sp.homeTeamId = homeTeam ? homeTeam.id : (sp.teams[1] ? sp.teams[1].id : 'home_default');
+            delete sp.homeName;
+        }
+        if (!sp.awayTeamId) sp.awayTeamId = sp.teams[0]?.id || 'away_default';
+        if (!sp.homeTeamId) sp.homeTeamId = sp.teams[1]?.id || 'home_default';
+        if (typeof sp.scriptDirty === 'undefined') sp.scriptDirty = false;
+    }
+
     async function save(){
         try {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -313,23 +375,32 @@
     async function load(){
         try {
             const raw = localStorage.getItem(STORAGE_KEY);
-            if(raw){ const p = JSON.parse(raw); state = p; }
-            if(state.sports && state.sports.football && state.sports.football.teams){
-                state.sports.football.teams.forEach(team=>{
-                    if(team.players){
-                        team.players.forEach(p=>{
-                            if(!p.id) p.id = generatePlayerId();
-                        });
-                    }
-                });
+            if(raw){
+                const parsed = JSON.parse(raw);
+                // Merge with fresh default to avoid missing properties
+                state = { ...state, ...parsed };
+                // Deep merge sports.football
+                if (parsed.sports && parsed.sports.football) {
+                    state.sports.football = { ...defaultGameState(), ...parsed.sports.football };
+                }
+            } else {
+                // ensure fresh
+                state.sports.football = defaultGameState();
             }
+            const sp = s();
+            sp.teams.forEach(team => {
+                if (team.players) {
+                    team.players.forEach(p => { if (!p.id) p.id = generatePlayerId(); });
+                }
+            });
+            normalizeStateAfterLoad();
         } catch(e){ console.error('Load error:', e); }
         updateTheme();
         renderAll();
     }
 
     // ═══════════════════════════════════════════════
-    // CLOUD SYNC (same as before)
+    // CLOUD SYNC (uses team IDs)
     // ═══════════════════════════════════════════════
     async function cloudSaveTeam(teamId){
         const sp = s();
@@ -422,8 +493,12 @@
 
     function updateScorebug(){
         const sp = s();
-        document.getElementById('sbAway').textContent = (sp.awayName||'AWAY').substring(0,8).toUpperCase();
-        document.getElementById('sbHome').textContent = (sp.homeName||'HOME').substring(0,8).toUpperCase();
+        const awayTeam = sp.teams.find(t => t.id === sp.awayTeamId);
+        const homeTeam = sp.teams.find(t => t.id === sp.homeTeamId);
+        const awayName = awayTeam ? awayTeam.name : 'AWAY';
+        const homeName = homeTeam ? homeTeam.name : 'HOME';
+        document.getElementById('sbAway').textContent = awayName.substring(0,8).toUpperCase();
+        document.getElementById('sbHome').textContent = homeName.substring(0,8).toUpperCase();
         document.getElementById('sbAwayScore').textContent = sp.awayScore||0;
         document.getElementById('sbHomeScore').textContent = sp.homeScore||0;
         const quarters = ['Q1','Q2','Q3','Q4','OT','2OT','3OT'];
@@ -431,12 +506,16 @@
     }
 
     // ═══════════════════════════════════════════════
-    // PLAYERS
+    // PLAYERS (ID‑based)
     // ═══════════════════════════════════════════════
-    function getPlayers(side, unit){
+    function getTeamBySide(side) {
         const sp = s();
-        const teamName = side==='away' ? sp.awayName : sp.homeName;
-        const team = sp.teams.find(t=>t.name===teamName);
+        const teamId = side === 'away' ? sp.awayTeamId : sp.homeTeamId;
+        return sp.teams.find(t => t.id === teamId) || null;
+    }
+
+    function getPlayers(side, unit){
+        const team = getTeamBySide(side);
         if(!team || !team.players) return [];
         let filtered = team.players.filter(p=>{
             if(unit==='offense') return POSITIONS.offense.includes(p.pos);
@@ -456,9 +535,7 @@
         const nameEl = document.getElementById('add-name-'+side);
         const posEl = document.getElementById('add-pos-'+side);
         if(!nameEl.value.trim()){ toast('Enter a name'); return; }
-        const sp = s();
-        const teamName = side==='away' ? sp.awayName : sp.homeName;
-        const team = sp.teams.find(t=>t.name===teamName);
+        const team = getTeamBySide(side);
         if(!team) return;
         team.players.push({
             id: generatePlayerId(),
@@ -477,9 +554,7 @@
     }
 
     function toggleStarter(side, playerId, unit){
-        const sp = s();
-        const teamName = side==='away' ? sp.awayName : sp.homeName;
-        const team = sp.teams.find(t=>t.name===teamName);
+        const team = getTeamBySide(side);
         if(!team) return;
         const player = team.players.find(p=>p.id===playerId);
         if(!player) return;
@@ -488,9 +563,7 @@
     }
 
     function deletePlayer(side, playerId, unit){
-        const sp = s();
-        const teamName = side==='away' ? sp.awayName : sp.homeName;
-        const team = sp.teams.find(t=>t.name===teamName);
+        const team = getTeamBySide(side);
         if(!team) return;
         const player = team.players.find(p=>p.id===playerId);
         if(!player) return;
@@ -506,15 +579,15 @@
         const sp = s();
         let h = '<div class="game-grid">';
         ['away','home'].forEach(side=>{
-            const teamName = side==='away' ? sp.awayName : sp.homeName;
-            const sideClass = side;
+            const team = getTeamBySide(side);
+            const teamName = team ? team.name : 'Select team';
             const activeUnit = (state['unit_'+side] || 'offense');
-            h += `<div class="team-card ${sideClass}">
+            h += `<div class="team-card ${side}">
                 <div class="team-header">
                     <div class="team-top-row">
-                        <span class="side-badge ${sideClass}">${side}</span>
-                        <select class="team-select" data-side="${side}" onchange="switchTeam('${side}',this.value)">
-                            ${sp.teams.map(t=>`<option ${t.name===teamName?'selected':''} value="${esc(t.name)}">${esc(t.name)}</option>`).join('')}
+                        <span class="side-badge ${side}">${side}</span>
+                        <select class="team-select" data-side="${side}" onchange="switchTeam('${side}',this.value)" aria-label="Select team for ${side}">
+                            ${sp.teams.map(t=>`<option value="${esc(t.id)}" ${t.id=== (side==='away' ? sp.awayTeamId : sp.homeTeamId)?'selected':''}>${esc(t.name)}</option>`).join('')}
                         </select>
                     </div>
                     <div class="unit-tabs">
@@ -534,14 +607,17 @@
                     <span class="plyr-num">${esc(p.num)}</span>
                     <span class="plyr-name">${esc(p.name)}</span>
                     <span class="plyr-pos ${posClass}">${esc(p.pos)}</span>
-                    <span class="plyr-star${p.starter?' active':''}" onclick="toggleStarter('${side}','${p.id}','${activeUnit}')" title="Toggle starter">⭐</span>
-                    <button onclick="deletePlayer('${side}','${p.id}','${activeUnit}')" style="background:none;border:none;color:#666;cursor:pointer;font-size:0.7rem;min-height:32px;">✕</button>
+                    <span class="plyr-star${p.starter?' active':''}" onclick="toggleStarter('${side}','${p.id}','${activeUnit}')" role="button" aria-label="Toggle starter status for ${esc(p.name)}" tabindex="0">⭐</span>
+                    <button onclick="deletePlayer('${side}','${p.id}','${activeUnit}')" aria-label="Delete ${esc(p.name)}" style="background:none;border:none;color:#666;cursor:pointer;font-size:0.7rem;min-height:32px;">✕</button>
                 </div>`;
             });
             h += `</div>
                 <div class="add-player-row">
+                    <label for="add-num-${side}" style="position:absolute;width:1px;height:1px;overflow:hidden;">Number</label>
                     <input class="add-num" id="add-num-${side}" placeholder="#" aria-label="Jersey number" inputmode="numeric">
+                    <label for="add-name-${side}" style="position:absolute;width:1px;height:1px;overflow:hidden;">Name</label>
                     <input class="add-name" id="add-name-${side}" placeholder="Player name" aria-label="Player name">
+                    <label for="add-pos-${side}" style="position:absolute;width:1px;height:1px;overflow:hidden;">Position</label>
                     <select id="add-pos-${side}" aria-label="Position" style="font-size:0.8rem;padding:6px 8px;border-radius:8px;min-height:38px;">
                         <optgroup label="Offense">${POSITIONS.offense.map(p=>`<option>${p}</option>`).join('')}</optgroup>
                         <optgroup label="Defense">${POSITIONS.defense.map(p=>`<option>${p}</option>`).join('')}</optgroup>
@@ -561,15 +637,15 @@
         renderSport();
     }
 
-    function switchTeam(side, teamName){
+    function switchTeam(side, teamId){
         const sp = s();
-        if(side==='away') sp.awayName = teamName;
-        else sp.homeName = teamName;
+        if(side==='away') sp.awayTeamId = teamId;
+        else sp.homeTeamId = teamId;
         save(); renderSport();
     }
 
     // ═══════════════════════════════════════════════
-    // ROSTER VIEW (same as before)
+    // ROSTER VIEW (ID‑based, with labels)
     // ═══════════════════════════════════════════════
     function renderRoster(){
         const sp = s();
@@ -584,15 +660,22 @@
         let playerRows = '';
         pl.forEach((p)=>{
             playerRows += `<div class="player-edit-row" data-player-id="${p.id}">
-                <input value="${esc(p.num||'')}" placeholder="#" class="rp-num" data-player-id="${p.id}" inputmode="numeric">
-                <input value="${esc(p.name||'')}" placeholder="Name" class="rp-name" data-player-id="${p.id}">
-                <select class="rp-pos" data-player-id="${p.id}">
+                <label for="rp-num-${p.id}" style="position:absolute;width:1px;height:1px;overflow:hidden;">Number</label>
+                <input id="rp-num-${p.id}" value="${esc(p.num||'')}" placeholder="#" class="rp-num" data-player-id="${p.id}" inputmode="numeric" aria-label="Jersey number">
+                <label for="rp-name-${p.id}" style="position:absolute;width:1px;height:1px;overflow:hidden;">Name</label>
+                <input id="rp-name-${p.id}" value="${esc(p.name||'')}" placeholder="Name" class="rp-name" data-player-id="${p.id}" aria-label="Player name">
+                <label for="rp-pos-${p.id}" style="position:absolute;width:1px;height:1px;overflow:hidden;">Position</label>
+                <select id="rp-pos-${p.id}" class="rp-pos" data-player-id="${p.id}" aria-label="Position">
                     <optgroup label="Offense">${POSITIONS.offense.map(pos=>`<option ${p.pos===pos?'selected':''}>${pos}</option>`).join('')}</optgroup>
                     <optgroup label="Defense">${POSITIONS.defense.map(pos=>`<option ${p.pos===pos?'selected':''}>${pos}</option>`).join('')}</optgroup>
                     <optgroup label="Special Teams">${POSITIONS.special.map(pos=>`<option ${p.pos===pos?'selected':''}>${pos}</option>`).join('')}</optgroup>
                 </select>
-                <select class="rp-starter" data-player-id="${p.id}"><option value="0" ${!p.starter?'selected':''}>Sub</option><option value="1" ${p.starter?'selected':''}>Starter</option></select>
-                <button onclick="deleteRosterPlayer('${p.id}')">✖</button>
+                <label for="rp-starter-${p.id}" style="position:absolute;width:1px;height:1px;overflow:hidden;">Role</label>
+                <select id="rp-starter-${p.id}" class="rp-starter" data-player-id="${p.id}" aria-label="Role">
+                    <option value="0" ${!p.starter?'selected':''}>Sub</option>
+                    <option value="1" ${p.starter?'selected':''}>Starter</option>
+                </select>
+                <button onclick="deleteRosterPlayer('${p.id}')" aria-label="Delete player">✖</button>
             </div>`;
         });
 
@@ -601,7 +684,8 @@
                 <div class="team-sidebar">${sidebarHTML}</div>
                 <div class="roster-workspace" id="rosterWorkspace">
                     <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
-                        <input id="editTeamName" value="${esc(ct?ct.name:'')}" placeholder="Team Name" style="flex:1;min-width:150px;padding:8px 12px;border-radius:8px;border:1px solid var(--border);font-size:0.9rem;background:var(--surface);color:var(--text);">
+                        <label for="editTeamName" style="position:absolute;width:1px;height:1px;overflow:hidden;">Team name</label>
+                        <input id="editTeamName" value="${esc(ct?ct.name:'')}" placeholder="Team Name" aria-label="Team name" style="flex:1;min-width:150px;padding:8px 12px;border-radius:8px;border:1px solid var(--border);font-size:0.9rem;background:var(--surface);color:var(--text);">
                         <button class="btn-sm" id="saveTeamBtn">💾 SAVE</button>
                         <button class="btn-sm" id="cloudSaveTeamBtn" style="background:#6366f1;color:#fff;">☁️ SAVE</button>
                         <button class="btn-sm" id="cloudLoadTeamsBtn">📥 LOAD</button>
@@ -612,7 +696,7 @@
                     </div>
                     <div id="rosterPlayerGrid">${playerRows}</div>
                     <button class="btn-sm" id="addPlayerBtn" style="margin-top:8px;">➕ ADD ROW</button>
-                    <textarea class="parse-area" id="parseRosterText" rows="3" placeholder="Paste roster: 7 Williams QB | 22 Johnson RB | 88 Smith WR"></textarea>
+                    <textarea class="parse-area" id="parseRosterText" rows="3" placeholder="Paste roster: 7 Williams QB | 22 Johnson RB | 88 Smith WR" aria-label="Paste roster text"></textarea>
                     <button class="btn-sm" id="parseRosterBtn" style="margin-top:6px;">📝 PARSE</button>
                 </div>
             </div>
@@ -645,8 +729,9 @@
             sp.teams = sp.teams.filter(team=>team.id!==sp.currentTeamId);
             if(sp.teams.length===0) sp.teams.push({id:Date.now().toString(36),name:'New Team',players:[]});
             sp.currentTeamId = sp.teams[0].id;
-            if(sp.awayName===t.name) sp.awayName = sp.teams[0].name;
-            if(sp.homeName===t.name) sp.homeName = sp.teams[0].name;
+            // If deleted team was selected for away/home, switch to first available
+            if(sp.awayTeamId === t.id) sp.awayTeamId = sp.teams[0].id;
+            if(sp.homeTeamId === t.id) sp.homeTeamId = sp.teams[0].id;
             save(); renderRoster(); renderNav(); toast('Team deleted');
         };
         document.getElementById('addPlayerBtn').onclick = ()=>{
@@ -735,26 +820,38 @@
     }
 
     // ═══════════════════════════════════════════════
-    // SCRIPT VIEW
+    // SCRIPT VIEW (with dirty flag)
     // ═══════════════════════════════════════════════
     function renderScript(){
         const sp = s();
         document.getElementById('main').innerHTML = `<div style="display:flex;flex-direction:column;height:100%;width:100%;background:var(--surface);border-radius:14px;padding:16px;overflow:hidden;">
             <h3 style="flex-shrink:0;margin-bottom:8px;">🎙️ PA SCRIPT</h3>
-            <textarea id="scriptText" class="script-area" placeholder="PA announcements, sponsor reads, lineup scripts...">${sp.scriptContent||''}</textarea>
+            <textarea id="scriptText" class="script-area" placeholder="PA announcements, sponsor reads, lineup scripts..." aria-label="Script editor">${esc(sp.scriptContent||'')}</textarea>
             <div style="flex-shrink:0;display:flex;gap:8px;margin-top:12px;">
                 <button class="btn btn-sm" id="saveScript">💾 SAVE</button>
                 <button class="btn btn-sm" id="printScript">🖨️ PRINT</button>
+                <span id="scriptDirtyIndicator" style="color:#f97316;font-weight:bold;margin-left:8px;display:${sp.scriptDirty?'inline':'none'};">⚠️ Unsaved</span>
             </div>
         </div>`;
         
         const scriptText = document.getElementById('scriptText');
         if(sp.scriptScrollPos) scriptText.scrollTop = sp.scriptScrollPos;
         
+        // Track unsaved changes
+        scriptText.addEventListener('input', () => {
+            s().scriptDirty = true;
+            const indicator = document.getElementById('scriptDirtyIndicator');
+            if(indicator) indicator.style.display = 'inline';
+        });
+        
         document.getElementById('saveScript').onclick = ()=>{
             sp.scriptContent = scriptText.value;
             sp.scriptScrollPos = scriptText.scrollTop;
-            save(); toast('Script saved');
+            sp.scriptDirty = false;
+            save();
+            const indicator = document.getElementById('scriptDirtyIndicator');
+            if(indicator) indicator.style.display = 'none';
+            toast('Script saved');
         };
         document.getElementById('printScript').onclick = ()=>{
             const w = window.open();
@@ -764,7 +861,7 @@
     }
 
     // ═══════════════════════════════════════════════
-    // ADMIN VIEW
+    // ADMIN VIEW (with contrast warning)
     // ═══════════════════════════════════════════════
     function renderAdmin(){
         const tabs = ['branding','colors','theme','teams','backup','cloud'];
@@ -781,6 +878,11 @@
         renderAdminContent();
     }
 
+    function showContrastWarning(show) {
+        const warn = document.getElementById('contrastWarning');
+        if(warn) warn.style.display = show ? 'inline' : 'none';
+    }
+
     function renderAdminContent(){
         const container = document.getElementById('adminContent');
         if(!container) return;
@@ -788,8 +890,10 @@
         
         if(state.adminTab==='branding'){
             container.innerHTML = `<h4>🏷️ Branding</h4>
-                <label>Brand Title</label><input id="brandTitle" value="${esc(state.brand.title)}">
-                <label>Subtitle</label><input id="brandSub" value="${esc(state.brand.subtitle)}">
+                <label for="brandTitle">Brand Title</label>
+                <input id="brandTitle" value="${esc(state.brand.title)}">
+                <label for="brandSub">Subtitle</label>
+                <input id="brandSub" value="${esc(state.brand.subtitle)}">
                 <button class="btn btn-sm" id="saveBranding" style="margin-top:10px;">💾 Save</button>`;
             document.getElementById('saveBranding').onclick = ()=>{
                 const title = document.getElementById('brandTitle').value.trim();
@@ -803,7 +907,7 @@
             };
         } else if(state.adminTab==='colors'){
             let html = `<h4>🎨 Custom Colors</h4>
-                <p style="font-size:0.8rem;opacity:0.6;margin-bottom:12px;">Customize every color in the app. Changes apply instantly.</p>
+                <p style="font-size:0.8rem;opacity:0.6;margin-bottom:12px;">Customize every color in the app. Changes apply instantly. <span id="contrastWarning" style="color:#ef4444;font-weight:bold;margin-left:8px;display:none;">⚠️ Low text/background contrast</span></p>
                 <div class="color-grid">`;
             const colorLabels = {
                 bg: 'Background',
@@ -822,12 +926,15 @@
             };
             for(const [key, label] of Object.entries(colorLabels)){
                 html += `<div class="color-input-group">
-                    <label>${label}</label>
+                    <label for="color_${key}">${label}</label>
                     <input type="color" id="color_${key}" value="${state.colors[key]}" onchange="updateColorPicker('${key}', this.value)">
                 </div>`;
             }
-            html += `</div><button class="btn btn-sm" style="margin-top:12px;">💾 Saved</button>`;
+            html += `</div><button class="btn btn-sm" style="margin-top:12px;" onclick="toast('Colors saved automatically')">💾 Saved</button>`;
             container.innerHTML = html;
+            // Check contrast on load
+            const textOk = checkContrast(state.colors.text, state.colors.bg);
+            showContrastWarning(!textOk);
         } else if(state.adminTab==='theme'){
             container.innerHTML = `<h4>🌓 Theme Mode</h4>
                 <p style="font-size:0.8rem;opacity:0.6;margin-bottom:12px;">Choose between dark and light modes, or customize colors manually.</p>
@@ -870,11 +977,14 @@
                         const d = JSON.parse(ev.target.result);
                         if(!d.sports || !d.sports.football) throw new Error('Invalid backup format');
                         state = d;
+                        normalizeStateAfterLoad();
                         save();
                         updateTheme();
                         renderAll();
                         toast('✅ Data restored successfully');
                     }catch(err){ toast('❌ Import failed: '+err.message); }
+                    // Reset file input
+                    document.getElementById('importFile').value = '';
                 };
                 r.readAsText(f);
             };
@@ -892,34 +1002,45 @@
     function updateColorPicker(key, value){
         state.colors[key] = value;
         updateTheme();
+        // Contrast check
+        if (key === 'text' || key === 'bg') {
+            const ok = checkContrast(state.colors.text, state.colors.bg);
+            showContrastWarning(!ok);
+            if (!ok) toast('⚠️ Text/background contrast too low');
+        }
         toast('✅ '+key+' updated');
     }
 
     // ═══════════════════════════════════════════════
-    // PRINT
+    // PRINT (fully escaped)
     // ═══════════════════════════════════════════════
     function printLineups(){
         const sp = s();
-        let html = `<html><head><title>Lineups - ${sp.awayName} vs ${sp.homeName}</title><style>body{font-family:sans-serif;padding:20px;font-size:14px;}h2{margin-top:20px;margin-bottom:10px;border-bottom:2px solid #000;padding-bottom:5px;}table{border-collapse:collapse;width:100%;margin-bottom:10px;}th,td{border:1px solid #000;padding:8px 10px;text-align:left;}th{background:#ddd;font-weight:bold;font-size:12px;}tr.starter{background:#fffacd;}</style></head><body>
-            <h1>${sp.awayName} vs ${sp.homeName}</h1>
-            <p>Score: ${sp.awayName} ${sp.awayScore} - ${sp.homeScore} ${sp.homeName}</p>`;
+        const awayTeam = sp.teams.find(t => t.id === sp.awayTeamId);
+        const homeTeam = sp.teams.find(t => t.id === sp.homeTeamId);
+        const awayName = awayTeam ? awayTeam.name : 'AWAY';
+        const homeName = homeTeam ? homeTeam.name : 'HOME';
+        let html = `<html><head><title>Lineups - ${esc(awayName)} vs ${esc(homeName)}</title><style>body{font-family:sans-serif;padding:20px;font-size:14px;}h2{margin-top:20px;margin-bottom:10px;border-bottom:2px solid #000;padding-bottom:5px;}table{border-collapse:collapse;width:100%;margin-bottom:10px;}th,td{border:1px solid #000;padding:8px 10px;text-align:left;}th{background:#ddd;font-weight:bold;font-size:12px;}tr.starter{background:#fffacd;}</style></head><body>
+            <h1>${esc(awayName)} vs ${esc(homeName)}</h1>
+            <p>Score: ${esc(awayName)} ${sp.awayScore} - ${sp.homeScore} ${esc(homeName)}</p>`;
         
         ['away','home'].forEach(side=>{
-            const teamName = side==='away' ? sp.awayName : sp.homeName;
+            const team = getTeamBySide(side);
+            const teamName = team ? team.name : 'Unknown';
             
-            html += `<h2>${teamName} - OFFENSE</h2><table><tr><th>#</th><th>Player</th><th>Pos</th></tr>`;
+            html += `<h2>${esc(teamName)} - OFFENSE</h2><table><tr><th>#</th><th>Player</th><th>Pos</th></tr>`;
             getPlayers(side,'offense').forEach(p=>{
                 html += `<tr class="${p.starter?'starter':''}"><td>${esc(p.num)}</td><td>${esc(p.name)}${p.starter?' ⭐':''}</td><td>${esc(p.pos)}</td></tr>`;
             });
             html += `</table>`;
             
-            html += `<h2>${teamName} - DEFENSE</h2><table><tr><th>#</th><th>Player</th><th>Pos</th></tr>`;
+            html += `<h2>${esc(teamName)} - DEFENSE</h2><table><tr><th>#</th><th>Player</th><th>Pos</th></tr>`;
             getPlayers(side,'defense').forEach(p=>{
                 html += `<tr class="${p.starter?'starter':''}"><td>${esc(p.num)}</td><td>${esc(p.name)}${p.starter?' ⭐':''}</td><td>${esc(p.pos)}</td></tr>`;
             });
             html += `</table>`;
             
-            html += `<h2>${teamName} - SPECIAL TEAMS</h2><table><tr><th>#</th><th>Player</th><th>Pos</th></tr>`;
+            html += `<h2>${esc(teamName)} - SPECIAL TEAMS</h2><table><tr><th>#</th><th>Player</th><th>Pos</th></tr>`;
             getPlayers(side,'special').forEach(p=>{
                 html += `<tr class="${p.starter?'starter':''}"><td>${esc(p.num)}</td><td>${esc(p.name)}${p.starter?' ⭐':''}</td><td>${esc(p.pos)}</td></tr>`;
             });
@@ -933,15 +1054,15 @@
     }
 
     // ═══════════════════════════════════════════════
-    // NAVIGATION
+    // NAVIGATION (aria-current added)
     // ═══════════════════════════════════════════════
     function renderNav(){
         const nav = document.getElementById('mainNav');
         nav.innerHTML = `
-            <button class="nav-link ${state.currentView==='sport'?'active':''}" data-view="sport">🏈 GAME</button>
-            <button class="nav-link ${state.currentView==='roster'?'active':''}" data-view="roster">📋 ROSTERS</button>
-            <button class="nav-link ${state.currentView==='script'?'active':''}" data-view="script">🎙️ SCRIPT</button>
-            <button class="nav-link ${state.currentView==='admin'?'active':''}" data-view="admin">⚙️ ADMIN</button>
+            <button class="nav-link ${state.currentView==='sport'?'active':''}" data-view="sport" aria-current="${state.currentView==='sport'?'page':'false'}">🏈 GAME</button>
+            <button class="nav-link ${state.currentView==='roster'?'active':''}" data-view="roster" aria-current="${state.currentView==='roster'?'page':'false'}">📋 ROSTERS</button>
+            <button class="nav-link ${state.currentView==='script'?'active':''}" data-view="script" aria-current="${state.currentView==='script'?'page':'false'}">🎙️ SCRIPT</button>
+            <button class="nav-link ${state.currentView==='admin'?'active':''}" data-view="admin" aria-current="${state.currentView==='admin'?'page':'false'}">⚙️ ADMIN</button>
         `;
         nav.onclick = function(e){
             const btn = e.target.closest('button');
@@ -949,6 +1070,9 @@
             state.currentView = btn.dataset.view;
             renderNav(); renderMain();
         };
+        // Update unsaved indicator in footer based on script dirty flag
+        const dirtyIndicator = document.getElementById('unsavedIndicator');
+        if (dirtyIndicator) dirtyIndicator.style.display = s().scriptDirty ? 'inline' : 'none';
     }
 
     function renderMain(){
@@ -986,11 +1110,11 @@
         }
     });
 
+    // Modern browsers ignore custom message; we use in-app indicator instead
     window.addEventListener('beforeunload', (e)=>{
-        const scriptText = document.getElementById('scriptText');
-        if(scriptText && scriptText.value !== (s().scriptContent || '')) {
+        if(s().scriptDirty) {
             e.preventDefault();
-            return '';
+            e.returnValue = ''; // required for some browsers
         }
     });
 
