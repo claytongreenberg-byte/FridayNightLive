@@ -29,6 +29,7 @@
             font-size:18px;
             padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
+        /* ── FOOTBALL FIELD HEADER ── */
         header {
             position:relative;
             background: #1e3a5f;
@@ -40,19 +41,20 @@
             overflow:hidden;
         }
         .turf-overlay {
-            position:absolute; inset:0; pointer-events:none;
+            position:absolute; inset:0; pointer-events:none; z-index:0;
         }
         .turf-overlay svg {
             width:100%; height:100%;
         }
-        .header-left{display:flex;align-items:center;gap:8px;z-index:1;}
+        .header-left{display:flex;align-items:center;gap:8px;z-index:1; background:rgba(0,0,0,0.5); border-radius:8px; padding:2px 8px;}
         .back-link{background:none;border:none;color:var(--text);font-size:0.75rem;font-weight:600;cursor:pointer;padding:4px 8px;border-radius:6px;text-decoration:none;transition:all 0.2s;opacity:0.7;}
         .back-link:hover{opacity:1;background:rgba(255,255,255,0.1);}
-        .brand-area{display:flex;align-items:center;gap:8px;z-index:1;}
+        .brand-area{display:flex;align-items:center;gap:8px;z-index:1; background:rgba(0,0,0,0.5); border-radius:8px; padding:4px 10px;}
+        .brand-logo{height:36px; width:auto;}
         .brand-text h1{font-size:1.1rem;color:#fff;font-weight:900;text-shadow:0 0 6px rgba(0,0,0,0.8);}
         .brand-text p{font-size:0.65rem;color:var(--btn);font-weight:600;letter-spacing:1px;}
         .header-center{display:flex;align-items:center;gap:12px;z-index:1;}
-        .wall-clock{font-size:0.85rem;font-weight:600;color:var(--btn);min-width:80px;text-align:center;}
+        .wall-clock{font-size:0.85rem;font-weight:600;color:var(--btn);min-width:80px;text-align:center; background:rgba(0,0,0,0.5); border-radius:8px; padding:4px 8px;}
         .scorebug{display:flex;align-items:center;gap:12px;background:#00000055;padding:5px 16px;border-radius:60px;}
         .scorebug .sb-team{font-weight:700;font-size:0.85rem;color:#fff;min-width:70px;text-align:center;display:flex;align-items:center;gap:4px;}
         .sb-team-logo{width:24px;height:24px;object-fit:contain;border-radius:4px;}
@@ -62,7 +64,7 @@
         .scorebug button{background:none;border:none;color:#fff;font-size:0.9rem;cursor:pointer;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;border-radius:50%;padding:6px;transition:background 0.1s;}
         .scorebug button:hover{background:#ffffff22;}
         .scorebug button:active{transform:scale(0.94);}
-        .header-controls{display:flex;align-items:center;gap:6px;z-index:1;}
+        .header-controls{display:flex;align-items:center;gap:6px;z-index:1; background:rgba(0,0,0,0.5); border-radius:8px; padding:4px 8px;}
         .theme-toggle-btn{background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:1.2rem;cursor:pointer;min-width:44px;min-height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background 0.2s;}
         .theme-toggle-btn:hover{background:rgba(255,255,255,0.3);}
         .btn,.btn-sm,.btn-xs{border-radius:60px;font-weight:600;border:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;touch-action:manipulation;transition:transform 0.1s;line-height:1;}
@@ -102,6 +104,7 @@
         .add-player-row .add-num{width:48px;}
         .add-player-row .add-name{flex:1;min-width:100px;}
         footer{background:#111;text-align:center;padding:8px;font-size:0.65rem;color:#666;flex-shrink:0;display:flex;justify-content:center;align-items:center;gap:12px;}
+        .footer-logo{height:24px; width:auto;}
         .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:white;padding:8px 18px;border-radius:60px;font-size:0.85rem;opacity:0;transition:.2s;pointer-events:none;z-index:999;}
         .toast.show{opacity:1;}
         .panel{background:var(--surface);border-radius:14px;padding:16px;margin:8px;overflow-y:auto;width:100%;}
@@ -149,39 +152,42 @@
                     <stop offset="100%" stop-color="#1f4d14"/>
                 </linearGradient>
             </defs>
-            <line x1="100" y1="0" x2="100" y2="60" stroke="white" stroke-width="2" opacity="0.6"/>
-            <line x1="200" y1="0" x2="200" y2="60" stroke="white" stroke-width="2" opacity="0.6"/>
-            <line x1="300" y1="0" x2="300" y2="60" stroke="white" stroke-width="2" opacity="0.6"/>
-            <line x1="400" y1="0" x2="400" y2="60" stroke="white" stroke-width="2" opacity="0.6"/>
-            <line x1="500" y1="0" x2="500" y2="60" stroke="white" stroke-width="2" opacity="0.6"/>
-            <line x1="600" y1="0" x2="600" y2="60" stroke="white" stroke-width="2" opacity="0.6"/>
-            <line x1="700" y1="0" x2="700" y2="60" stroke="white" stroke-width="2" opacity="0.6"/>
-            <line x1="800" y1="0" x2="800" y2="60" stroke="white" stroke-width="2" opacity="0.6"/>
-            <line x1="900" y1="0" x2="900" y2="60" stroke="white" stroke-width="2" opacity="0.6"/>
-            <text x="95" y="20" fill="white" font-size="8" font-weight="bold" opacity="0.9" text-anchor="end">10</text>
-            <text x="105" y="40" fill="white" font-size="8" font-weight="bold" opacity="0.9" text-anchor="start">10</text>
-            <text x="195" y="20" fill="white" font-size="8" font-weight="bold" opacity="0.9" text-anchor="end">20</text>
-            <text x="205" y="40" fill="white" font-size="8" font-weight="bold" opacity="0.9" text-anchor="start">20</text>
-            <text x="295" y="20" fill="white" font-size="8" font-weight="bold" opacity="0.9" text-anchor="end">30</text>
-            <text x="305" y="40" fill="white" font-size="8" font-weight="bold" opacity="0.9" text-anchor="start">30</text>
-            <text x="395" y="20" fill="white" font-size="8" font-weight="bold" opacity="0.9" text-anchor="end">40</text>
-            <text x="405" y="40" fill="white" font-size="8" font-weight="bold" opacity="0.9" text-anchor="start">40</text>
-            <text x="495" y="20" fill="white" font-size="8" font-weight="bold" opacity="0.9" text-anchor="end">50</text>
-            <text x="505" y="40" fill="white" font-size="8" font-weight="bold" opacity="0.9" text-anchor="start">50</text>
-            <text x="595" y="20" fill="white" font-size="8" font-weight="bold" opacity="0.9" text-anchor="end">40</text>
-            <text x="605" y="40" fill="white" font-size="8" font-weight="bold" opacity="0.9" text-anchor="start">40</text>
-            <text x="695" y="20" fill="white" font-size="8" font-weight="bold" opacity="0.9" text-anchor="end">30</text>
-            <text x="705" y="40" fill="white" font-size="8" font-weight="bold" opacity="0.9" text-anchor="start">30</text>
-            <text x="795" y="20" fill="white" font-size="8" font-weight="bold" opacity="0.9" text-anchor="end">20</text>
-            <text x="805" y="40" fill="white" font-size="8" font-weight="bold" opacity="0.9" text-anchor="start">20</text>
-            <text x="895" y="20" fill="white" font-size="8" font-weight="bold" opacity="0.9" text-anchor="end">10</text>
-            <text x="905" y="40" fill="white" font-size="8" font-weight="bold" opacity="0.9" text-anchor="start">10</text>
+            <!-- very faint yard lines -->
+            <line x1="100" y1="0" x2="100" y2="60" stroke="white" stroke-width="2" opacity="0.3"/>
+            <line x1="200" y1="0" x2="200" y2="60" stroke="white" stroke-width="2" opacity="0.3"/>
+            <line x1="300" y1="0" x2="300" y2="60" stroke="white" stroke-width="2" opacity="0.3"/>
+            <line x1="400" y1="0" x2="400" y2="60" stroke="white" stroke-width="2" opacity="0.3"/>
+            <line x1="500" y1="0" x2="500" y2="60" stroke="white" stroke-width="2" opacity="0.3"/>
+            <line x1="600" y1="0" x2="600" y2="60" stroke="white" stroke-width="2" opacity="0.3"/>
+            <line x1="700" y1="0" x2="700" y2="60" stroke="white" stroke-width="2" opacity="0.3"/>
+            <line x1="800" y1="0" x2="800" y2="60" stroke="white" stroke-width="2" opacity="0.3"/>
+            <line x1="900" y1="0" x2="900" y2="60" stroke="white" stroke-width="2" opacity="0.3"/>
+            <!-- yard numbers (faint) -->
+            <text x="95" y="20" fill="white" font-size="8" font-weight="bold" opacity="0.3" text-anchor="end">10</text>
+            <text x="105" y="40" fill="white" font-size="8" font-weight="bold" opacity="0.3" text-anchor="start">10</text>
+            <text x="195" y="20" fill="white" font-size="8" font-weight="bold" opacity="0.3" text-anchor="end">20</text>
+            <text x="205" y="40" fill="white" font-size="8" font-weight="bold" opacity="0.3" text-anchor="start">20</text>
+            <text x="295" y="20" fill="white" font-size="8" font-weight="bold" opacity="0.3" text-anchor="end">30</text>
+            <text x="305" y="40" fill="white" font-size="8" font-weight="bold" opacity="0.3" text-anchor="start">30</text>
+            <text x="395" y="20" fill="white" font-size="8" font-weight="bold" opacity="0.3" text-anchor="end">40</text>
+            <text x="405" y="40" fill="white" font-size="8" font-weight="bold" opacity="0.3" text-anchor="start">40</text>
+            <text x="495" y="20" fill="white" font-size="8" font-weight="bold" opacity="0.3" text-anchor="end">50</text>
+            <text x="505" y="40" fill="white" font-size="8" font-weight="bold" opacity="0.3" text-anchor="start">50</text>
+            <text x="595" y="20" fill="white" font-size="8" font-weight="bold" opacity="0.3" text-anchor="end">40</text>
+            <text x="605" y="40" fill="white" font-size="8" font-weight="bold" opacity="0.3" text-anchor="start">40</text>
+            <text x="695" y="20" fill="white" font-size="8" font-weight="bold" opacity="0.3" text-anchor="end">30</text>
+            <text x="705" y="40" fill="white" font-size="8" font-weight="bold" opacity="0.3" text-anchor="start">30</text>
+            <text x="795" y="20" fill="white" font-size="8" font-weight="bold" opacity="0.3" text-anchor="end">20</text>
+            <text x="805" y="40" fill="white" font-size="8" font-weight="bold" opacity="0.3" text-anchor="start">20</text>
+            <text x="895" y="20" fill="white" font-size="8" font-weight="bold" opacity="0.3" text-anchor="end">10</text>
+            <text x="905" y="40" fill="white" font-size="8" font-weight="bold" opacity="0.3" text-anchor="start">10</text>
         </svg>
     </div>
     <div class="header-left">
         <a href="https://voiceofdfw.com" class="back-link" aria-label="Back to Voice of DFW">← VoiceofDFW.com</a>
     </div>
     <div class="brand-area">
+        <img src="FNL.jpg" alt="Friday Night Live logo" class="brand-logo">
         <div class="brand-text"><h1>🏈 FRIDAY NIGHT LIVE</h1><p>FOOTBALL PA CONSOLE</p></div>
     </div>
     <div class="header-center">
@@ -213,6 +219,7 @@
 <main id="main" role="main"></main>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <footer>
+    <img src="FNL.jpg" alt="Friday Night Live logo" class="footer-logo">
     <span>🏈</span><span>Friday Night Live</span><span>© 2026 Clayton E. Greenberg | VoiceofDFW.com</span>
     <span class="last-saved" id="lastSaved"></span>
     <span class="unsaved-indicator" id="unsavedIndicator" aria-live="polite">⚠️ Unsaved changes</span>
@@ -256,7 +263,7 @@
         mode:'dark',
         brand:{title:'FRIDAY NIGHT LIVE',subtitle:'FOOTBALL PA CONSOLE'},
         fontFamily:"'Inter', 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif",
-        clockFormat:'12h',   // '12h' or '24h'
+        clockFormat:'12h',
         clockShowSeconds:true,
         colors:{
             bg:'#0f172a',
@@ -328,7 +335,6 @@
         root.style.setProperty('--starter-bg', c.starter);
         root.style.setProperty('--starter-border', c.starter);
         root.style.setProperty('--font-family', state.fontFamily);
-        // update theme toggle icon
         const toggleBtn = document.getElementById('themeToggleBtn');
         if(toggleBtn) toggleBtn.textContent = state.mode==='light' ? '☀️' : '🌙';
         save();
@@ -362,7 +368,7 @@
     }
 
     // ═══════════════════════════════════════════════
-    // WALL CLOCK (12/24h and seconds toggle)
+    // WALL CLOCK
     // ═══════════════════════════════════════════════
     function updateClock(){
         const now = new Date();
@@ -440,7 +446,7 @@
     }
 
     // ═══════════════════════════════════════════════
-    // CLOUD SYNC (unchanged)
+    // CLOUD SYNC
     // ═══════════════════════════════════════════════
     async function cloudSaveTeam(teamId){
         const sp=s(); const team=sp.teams.find(t=>t.id===teamId); if(!team) return;
@@ -506,7 +512,7 @@
     }
 
     // ═══════════════════════════════════════════════
-    // PLAYERS (ID‑based)
+    // PLAYERS
     // ═══════════════════════════════════════════════
     function getTeamBySide(side){ const sp=s(); return sp.teams.find(t=>t.id===(side==='away'?sp.awayTeamId:sp.homeTeamId))||null; }
     function getPlayers(side, unit){
@@ -602,7 +608,7 @@
     function switchTeam(side,teamId){ const sp=s(); if(side==='away') sp.awayTeamId=teamId; else sp.homeTeamId=teamId; save(); renderSport(); }
 
     // ═══════════════════════════════════════════════
-    // ROSTER VIEW (with file upload)
+    // ROSTER VIEW (file upload, etc.)
     // ═══════════════════════════════════════════════
     function renderRoster(){
         const sp=s();
@@ -677,7 +683,6 @@
             </div>
         </div>`;
 
-        // bindings
         document.getElementById('saveTeamBtn').onclick=()=>{
             const t=sp.teams.find(t=>t.id===sp.currentTeamId);
             if(t){
@@ -722,7 +727,6 @@
             const txt=document.getElementById('parseRosterText').value;
             parseRosterText(txt);
         };
-        // File upload
         document.getElementById('rosterFileUpload').addEventListener('change', function(e){
             const file=e.target.files[0];
             if(!file) return;
@@ -733,7 +737,6 @@
             };
             reader.readAsText(file);
         });
-        // Logo upload
         document.getElementById('teamLogoFile').addEventListener('change', function(e){
             const file=e.target.files[0];
             if(!file||!file.type.startsWith('image/')) return;
@@ -829,7 +832,7 @@
     }
 
     // ═══════════════════════════════════════════════
-    // ADMIN VIEW (Clock tab added)
+    // ADMIN VIEW
     // ═══════════════════════════════════════════════
     function renderAdmin(){
         const tabs=['branding','colors','theme','fonts','clock','teams','backup','cloud'];
