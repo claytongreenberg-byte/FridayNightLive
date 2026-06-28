@@ -25,82 +25,82 @@
             font-family:'Inter','Apple Color Emoji','Segoe UI Emoji',sans-serif;
             background:var(--bg);color:var(--text);
             height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden;
-            font-size:17px;
+            font-size:18px;
             padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
-        header{background:var(--primary);padding:max(6px,env(safe-area-inset-top)) 10px 6px 10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;border-bottom:3px solid #f97316;flex-shrink:0;min-height:50px;}
-        .brand-area{display:flex;align-items:center;gap:6px;}
-        .brand-text h1{font-size:1rem;color:#fff;font-weight:900;}
-        .brand-text p{font-size:0.6rem;color:#f97316;font-weight:600;letter-spacing:1px;}
-        .scorebug{display:flex;align-items:center;gap:10px;background:#00000055;padding:4px 14px;border-radius:60px;}
-        .scorebug .sb-team{font-weight:700;font-size:0.8rem;color:#fff;min-width:60px;text-align:center;}
-        .scorebug .sb-score{font-weight:900;font-size:1.4rem;color:#f97316;min-width:30px;text-align:center;}
+        header{background:var(--primary);padding:max(8px,env(safe-area-inset-top)) 12px 8px 12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;border-bottom:3px solid #f97316;flex-shrink:0;min-height:54px;}
+        .brand-area{display:flex;align-items:center;gap:8px;}
+        .brand-text h1{font-size:1.1rem;color:#fff;font-weight:900;}
+        .brand-text p{font-size:0.65rem;color:#f97316;font-weight:600;letter-spacing:1px;}
+        .scorebug{display:flex;align-items:center;gap:12px;background:#00000055;padding:5px 16px;border-radius:60px;}
+        .scorebug .sb-team{font-weight:700;font-size:0.85rem;color:#fff;min-width:70px;text-align:center;}
+        .scorebug .sb-score{font-weight:900;font-size:1.6rem;color:#f97316;min-width:30px;text-align:center;}
         .scorebug .sb-divider{color:#666;font-size:1rem;}
-        .scorebug .sb-quarter{font-weight:700;font-size:0.8rem;color:#f97316;background:#00000044;padding:2px 10px;border-radius:20px;display:flex;align-items:center;gap:4px;}
-        .scorebug button{background:none;border:none;color:#fff;font-size:0.8rem;cursor:pointer;min-width:28px;min-height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%;}
+        .scorebug .sb-quarter{font-weight:700;font-size:0.85rem;color:#f97316;background:#00000044;padding:3px 12px;border-radius:20px;display:flex;align-items:center;gap:6px;}
+        .scorebug button{background:none;border:none;color:#fff;font-size:0.9rem;cursor:pointer;min-width:32px;min-height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;}
         .scorebug button:hover{background:#ffffff22;}
-        .header-controls{display:flex;align-items:center;gap:4px;}
+        .header-controls{display:flex;align-items:center;gap:6px;}
         .btn,.btn-sm,.btn-xs{border-radius:60px;font-weight:600;border:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;touch-action:manipulation;transition:transform 0.1s;line-height:1;}
         .btn:active,.btn-sm:active,.btn-xs:active{transform:scale(0.94);}
-        .btn{background:var(--btn);color:var(--btn-text);font-size:0.9rem;padding:8px 18px;min-height:44px;min-width:44px;}
-        .btn-sm{background:var(--btn);color:var(--btn-text);font-size:0.75rem;padding:5px 10px;min-height:36px;min-width:36px;}
+        .btn{background:var(--btn);color:var(--btn-text);font-size:0.9rem;padding:10px 20px;min-height:46px;min-width:46px;}
+        .btn-sm{background:var(--btn);color:var(--btn-text);font-size:0.8rem;padding:6px 12px;min-height:40px;min-width:40px;}
         .btn-red{background:#dc2626!important;color:white!important;}
         .btn-outline{background:var(--outline-bg);border:2px solid var(--outline-border);color:var(--outline-text);}
-        nav{background:#374151;display:flex;padding:0 6px;gap:1px;overflow-x:auto;flex-shrink:0;-webkit-overflow-scrolling:touch;}
-        .nav-link{padding:8px 12px;font-size:0.75rem;font-weight:600;background:none;border:none;color:rgba(255,255,255,0.8);cursor:pointer;border-radius:10px 10px 0 0;white-space:nowrap;min-height:44px;touch-action:manipulation;}
+        nav{background:#374151;display:flex;padding:0 8px;gap:2px;overflow-x:auto;flex-shrink:0;-webkit-overflow-scrolling:touch;}
+        .nav-link{padding:10px 14px;font-size:0.8rem;font-weight:600;background:none;border:none;color:rgba(255,255,255,0.8);cursor:pointer;border-radius:10px 10px 0 0;white-space:nowrap;min-height:46px;touch-action:manipulation;}
         .nav-link.active{background:#f97316;color:black;}
-        main{flex:1;overflow:hidden;padding:6px;display:flex;gap:10px;}
-        .game-grid{display:flex;gap:10px;width:100%;height:100%;background:var(--gap-bg);border-radius:14px;padding:4px;}
+        main{flex:1;overflow:hidden;padding:8px;display:flex;gap:10px;}
+        .game-grid{display:flex;gap:12px;width:100%;height:100%;background:var(--gap-bg);border-radius:14px;padding:6px;}
         .team-card{flex:1;min-width:0;background:var(--surface);border-radius:12px;border:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
         .team-card.away{background:var(--away-bg);}.team-card.home{background:var(--home-bg);}
-        .team-header{padding:4px 8px;display:flex;flex-direction:column;gap:4px;flex-shrink:0;border-bottom:2px solid var(--border);color:#fff;}
-        .team-top-row{display:flex;justify-content:space-between;align-items:center;gap:4px;}
-        .team-select{font-size:0.8rem;font-weight:700;padding:4px 8px;border-radius:60px;background:#fff;min-width:100px;flex:1;border:1px solid var(--border);color:#0a2540;max-width:160px;}
-        .side-badge{font-size:0.6rem;font-weight:800;padding:2px 8px;border-radius:60px;text-transform:uppercase;}
+        .team-header{padding:6px 10px;display:flex;flex-direction:column;gap:6px;flex-shrink:0;border-bottom:2px solid var(--border);color:#fff;}
+        .team-top-row{display:flex;justify-content:space-between;align-items:center;gap:6px;}
+        .team-select{font-size:0.9rem;font-weight:700;padding:8px 12px;border-radius:10px;background:#fff;min-width:150px;flex:1;border:2px solid var(--border);color:#0a2540;max-width:100%;}
+        .side-badge{font-size:0.7rem;font-weight:800;padding:3px 10px;border-radius:60px;text-transform:uppercase;}
         .side-badge.away{background:#1e3a5f;color:white;}.side-badge.home{background:#7f1d1d;color:white;}
-        .unit-tabs{display:flex;gap:2px;flex-shrink:0;}
-        .unit-tab{padding:4px 10px;font-size:0.65rem;font-weight:700;background:none;border:none;color:#ffffff88;cursor:pointer;border-radius:20px;min-height:32px;text-transform:uppercase;letter-spacing:0.5px;}
+        .unit-tabs{display:flex;gap:3px;flex-shrink:0;}
+        .unit-tab{padding:6px 14px;font-size:0.75rem;font-weight:700;background:none;border:none;color:#ffffff88;cursor:pointer;border-radius:20px;min-height:36px;text-transform:uppercase;letter-spacing:0.5px;}
         .unit-tab.active{background:#f97316;color:#000;}
         .unit-tab.st{background:none;color:#8b5cf6;}.unit-tab.st.active{background:#8b5cf6;color:#fff;}
-        .player-list-header{display:flex;align-items:center;gap:4px;padding:4px 8px;font-size:0.6rem;font-weight:700;text-transform:uppercase;color:var(--text);opacity:0.7;border-bottom:2px solid var(--border);flex-shrink:0;background:var(--section-header-bg);min-height:26px;}
+        .player-list-header{display:flex;align-items:center;gap:6px;padding:6px 10px;font-size:0.7rem;font-weight:700;text-transform:uppercase;color:var(--text);opacity:0.7;border-bottom:2px solid var(--border);flex-shrink:0;background:var(--section-header-bg);min-height:30px;}
         .player-list-body{flex:1;overflow-y:auto;}
-        .player-row{display:flex;align-items:center;gap:4px;padding:3px 8px;border-bottom:1px solid var(--border);min-height:40px;font-size:0.78rem;transition:background 0.15s;}
+        .player-row{display:flex;align-items:center;gap:6px;padding:5px 10px;border-bottom:1px solid var(--border);min-height:46px;font-size:0.85rem;transition:background 0.15s;}
         .player-row.starter{background:#fbbf2415;border-left:3px solid var(--starter-border);}
-        .plyr-num{font-weight:800;min-width:28px;text-align:center;font-size:0.85rem;color:#fbbf24;flex-shrink:0;}
-        .plyr-name{font-weight:600;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-        .plyr-pos{font-size:0.6rem;font-weight:700;padding:1px 6px;border-radius:10px;min-width:28px;text-align:center;flex-shrink:0;}
+        .plyr-num{font-weight:800;min-width:32px;text-align:center;font-size:0.9rem;color:#fbbf24;flex-shrink:0;}
+        .plyr-name{font-weight:600;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:0.85rem;}
+        .plyr-pos{font-size:0.7rem;font-weight:700;padding:2px 8px;border-radius:10px;min-width:32px;text-align:center;flex-shrink:0;}
         .plyr-pos.off{background:#22c55e22;color:#22c55e;}.plyr-pos.def{background:#ef444422;color:#ef4444;}.plyr-pos.st{background:#8b5cf622;color:#8b5cf6;}
-        .plyr-star{font-size:0.7rem;flex-shrink:0;cursor:pointer;opacity:0.3;}
+        .plyr-star{font-size:0.8rem;flex-shrink:0;cursor:pointer;opacity:0.3;min-width:24px;text-align:center;}
         .plyr-star.active{opacity:1;}
-        .add-player-row{display:flex;align-items:center;gap:4px;padding:6px 8px;border-top:2px solid var(--border);flex-wrap:wrap;font-size:0.75rem;flex-shrink:0;background:var(--surface);}
-        .add-player-row input,.add-player-row select{padding:3px 5px;border-radius:6px;border:1px solid var(--border);font-size:0.75rem;background:var(--surface);color:var(--text);min-height:32px;}
-        .add-player-row .add-num{width:40px;}
-        .add-player-row .add-name{flex:1;min-width:80px;}
-        .special-bar{display:flex;gap:10px;padding:4px 10px;background:#00000033;flex-shrink:0;font-size:0.7rem;flex-wrap:wrap;align-items:center;justify-content:center;}
+        .add-player-row{display:flex;align-items:center;gap:6px;padding:8px 10px;border-top:2px solid var(--border);flex-wrap:wrap;font-size:0.8rem;flex-shrink:0;background:var(--surface);}
+        .add-player-row input,.add-player-row select{padding:6px 8px;border-radius:8px;border:1px solid var(--border);font-size:0.8rem;background:var(--surface);color:var(--text);min-height:38px;}
+        .add-player-row .add-num{width:48px;}
+        .add-player-row .add-name{flex:1;min-width:100px;}
+        .special-bar{display:flex;gap:12px;padding:6px 12px;background:#00000033;flex-shrink:0;font-size:0.75rem;flex-wrap:wrap;align-items:center;justify-content:center;}
         .special-bar .sp-item{display:flex;align-items:center;gap:4px;color:#8b5cf6;font-weight:600;}
         .special-bar .sp-num{font-weight:800;color:#fbbf24;}
-        footer{background:#111;text-align:center;padding:6px;font-size:0.6rem;color:#666;flex-shrink:0;display:flex;justify-content:center;align-items:center;gap:10px;}
-        .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:white;padding:6px 16px;border-radius:60px;font-size:0.8rem;opacity:0;transition:.2s;pointer-events:none;z-index:999;}
+        footer{background:#111;text-align:center;padding:8px;font-size:0.65rem;color:#666;flex-shrink:0;display:flex;justify-content:center;align-items:center;gap:12px;}
+        .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:white;padding:8px 18px;border-radius:60px;font-size:0.85rem;opacity:0;transition:.2s;pointer-events:none;z-index:999;}
         .toast.show{opacity:1;}
-        .panel{background:var(--surface);border-radius:14px;padding:14px;margin:6px;overflow-y:auto;width:100%;}
-        .panel input,.panel select,.panel textarea{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:0.9rem;margin:4px;}
-        .roster-layout{display:grid;grid-template-columns:220px 1fr;gap:10px;height:100%;width:100%;}
-        .team-sidebar{background:var(--surface);border-radius:14px;padding:10px;overflow-y:auto;border:1px solid var(--border);}
-        .team-sidebar h3{font-size:0.8rem;font-weight:700;margin-bottom:8px;color:var(--text);text-transform:uppercase;}
-        .team-item{padding:8px 10px;border-radius:8px;margin-bottom:3px;cursor:pointer;background:rgba(255,255,255,0.04);font-weight:600;font-size:0.82rem;min-height:44px;display:flex;align-items:center;transition:transform 60ms ease;color:var(--text);}
+        .panel{background:var(--surface);border-radius:14px;padding:16px;margin:8px;overflow-y:auto;width:100%;}
+        .panel input,.panel select,.panel textarea{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:0.9rem;margin:4px;}
+        .roster-layout{display:grid;grid-template-columns:240px 1fr;gap:12px;height:100%;width:100%;}
+        .team-sidebar{background:var(--surface);border-radius:14px;padding:12px;overflow-y:auto;border:1px solid var(--border);}
+        .team-sidebar h3{font-size:0.85rem;font-weight:700;margin-bottom:10px;color:var(--text);text-transform:uppercase;}
+        .team-item{padding:10px 12px;border-radius:8px;margin-bottom:4px;cursor:pointer;background:rgba(255,255,255,0.04);font-weight:600;font-size:0.85rem;min-height:46px;display:flex;align-items:center;transition:transform 60ms ease;color:var(--text);}
         .team-item:active{opacity:0.7;transform:scale(0.94);}
         .team-item.active{background:#f97316;color:#000;font-weight:700;}
-        .roster-workspace{background:var(--surface);border-radius:14px;padding:10px;overflow-y:auto;border:1px solid var(--border);}
-        .player-edit-row{display:grid;grid-template-columns:45px 1fr 80px 55px 30px;gap:4px;margin-bottom:4px;align-items:center;}
-        .player-edit-row input,.player-edit-row select{padding:4px 5px;border-radius:6px;border:1px solid var(--border);font-size:0.75rem;background:var(--surface);color:var(--text);min-height:32px;}
-        .player-edit-row button{background:#dc2626;color:#fff;border:none;border-radius:4px;cursor:pointer;min-height:32px;font-weight:700;}
-        .parse-area{width:100%;height:60px;font-family:monospace;padding:6px;border-radius:8px;border:1px solid var(--border);margin-top:8px;font-size:0.75rem;background:var(--surface);color:var(--text);resize:vertical;}
-        .script-area{width:100%;height:60vh;font-family:monospace;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:0.95rem;resize:vertical;}
-        .admin-tabs{display:flex;gap:4px;margin-bottom:10px;flex-wrap:wrap;}
-        .admin-tab{padding:6px 12px;border-radius:20px;font-size:0.7rem;font-weight:700;background:none;border:1px solid var(--border);color:var(--text);cursor:pointer;}
+        .roster-workspace{background:var(--surface);border-radius:14px;padding:12px;overflow-y:auto;border:1px solid var(--border);}
+        .player-edit-row{display:grid;grid-template-columns:50px 1fr 90px 65px 34px;gap:6px;margin-bottom:6px;align-items:center;}
+        .player-edit-row input,.player-edit-row select{padding:6px 8px;border-radius:6px;border:1px solid var(--border);font-size:0.8rem;background:var(--surface);color:var(--text);min-height:38px;}
+        .player-edit-row button{background:#dc2626;color:#fff;border:none;border-radius:4px;cursor:pointer;min-height:38px;font-weight:700;}
+        .parse-area{width:100%;height:70px;font-family:monospace;padding:8px;border-radius:8px;border:1px solid var(--border);margin-top:10px;font-size:0.8rem;background:var(--surface);color:var(--text);resize:vertical;}
+        .script-area{width:100%;height:60vh;font-family:monospace;padding:10px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:1rem;resize:vertical;}
+        .admin-tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
+        .admin-tab{padding:8px 14px;border-radius:20px;font-size:0.75rem;font-weight:700;background:none;border:1px solid var(--border);color:var(--text);cursor:pointer;}
         .admin-tab.active{background:#f97316;color:#000;border-color:#f97316;}
         button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #fbbf24;outline-offset:2px;}
-        .pwa-back-btn{display:block;position:fixed;top:max(8px,env(safe-area-inset-top));right:10px;z-index:9999;background:rgba(0,0,0,0.65);color:#fff;padding:6px 12px;border-radius:20px;font-size:0.7rem;font-weight:700;text-decoration:none;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);letter-spacing:0.3px;border:1px solid rgba(255,255,255,0.2)}
+        .pwa-back-btn{display:block;position:fixed;bottom:max(8px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:9999;background:rgba(0,0,0,0.7);color:#fff;padding:8px 18px;border-radius:24px;font-size:0.75rem;font-weight:700;text-decoration:none;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);letter-spacing:0.3px;border:1px solid rgba(255,255,255,0.2);white-space:nowrap;}
         @media(max-width:900px){.game-grid{flex-direction:column;}.roster-layout{grid-template-columns:1fr;}.team-sidebar{max-height:150px;}}
     </style>
 </head>
@@ -140,6 +140,11 @@
 </footer>
 
 <script>
+    // ═══════════════════════════════════════════════
+    // CLOUD API CONFIG
+    // ═══════════════════════════════════════════════
+    const CLOUD_API_BASE = "https://lineup-api.claytongreenberg.workers.dev/api/lineup";
+
     const POSITIONS = {
         offense: ['QB','RB','FB','WR','TE','OL','C','G','T'],
         defense: ['DL','DE','DT','LB','OLB','ILB','CB','S','SS','FS','DB'],
@@ -161,11 +166,14 @@
         };
     }
 
-    let state = { currentView:'sport', sports:{football:defaultGameState()} };
+    let state = { currentView:'sport', adminTab:'branding', sports:{football:defaultGameState()} };
     function s(){ return state.sports.football; }
 
-    const STORAGE_KEY = 'fridaynightlive_v1';
+    const STORAGE_KEY = 'fridaynightlive_v2';
 
+    // ═══════════════════════════════════════════════
+    // SAVE / LOAD
+    // ═══════════════════════════════════════════════
     async function save(){
         try {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -182,14 +190,82 @@
         renderAll();
     }
 
+    // ═══════════════════════════════════════════════
+    // CLOUD SYNC
+    // ═══════════════════════════════════════════════
+    async function cloudSaveTeam(teamId){
+        const sp = s();
+        const team = sp.teams.find(t=>t.id===teamId);
+        if(!team) return;
+        if(!confirm('Save team "'+team.name+'" to cloud?')) return;
+        try {
+            const r = await fetch(CLOUD_API_BASE+'?id=friday_'+encodeURIComponent(teamId), {
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify(team)
+            });
+            if(!r.ok) throw new Error('HTTP '+r.status);
+            toast('✅ Team saved to cloud');
+        } catch(e){ toast('❌ '+e.message); }
+    }
+
+    async function cloudLoadTeams(){
+        try {
+            const r = await fetch(CLOUD_API_BASE+'?list=true');
+            const data = await r.json();
+            const keys = (data.keys||[]).filter(k=>k.startsWith('friday_'));
+            if(!keys.length){ toast('No teams found in cloud'); return; }
+            const key = prompt('Enter team key:\n'+keys.join(', '));
+            if(!key) return;
+            const fullKey = key.startsWith('friday_') ? key : 'friday_'+key;
+            const r2 = await fetch(CLOUD_API_BASE+'?id='+encodeURIComponent(fullKey));
+            const team = await r2.json();
+            if(!team.id||!team.name) throw new Error('Invalid data');
+            const sp = s();
+            const exists = sp.teams.find(t=>t.id===team.id);
+            if(exists && !confirm('Team exists. Overwrite?')) return;
+            if(exists){
+                exists.name = team.name;
+                exists.players = team.players||[];
+            } else {
+                team.id = team.id.replace('friday_','');
+                sp.teams.push(team);
+            }
+            sp.currentTeamId = team.id;
+            save(); renderRoster(); renderNav();
+            toast('✅ Team loaded from cloud');
+        } catch(e){ toast('❌ '+e.message); }
+    }
+
+    async function cloudSaveAll(){
+        const sp = s();
+        if(!confirm('Save ALL teams to cloud?')) return;
+        try {
+            for(const team of sp.teams){
+                await fetch(CLOUD_API_BASE+'?id=friday_'+encodeURIComponent(team.id), {
+                    method:'POST',
+                    headers:{'Content-Type':'application/json'},
+                    body:JSON.stringify(team)
+                });
+            }
+            toast('✅ All teams saved to cloud');
+        } catch(e){ toast('❌ '+e.message); }
+    }
+
+    // ═══════════════════════════════════════════════
+    // UTILITY
+    // ═══════════════════════════════════════════════
     function toast(m){
         const t = document.getElementById('toast');
         t.textContent = m; t.classList.add('show');
-        setTimeout(()=>t.classList.remove('show'), 2000);
+        setTimeout(()=>t.classList.remove('show'), 2500);
     }
 
     function esc(s){ if(!s)return''; return s.replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
 
+    // ═══════════════════════════════════════════════
+    // SCORE & QUARTER
+    // ═══════════════════════════════════════════════
     function changeScore(side,d){
         const sp = s();
         if(side==='away'){ sp.awayScore = Math.max(0, sp.awayScore + d); }
@@ -205,14 +281,17 @@
 
     function updateScorebug(){
         const sp = s();
-        document.getElementById('sbAway').textContent = (sp.awayName||'AWAY').substring(0,6).toUpperCase();
-        document.getElementById('sbHome').textContent = (sp.homeName||'HOME').substring(0,6).toUpperCase();
+        document.getElementById('sbAway').textContent = (sp.awayName||'AWAY').substring(0,8).toUpperCase();
+        document.getElementById('sbHome').textContent = (sp.homeName||'HOME').substring(0,8).toUpperCase();
         document.getElementById('sbAwayScore').textContent = sp.awayScore||0;
         document.getElementById('sbHomeScore').textContent = sp.homeScore||0;
         const quarters = ['Q1','Q2','Q3','Q4'];
         document.getElementById('sbQuarter').textContent = quarters[sp.quarter-1] || 'Q1';
     }
 
+    // ═══════════════════════════════════════════════
+    // PLAYERS
+    // ═══════════════════════════════════════════════
     function getPlayers(side, unit){
         const sp = s();
         const teamName = side==='away' ? sp.awayName : sp.homeName;
@@ -276,6 +355,9 @@
         save(); renderSport();
     }
 
+    // ═══════════════════════════════════════════════
+    // SPORT VIEW
+    // ═══════════════════════════════════════════════
     function renderSport(){
         const sp = s();
         let h = '<div class="game-grid">';
@@ -298,7 +380,7 @@
                     </div>
                 </div>
                 <div class="player-list-header">
-                    <span>#</span><span>PLAYER</span><span>POS</span><span style="width:24px;text-align:center;">⭐</span>
+                    <span style="width:32px;">#</span><span style="flex:1;">PLAYER</span><span style="width:40px;">POS</span><span style="width:30px;text-align:center;">⭐</span><span style="width:20px;"></span>
                 </div>
                 <div class="player-list-body">`;
             const players = getPlayers(side, activeUnit);
@@ -309,14 +391,14 @@
                     <span class="plyr-name">${esc(p.name)}</span>
                     <span class="plyr-pos ${posClass}">${esc(p.pos)}</span>
                     <span class="plyr-star${p.starter?' active':''}" onclick="toggleStarter('${side}',${idx},'${activeUnit}')" title="Toggle starter">⭐</span>
-                    <button class="mini-btn" onclick="deletePlayer('${side}',${idx},'${activeUnit}')" style="background:none;border:none;color:#666;cursor:pointer;font-size:0.6rem;">✕</button>
+                    <button onclick="deletePlayer('${side}',${idx},'${activeUnit}')" style="background:none;border:none;color:#666;cursor:pointer;font-size:0.7rem;">✕</button>
                 </div>`;
             });
             h += `</div>
                 <div class="add-player-row">
-                    <input class="add-num" id="add-num-${side}" placeholder="#" aria-label="Jersey number">
+                    <input class="add-num" id="add-num-${side}" placeholder="#" aria-label="Jersey number" inputmode="numeric">
                     <input class="add-name" id="add-name-${side}" placeholder="Player name" aria-label="Player name">
-                    <select id="add-pos-${side}" aria-label="Position">
+                    <select id="add-pos-${side}" aria-label="Position" style="font-size:0.8rem;padding:6px 8px;border-radius:8px;min-height:38px;">
                         <optgroup label="Offense">${POSITIONS.offense.map(p=>`<option>${p}</option>`).join('')}</optgroup>
                         <optgroup label="Defense">${POSITIONS.defense.map(p=>`<option>${p}</option>`).join('')}</optgroup>
                         <optgroup label="Special Teams">${POSITIONS.special.map(p=>`<option>${p}</option>`).join('')}</optgroup>
@@ -342,6 +424,9 @@
         save(); renderSport();
     }
 
+    // ═══════════════════════════════════════════════
+    // ROSTER VIEW
+    // ═══════════════════════════════════════════════
     function renderRoster(){
         const sp = s();
         const ct = sp.teams.find(t=>t.id===sp.currentTeamId) || sp.teams[0];
@@ -356,12 +441,12 @@
         pl.forEach((p,idx)=>{
             const posOpts = ALL_POSITIONS.map(pos=>`<option ${p.pos===pos?'selected':''}>${pos}</option>`).join('');
             playerRows += `<div class="player-edit-row">
-                <input value="${esc(p.num||'')}" placeholder="#" class="rp-num" data-idx="${idx}">
+                <input value="${esc(p.num||'')}" placeholder="#" class="rp-num" data-idx="${idx}" inputmode="numeric">
                 <input value="${esc(p.name||'')}" placeholder="Name" class="rp-name" data-idx="${idx}">
                 <select class="rp-pos" data-idx="${idx}">
-                    <optgroup label="Offense">${POSITIONS.offense.map(p=>`<option ${p.pos===p?'selected':''}>${p}</option>`).join('')}</optgroup>
-                    <optgroup label="Defense">${POSITIONS.defense.map(p=>`<option ${p.pos===p?'selected':''}>${p}</option>`).join('')}</optgroup>
-                    <optgroup label="Special Teams">${POSITIONS.special.map(p=>`<option ${p.pos===p?'selected':''}>${p}</option>`).join('')}</optgroup>
+                    <optgroup label="Offense">${POSITIONS.offense.map(pos=>`<option ${p.pos===pos?'selected':''}>${pos}</option>`).join('')}</optgroup>
+                    <optgroup label="Defense">${POSITIONS.defense.map(pos=>`<option ${p.pos===pos?'selected':''}>${pos}</option>`).join('')}</optgroup>
+                    <optgroup label="Special Teams">${POSITIONS.special.map(pos=>`<option ${p.pos===pos?'selected':''}>${pos}</option>`).join('')}</optgroup>
                 </select>
                 <select class="rp-starter" data-idx="${idx}"><option value="0" ${!p.starter?'selected':''}>Sub</option><option value="1" ${p.starter?'selected':''}>Starter</option></select>
                 <button onclick="this.parentElement.remove()">✖</button>
@@ -372,16 +457,18 @@
             <div class="roster-layout">
                 <div class="team-sidebar">${sidebarHTML}</div>
                 <div class="roster-workspace" id="rosterWorkspace">
-                    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px;">
-                        <input id="editTeamName" value="${esc(ct?ct.name:'')}" placeholder="Team Name" style="flex:1;min-width:150px;padding:6px;border-radius:8px;border:1px solid var(--border);font-size:0.9rem;background:var(--surface);color:var(--text);">
+                    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
+                        <input id="editTeamName" value="${esc(ct?ct.name:'')}" placeholder="Team Name" style="flex:1;min-width:150px;padding:8px 12px;border-radius:8px;border:1px solid var(--border);font-size:0.9rem;background:var(--surface);color:var(--text);">
                         <button class="btn-sm" id="saveTeamBtn">💾 SAVE</button>
+                        <button class="btn-sm" id="cloudSaveTeamBtn" style="background:#6366f1;color:#fff;">☁️ SAVE</button>
+                        <button class="btn-sm" id="cloudLoadTeamsBtn">📥 LOAD</button>
                         <button class="btn-sm btn-red" id="deleteTeamBtn">🗑️ DELETE</button>
                     </div>
-                    <div style="display:grid;grid-template-columns:45px 1fr 80px 55px 30px;gap:4px;font-size:0.6rem;font-weight:600;margin-bottom:4px;opacity:0.7;">
+                    <div style="display:grid;grid-template-columns:50px 1fr 90px 65px 34px;gap:6px;font-size:0.7rem;font-weight:600;margin-bottom:6px;opacity:0.7;">
                         <span>#</span><span>Name</span><span>Position</span><span>Role</span><span></span>
                     </div>
                     <div id="rosterPlayerGrid">${playerRows}</div>
-                    <button class="btn-sm" id="addPlayerBtn" style="margin-top:6px;">➕ ADD ROW</button>
+                    <button class="btn-sm" id="addPlayerBtn" style="margin-top:8px;">➕ ADD ROW</button>
                     <textarea class="parse-area" id="parseRosterText" rows="2" placeholder="Paste roster: 7 Williams QB | 22 Johnson RB"></textarea>
                     <button class="btn-sm" id="parseRosterBtn" style="margin-top:6px;">📝 PARSE</button>
                 </div>
@@ -396,6 +483,16 @@
             }
             save(); renderRoster(); renderNav(); toast('Team saved');
         };
+        document.getElementById('cloudSaveTeamBtn').onclick = ()=>{
+            const t = sp.teams.find(t=>t.id===sp.currentTeamId);
+            if(t){
+                t.name = document.getElementById('editTeamName').value;
+                t.players = collectRosterPlayers();
+                save();
+                cloudSaveTeam(sp.currentTeamId);
+            }
+        };
+        document.getElementById('cloudLoadTeamsBtn').onclick = ()=>cloudLoadTeams();
         document.getElementById('deleteTeamBtn').onclick = ()=>{
             const t = sp.teams.find(t=>t.id===sp.currentTeamId);
             if(!t) return;
@@ -466,12 +563,15 @@
         save(); renderRoster(); renderNav();
     }
 
+    // ═══════════════════════════════════════════════
+    // SCRIPT VIEW
+    // ═══════════════════════════════════════════════
     function renderScript(){
         const sp = s();
-        document.getElementById('main').innerHTML = `<div style="display:flex;flex-direction:column;height:100%;width:100%;background:var(--surface);border-radius:14px;padding:14px;overflow:hidden;">
-            <h3 style="flex-shrink:0;margin-bottom:4px;">🎙️ PA SCRIPT</h3>
+        document.getElementById('main').innerHTML = `<div style="display:flex;flex-direction:column;height:100%;width:100%;background:var(--surface);border-radius:14px;padding:16px;overflow:hidden;">
+            <h3 style="flex-shrink:0;margin-bottom:8px;">🎙️ PA SCRIPT</h3>
             <textarea id="scriptText" class="script-area" placeholder="PA announcements, sponsor reads, lineup scripts...">${sp.scriptContent||''}</textarea>
-            <div style="flex-shrink:0;display:flex;gap:8px;margin-top:10px;">
+            <div style="flex-shrink:0;display:flex;gap:8px;margin-top:12px;">
                 <button class="btn btn-sm" id="saveScript">💾 SAVE</button>
                 <button class="btn btn-sm" id="printScript">🖨️ PRINT</button>
             </div>
@@ -487,9 +587,12 @@
         };
     }
 
+    // ═══════════════════════════════════════════════
+    // ADMIN VIEW
+    // ═══════════════════════════════════════════════
     function renderAdmin(){
-        const tabs = ['branding','teams','backup'];
-        const tabLabels = {branding:'🏷️ Branding',teams:'🏆 Teams',backup:'💾 Backup'};
+        const tabs = ['branding','teams','backup','cloud'];
+        const tabLabels = {branding:'🏷️ Branding',teams:'🏆 Teams',backup:'💾 Backup',cloud:'☁️ Cloud'};
         let h = `<div class="panel"><h3>⚙️ ADMIN</h3><div class="admin-tabs">`;
         tabs.forEach(t=>{
             h += `<button class="admin-tab ${state.adminTab===t?'active':''}" data-admin-tab="${t}">${tabLabels[t]}</button>`;
@@ -519,9 +622,9 @@
         } else if(state.adminTab==='teams'){
             let html = '<h4>🏆 Team Management</h4>';
             sp.teams.forEach(t=>{
-                html += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;padding:4px;background:var(--surface);border-radius:8px;">
+                html += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;padding:6px;background:var(--surface);border-radius:8px;">
                     <span style="flex:1;font-weight:600;">${esc(t.name)}</span>
-                    <span style="font-size:0.7rem;opacity:0.5;">${t.players.length} players</span>
+                    <span style="font-size:0.75rem;opacity:0.5;">${t.players.length} players</span>
                     <button class="btn-sm" onclick="state.sports.football.currentTeamId='${t.id}';state.currentView='roster';renderAll();">✏️</button>
                 </div>`;
             });
@@ -555,12 +658,23 @@
                 };
                 r.readAsText(f);
             };
+        } else if(state.adminTab==='cloud'){
+            container.innerHTML = `<h4>☁️ Cloud Sync</h4>
+                <p style="font-size:0.8rem;opacity:0.6;margin-bottom:12px;">Sync teams across all your devices using the same cloud as Lineup Card Live.</p>
+                <button class="btn btn-sm" id="cloudSaveAllBtn" style="background:#6366f1;color:#fff;">☁️ SAVE ALL TEAMS</button>
+                <button class="btn btn-sm" id="cloudLoadTeamsAdminBtn" style="margin-left:6px;">📥 LOAD TEAM</button>
+                <p style="font-size:0.7rem;opacity:0.4;margin-top:12px;">Teams are prefixed with "friday_" in the cloud.</p>`;
+            document.getElementById('cloudSaveAllBtn').onclick = ()=>cloudSaveAll();
+            document.getElementById('cloudLoadTeamsAdminBtn').onclick = ()=>cloudLoadTeams();
         }
     }
 
+    // ═══════════════════════════════════════════════
+    // PRINT
+    // ═══════════════════════════════════════════════
     function printLineups(){
         const sp = s();
-        let html = `<html><head><title>Lineups</title><style>body{font-family:sans-serif;padding:20px;}table{border-collapse:collapse;width:100%;margin-bottom:20px;}th,td{border:1px solid #000;padding:4px 8px;}th{background:#ddd;}</style></head><body>`;
+        let html = `<html><head><title>Lineups</title><style>body{font-family:sans-serif;padding:20px;font-size:14px;}h2{margin-top:0;}table{border-collapse:collapse;width:100%;margin-bottom:20px;}th,td{border:1px solid #000;padding:6px 10px;}th{background:#ddd;font-size:12px;}</style></head><body>`;
         ['away','home'].forEach(side=>{
             const teamName = side==='away' ? sp.awayName : sp.homeName;
             html += `<h2>${teamName} - OFFENSE</h2><table><tr><th>#</th><th>Player</th><th>Pos</th></tr>`;
@@ -578,6 +692,9 @@
         w.onload = ()=>w.print();
     }
 
+    // ═══════════════════════════════════════════════
+    // NAVIGATION
+    // ═══════════════════════════════════════════════
     function renderNav(){
         const nav = document.getElementById('mainNav');
         nav.innerHTML = `
