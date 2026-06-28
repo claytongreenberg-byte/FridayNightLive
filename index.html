@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,15 +28,20 @@
             font-size:18px;
             padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
-        header{background:var(--primary);padding:max(8px,env(safe-area-inset-top)) 12px 8px 12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;border-bottom:3px solid #f97316;flex-shrink:0;min-height:54px;}
+        header{background:var(--primary);padding:max(8px,env(safe-area-inset-top)) 12px 8px 12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;border-bottom:3px solid var(--btn);flex-shrink:0;min-height:54px;}
+        .header-left{display:flex;align-items:center;gap:8px;}
+        .back-link{background:none;border:none;color:var(--text);font-size:0.75rem;font-weight:600;cursor:pointer;padding:4px 8px;border-radius:6px;text-decoration:none;transition:all 0.2s;opacity:0.7;}
+        .back-link:hover{opacity:1;background:rgba(255,255,255,0.1);}
         .brand-area{display:flex;align-items:center;gap:8px;}
         .brand-text h1{font-size:1.1rem;color:#fff;font-weight:900;}
-        .brand-text p{font-size:0.65rem;color:#f97316;font-weight:600;letter-spacing:1px;}
+        .brand-text p{font-size:0.65rem;color:var(--btn);font-weight:600;letter-spacing:1px;}
+        .header-center{display:flex;align-items:center;gap:12px;}
+        .wall-clock{font-size:0.85rem;font-weight:600;color:var(--btn);min-width:80px;text-align:center;}
         .scorebug{display:flex;align-items:center;gap:12px;background:#00000055;padding:5px 16px;border-radius:60px;}
         .scorebug .sb-team{font-weight:700;font-size:0.85rem;color:#fff;min-width:70px;text-align:center;}
-        .scorebug .sb-score{font-weight:900;font-size:1.6rem;color:#f97316;min-width:30px;text-align:center;}
+        .scorebug .sb-score{font-weight:900;font-size:1.6rem;color:var(--btn);min-width:30px;text-align:center;}
         .scorebug .sb-divider{color:#666;font-size:1rem;}
-        .scorebug .sb-quarter{font-weight:700;font-size:0.85rem;color:#f97316;background:#00000044;padding:3px 8px;border-radius:20px;display:flex;align-items:center;gap:4px;white-space:nowrap;}
+        .scorebug .sb-quarter{font-weight:700;font-size:0.85rem;color:var(--btn);background:#00000044;padding:3px 8px;border-radius:20px;display:flex;align-items:center;gap:4px;white-space:nowrap;}
         .scorebug button{background:none;border:none;color:#fff;font-size:0.9rem;cursor:pointer;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;border-radius:50%;padding:6px;transition:background 0.1s;}
         .scorebug button:hover{background:#ffffff22;}
         .scorebug button:active{transform:scale(0.94);}
@@ -50,7 +54,7 @@
         .btn-outline{background:var(--outline-bg);border:2px solid var(--outline-border);color:var(--outline-text);}
         nav{background:#374151;display:flex;padding:0 8px;gap:2px;overflow-x:auto;flex-shrink:0;-webkit-overflow-scrolling:touch;}
         .nav-link{padding:10px 14px;font-size:0.8rem;font-weight:600;background:none;border:none;color:rgba(255,255,255,0.8);cursor:pointer;border-radius:10px 10px 0 0;white-space:nowrap;min-height:46px;touch-action:manipulation;}
-        .nav-link.active{background:#f97316;color:black;}
+        .nav-link.active{background:var(--btn);color:black;}
         main{flex:1;overflow:hidden;padding:8px;display:flex;gap:10px;}
         .game-grid{display:flex;gap:12px;width:100%;height:100%;background:var(--gap-bg);border-radius:14px;padding:6px;}
         .team-card{flex:1;min-width:0;background:var(--surface);border-radius:12px;border:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
@@ -62,13 +66,13 @@
         .side-badge.away{background:#1e3a5f;color:white;}.side-badge.home{background:#7f1d1d;color:white;}
         .unit-tabs{display:flex;gap:3px;flex-shrink:0;}
         .unit-tab{padding:6px 14px;font-size:0.75rem;font-weight:700;background:rgba(255,255,255,0.08);border:none;color:#ffffff88;cursor:pointer;border-radius:20px;min-height:36px;text-transform:uppercase;letter-spacing:0.5px;transition:all 0.15s;}
-        .unit-tab.active{background:#f97316;color:#000;}
+        .unit-tab.active{background:var(--btn);color:#000;}
         .unit-tab.st.active{background:#8b5cf6;color:#fff;}
         .player-list-header{display:flex;align-items:center;gap:6px;padding:6px 10px;font-size:0.7rem;font-weight:700;text-transform:uppercase;color:var(--text);opacity:0.7;border-bottom:2px solid var(--border);flex-shrink:0;background:var(--section-header-bg);min-height:30px;}
         .player-list-body{flex:1;overflow-y:auto;}
         .player-row{display:flex;align-items:center;gap:6px;padding:5px 10px;border-bottom:1px solid var(--border);min-height:46px;font-size:0.85rem;transition:background 0.15s;}
-        .player-row.starter{background:#fbbf2415;border-left:3px solid var(--starter-border);}
-        .plyr-num{font-weight:800;min-width:32px;text-align:center;font-size:0.9rem;color:#fbbf24;flex-shrink:0;}
+        .player-row.starter{background:var(--starter-bg)15;border-left:3px solid var(--starter-border);}
+        .plyr-num{font-weight:800;min-width:32px;text-align:center;font-size:0.9rem;color:var(--starter-bg);flex-shrink:0;}
         .plyr-name{font-weight:600;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:0.85rem;}
         .plyr-pos{font-size:0.7rem;font-weight:700;padding:2px 8px;border-radius:10px;min-width:32px;text-align:center;flex-shrink:0;}
         .plyr-pos.off{background:#22c55e22;color:#22c55e;}.plyr-pos.def{background:#ef444422;color:#ef4444;}.plyr-pos.st{background:#8b5cf622;color:#8b5cf6;}
@@ -78,20 +82,18 @@
         .add-player-row input,.add-player-row select{padding:6px 8px;border-radius:8px;border:1px solid var(--border);font-size:0.8rem;background:var(--surface);color:var(--text);min-height:38px;}
         .add-player-row .add-num{width:48px;}
         .add-player-row .add-name{flex:1;min-width:100px;}
-        .special-bar{display:flex;gap:12px;padding:6px 12px;background:#00000033;flex-shrink:0;font-size:0.75rem;flex-wrap:wrap;align-items:center;justify-content:center;}
-        .special-bar .sp-item{display:flex;align-items:center;gap:4px;color:#8b5cf6;font-weight:600;}
-        .special-bar .sp-num{font-weight:800;color:#fbbf24;}
         footer{background:#111;text-align:center;padding:8px;font-size:0.65rem;color:#666;flex-shrink:0;display:flex;justify-content:center;align-items:center;gap:12px;}
         .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:white;padding:8px 18px;border-radius:60px;font-size:0.85rem;opacity:0;transition:.2s;pointer-events:none;z-index:999;}
         .toast.show{opacity:1;}
         .panel{background:var(--surface);border-radius:14px;padding:16px;margin:8px;overflow-y:auto;width:100%;}
-        .panel input,.panel select,.panel textarea{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:0.9rem;margin:4px;}
+        .panel input,.panel select,.panel textarea,.panel input[type="color"]{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:0.9rem;margin:4px;}
+        .panel input[type="color"]{width:60px;height:44px;cursor:pointer;}
         .roster-layout{display:grid;grid-template-columns:240px 1fr;gap:12px;height:100%;width:100%;}
         .team-sidebar{background:var(--surface);border-radius:14px;padding:12px;overflow-y:auto;border:1px solid var(--border);max-height:100%;}
         .team-sidebar h3{font-size:0.85rem;font-weight:700;margin-bottom:10px;color:var(--text);text-transform:uppercase;}
         .team-item{padding:10px 12px;border-radius:8px;margin-bottom:4px;cursor:pointer;background:rgba(255,255,255,0.04);font-weight:600;font-size:0.85rem;min-height:46px;display:flex;align-items:center;transition:transform 60ms ease;color:var(--text);}
         .team-item:active{opacity:0.7;transform:scale(0.94);}
-        .team-item.active{background:#f97316;color:#000;font-weight:700;}
+        .team-item.active{background:var(--btn);color:#000;font-weight:700;}
         .roster-workspace{background:var(--surface);border-radius:14px;padding:12px;overflow-y:auto;border:1px solid var(--border);}
         .player-edit-row{display:grid;grid-template-columns:50px 1fr 90px 65px 34px;gap:6px;margin-bottom:6px;align-items:center;}
         .player-edit-row input,.player-edit-row select{padding:6px 8px;border-radius:6px;border:1px solid var(--border);font-size:0.8rem;background:var(--surface);color:var(--text);min-height:38px;}
@@ -100,33 +102,44 @@
         .script-area{width:100%;height:60vh;font-family:monospace;padding:10px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:1rem;resize:vertical;}
         .admin-tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
         .admin-tab{padding:8px 14px;border-radius:20px;font-size:0.75rem;font-weight:700;background:none;border:1px solid var(--border);color:var(--text);cursor:pointer;}
-        .admin-tab.active{background:#f97316;color:#000;border-color:#f97316;}
-        button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #fbbf24;outline-offset:2px;}
-        .pwa-back-btn{display:block;position:fixed;bottom:max(8px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:9999;background:rgba(0,0,0,0.7);color:#fff;padding:8px 18px;border-radius:24px;font-size:0.75rem;font-weight:700;text-decoration:none;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);letter-spacing:0.3px;border:1px solid rgba(255,255,255,0.2);white-space:nowrap;}
+        .admin-tab.active{background:var(--btn);color:#000;border-color:var(--btn);}
+        .color-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:12px;margin:12px 0;}
+        .color-input-group{display:flex;flex-direction:column;gap:6px;}
+        .color-input-group label{font-size:0.8rem;font-weight:600;text-transform:uppercase;opacity:0.7;}
+        .color-input-group input[type="color"]{width:100%;height:60px;border-radius:8px;cursor:pointer;}
+        .mode-toggle{display:flex;gap:8px;margin:12px 0;}
+        .mode-btn{flex:1;padding:12px;border-radius:8px;border:2px solid var(--border);background:var(--surface);color:var(--text);font-weight:600;cursor:pointer;transition:all 0.2s;}
+        .mode-btn.active{background:var(--btn);color:#000;border-color:var(--btn);}
+        button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--btn);outline-offset:2px;}
         @media(max-width:900px){.game-grid{flex-direction:column;}.roster-layout{grid-template-columns:1fr;}.team-sidebar{max-height:150px;}}
-        @media(max-width:600px){.parse-area{height:120px;}.scorebug{gap:6px;padding:4px 12px;font-size:0.85rem;}}
+        @media(max-width:600px){.parse-area{height:120px;}.scorebug{gap:6px;padding:4px 12px;font-size:0.85rem;}.header-left{flex:1;}}
     </style>
 </head>
 <body>
-<a href="https://voiceofdfw.com" class="pwa-back-btn" aria-label="Back to Voice of DFW">← Back to Voice of DFW</a>
 <header>
+    <div class="header-left">
+        <a href="https://voiceofdfw.com" class="back-link" aria-label="Back to Voice of DFW">← VoiceofDFW.com</a>
+    </div>
     <div class="brand-area">
         <div class="brand-text"><h1>🏈 FRIDAY NIGHT LIVE</h1><p>FOOTBALL PA CONSOLE</p></div>
     </div>
-    <div class="scorebug" id="scorebug">
-        <span class="sb-team" id="sbAway">AWAY</span>
-        <span class="sb-score" id="sbAwayScore">0</span>
-        <button onclick="changeScore('away',-1)" aria-label="Decrease away score">−</button>
-        <button onclick="changeScore('away',1)" aria-label="Increase away score">+</button>
-        <span class="sb-divider">-</span>
-        <button onclick="changeScore('home',-1)" aria-label="Decrease home score">−</button>
-        <button onclick="changeScore('home',1)" aria-label="Increase home score">+</button>
-        <span class="sb-score" id="sbHomeScore">0</span>
-        <span class="sb-team" id="sbHome">HOME</span>
-        <div class="sb-quarter">
-            <button onclick="changeQuarter(-1)" aria-label="Previous quarter">◀</button>
-            <span id="sbQuarter">Q1</span>
-            <button onclick="changeQuarter(1)" aria-label="Next quarter">▶</button>
+    <div class="header-center">
+        <div class="wall-clock" id="wallClock">12:00:00</div>
+        <div class="scorebug" id="scorebug">
+            <span class="sb-team" id="sbAway">AWAY</span>
+            <span class="sb-score" id="sbAwayScore">0</span>
+            <button onclick="changeScore('away',-1)" aria-label="Decrease away score">−</button>
+            <button onclick="changeScore('away',1)" aria-label="Increase away score">+</button>
+            <span class="sb-divider">-</span>
+            <button onclick="changeScore('home',-1)" aria-label="Decrease home score">−</button>
+            <button onclick="changeScore('home',1)" aria-label="Increase home score">+</button>
+            <span class="sb-score" id="sbHomeScore">0</span>
+            <span class="sb-team" id="sbHome">HOME</span>
+            <div class="sb-quarter">
+                <button onclick="changeQuarter(-1)" aria-label="Previous quarter">◀</button>
+                <span id="sbQuarter">Q1</span>
+                <button onclick="changeQuarter(1)" aria-label="Next quarter">▶</button>
+            </div>
         </div>
     </div>
     <div class="header-controls">
@@ -172,13 +185,29 @@
 
     let state = { 
         currentView:'sport', 
-        adminTab:'branding', 
+        adminTab:'branding',
+        mode:'dark',
         brand:{title:'FRIDAY NIGHT LIVE',subtitle:'FOOTBALL PA CONSOLE'},
+        colors:{
+            bg:'#0f172a',
+            surface:'#1e293b',
+            text:'#f1f5f9',
+            primary:'#1e3a5f',
+            btn:'#f97316',
+            btnText:'#000',
+            border:'#334155',
+            away:'#1e3a5f',
+            home:'#7f1d1d',
+            offense:'#22c55e',
+            defense:'#ef4444',
+            special:'#8b5cf6',
+            starter:'#fbbf24'
+        },
         sports:{football:defaultGameState()} 
     };
     function s(){ return state.sports.football; }
 
-    const STORAGE_KEY = 'fridaynightlive_v3';
+    const STORAGE_KEY = 'fridaynightlive_v4';
 
     // ═══════════════════════════════════════════════
     // UTILITY
@@ -195,6 +224,81 @@
 
     function esc(s){ if(!s)return''; return s.replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
 
+    function updateTheme(){
+        const root = document.documentElement;
+        const c = state.colors;
+        root.style.setProperty('--bg', c.bg);
+        root.style.setProperty('--surface', c.surface);
+        root.style.setProperty('--text', c.text);
+        root.style.setProperty('--primary', c.primary);
+        root.style.setProperty('--btn', c.btn);
+        root.style.setProperty('--btn-text', c.btnText);
+        root.style.setProperty('--border', c.border);
+        root.style.setProperty('--away-header', c.away);
+        root.style.setProperty('--home-header', c.home);
+        root.style.setProperty('--offense-color', c.offense);
+        root.style.setProperty('--defense-color', c.defense);
+        root.style.setProperty('--special-color', c.special);
+        root.style.setProperty('--starter-bg', c.starter);
+        root.style.setProperty('--starter-border', c.starter);
+        save();
+    }
+
+    function applyLightMode(){
+        state.mode = 'light';
+        state.colors = {
+            bg:'#ffffff',
+            surface:'#f3f4f6',
+            text:'#1f2937',
+            primary:'#3b82f6',
+            btn:'#f97316',
+            btnText:'#000',
+            border:'#d1d5db',
+            away:'#1e3a8a',
+            home:'#991b1b',
+            offense:'#16a34a',
+            defense:'#dc2626',
+            special:'#7c3aed',
+            starter:'#eab308'
+        };
+        updateTheme();
+        toast('✅ Light mode enabled');
+    }
+
+    function applyDarkMode(){
+        state.mode = 'dark';
+        state.colors = {
+            bg:'#0f172a',
+            surface:'#1e293b',
+            text:'#f1f5f9',
+            primary:'#1e3a5f',
+            btn:'#f97316',
+            btnText:'#000',
+            border:'#334155',
+            away:'#1e3a5f',
+            home:'#7f1d1d',
+            offense:'#22c55e',
+            defense:'#ef4444',
+            special:'#8b5cf6',
+            starter:'#fbbf24'
+        };
+        updateTheme();
+        toast('✅ Dark mode enabled');
+    }
+
+    // ═══════════════════════════════════════════════
+    // WALL CLOCK
+    // ═══════════════════════════════════════════════
+    function updateClock(){
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        document.getElementById('wallClock').textContent = `${hours}:${minutes}:${seconds}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
     // ═══════════════════════════════════════════════
     // SAVE / LOAD
     // ═══════════════════════════════════════════════
@@ -210,7 +314,6 @@
         try {
             const raw = localStorage.getItem(STORAGE_KEY);
             if(raw){ const p = JSON.parse(raw); state = p; }
-            // Migrate old data: add IDs to players if missing
             if(state.sports && state.sports.football && state.sports.football.teams){
                 state.sports.football.teams.forEach(team=>{
                     if(team.players){
@@ -221,11 +324,12 @@
                 });
             }
         } catch(e){ console.error('Load error:', e); }
+        updateTheme();
         renderAll();
     }
 
     // ═══════════════════════════════════════════════
-    // CLOUD SYNC
+    // CLOUD SYNC (same as before)
     // ═══════════════════════════════════════════════
     async function cloudSaveTeam(teamId){
         const sp = s();
@@ -262,7 +366,6 @@
             const exists = sp.teams.find(t=>t.id===team.id);
             if(exists && !confirm(`Team "${exists.name}" already exists. Overwrite? (This cannot be undone)`)) return;
             
-            // Add IDs to players if missing
             if(team.players){
                 team.players.forEach(p=>{ if(!p.id) p.id = generatePlayerId(); });
             }
@@ -312,7 +415,7 @@
 
     function changeQuarter(d){
         const sp = s();
-        const maxQuarter = 6; // Q1-Q4, OT, 2OT, 3OT
+        const maxQuarter = 6;
         sp.quarter = Math.min(maxQuarter, Math.max(1, sp.quarter + d));
         updateScorebug(); save();
     }
@@ -365,7 +468,6 @@
             starter: false
         });
         
-        // CLEAR FIELDS
         numEl.value = '';
         nameEl.value = '';
         posEl.value = 'QB';
@@ -467,7 +569,7 @@
     }
 
     // ═══════════════════════════════════════════════
-    // ROSTER VIEW
+    // ROSTER VIEW (same as before)
     // ═══════════════════════════════════════════════
     function renderRoster(){
         const sp = s();
@@ -481,7 +583,6 @@
 
         let playerRows = '';
         pl.forEach((p)=>{
-            const posOpts = ALL_POSITIONS.map(pos=>`<option ${p.pos===pos?'selected':''}>${pos}</option>`).join('');
             playerRows += `<div class="player-edit-row" data-player-id="${p.id}">
                 <input value="${esc(p.num||'')}" placeholder="#" class="rp-num" data-player-id="${p.id}" inputmode="numeric">
                 <input value="${esc(p.name||'')}" placeholder="Name" class="rp-name" data-player-id="${p.id}">
@@ -565,7 +666,6 @@
             lines.forEach(line=>{
                 if(!line.trim()) return;
                 
-                // Try to extract number (must be at start)
                 let num = '', rest = line.trim();
                 const numMatch = rest.match(/^(\d{1,3})\s+/);
                 if(numMatch) {
@@ -573,7 +673,6 @@
                     rest = rest.slice(numMatch[0].length).trim();
                 }
                 
-                // Try to extract position (must be a known position at end)
                 let pos = 'QB', name = rest;
                 const words = rest.split(/\s+/);
                 if(words.length > 0 && ALL_POSITIONS.includes(words[words.length-1].toUpperCase())) {
@@ -668,9 +767,9 @@
     // ADMIN VIEW
     // ═══════════════════════════════════════════════
     function renderAdmin(){
-        const tabs = ['branding','teams','backup','cloud'];
-        const tabLabels = {branding:'🏷️ Branding',teams:'🏆 Teams',backup:'💾 Backup',cloud:'☁️ Cloud'};
-        let h = `<div class="panel"><h3>⚙️ ADMIN</h3><div class="admin-tabs">`;
+        const tabs = ['branding','colors','theme','teams','backup','cloud'];
+        const tabLabels = {branding:'🏷️ Branding',colors:'🎨 Colors',theme:'🌓 Theme',teams:'🏆 Teams',backup:'💾 Backup',cloud:'☁️ Cloud'};
+        let h = `<div class="panel"><h3>⚙️ ADMIN CONSOLE</h3><div class="admin-tabs">`;
         tabs.forEach(t=>{
             h += `<button class="admin-tab ${state.adminTab===t?'active':''}" data-admin-tab="${t}">${tabLabels[t]}</button>`;
         });
@@ -686,6 +785,7 @@
         const container = document.getElementById('adminContent');
         if(!container) return;
         const sp = s();
+        
         if(state.adminTab==='branding'){
             container.innerHTML = `<h4>🏷️ Branding</h4>
                 <label>Brand Title</label><input id="brandTitle" value="${esc(state.brand.title)}">
@@ -701,6 +801,41 @@
                 document.querySelector('.brand-text p').textContent = sub;
                 toast('✅ Branding updated');
             };
+        } else if(state.adminTab==='colors'){
+            let html = `<h4>🎨 Custom Colors</h4>
+                <p style="font-size:0.8rem;opacity:0.6;margin-bottom:12px;">Customize every color in the app. Changes apply instantly.</p>
+                <div class="color-grid">`;
+            const colorLabels = {
+                bg: 'Background',
+                surface: 'Surface',
+                text: 'Text',
+                primary: 'Primary',
+                btn: 'Button',
+                btnText: 'Button Text',
+                border: 'Border',
+                away: 'Away Team',
+                home: 'Home Team',
+                offense: 'Offense',
+                defense: 'Defense',
+                special: 'Special Teams',
+                starter: 'Starter Badge'
+            };
+            for(const [key, label] of Object.entries(colorLabels)){
+                html += `<div class="color-input-group">
+                    <label>${label}</label>
+                    <input type="color" id="color_${key}" value="${state.colors[key]}" onchange="updateColorPicker('${key}', this.value)">
+                </div>`;
+            }
+            html += `</div><button class="btn btn-sm" style="margin-top:12px;">💾 Saved</button>`;
+            container.innerHTML = html;
+        } else if(state.adminTab==='theme'){
+            container.innerHTML = `<h4>🌓 Theme Mode</h4>
+                <p style="font-size:0.8rem;opacity:0.6;margin-bottom:12px;">Choose between dark and light modes, or customize colors manually.</p>
+                <div class="mode-toggle">
+                    <button class="mode-btn ${state.mode==='dark'?'active':''}" onclick="applyDarkMode()">🌙 Dark Mode</button>
+                    <button class="mode-btn ${state.mode==='light'?'active':''}" onclick="applyLightMode()">☀️ Light Mode</button>
+                </div>
+                <p style="font-size:0.8rem;opacity:0.6;margin-top:12px;">Go to <strong>Colors</strong> tab to customize individual colors without switching modes.</p>`;
         } else if(state.adminTab==='teams'){
             let html = '<h4>🏆 Team Management</h4>';
             sp.teams.forEach(t=>{
@@ -736,6 +871,7 @@
                         if(!d.sports || !d.sports.football) throw new Error('Invalid backup format');
                         state = d;
                         save();
+                        updateTheme();
                         renderAll();
                         toast('✅ Data restored successfully');
                     }catch(err){ toast('❌ Import failed: '+err.message); }
@@ -753,6 +889,12 @@
         }
     }
 
+    function updateColorPicker(key, value){
+        state.colors[key] = value;
+        updateTheme();
+        toast('✅ '+key+' updated');
+    }
+
     // ═══════════════════════════════════════════════
     // PRINT
     // ═══════════════════════════════════════════════
@@ -765,21 +907,18 @@
         ['away','home'].forEach(side=>{
             const teamName = side==='away' ? sp.awayName : sp.homeName;
             
-            // OFFENSE
             html += `<h2>${teamName} - OFFENSE</h2><table><tr><th>#</th><th>Player</th><th>Pos</th></tr>`;
             getPlayers(side,'offense').forEach(p=>{
                 html += `<tr class="${p.starter?'starter':''}"><td>${esc(p.num)}</td><td>${esc(p.name)}${p.starter?' ⭐':''}</td><td>${esc(p.pos)}</td></tr>`;
             });
             html += `</table>`;
             
-            // DEFENSE
             html += `<h2>${teamName} - DEFENSE</h2><table><tr><th>#</th><th>Player</th><th>Pos</th></tr>`;
             getPlayers(side,'defense').forEach(p=>{
                 html += `<tr class="${p.starter?'starter':''}"><td>${esc(p.num)}</td><td>${esc(p.name)}${p.starter?' ⭐':''}</td><td>${esc(p.pos)}</td></tr>`;
             });
             html += `</table>`;
             
-            // SPECIAL TEAMS
             html += `<h2>${teamName} - SPECIAL TEAMS</h2><table><tr><th>#</th><th>Player</th><th>Pos</th></tr>`;
             getPlayers(side,'special').forEach(p=>{
                 html += `<tr class="${p.starter?'starter':''}"><td>${esc(p.num)}</td><td>${esc(p.name)}${p.starter?' ⭐':''}</td><td>${esc(p.pos)}</td></tr>`;
@@ -869,12 +1008,14 @@
     window.selectRosterTeam = selectRosterTeam;
     window.newTeam = newTeam;
     window.deleteRosterPlayer = deleteRosterPlayer;
+    window.updateColorPicker = updateColorPicker;
+    window.applyLightMode = applyLightMode;
+    window.applyDarkMode = applyDarkMode;
 
     (async function init(){
         await load();
         renderAll();
     })();
 </script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"f39674ce5a5d4963a6033a5fb03cf801","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
