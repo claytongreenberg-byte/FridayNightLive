@@ -55,8 +55,9 @@
         .header-center{display:flex;align-items:center;gap:12px;z-index:1;}
         .wall-clock{font-size:0.85rem;font-weight:600;color:var(--btn);min-width:80px;text-align:center; background:rgba(0,0,0,0.5); border-radius:8px; padding:4px 8px;}
         .scorebug{display:flex;align-items:center;gap:12px;background:#00000055;padding:5px 16px;border-radius:60px;}
-        .scorebug .sb-team{font-weight:700;font-size:0.85rem;color:#fff;min-width:70px;text-align:center;display:flex;align-items:center;gap:4px;}
-        .sb-team-logo{width:24px;height:24px;object-fit:contain;border-radius:4px;}
+        .scorebug .sb-team{font-weight:700;font-size:0.85rem;color:#fff;min-width:70px;text-align:center;display:flex;align-items:center;justify-content:center;gap:4px;}
+        .sb-team-logo{width:36px;height:36px;object-fit:contain;border-radius:4px;}
+        .sb-team-logo.large{width:48px;height:48px;}
         .scorebug .sb-score{font-weight:900;font-size:1.6rem;color:var(--btn);min-width:30px;text-align:center;transition: transform 0.15s ease;}
         .scorebug .sb-score.flash{transform: scale(1.4); color:#fff;}
         .scorebug .sb-divider{color:#666;font-size:1rem;}
@@ -89,6 +90,8 @@
         .team-select{font-size:0.9rem;font-weight:700;padding:8px 12px;border-radius:10px;background:#fff;flex:1;border:2px solid var(--border);color:#0a2540;max-width:100%;}
         .side-badge{font-size:0.7rem;font-weight:800;padding:3px 10px;border-radius:60px;text-transform:uppercase;}
         .side-badge.away{background:#1e3a5f;color:white;}.side-badge.home{background:#7f1d1d;color:white;}
+        .team-logo-inline{width:28px;height:28px;object-fit:contain;border-radius:4px;flex-shrink:0;}
+        .team-top-row .team-logo-inline{width:32px;height:32px;}
         .unit-tabs{display:flex;gap:3px;flex-shrink:0;}
         .unit-tab{padding:6px 14px;font-size:0.75rem;font-weight:700;background:rgba(255,255,255,0.08);border:none;color:#ffffff88;cursor:pointer;border-radius:20px;min-height:36px;text-transform:uppercase;letter-spacing:0.5px;transition:all 0.15s;}
         .unit-tab.active{background:var(--btn);color:#000;}
@@ -382,8 +385,17 @@
         const sp=s(); const awayTeam=sp.teams.find(t=>t.id===sp.awayTeamId), homeTeam=sp.teams.find(t=>t.id===sp.homeTeamId);
         const an=awayTeam?awayTeam.name:'AWAY', hn=homeTeam?homeTeam.name:'HOME';
         const ae=document.getElementById('sbAway'), he=document.getElementById('sbHome');
-        if(awayTeam?.logo)ae.innerHTML=`<img class="sb-team-logo" src="${esc(awayTeam.logo)}" alt=""> ${esc(an.substring(0,8))}`; else ae.textContent=an.substring(0,8).toUpperCase();
-        if(homeTeam?.logo)he.innerHTML=`<img class="sb-team-logo" src="${esc(homeTeam.logo)}" alt=""> ${esc(hn.substring(0,8))}`; else he.textContent=hn.substring(0,8).toUpperCase();
+        // Scorebug: show logo only if available, otherwise name
+        if(awayTeam?.logo){
+            ae.innerHTML=`<img class="sb-team-logo large" src="${esc(awayTeam.logo)}" alt="${esc(an)}">`;
+        } else {
+            ae.textContent=an.substring(0,8).toUpperCase();
+        }
+        if(homeTeam?.logo){
+            he.innerHTML=`<img class="sb-team-logo large" src="${esc(homeTeam.logo)}" alt="${esc(hn)}">`;
+        } else {
+            he.textContent=hn.substring(0,8).toUpperCase();
+        }
         document.getElementById('sbAwayScore').textContent=sp.awayScore||0; document.getElementById('sbHomeScore').textContent=sp.homeScore||0;
         document.getElementById('sbQuarter').textContent=['Q1','Q2','Q3','Q4','OT','2OT','3OT'][sp.quarter-1]||'Q1';
         updateDownDisplay();
@@ -427,7 +439,7 @@
         pushRosterUndo(team); team.players=team.players.filter(x=>x.id!==playerId); save(); renderSport();
     }
 
-    // ═══ SPORT VIEW ═══
+    // ═══ SPORT VIEW (logo next to team name) ═══
     function renderSport(){
         const sp=s(); let h='<div class="game-grid">';
         ['away','home'].forEach(side=>{
@@ -435,9 +447,13 @@
             const teamColor=team?team.color:(side==='away'?'#1e3a5f':'#7f1d1d');
             const dupes=team?findDuplicateNumbers(team):new Set();
             const onDeckId=sp.onDeck?.[side];
+            // Logo for the team header area
+            const logoHTML = team?.logo ? `<img class="team-logo-inline" src="${esc(team.logo)}" alt="${esc(team.name)} logo">` : '';
             h+=`<div class="team-card ${side}">
                 <div class="team-header" style="background:linear-gradient(135deg,${teamColor}dd,${teamColor}88);">
-                    <div class="team-top-row"><span class="side-badge ${side}" style="background:${teamColor}cc;">${side}</span>
+                    <div class="team-top-row">
+                        <span class="side-badge ${side}" style="background:${teamColor}cc;">${side}</span>
+                        ${logoHTML}
                         <select class="team-select" onchange="switchTeam('${side}',this.value)" aria-label="Team"><option value="">--</option>${sp.teams.map(t=>`<option value="${esc(t.id)}" ${t.id===(side==='away'?sp.awayTeamId:sp.homeTeamId)?'selected':''}>${esc(t.name)}</option>`).join('')}</select>
                     </div>
                     <div class="unit-tabs">
