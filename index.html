@@ -93,7 +93,8 @@
         .player-row{display:flex;align-items:center;gap:6px;padding:5px 10px;border-bottom:1px solid var(--border);min-height:46px;font-size:0.85rem;transition:background 0.15s;}
         .player-row.starter{background:var(--starter-bg)15;border-left:3px solid var(--starter-border);}
         .plyr-num{font-weight:800;min-width:32px;text-align:center;font-size:0.9rem;color:var(--starter-bg);flex-shrink:0;}
-        .plyr-name{font-weight:600;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:0.85rem;}
+        .plyr-name{font-weight:600;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:0.85rem; display:flex; align-items:center; gap:4px;}
+        .plyr-notes-icon{font-size:0.8rem; cursor:help; flex-shrink:0;}
         .plyr-pos{font-size:0.7rem;font-weight:700;padding:2px 8px;border-radius:10px;min-width:32px;text-align:center;flex-shrink:0;}
         .plyr-pos.off{background:#22c55e22;color:#22c55e;}.plyr-pos.def{background:#ef444422;color:#ef4444;}.plyr-pos.st{background:#8b5cf622;color:#8b5cf6;}
         .plyr-star{font-size:0.8rem;flex-shrink:0;cursor:pointer;opacity:0.3;min-width:24px;text-align:center;min-height:32px;display:flex;align-items:center;justify-content:center;}
@@ -102,6 +103,7 @@
         .add-player-row input,.add-player-row select{padding:6px 8px;border-radius:8px;border:1px solid var(--border);font-size:0.8rem;background:var(--surface);color:var(--text);min-height:38px;}
         .add-player-row .add-num{width:48px;}
         .add-player-row .add-name{flex:1;min-width:100px;}
+        .add-player-row .add-notes{flex:2; min-width:120px;}
         footer{background:#111;text-align:center;padding:8px;font-size:0.65rem;color:#666;flex-shrink:0;display:flex;justify-content:center;align-items:center;gap:12px;}
         .footer-logo{height:24px; width:auto;}
         .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:white;padding:8px 18px;border-radius:60px;font-size:0.85rem;opacity:0;transition:.2s;pointer-events:none;z-index:999;}
@@ -116,7 +118,8 @@
         .team-item:active{opacity:0.7;transform:scale(0.94);}
         .team-item.active{background:var(--btn);color:#000;font-weight:700;}
         .roster-workspace{background:var(--surface);border-radius:14px;padding:12px;overflow-y:auto;border:1px solid var(--border);}
-        .player-edit-row{display:grid;grid-template-columns:50px 1fr 90px 65px 34px;gap:6px;margin-bottom:6px;align-items:center;}
+        /* Adjusted grid for notes column */
+        .player-edit-row{display:grid;grid-template-columns:50px 1fr 90px 65px 1fr 34px;gap:6px;margin-bottom:6px;align-items:center;}
         .player-edit-row input,.player-edit-row select{padding:6px 8px;border-radius:6px;border:1px solid var(--border);font-size:0.8rem;background:var(--surface);color:var(--text);min-height:38px;}
         .player-edit-row button{background:#dc2626;color:#fff;border:none;border-radius:4px;cursor:pointer;min-height:38px;font-weight:700;}
         .parse-area{width:100%;height:100px;font-family:monospace;padding:8px;border-radius:8px;border:1px solid var(--border);margin-top:10px;font-size:0.8rem;background:var(--surface);color:var(--text);resize:vertical;}
@@ -258,7 +261,7 @@
         currentView:'sport', 
         adminTab:'branding',
         mode:'dark',
-        unit_away:'all',   // <-- default to full roster view
+        unit_away:'all',
         unit_home:'all',
         brand:{title:'FRIDAY NIGHT LIVE',subtitle:'FOOTBALL PA CONSOLE'},
         fontFamily:"'Inter', 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif",
@@ -285,7 +288,7 @@
     };
     function s(){ return state.sports.football; }
 
-    const STORAGE_KEY = 'fridaynightlive_v8'; // bumped
+    const STORAGE_KEY = 'fridaynightlive_v9'; // bumped for notes
 
     // ═══════════════════════════════════════════════
     // UTILITY – XSS-safe escaping
@@ -406,6 +409,8 @@
             if(typeof t.colorSecondary!=='string') t.colorSecondary='#ffffff';
             if(typeof t.logo!=='string') t.logo='';
             if(typeof t.mascot!=='string') t.mascot='';
+            // ensure notes field exists
+            t.players.forEach(p=>{ if(typeof p.notes !== 'string') p.notes = ''; });
         });
         if(typeof sp.scriptDirty==='undefined') sp.scriptDirty=false;
         if(typeof state.fontFamily!=='string') state.fontFamily="'Inter', 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif";
@@ -513,13 +518,12 @@
     }
 
     // ═══════════════════════════════════════════════
-    // PLAYERS (now supports 'all' unit)
+    // PLAYERS (now with notes)
     // ═══════════════════════════════════════════════
     function getTeamBySide(side){ const sp=s(); return sp.teams.find(t=>t.id===(side==='away'?sp.awayTeamId:sp.homeTeamId))||null; }
     function getPlayers(side, unit){
         const team=getTeamBySide(side);
         if(!team||!team.players) return [];
-        // If unit is 'all', return all players without filtering
         if(unit === 'all') {
             return [...team.players].sort((a,b)=>(parseInt(a.num)||999)-(parseInt(b.num)||999));
         }
@@ -534,10 +538,11 @@
     }
     function addPlayer(side){
         const numEl=document.getElementById('add-num-'+side), nameEl=document.getElementById('add-name-'+side), posEl=document.getElementById('add-pos-'+side);
+        const notesEl=document.getElementById('add-notes-'+side);
         if(!nameEl.value.trim()){ toast('Enter a name'); return; }
         const team=getTeamBySide(side); if(!team) return;
-        team.players.push({id:generatePlayerId(),num:numEl.value.trim(),name:nameEl.value.trim(),pos:posEl.value,starter:false});
-        numEl.value=''; nameEl.value=''; posEl.value='QB'; nameEl.focus();
+        team.players.push({id:generatePlayerId(),num:numEl.value.trim(),name:nameEl.value.trim(),pos:posEl.value,starter:false, notes: notesEl ? notesEl.value.trim() : ''});
+        numEl.value=''; nameEl.value=''; posEl.value='QB'; if(notesEl) notesEl.value=''; nameEl.focus();
         save(); renderSport(); toast(nameEl.value.trim()+' added');
     }
     function toggleStarter(side, playerId){
@@ -553,7 +558,7 @@
     }
 
     // ═══════════════════════════════════════════════
-    // SPORT VIEW (with ALL tab)
+    // SPORT VIEW (notes icon added)
     // ═══════════════════════════════════════════════
     function renderSport(){
         const sp=s();
@@ -585,9 +590,11 @@
             const players=getPlayers(side,activeUnit);
             players.forEach(p=>{
                 const posClass=POSITIONS.offense.includes(p.pos)?'off':POSITIONS.defense.includes(p.pos)?'def':'st';
+                const notesAttr = p.notes ? ` title="${esc(p.notes)}"` : '';
+                const notesIcon = p.notes ? `<span class="plyr-notes-icon" ${notesAttr}>💬</span>` : '';
                 h+=`<div class="player-row${p.starter?' starter':''}">
                     <span class="plyr-num">${esc(p.num)}</span>
-                    <span class="plyr-name">${esc(p.name)}</span>
+                    <span class="plyr-name">${notesIcon}${esc(p.name)}</span>
                     <span class="plyr-pos ${posClass}">${esc(p.pos)}</span>
                     <span class="plyr-star${p.starter?' active':''}" onclick="toggleStarter('${side}','${p.id}')" role="button" aria-label="Toggle starter for ${esc(p.name)}" tabindex="0">⭐</span>
                     <button onclick="deletePlayer('${side}','${p.id}')" aria-label="Delete ${esc(p.name)}" style="background:none;border:none;color:#666;cursor:pointer;font-size:0.7rem;min-height:32px;">✕</button>
@@ -602,6 +609,7 @@
                         <optgroup label="Defense">${POSITIONS.defense.map(p=>`<option>${p}</option>`).join('')}</optgroup>
                         <optgroup label="Special Teams">${POSITIONS.special.map(p=>`<option>${p}</option>`).join('')}</optgroup>
                     </select>
+                    <input class="add-notes" id="add-notes-${side}" placeholder="Notes (pronunciation...)" aria-label="Notes">
                     <button class="btn-sm" onclick="addPlayer('${side}')">+ ADD</button>
                 </div>
             </div>`;
@@ -614,7 +622,7 @@
     function switchTeam(side,teamId){ const sp=s(); if(side==='away') sp.awayTeamId=teamId; else sp.homeTeamId=teamId; save(); renderSport(); }
 
     // ═══════════════════════════════════════════════
-    // ROSTER VIEW (unchanged)
+    // ROSTER VIEW (notes column added)
     // ═══════════════════════════════════════════════
     function renderRoster(){
         const sp=s();
@@ -638,6 +646,7 @@
                     <optgroup label="Special Teams">${POSITIONS.special.map(pos=>`<option ${p.pos===pos?'selected':''}>${pos}</option>`).join('')}</optgroup>
                 </select>
                 <select class="rp-starter" data-player-id="${p.id}" aria-label="Role"><option value="0" ${!p.starter?'selected':''}>Sub</option><option value="1" ${p.starter?'selected':''}>Starter</option></select>
+                <input class="rp-notes" data-player-id="${p.id}" placeholder="Notes" value="${esc(p.notes||'')}" aria-label="Notes">
                 <button onclick="deleteRosterPlayer('${p.id}')" aria-label="Delete player">✖</button>
             </div>`;
         });
@@ -673,8 +682,8 @@
                             </div>
                         </div>
                     </div>
-                    <div style="display:grid;grid-template-columns:50px 1fr 90px 65px 34px;gap:6px;font-size:0.7rem;font-weight:600;margin:12px 0 6px 0;opacity:0.7;">
-                        <span>#</span><span>Name</span><span>Position</span><span>Role</span><span></span>
+                    <div style="display:grid;grid-template-columns:50px 1fr 90px 65px 1fr 34px;gap:6px;font-size:0.7rem;font-weight:600;margin:12px 0 6px 0;opacity:0.7;">
+                        <span>#</span><span>Name</span><span>Position</span><span>Role</span><span>Notes</span><span></span>
                     </div>
                     <div id="rosterPlayerGrid">${playerRows}</div>
                     <button class="btn-sm" id="addPlayerBtn" style="margin-top:8px;">➕ ADD ROW</button>
@@ -728,7 +737,7 @@
         };
         document.getElementById('addPlayerBtn').onclick=()=>{
             const t=sp.teams.find(t=>t.id===sp.currentTeamId);
-            if(t){ t.players.push({id:generatePlayerId(),num:'',name:'',pos:'',starter:false}); save(); renderRoster(); }
+            if(t){ t.players.push({id:generatePlayerId(),num:'',name:'',pos:'',starter:false,notes:''}); save(); renderRoster(); }
         };
         document.getElementById('parseRosterBtn').onclick=()=>{
             const txt=document.getElementById('parseRosterText').value;
@@ -772,7 +781,7 @@
             if(words.length>0 && ALL_POSITIONS.includes(words[words.length-1].toUpperCase())){
                 pos=words.pop().toUpperCase(); name=words.join(' ');
             }
-            if(name) newPlayers.push({id:generatePlayerId(),num,name,pos,starter:false});
+            if(name) newPlayers.push({id:generatePlayerId(),num,name,pos,starter:false,notes:''});
         });
         if(newPlayers.length===0){ toast('No players found'); return; }
         t.players=newPlayers; save(); renderRoster(); toast(newPlayers.length+' players parsed');
@@ -789,7 +798,15 @@
             const nameEl=rw.querySelector('.rp-name');
             const posEl=rw.querySelector('.rp-pos');
             const starterEl=rw.querySelector('.rp-starter');
-            arr.push({id:playerId,num:numEl?numEl.value:'',name:nameEl?nameEl.value:'',pos:posEl?posEl.value:'',starter:starterEl?starterEl.value==='1':false});
+            const notesEl=rw.querySelector('.rp-notes');
+            arr.push({
+                id: playerId,
+                num: numEl ? numEl.value : '',
+                name: nameEl ? nameEl.value : '',
+                pos: posEl ? posEl.value : '',
+                starter: starterEl ? starterEl.value==='1' : false,
+                notes: notesEl ? notesEl.value : ''
+            });
         });
         return arr;
     }
@@ -839,7 +856,7 @@
     }
 
     // ═══════════════════════════════════════════════
-    // ADMIN VIEW (unchanged)
+    // ADMIN VIEW
     // ═══════════════════════════════════════════════
     function renderAdmin(){
         const tabs=['branding','colors','theme','fonts','clock','teams','backup','cloud'];
@@ -975,7 +992,7 @@
     }
 
     // ═══════════════════════════════════════════════
-    // PRINT
+    // PRINT (includes notes)
     // ═══════════════════════════════════════════════
     function printLineups(){
         const sp=s();
@@ -990,8 +1007,8 @@
         ['away','home'].forEach(side=>{
             const team=getTeamBySide(side);
             const teamName=team?team.name:'Unknown';
-            html+=`<h3>${esc(teamName)}</h3><table><tr><th>#</th><th>Player</th><th>Pos</th></tr>`;
-            getPlayers(side,'all').forEach(p=>html+=`<tr class="${p.starter?'starter':''}"><td>${esc(p.num)}</td><td>${esc(p.name)}${p.starter?' ⭐':''}</td><td>${esc(p.pos)}</td></tr>`);
+            html+=`<h3>${esc(teamName)}</h3><table><tr><th>#</th><th>Player</th><th>Pos</th><th>Notes</th></tr>`;
+            getPlayers(side,'all').forEach(p=>html+=`<tr class="${p.starter?'starter':''}"><td>${esc(p.num)}</td><td>${esc(p.name)}${p.starter?' ⭐':''}</td><td>${esc(p.pos)}</td><td>${esc(p.notes||'')}</td></tr>`);
             html+=`</table>`;
         });
         html+='</body></html>';
