@@ -177,7 +177,7 @@
         <div class="scorebug" id="scorebug">
             <div class="sb-block"><span class="sb-abbr" id="sbAwayAbbr">AWAY</span><div class="sb-row"><button onclick="changeScore('away',-1)" aria-label="Decrease away score">−</button><span class="sb-val" id="sbAwayScore">0</span><button onclick="changeScore('away',1)" aria-label="Increase away score">+</button></div></div>
             <div class="sb-block"><span class="sb-abbr" id="sbHomeAbbr">HOME</span><div class="sb-row"><button onclick="changeScore('home',-1)" aria-label="Decrease home score">−</button><span class="sb-val" id="sbHomeScore">0</span><button onclick="changeScore('home',1)" aria-label="Increase home score">+</button></div></div>
-            <div class="sb-block"><span class="sb-abbr">QTR</span><span class="sb-quarter-val" id="sbQuarter">Q1</span><div class="sb-row"><button onclick="changeQuarter(-1)" aria-label="Previous quarter">◀</button><button onclick="changeQuarter(1)" aria-label="Next quarter">▶</button></div></div>
+            <div class="sb-block"><span class="sb-abbr" id="sbQuarterLabel">QTR</span><span class="sb-quarter-val" id="sbQuarter">Q1</span><div class="sb-row"><button onclick="changeQuarter(-1)" aria-label="Previous period">◀</button><button onclick="changeQuarter(1)" aria-label="Next period">▶</button></div></div>
         </div>
     </div>
     <div class="header-controls">
@@ -198,13 +198,53 @@
 
 <script>
     const CLOUD_API_BASE = "https://lineup-api.claytongreenberg.workers.dev/api/lineup";
-    const POSITIONS = {offense:['QB','RB','FB','WR','TE','OL','C','G','T'],defense:['DL','DE','DT','LB','OLB','ILB','CB','S','SS','FS','DB'],special:['K','P','LS','KR','PR']};
-    const ALL_POSITIONS=[...POSITIONS.offense,...POSITIONS.defense,...POSITIONS.special];
+    const TACKLE_POSITIONS = {offense:['QB','RB','FB','WR','TE','OL','C','G','T'],defense:['DL','DE','DT','LB','OLB','ILB','CB','S','SS','FS','DB'],special:['K','P','LS','KR','PR']};
+    const DEFAULT_7V7_POSITIONS = ['QB','C','WR','TE','RB','CB','LB','S'];
 
-    function defaultGameState(){return {awayTeamId:'away_default',homeTeamId:'home_default',awayScore:0,homeScore:0,quarter:1,onDeck:{away:null,home:null},teams:[{id:'away_default',name:'Away Team',players:[],color:'#1e3a5f',colorSecondary:'#ffffff',logo:'',mascot:''},{id:'home_default',name:'Home Team',players:[],color:'#7f1d1d',colorSecondary:'#ffffff',logo:'',mascot:''}],currentTeamId:'away_default',scriptContent:'',scriptScrollPos:0,history:[],scriptDirty:false,rosterUndoStack:[],rosterRedoStack:[]};}
-    let state={currentView:'sport',adminTab:'branding',mode:'dark',unit_away:'all',unit_home:'all',brand:{title:'FRIDAY NIGHT LIVE',subtitle:'FOOTBALL PA CONSOLE'},fontFamily:"'Inter', 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif",clockFormat:'12h',clockShowSeconds:true,colors:{bg:'#0f172a',surface:'#1e293b',text:'#f1f5f9',primary:'#1e3a5f',btn:'#f59e0b',btnText:'#000',border:'#334155',away:'#1e3a5f',home:'#7f1d1d',awayBg:'#0f1f3a',homeBg:'#1f1a17',offense:'#22c55e',defense:'#ef4444',special:'#8b5cf6',starter:'#f59e0b'},sports:{football:defaultGameState()}};
-    function s(){return state.sports.football}
-    const STORAGE_KEY='fridaynightlive_v12';
+    function defaultGameState(){
+        return {
+            awayTeamId:'away_default',homeTeamId:'home_default',
+            awayScore:0, homeScore:0, quarter:1,
+            sportMode:'tackle',               // 'tackle' or '7v7'
+            positions7v7: [...DEFAULT_7V7_POSITIONS],
+            onDeck:{away:null,home:null},
+            teams:[
+                {id:'away_default',name:'Away Team',players:[], color:'#1e3a5f', colorSecondary:'#ffffff', logo:'', mascot:''},
+                {id:'home_default',name:'Home Team',players:[], color:'#7f1d1d', colorSecondary:'#ffffff', logo:'', mascot:''}
+            ],
+            currentTeamId:'away_default',
+            scriptContent:'', scriptScrollPos:0, history:[], scriptDirty:false,
+            rosterUndoStack:[], rosterRedoStack:[]
+        };
+    }
+
+    let state = {
+        currentView:'sport', adminTab:'branding', mode:'dark',
+        unit_away:'all', unit_home:'all',
+        brand:{title:'FRIDAY NIGHT LIVE',subtitle:'FOOTBALL PA CONSOLE'},
+        fontFamily:"'Inter', 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif",
+        clockFormat:'12h', clockShowSeconds:true,
+        colors:{
+            bg:'#0f172a',surface:'#1e293b',text:'#f1f5f9',primary:'#1e3a5f',btn:'#f59e0b',btnText:'#000',
+            border:'#334155',away:'#1e3a5f',home:'#7f1d1d',awayBg:'#0f1f3a',homeBg:'#1f1a17',
+            offense:'#22c55e',defense:'#ef4444',special:'#8b5cf6',starter:'#f59e0b'
+        },
+        sports:{football:defaultGameState()}
+    };
+    function s(){ return state.sports.football }
+    const STORAGE_KEY = 'fridaynightlive_v13';
+
+    // Helper: get current position list based on sport mode
+    function getModePositions(){
+        return s().sportMode === '7v7' ? (s().positions7v7 || DEFAULT_7V7_POSITIONS) : [...TACKLE_POSITIONS.offense, ...TACKLE_POSITIONS.defense, ...TACKLE_POSITIONS.special];
+    }
+    function getPeriodLabels(){
+        if(s().sportMode === '7v7') return ['1st Half','2nd Half'];
+        return ['Q1','Q2','Q3','Q4'];
+    }
+    function getMaxPeriod(){
+        return s().sportMode === '7v7' ? 2 : 6;
+    }
 
     function generatePlayerId(){return Date.now().toString(36)+Math.random().toString(36).substring(2)}
     function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500)}
@@ -218,7 +258,7 @@
     function updateClock(){const now=new Date();let hours=now.getHours();const m=String(now.getMinutes()).padStart(2,'0'),s=String(now.getSeconds()).padStart(2,'0');let t='';if(state.clockFormat==='12h'){const ampm=hours>=12?'PM':'AM';hours=hours%12||12;t=`${hours}:${m}`;if(state.clockShowSeconds)t+=`:${s}`;t+=` ${ampm}`}else{hours=String(hours).padStart(2,'0');t=`${hours}:${m}`;if(state.clockShowSeconds)t+=`:${s}`}document.getElementById('wallClock').textContent=t}
     setInterval(updateClock,1000);updateClock();
 
-    function normalizeStateAfterLoad(){const sp=s(),d=defaultGameState();for(const k of Object.keys(d)){if(sp[k]===undefined)sp[k]=d[k]}if(!sp.teams.find(t=>t.id===sp.awayTeamId))sp.awayTeamId=sp.teams[0]?.id||'away_default';if(!sp.teams.find(t=>t.id===sp.homeTeamId))sp.homeTeamId=sp.teams[1]?.id||'home_default';sp.teams.forEach(t=>{if(typeof t.color!=='string')t.color='#1e3a5f';if(typeof t.colorSecondary!=='string')t.colorSecondary='#ffffff';if(typeof t.logo!=='string')t.logo='';if(typeof t.mascot!=='string')t.mascot='';t.players.forEach(p=>{if(typeof p.notes!=='string')p.notes=''})});if(typeof sp.scriptDirty==='undefined')sp.scriptDirty=false;if(typeof state.fontFamily!=='string')state.fontFamily="'Inter','Apple Color Emoji','Segoe UI Emoji',sans-serif";if(typeof state.clockFormat!=='string')state.clockFormat='12h';if(typeof state.clockShowSeconds!=='boolean')state.clockShowSeconds=true;if(!state.unit_away)state.unit_away='all';if(!state.unit_home)state.unit_home='all';if(!sp.onDeck)sp.onDeck={away:null,home:null};if(!Array.isArray(sp.rosterUndoStack))sp.rosterUndoStack=[];if(!Array.isArray(sp.rosterRedoStack))sp.rosterRedoStack=[]}
+    function normalizeStateAfterLoad(){const sp=s(),d=defaultGameState();for(const k of Object.keys(d)){if(sp[k]===undefined)sp[k]=d[k]}if(!sp.teams.find(t=>t.id===sp.awayTeamId))sp.awayTeamId=sp.teams[0]?.id||'away_default';if(!sp.teams.find(t=>t.id===sp.homeTeamId))sp.homeTeamId=sp.teams[1]?.id||'home_default';sp.teams.forEach(t=>{if(typeof t.color!=='string')t.color='#1e3a5f';if(typeof t.colorSecondary!=='string')t.colorSecondary='#ffffff';if(typeof t.logo!=='string')t.logo='';if(typeof t.mascot!=='string')t.mascot='';t.players.forEach(p=>{if(typeof p.notes!=='string')p.notes=''})});if(!sp.positions7v7)sp.positions7v7=[...DEFAULT_7V7_POSITIONS];if(typeof sp.scriptDirty==='undefined')sp.scriptDirty=false;if(typeof state.fontFamily!=='string')state.fontFamily="'Inter','Apple Color Emoji','Segoe UI Emoji',sans-serif";if(typeof state.clockFormat!=='string')state.clockFormat='12h';if(typeof state.clockShowSeconds!=='boolean')state.clockShowSeconds=true;if(!state.unit_away)state.unit_away='all';if(!state.unit_home)state.unit_home='all';if(!sp.onDeck)sp.onDeck={away:null,home:null};if(!Array.isArray(sp.rosterUndoStack))sp.rosterUndoStack=[];if(!Array.isArray(sp.rosterRedoStack))sp.rosterRedoStack=[]}
 
     async function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));const el=document.getElementById('lastSaved');if(el)el.textContent='Saved '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}catch(e){}}
     async function load(){try{const raw=localStorage.getItem(STORAGE_KEY);if(raw){const parsed=JSON.parse(raw);state={...state,...parsed};if(parsed.sports?.football)state.sports.football={...defaultGameState(),...parsed.sports.football}}else state.sports.football=defaultGameState();s().teams.forEach(t=>{if(t.players)t.players.forEach(p=>{if(!p.id)p.id=generatePlayerId()})});normalizeStateAfterLoad()}catch(e){}updateTheme();renderAll()}
@@ -229,18 +269,59 @@
 
     function changeScore(side,d){const sp=s();if(side==='away')sp.awayScore=Math.max(0,sp.awayScore+d);else sp.homeScore=Math.max(0,sp.homeScore+d);updateScorebug();flashScore(side);save()}
     function flashScore(side){const el=document.getElementById(side==='away'?'sbAwayScore':'sbHomeScore');if(el){el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),300)}}
-    function changeQuarter(d){const sp=s();sp.quarter=Math.min(6,Math.max(1,sp.quarter+d));updateScorebug();save()}
-    function updateScorebug(){const sp=s();const awayTeam=sp.teams.find(t=>t.id===sp.awayTeamId),homeTeam=sp.teams.find(t=>t.id===sp.homeTeamId);const an=awayTeam?awayTeam.name:'AWAY',hn=homeTeam?homeTeam.name:'HOME';const aAbbr=document.getElementById('sbAwayAbbr'),hAbbr=document.getElementById('sbHomeAbbr');if(awayTeam?.logo){aAbbr.innerHTML=`<img class="sb-logo-sm" src="${esc(awayTeam.logo)}" alt=""> ${esc(an.substring(0,4).toUpperCase())}`}else{aAbbr.textContent=an.substring(0,4).toUpperCase()}if(homeTeam?.logo){hAbbr.innerHTML=`<img class="sb-logo-sm" src="${esc(homeTeam.logo)}" alt=""> ${esc(hn.substring(0,4).toUpperCase())}`}else{hAbbr.textContent=hn.substring(0,4).toUpperCase()}document.getElementById('sbAwayScore').textContent=sp.awayScore||0;document.getElementById('sbHomeScore').textContent=sp.homeScore||0;document.getElementById('sbQuarter').textContent=['Q1','Q2','Q3','Q4','OT','2OT','3OT'][sp.quarter-1]||'Q1'}
+    function changeQuarter(d){const sp=s();const max=getMaxPeriod();sp.quarter=Math.min(max,Math.max(1,sp.quarter+d));updateScorebug();save()}
+    function updateScorebug(){
+        const sp=s();const awayTeam=sp.teams.find(t=>t.id===sp.awayTeamId),homeTeam=sp.teams.find(t=>t.id===sp.homeTeamId);
+        const an=awayTeam?awayTeam.name:'AWAY',hn=homeTeam?homeTeam.name:'HOME';
+        const aAbbr=document.getElementById('sbAwayAbbr'),hAbbr=document.getElementById('sbHomeAbbr');
+        if(awayTeam?.logo){aAbbr.innerHTML=`<img class="sb-logo-sm" src="${esc(awayTeam.logo)}" alt=""> ${esc(an.substring(0,4).toUpperCase())}`}else{aAbbr.textContent=an.substring(0,4).toUpperCase()}
+        if(homeTeam?.logo){hAbbr.innerHTML=`<img class="sb-logo-sm" src="${esc(homeTeam.logo)}" alt=""> ${esc(hn.substring(0,4).toUpperCase())}`}else{hAbbr.textContent=hn.substring(0,4).toUpperCase()}
+        document.getElementById('sbAwayScore').textContent=sp.awayScore||0;
+        document.getElementById('sbHomeScore').textContent=sp.homeScore||0;
+        const labels=getPeriodLabels();
+        document.getElementById('sbQuarter').textContent=labels[sp.quarter-1]||'Q1';
+        document.getElementById('sbQuarterLabel').textContent=sp.sportMode==='7v7'?'HALF':'QTR';
+    }
 
     function getTeamBySide(side){return s().teams.find(t=>t.id===(side==='away'?s().awayTeamId:s().homeTeamId))||null}
-    function getPlayers(side,unit){const team=getTeamBySide(side);if(!team?.players)return[];let list=unit==='all'?[...team.players]:team.players.filter(p=>{if(unit==='offense')return POSITIONS.offense.includes(p.pos);if(unit==='defense')return POSITIONS.defense.includes(p.pos);if(unit==='special')return POSITIONS.special.includes(p.pos);return true});list.sort((a,b)=>(parseInt(a.num)||999)-(parseInt(b.num)||999));return list}
+    function getPlayers(side,unit){
+        const team=getTeamBySide(side);if(!team?.players)return[];
+        let list=unit==='all'?[...team.players]:team.players.filter(p=>{
+            if(unit==='offense') return getModePositions().includes(p.pos);
+            if(unit==='defense') return getModePositions().includes(p.pos);
+            if(unit==='special') return getModePositions().includes(p.pos);
+            return true;
+        });
+        list.sort((a,b)=>(parseInt(a.num)||999)-(parseInt(b.num)||999));
+        return list;
+    }
     function findDuplicateNumbers(team){const count={};team.players.forEach(p=>{if(p.num){count[p.num]=(count[p.num]||0)+1}});return new Set(Object.entries(count).filter(([n,c])=>c>1).map(([n])=>n))}
     function addPlayer(side){const numEl=document.getElementById('add-num-'+side),nameEl=document.getElementById('add-name-'+side),posEl=document.getElementById('add-pos-'+side),notesEl=document.getElementById('add-notes-'+side);if(!nameEl.value.trim()){toast('Enter name');return}const team=getTeamBySide(side);if(!team)return;pushRosterUndo(team);team.players.push({id:generatePlayerId(),num:numEl.value.trim(),name:nameEl.value.trim(),pos:posEl.value,starter:false,notes:notesEl?notesEl.value.trim():''});numEl.value='';nameEl.value='';posEl.value='QB';if(notesEl)notesEl.value='';nameEl.focus();save();renderSport();toast(nameEl.value.trim()+' added')}
     function toggleStarter(side,playerId){const team=getTeamBySide(side);if(!team)return;const p=team.players.find(x=>x.id===playerId);if(!p)return;pushRosterUndo(team);p.starter=!p.starter;save();renderSport()}
     function toggleOnDeck(side,playerId){const sp=s();sp.onDeck[side]=sp.onDeck[side]===playerId?null:playerId;save();renderSport()}
     function deletePlayer(side,playerId){const team=getTeamBySide(side);if(!team)return;const p=team.players.find(x=>x.id===playerId);if(!p)return;if(!confirm('Delete '+p.name+'?'))return;pushRosterUndo(team);team.players=team.players.filter(x=>x.id!==playerId);save();renderSport()}
 
-    function renderSport(){const sp=s();let h='<div class="game-grid">';['away','home'].forEach(side=>{const team=getTeamBySide(side);const activeUnit=state['unit_'+side]||'all';const teamColor=team?team.color:(side==='away'?'#1e3a5f':'#7f1d1d');const dupes=team?findDuplicateNumbers(team):new Set();const onDeckId=sp.onDeck?.[side];const logoHTML=team?.logo?`<img class="team-logo-inline" src="${esc(team.logo)}" alt="${esc(team.name)} logo">`:'';h+=`<div class="team-card ${side}"><div class="team-header" style="background:linear-gradient(135deg,${teamColor}dd,${teamColor}88);"><div class="team-top-row"><span class="side-badge ${side}" style="background:${teamColor}cc;">${side}</span>${logoHTML}<select class="team-select" onchange="switchTeam('${side}',this.value)" aria-label="Team"><option value="">--</option>${sp.teams.map(t=>`<option value="${esc(t.id)}" ${t.id===(side==='away'?sp.awayTeamId:sp.homeTeamId)?'selected':''}>${esc(t.name)}</option>`).join('')}</select></div><div class="unit-tabs"><button class="unit-tab ${activeUnit==='all'?'active':''}" onclick="setUnit('${side}','all')">ALL</button><button class="unit-tab ${activeUnit==='offense'?'active':''}" onclick="setUnit('${side}','offense')">OFF</button><button class="unit-tab ${activeUnit==='defense'?'active':''}" onclick="setUnit('${side}','defense')">DEF</button><button class="unit-tab st ${activeUnit==='special'?'active':''}" onclick="setUnit('${side}','special')">ST</button></div></div><div class="player-list-header"><span style="width:32px;">#</span><span style="flex:1;">PLAYER</span><span style="width:40px;">POS</span><span style="width:30px;"></span><span style="width:20px;"></span></div><div class="player-list-body">`;const players=getPlayers(side,activeUnit);players.forEach(p=>{const pc=POSITIONS.offense.includes(p.pos)?'off':POSITIONS.defense.includes(p.pos)?'def':'st';const dupe=dupes.has(p.num);h+=`<div class="player-row${p.starter?' starter':''}${onDeckId===p.id?' on-deck':''}${dupe?' duplicate':''}" onclick="toggleOnDeck('${side}','${p.id}')"><span class="plyr-num">${esc(p.num)}${dupe?'<span class="duplicate-warn">⚠️</span>':''}</span><span class="plyr-name"><span class="plyr-name-row">${esc(p.name)}</span>${p.notes?`<span class="plyr-notes-inline">${esc(p.notes)}</span>`:''}</span><span class="plyr-pos ${pc}">${esc(p.pos)}</span><span class="plyr-star${p.starter?' active':''}" onclick="event.stopPropagation();toggleStarter('${side}','${p.id}')" role="button" aria-label="Toggle starter">⭐</span><button onclick="event.stopPropagation();deletePlayer('${side}','${p.id}')" aria-label="Delete" style="background:none;border:none;color:#666;cursor:pointer;font-size:0.7rem;min-height:32px;">✕</button></div>`});h+=`</div><div class="add-player-row"><input class="add-num" id="add-num-${side}" placeholder="#" aria-label="Number" inputmode="numeric"><input class="add-name" id="add-name-${side}" placeholder="Name" aria-label="Name"><select id="add-pos-${side}" aria-label="Position"><optgroup label="Offense">${POSITIONS.offense.map(p=>`<option>${p}</option>`).join('')}</optgroup><optgroup label="Defense">${POSITIONS.defense.map(p=>`<option>${p}</option>`).join('')}</optgroup><optgroup label="Special">${POSITIONS.special.map(p=>`<option>${p}</option>`).join('')}</optgroup></select><input class="add-notes" id="add-notes-${side}" placeholder="Notes" aria-label="Notes"><button class="btn-sm" onclick="addPlayer('${side}')">+ ADD</button></div></div>`});h+='</div>';document.getElementById('main').innerHTML=h;updateScorebug()}
+    function renderSport(){
+        const sp=s();let h='<div class="game-grid">';
+        const is7v7 = sp.sportMode==='7v7';
+        ['away','home'].forEach(side=>{
+            const team=getTeamBySide(side);const activeUnit=state['unit_'+side]||'all';
+            const teamColor=team?team.color:(side==='away'?'#1e3a5f':'#7f1d1d');
+            const dupes=team?findDuplicateNumbers(team):new Set();
+            const onDeckId=sp.onDeck?.[side];
+            const logoHTML=team?.logo?`<img class="team-logo-inline" src="${esc(team.logo)}" alt="${esc(team.name)} logo">`:'';
+            const posOptions=getModePositions();
+            h+=`<div class="team-card ${side}"><div class="team-header" style="background:linear-gradient(135deg,${teamColor}dd,${teamColor}88);"><div class="team-top-row"><span class="side-badge ${side}" style="background:${teamColor}cc;">${side}</span>${logoHTML}<select class="team-select" onchange="switchTeam('${side}',this.value)" aria-label="Team"><option value="">--</option>${sp.teams.map(t=>`<option value="${esc(t.id)}" ${t.id===(side==='away'?sp.awayTeamId:sp.homeTeamId)?'selected':''}>${esc(t.name)}</option>`).join('')}</select></div><div class="unit-tabs"><button class="unit-tab ${activeUnit==='all'?'active':''}" onclick="setUnit('${side}','all')">ALL</button><button class="unit-tab ${activeUnit==='offense'?'active':''}" onclick="setUnit('${side}','offense')">OFF</button><button class="unit-tab ${activeUnit==='defense'?'active':''}" onclick="setUnit('${side}','defense')">DEF</button>${is7v7?'':'<button class="unit-tab st '+(activeUnit==='special'?'active':'')+'" onclick="setUnit(\''+side+'\',\'special\')">ST</button>'}</div></div><div class="player-list-header"><span style="width:32px;">#</span><span style="flex:1;">PLAYER</span><span style="width:40px;">POS</span><span style="width:30px;"></span><span style="width:20px;"></span></div><div class="player-list-body">`;
+            const players=getPlayers(side,activeUnit);
+            players.forEach(p=>{
+                const pc=posOptions.includes(p.pos)? (posOptions.indexOf(p.pos)<posOptions.length/2?'off':'def') : 'st';
+                const dupe=dupes.has(p.num);
+                h+=`<div class="player-row${p.starter?' starter':''}${onDeckId===p.id?' on-deck':''}${dupe?' duplicate':''}" onclick="toggleOnDeck('${side}','${p.id}')"><span class="plyr-num">${esc(p.num)}${dupe?'<span class="duplicate-warn">⚠️</span>':''}</span><span class="plyr-name"><span class="plyr-name-row">${esc(p.name)}</span>${p.notes?`<span class="plyr-notes-inline">${esc(p.notes)}</span>`:''}</span><span class="plyr-pos ${pc}">${esc(p.pos)}</span><span class="plyr-star${p.starter?' active':''}" onclick="event.stopPropagation();toggleStarter('${side}','${p.id}')" role="button" aria-label="Toggle starter">⭐</span><button onclick="event.stopPropagation();deletePlayer('${side}','${p.id}')" aria-label="Delete" style="background:none;border:none;color:#666;cursor:pointer;font-size:0.7rem;min-height:32px;">✕</button></div>`;
+            });
+            h+=`</div><div class="add-player-row"><input class="add-num" id="add-num-${side}" placeholder="#" aria-label="Number" inputmode="numeric"><input class="add-name" id="add-name-${side}" placeholder="Name" aria-label="Name"><select id="add-pos-${side}" aria-label="Position">${posOptions.map(p=>`<option>${p}</option>`).join('')}</select><input class="add-notes" id="add-notes-${side}" placeholder="Notes" aria-label="Notes"><button class="btn-sm" onclick="addPlayer('${side}')">+ ADD</button></div></div>`;
+        });
+        h+='</div>';document.getElementById('main').innerHTML=h;updateScorebug();
+    }
     function setUnit(side,unit){state['unit_'+side]=unit;renderSport()}
     function switchTeam(side,teamId){const sp=s();if(!teamId)return;if(side==='away')sp.awayTeamId=teamId;else sp.homeTeamId=teamId;save();renderSport()}
 
@@ -249,19 +330,19 @@
     function redoRoster(){const sp=s();if(!sp.rosterRedoStack?.length){toast('Nothing to redo');return}const action=sp.rosterRedoStack.pop();const team=sp.teams.find(t=>t.id===action.teamId);if(team){sp.rosterUndoStack.push({teamId:team.id,snapshot:JSON.parse(JSON.stringify(team.players))});team.players=action.snapshot}save();renderRoster();toast('↪ Redo')}
     function exportCSV(teamId){const team=s().teams.find(t=>t.id===teamId);if(!team)return;let csv='Number,Name,Position,Starter,Notes\n';team.players.forEach(p=>{csv+=`"${p.num||''}","${p.name||''}","${p.pos||''}","${p.starter?'Yes':'No'}","${(p.notes||'').replace(/"/g,'""')}"\n`});const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download=(team.name||'roster').replace(/\s/g,'_')+'.csv';a.click();toast('📥 CSV downloaded')}
 
-    // ═══ ZORTS IMPORT ═══
     function parseZortsRoster(side){
         const rawText = document.getElementById('zortsParseArea').value.trim();
         if (!rawText) { toast('❌ Paste Zorts roster data first!'); return; }
         const team = getTeamBySide(side);
         if (!team) { toast('❌ No team selected for '+side); return; }
         if (typeof pushRosterUndo === 'function') pushRosterUndo(team);
+        const posList = getModePositions();
         const lines = rawText.split('\n');
         let imported = 0;
         lines.forEach(line => {
             let clean = line.replace(/\t/g, ' ').replace(/,/g, ' ').trim();
             if (!clean) return;
-            clean = clean.replace(/(\w+),\s*(\w+)/g, '$2 $1'); // "Smith, Alex" -> "Alex Smith"
+            clean = clean.replace(/(\w+),\s*(\w+)/g, '$2 $1');
             const parts = clean.split(/\s+/);
             let num = '', name = '', pos = '', notes = '';
             for (let i = 0; i < parts.length; i++) {
@@ -269,11 +350,11 @@
             }
             if (parts.length > 0) {
                 const last = parts[parts.length - 1].toUpperCase();
-                if (ALL_POSITIONS.includes(last)) { pos = last; parts.pop(); }
+                if (posList.includes(last)) { pos = last; parts.pop(); }
                 name = parts.join(' ');
             }
             if (!name) name = clean;
-            if (!pos) pos = 'QB';
+            if (!pos) pos = posList[0] || 'QB';
             team.players.push({ id: generatePlayerId(), num, name, pos, starter: false, notes });
             imported++;
         });
@@ -283,15 +364,11 @@
             renderSport();
             if (state.currentView === 'roster') renderRoster();
             toast(`✅ Imported ${imported} players from Zorts!`);
-        } else {
-            toast('❌ No valid players found. Check paste format.');
-        }
+        } else { toast('❌ No valid players found. Check paste format.'); }
     }
-    // expose
     window.parseZortsRoster = parseZortsRoster;
 
-    function renderRoster(){const sp=s();const ct=sp.teams.find(t=>t.id===sp.currentTeamId)||sp.teams[0];const pl=ct?ct.players:[];let sidebarHTML='<h3>🏆 TEAM LIBRARY</h3>';sp.teams.forEach(t=>{sidebarHTML+=`<div class="team-item${t.id===sp.currentTeamId?' active':''}" onclick="selectRosterTeam('${t.id}')">${esc(t.name)} (${t.players.length})</div>`});sidebarHTML+='<button class="btn-sm" style="margin-top:10px;width:100%;" onclick="newTeam()">+ NEW TEAM</button>';let playerRows='';pl.forEach(p=>{playerRows+=`<div class="player-edit-row" data-player-id="${p.id}"><input value="${esc(p.num||'')}" placeholder="#" class="rp-num" aria-label="Number" inputmode="numeric"><input value="${esc(p.name||'')}" placeholder="Name" class="rp-name" aria-label="Name"><select class="rp-pos" aria-label="Position"><option value="">--</option><optgroup label="Offense">${POSITIONS.offense.map(x=>`<option ${p.pos===x?'selected':''}>${x}</option>`).join('')}</optgroup><optgroup label="Defense">${POSITIONS.defense.map(x=>`<option ${p.pos===x?'selected':''}>${x}</option>`).join('')}</optgroup><optgroup label="Special">${POSITIONS.special.map(x=>`<option ${p.pos===x?'selected':''}>${x}</option>`).join('')}</optgroup></select><select class="rp-starter" aria-label="Role"><option value="0" ${!p.starter?'selected':''}>Sub</option><option value="1" ${p.starter?'selected':''}>Starter</option></select><input class="rp-notes" value="${esc(p.notes||'')}" placeholder="Notes" aria-label="Notes"><button onclick="deleteRosterPlayer('${p.id}')" aria-label="Delete">✖</button></div>`});document.getElementById('main').innerHTML=`<div class="panel"><div class="roster-layout"><div class="team-sidebar">${sidebarHTML}</div><div class="roster-workspace"><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px;"><input id="editTeamName" value="${esc(ct?ct.name:'')}" placeholder="Team Name" style="flex:1;min-width:150px;"><button class="btn-sm" id="saveTeamBtn">💾 SAVE</button><button class="btn-sm" id="cloudSaveTeamBtn" style="background:#6366f1;color:#fff;">☁️</button><button class="btn-sm" id="cloudLoadTeamsBtn">📥</button><button class="btn-sm" id="exportCSVBtn">📊 CSV</button><button class="btn-sm btn-red" id="deleteTeamBtn">🗑️</button></div><div style="display:flex;gap:6px;margin-bottom:8px;"><button class="btn-sm" id="undoBtn" onclick="undoRoster()">↩ Undo</button><button class="btn-sm" id="redoBtn" onclick="redoRoster()">↪ Redo</button></div><div class="branding-section"><h4>🎨 Team Branding</h4><div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;"><div><label>Primary</label><input type="color" id="teamPrimaryColor" value="${ct?ct.color:'#1e3a5f'}"></div><div><label>Secondary</label><input type="color" id="teamSecondaryColor" value="${ct?ct.colorSecondary:'#ffffff'}"></div><div><label>Mascot</label><input id="teamMascot" value="${esc(ct?ct.mascot:'')}" placeholder="Tigers..."></div><div><label>Logo</label><img class="logo-preview" id="teamLogoPreview" src="${ct?ct.logo:''}" style="${ct&&ct.logo?'':'display:none'}"><input type="file" id="teamLogoFile" accept="image/*"></div></div></div><div style="display:grid;grid-template-columns:50px 1fr 90px 65px 1fr 34px;gap:6px;font-size:0.7rem;font-weight:600;margin:12px 0 6px;opacity:0.7;"><span>#</span><span>Name</span><span>Pos</span><span>Role</span><span>Notes</span><span></span></div><div id="rosterPlayerGrid">${playerRows}</div><button class="btn-sm" id="addPlayerBtn" style="margin-top:8px;">➕ ADD ROW</button><div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;"><textarea class="parse-area" id="parseRosterText" rows="3" placeholder="Paste roster..." aria-label="Paste"></textarea><div style="display:flex;flex-direction:column;gap:4px;"><label for="rosterFileUpload" class="btn-sm" style="cursor:pointer;">📁 UPLOAD</label><input type="file" id="rosterFileUpload" accept=".txt,.csv" style="display:none;"><button class="btn-sm" id="parseRosterBtn">📝 PARSE</button></div></div>
-        <!-- Zorts Import Section -->
+    function renderRoster(){const sp=s();const ct=sp.teams.find(t=>t.id===sp.currentTeamId)||sp.teams[0];const pl=ct?ct.players:[];let sidebarHTML='<h3>🏆 TEAM LIBRARY</h3>';sp.teams.forEach(t=>{sidebarHTML+=`<div class="team-item${t.id===sp.currentTeamId?' active':''}" onclick="selectRosterTeam('${t.id}')">${esc(t.name)} (${t.players.length})</div>`});sidebarHTML+='<button class="btn-sm" style="margin-top:10px;width:100%;" onclick="newTeam()">+ NEW TEAM</button>';let playerRows='';const posOptions=getModePositions();pl.forEach(p=>{playerRows+=`<div class="player-edit-row" data-player-id="${p.id}"><input value="${esc(p.num||'')}" placeholder="#" class="rp-num" aria-label="Number" inputmode="numeric"><input value="${esc(p.name||'')}" placeholder="Name" class="rp-name" aria-label="Name"><select class="rp-pos" aria-label="Position"><option value="">--</option>${posOptions.map(x=>`<option ${p.pos===x?'selected':''}>${x}</option>`).join('')}</select><select class="rp-starter" aria-label="Role"><option value="0" ${!p.starter?'selected':''}>Sub</option><option value="1" ${p.starter?'selected':''}>Starter</option></select><input class="rp-notes" value="${esc(p.notes||'')}" placeholder="Notes" aria-label="Notes"><button onclick="deleteRosterPlayer('${p.id}')" aria-label="Delete">✖</button></div>`});document.getElementById('main').innerHTML=`<div class="panel"><div class="roster-layout"><div class="team-sidebar">${sidebarHTML}</div><div class="roster-workspace"><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px;"><input id="editTeamName" value="${esc(ct?ct.name:'')}" placeholder="Team Name" style="flex:1;min-width:150px;"><button class="btn-sm" id="saveTeamBtn">💾 SAVE</button><button class="btn-sm" id="cloudSaveTeamBtn" style="background:#6366f1;color:#fff;">☁️</button><button class="btn-sm" id="cloudLoadTeamsBtn">📥</button><button class="btn-sm" id="exportCSVBtn">📊 CSV</button><button class="btn-sm btn-red" id="deleteTeamBtn">🗑️</button></div><div style="display:flex;gap:6px;margin-bottom:8px;"><button class="btn-sm" id="undoBtn" onclick="undoRoster()">↩ Undo</button><button class="btn-sm" id="redoBtn" onclick="redoRoster()">↪ Redo</button></div><div class="branding-section"><h4>🎨 Team Branding</h4><div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;"><div><label>Primary</label><input type="color" id="teamPrimaryColor" value="${ct?ct.color:'#1e3a5f'}"></div><div><label>Secondary</label><input type="color" id="teamSecondaryColor" value="${ct?ct.colorSecondary:'#ffffff'}"></div><div><label>Mascot</label><input id="teamMascot" value="${esc(ct?ct.mascot:'')}" placeholder="Tigers..."></div><div><label>Logo</label><img class="logo-preview" id="teamLogoPreview" src="${ct?ct.logo:''}" style="${ct&&ct.logo?'':'display:none'}"><input type="file" id="teamLogoFile" accept="image/*"></div></div></div><div style="display:grid;grid-template-columns:50px 1fr 90px 65px 1fr 34px;gap:6px;font-size:0.7rem;font-weight:600;margin:12px 0 6px;opacity:0.7;"><span>#</span><span>Name</span><span>Pos</span><span>Role</span><span>Notes</span><span></span></div><div id="rosterPlayerGrid">${playerRows}</div><button class="btn-sm" id="addPlayerBtn" style="margin-top:8px;">➕ ADD ROW</button><div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;"><textarea class="parse-area" id="parseRosterText" rows="3" placeholder="Paste roster..." aria-label="Paste"></textarea><div style="display:flex;flex-direction:column;gap:4px;"><label for="rosterFileUpload" class="btn-sm" style="cursor:pointer;">📁 UPLOAD</label><input type="file" id="rosterFileUpload" accept=".txt,.csv" style="display:none;"><button class="btn-sm" id="parseRosterBtn">📝 PARSE</button></div></div>
         <div style="margin-top:12px; border-top:2px solid var(--border); padding-top:10px;">
             <h4 style="margin-bottom:6px;">📋 Zorts Bulk Import</h4>
             <p style="font-size:0.7rem;opacity:0.7;margin-bottom:6px;">Copy roster from Zorts (columns: Number Name Position...) and paste below.</p>
@@ -303,13 +380,13 @@
             </div>
         </div>
         </div></div></div>`;document.getElementById('saveTeamBtn').onclick=()=>{const t=sp.teams.find(t=>t.id===sp.currentTeamId);if(!t)return;const oldPlayers=JSON.parse(JSON.stringify(t.players));t.name=document.getElementById('editTeamName').value.trim();if(!t.name){toast('Name required');return}t.players=collectRosterPlayers();t.color=document.getElementById('teamPrimaryColor').value;t.colorSecondary=document.getElementById('teamSecondaryColor').value;t.mascot=document.getElementById('teamMascot').value.trim();if(JSON.stringify(oldPlayers)!==JSON.stringify(t.players))pushRosterUndo(t);save();renderRoster();renderNav();toast('✅ Saved')};document.getElementById('cloudSaveTeamBtn').onclick=()=>{const t=sp.teams.find(t=>t.id===sp.currentTeamId);if(t){t.name=document.getElementById('editTeamName').value.trim();t.players=collectRosterPlayers();t.color=document.getElementById('teamPrimaryColor').value;t.colorSecondary=document.getElementById('teamSecondaryColor').value;t.mascot=document.getElementById('teamMascot').value.trim();save();cloudSaveTeam(sp.currentTeamId)}};document.getElementById('cloudLoadTeamsBtn').onclick=()=>cloudLoadTeams();document.getElementById('exportCSVBtn').onclick=()=>exportCSV(sp.currentTeamId);document.getElementById('deleteTeamBtn').onclick=()=>{const t=sp.teams.find(t=>t.id===sp.currentTeamId);if(!t||!confirm('Delete '+t.name+'?'))return;sp.teams=sp.teams.filter(x=>x.id!==sp.currentTeamId);if(!sp.teams.length)sp.teams.push({id:Date.now().toString(36),name:'New Team',players:[],color:'#1e3a5f',colorSecondary:'#fff',logo:'',mascot:''});sp.currentTeamId=sp.teams[0].id;if(sp.awayTeamId===t.id)sp.awayTeamId=sp.teams[0].id;if(sp.homeTeamId===t.id)sp.homeTeamId=sp.teams[0].id;save();renderRoster();renderNav();toast('Deleted')};document.getElementById('addPlayerBtn').onclick=()=>{const t=sp.teams.find(t=>t.id===sp.currentTeamId);if(!t)return;pushRosterUndo(t);t.players.push({id:generatePlayerId(),num:'',name:'',pos:'',starter:false,notes:''});save();renderRoster()};document.getElementById('parseRosterBtn').onclick=()=>parseRosterText(document.getElementById('parseRosterText').value);document.getElementById('rosterFileUpload').addEventListener('change',function(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{document.getElementById('parseRosterText').value=ev.target.result;parseRosterText(ev.target.result)};r.readAsText(f)});document.getElementById('teamLogoFile').addEventListener('change',function(e){const f=e.target.files[0];if(!f?.type.startsWith('image/'))return;const r=new FileReader();r.onload=ev=>{const t=sp.teams.find(t=>t.id===sp.currentTeamId);if(t){t.logo=ev.target.result;document.getElementById('teamLogoPreview').src=ev.target.result;document.getElementById('teamLogoPreview').style.display='inline-block';save();toast('Logo updated')}};r.readAsDataURL(f)});}
-    function parseRosterText(txt){const t=s().teams.find(t=>t.id===s().currentTeamId);if(!t)return;if(!txt.trim()){toast('Empty');return}pushRosterUndo(t);const lines=txt.split(/\r?\n/);const arr=[];lines.forEach(line=>{if(!line.trim())return;let num='',rest=line.trim();const m=rest.match(/^(\d{1,3})\s+/);if(m){num=m[1];rest=rest.slice(m[0].length).trim()}let pos='',name=rest;const words=rest.split(/\s+/);if(words.length&&ALL_POSITIONS.includes(words[words.length-1].toUpperCase())){pos=words.pop().toUpperCase();name=words.join(' ')}if(name)arr.push({id:generatePlayerId(),num,name,pos,starter:false,notes:''})});if(!arr.length){toast('No players');return}t.players=arr;save();renderRoster();toast(arr.length+' parsed')}
+    function parseRosterText(txt){const t=s().teams.find(t=>t.id===s().currentTeamId);if(!t)return;if(!txt.trim()){toast('Empty');return}pushRosterUndo(t);const posList=getModePositions();const lines=txt.split(/\r?\n/);const arr=[];lines.forEach(line=>{if(!line.trim())return;let num='',rest=line.trim();const m=rest.match(/^(\d{1,3})\s+/);if(m){num=m[1];rest=rest.slice(m[0].length).trim()}let pos='',name=rest;const words=rest.split(/\s+/);if(words.length&&posList.includes(words[words.length-1].toUpperCase())){pos=words.pop().toUpperCase();name=words.join(' ')}if(name)arr.push({id:generatePlayerId(),num,name,pos,starter:false,notes:''})});if(!arr.length){toast('No players');return}t.players=arr;save();renderRoster();toast(arr.length+' parsed')}
     function collectRosterPlayers(){const g=document.getElementById('rosterPlayerGrid');if(!g)return[];const rows=g.querySelectorAll('.player-edit-row');const a=[];rows.forEach(r=>{a.push({id:r.dataset.playerId,num:r.querySelector('.rp-num')?.value||'',name:r.querySelector('.rp-name')?.value||'',pos:r.querySelector('.rp-pos')?.value||'',starter:r.querySelector('.rp-starter')?.value==='1',notes:r.querySelector('.rp-notes')?.value||''})});return a}
     function deleteRosterPlayer(pid){const t=s().teams.find(t=>t.id===s().currentTeamId);if(!t||!confirm('Delete?'))return;pushRosterUndo(t);t.players=t.players.filter(p=>p.id!==pid);save();renderRoster()}
     function selectRosterTeam(tid){s().currentTeamId=tid;renderRoster()}
     function newTeam(){let n=prompt('Team name:');while(!n?.trim()){n=prompt('Name:');if(n===null)return}const sp=s();sp.teams.push({id:Date.now().toString(36),name:n.trim(),players:[],color:'#1e3a5f',colorSecondary:'#fff',logo:'',mascot:''});sp.currentTeamId=sp.teams[sp.teams.length-1].id;save();renderRoster();renderNav()}
 
-    // ═══ RICH TEXT SCRIPT EDITOR ═══
+    // Rich-text script editor (unchanged)
     function execCmd(cmd,val=null){document.execCommand(cmd,false,val);const ed=document.getElementById('scriptEditor');if(ed)ed.focus();s().scriptDirty=true;document.getElementById('scriptDirtyIndicator').style.display='inline'}
     function insertMacro(text){
         const ed=document.getElementById('scriptEditor');if(!ed)return;
@@ -319,7 +396,6 @@
         ed.focus();const sel=window.getSelection();if(sel.rangeCount){const range=sel.getRangeAt(0);range.deleteContents();const node=document.createTextNode(result);range.insertNode(node);range.setStartAfter(node);range.setEndAfter(node);sel.removeAllRanges();sel.addRange(range)}else{ed.textContent+=result}
         s().scriptDirty=true;document.getElementById('scriptDirtyIndicator').style.display='inline'
     }
-
     function renderScript(){
         const sp=s();
         document.getElementById('main').innerHTML=`<div class="script-container">
@@ -362,8 +438,56 @@
         document.getElementById('printScript').onclick=()=>{const w=window.open();w.document.write(`<div style="font-family:sans-serif;padding:20px;">${ed.innerHTML}</div>`);w.print()};
     }
 
-    function renderAdmin(){const tabs=['branding','colors','theme','fonts','clock','teams','backup','cloud'];const labels={branding:'🏷️ Branding',colors:'🎨 Colors',theme:'🌓 Theme',fonts:'🔤 Fonts',clock:'🕒 Clock',teams:'🏆 Teams',backup:'💾 Backup',cloud:'☁️ Cloud'};let h=`<div class="panel"><h3>⚙️ ADMIN</h3><div class="admin-tabs">`;tabs.forEach(t=>h+=`<button class="admin-tab ${state.adminTab===t?'active':''}" data-admin-tab="${t}">${labels[t]}</button>`);h+=`</div><div id="adminContent"></div></div>`;document.getElementById('main').innerHTML=h;document.querySelectorAll('[data-admin-tab]').forEach(b=>b.onclick=()=>{state.adminTab=b.dataset.adminTab;renderAdmin()});renderAdminContent()}
-    function renderAdminContent(){const c=document.getElementById('adminContent');if(!c)return;const sp=s();if(state.adminTab==='branding'){c.innerHTML=`<h4>🏷️ Branding</h4><input id="brandTitle" value="${esc(state.brand.title)}"><input id="brandSub" value="${esc(state.brand.subtitle)}"><button class="btn-sm" id="saveBranding">💾</button>`;document.getElementById('saveBranding').onclick=()=>{state.brand={title:document.getElementById('brandTitle').value.trim(),subtitle:document.getElementById('brandSub').value.trim()};save();document.querySelector('.brand-text h1').textContent='🏈 '+state.brand.title;document.querySelector('.brand-text p').textContent=state.brand.subtitle;toast('✅')}}else if(state.adminTab==='colors'){let h=`<h4>🎨 Colors</h4><div class="color-grid">`;const cl={bg:'BG',surface:'Surface',text:'Text',primary:'Primary',btn:'Button',btnText:'Btn Text',border:'Border',away:'Away',home:'Home',awayBg:'Away BG',homeBg:'Home BG',offense:'Offense',defense:'Defense',special:'Special',starter:'Starter'};for(const[k,l]of Object.entries(cl))h+=`<div><label>${l}</label><input type="color" value="${state.colors[k]}" onchange="updateColor('${k}',this.value)"></div>`;h+=`</div>`;c.innerHTML=h}else if(state.adminTab==='theme'){c.innerHTML=`<div class="mode-toggle"><button class="mode-btn ${state.mode==='dark'?'active':''}" onclick="applyDarkMode()">🌙 Dark</button><button class="mode-btn ${state.mode==='light'?'active':''}" onclick="applyLightMode()">☀️ Light</button></div>`}else if(state.adminTab==='fonts'){c.innerHTML=`<select id="fontSelect">${[{n:'Inter',v:"'Inter',sans-serif"},{n:'Roboto',v:"'Roboto',sans-serif"},{n:'System',v:'system-ui'}].map(f=>`<option value="${f.v}" ${state.fontFamily===f.v?'selected':''}>${f.n}</option>`).join('')}</select><button class="btn-sm" onclick="state.fontFamily=document.getElementById('fontSelect').value;updateTheme();">Apply</button>`}else if(state.adminTab==='clock'){c.innerHTML=`<label><input type="radio" name="cf" value="12h" ${state.clockFormat==='12h'?'checked':''}>12h</label> <label><input type="radio" name="cf" value="24h" ${state.clockFormat==='24h'?'checked':''}>24h</label><br><label><input type="checkbox" id="cs" ${state.clockShowSeconds?'checked':''}>Seconds</label><br><button class="btn-sm" onclick="state.clockFormat=document.querySelector('input[name=cf]:checked').value;state.clockShowSeconds=document.getElementById('cs').checked;save();updateClock();">Save</button>`}else if(state.adminTab==='teams'){let h='';sp.teams.forEach(t=>h+=`<div style="display:flex;gap:8px;padding:6px;"><span style="flex:1;">${esc(t.name)}</span><button class="btn-sm" onclick="state.sports.football.currentTeamId='${t.id}';state.currentView='roster';renderAll();">✏️</button></div>`);c.innerHTML=h}else if(state.adminTab==='backup'){c.innerHTML=`<button class="btn btn-sm" id="exportAll">📤 Export All</button><button class="btn btn-sm" id="importAll">📥 Import</button><input type="file" id="importFile" hidden accept=".json"><button class="btn-red btn-sm" onclick="if(confirm('Clear?')){localStorage.clear();location.reload();}">🧹 Clear</button>`;document.getElementById('exportAll').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)]));a.download='fnl_backup.json';a.click()};document.getElementById('importAll').onclick=()=>document.getElementById('importFile').click();document.getElementById('importFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);state=d;normalizeStateAfterLoad();save();updateTheme();renderAll();toast('✅')}catch(err){toast('❌')}document.getElementById('importFile').value=''};r.readAsText(f)}}else if(state.adminTab==='cloud'){c.innerHTML=`<button class="btn-sm" style="background:#6366f1;color:#fff;" onclick="cloudSaveAll()">☁️ Save All</button><button class="btn-sm" onclick="cloudLoadTeams()">📥 Load</button>`}}
+    // ═══ ADMIN (with 7v7 Mode tab) ═══
+    function renderAdmin(){
+        const tabs=['branding','colors','theme','fonts','clock','7v7','teams','backup','cloud'];
+        const labels={branding:'🏷️ Branding',colors:'🎨 Colors',theme:'🌓 Theme',fonts:'🔤 Fonts',clock:'🕒 Clock','7v7':'🏈 7v7 Mode',teams:'🏆 Teams',backup:'💾 Backup',cloud:'☁️ Cloud'};
+        let h=`<div class="panel"><h3>⚙️ ADMIN</h3><div class="admin-tabs">`;
+        tabs.forEach(t=>h+=`<button class="admin-tab ${state.adminTab===t?'active':''}" data-admin-tab="${t}">${labels[t]}</button>`);
+        h+=`</div><div id="adminContent"></div></div>`;document.getElementById('main').innerHTML=h;
+        document.querySelectorAll('[data-admin-tab]').forEach(b=>b.onclick=()=>{state.adminTab=b.dataset.adminTab;renderAdmin()});renderAdminContent();
+    }
+    function renderAdminContent(){
+        const c=document.getElementById('adminContent');if(!c)return;const sp=s();
+        if(state.adminTab==='branding'){c.innerHTML=`<h4>🏷️ Branding</h4><input id="brandTitle" value="${esc(state.brand.title)}"><input id="brandSub" value="${esc(state.brand.subtitle)}"><button class="btn-sm" id="saveBranding">💾</button>`;document.getElementById('saveBranding').onclick=()=>{state.brand={title:document.getElementById('brandTitle').value.trim(),subtitle:document.getElementById('brandSub').value.trim()};save();document.querySelector('.brand-text h1').textContent='🏈 '+state.brand.title;document.querySelector('.brand-text p').textContent=state.brand.subtitle;toast('✅')}}
+        else if(state.adminTab==='colors'){let h=`<h4>🎨 Colors</h4><div class="color-grid">`;const cl={bg:'BG',surface:'Surface',text:'Text',primary:'Primary',btn:'Button',btnText:'Btn Text',border:'Border',away:'Away',home:'Home',awayBg:'Away BG',homeBg:'Home BG',offense:'Offense',defense:'Defense',special:'Special',starter:'Starter'};for(const[k,l]of Object.entries(cl))h+=`<div><label>${l}</label><input type="color" value="${state.colors[k]}" onchange="updateColor('${k}',this.value)"></div>`;h+=`</div>`;c.innerHTML=h}
+        else if(state.adminTab==='theme'){c.innerHTML=`<div class="mode-toggle"><button class="mode-btn ${state.mode==='dark'?'active':''}" onclick="applyDarkMode()">🌙 Dark</button><button class="mode-btn ${state.mode==='light'?'active':''}" onclick="applyLightMode()">☀️ Light</button></div>`}
+        else if(state.adminTab==='fonts'){c.innerHTML=`<select id="fontSelect">${[{n:'Inter',v:"'Inter',sans-serif"},{n:'Roboto',v:"'Roboto',sans-serif"},{n:'System',v:'system-ui'}].map(f=>`<option value="${f.v}" ${state.fontFamily===f.v?'selected':''}>${f.n}</option>`).join('')}</select><button class="btn-sm" onclick="state.fontFamily=document.getElementById('fontSelect').value;updateTheme();">Apply</button>`}
+        else if(state.adminTab==='clock'){c.innerHTML=`<label><input type="radio" name="cf" value="12h" ${state.clockFormat==='12h'?'checked':''}>12h</label> <label><input type="radio" name="cf" value="24h" ${state.clockFormat==='24h'?'checked':''}>24h</label><br><label><input type="checkbox" id="cs" ${state.clockShowSeconds?'checked':''}>Seconds</label><br><button class="btn-sm" onclick="state.clockFormat=document.querySelector('input[name=cf]:checked').value;state.clockShowSeconds=document.getElementById('cs').checked;save();updateClock();">Save</button>`}
+        else if(state.adminTab==='7v7'){
+            const currentMode = sp.sportMode||'tackle';
+            const pos7 = sp.positions7v7 ? sp.positions7v7.join(', ') : DEFAULT_7V7_POSITIONS.join(', ');
+            c.innerHTML=`
+                <h4>🏈 7v7 Mode Settings</h4>
+                <div style="margin-bottom:12px;">
+                    <label style="font-weight:600;">Sport Mode</label>
+                    <div class="mode-toggle">
+                        <button class="mode-btn ${currentMode==='tackle'?'active':''}" onclick="setSportMode('tackle')">🏈 Tackle (11‑man)</button>
+                        <button class="mode-btn ${currentMode==='7v7'?'active':''}" onclick="setSportMode('7v7')">⚡ 7v7 Passing</button>
+                    </div>
+                </div>
+                <div id="pos7v7Section" style="display:${currentMode==='7v7'?'block':'none'};">
+                    <h5>7v7 Position List</h5>
+                    <p style="font-size:0.7rem;opacity:0.7;">Comma‑separated list of positions used in 7v7 mode.</p>
+                    <textarea id="pos7v7Edit" style="width:100%;height:60px;font-family:monospace;">${esc(pos7)}</textarea>
+                    <button class="btn-sm" style="margin-top:6px;" onclick="save7v7Positions()">💾 Save Positions</button>
+                </div>`;
+            window.setSportMode = function(mode){
+                sp.sportMode = mode;
+                if(mode==='7v7') document.getElementById('pos7v7Section').style.display='block';
+                else document.getElementById('pos7v7Section').style.display='none';
+                updateScorebug(); save(); renderSport(); renderRoster(); toast('Mode switched');
+            };
+            window.save7v7Positions = function(){
+                const raw = document.getElementById('pos7v7Edit').value.split(',').map(s=>s.trim()).filter(Boolean);
+                sp.positions7v7 = raw;
+                save(); toast('✅ 7v7 positions saved');
+            };
+        }
+        else if(state.adminTab==='teams'){let h='';sp.teams.forEach(t=>h+=`<div style="display:flex;gap:8px;padding:6px;"><span style="flex:1;">${esc(t.name)}</span><button class="btn-sm" onclick="state.sports.football.currentTeamId='${t.id}';state.currentView='roster';renderAll();">✏️</button></div>`);c.innerHTML=h}
+        else if(state.adminTab==='backup'){c.innerHTML=`<button class="btn btn-sm" id="exportAll">📤 Export All</button><button class="btn btn-sm" id="importAll">📥 Import</button><input type="file" id="importFile" hidden accept=".json"><button class="btn-red btn-sm" onclick="if(confirm('Clear?')){localStorage.clear();location.reload();}">🧹 Clear</button>`;document.getElementById('exportAll').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)]));a.download='fnl_backup.json';a.click()};document.getElementById('importAll').onclick=()=>document.getElementById('importFile').click();document.getElementById('importFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);state=d;normalizeStateAfterLoad();save();updateTheme();renderAll();toast('✅')}catch(err){toast('❌')}document.getElementById('importFile').value=''};r.readAsText(f)}}
+        else if(state.adminTab==='cloud'){c.innerHTML=`<button class="btn-sm" style="background:#6366f1;color:#fff;" onclick="cloudSaveAll()">☁️ Save All</button><button class="btn-sm" onclick="cloudLoadTeams()">📥 Load</button>`}
+    }
     function updateColor(k,v){state.colors[k]=v;updateTheme();toast('✅ '+k)}
 
     function printLineups(){const sp=s();const at=sp.teams.find(t=>t.id===sp.awayTeamId),ht=sp.teams.find(t=>t.id===sp.homeTeamId);let html=`<html><head><title>${esc(at?.name||'Away')} vs ${esc(ht?.name||'Home')}</title><style>body{font-family:sans-serif;padding:20px;}table{border-collapse:collapse;width:100%;}th,td{border:1px solid #000;padding:6px;}th{background:#ddd;}</style></head><body><h1>${esc(at?.name||'Away')} vs ${esc(ht?.name||'Home')}</h1>`;['away','home'].forEach(s=>{const t=getTeamBySide(s);html+=`<h2>${esc(t?.name||'')}</h2><table><tr><th>#</th><th>Name</th><th>Pos</th><th>Notes</th></tr>`;getPlayers(s,'all').forEach(p=>html+=`<tr><td>${esc(p.num)}</td><td>${esc(p.name)}</td><td>${esc(p.pos)}</td><td>${esc(p.notes||'')}</td></tr>`);html+=`</table>`});html+='</body></html>';const w=window.open();w.document.write(html);w.onload=()=>w.print()}
