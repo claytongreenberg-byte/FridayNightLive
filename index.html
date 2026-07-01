@@ -188,6 +188,27 @@
             .hdr-l{display:none}
             .hdr-r .theme-btn{font-size:.6rem;padding:2px 8px}
         }
+                /* DEBUG - Client Logo Testing */
+        .debug-info {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.9);
+            color: #0f0;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 12px;
+            z-index: 99999;
+            max-width: 500px;
+            text-align: center;
+            pointer-events: none;
+            display: none;
+        }
+        .debug-info.show {
+            display: block;
+        }
     </style>
 </head>
 <body>
