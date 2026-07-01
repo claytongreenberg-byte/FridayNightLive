@@ -7,7 +7,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Lineup Card Live | Digital Pressbox</title>
+    <title>Friday Night Live | Digital Pressbox</title>
     <style>
         * {
             margin: 0;
@@ -52,7 +52,7 @@
             --clock-footer-bg: #111111;
             --clock-footer-text: #ffffff;
             --clock-footer-size: 13px;
-            --version: '8.0'
+            --version: 'FNL.1'
         }
         body.dark-mode {
             --bg-light: var(--bg-dark);
@@ -1124,7 +1124,7 @@
             <img src="LUCL.png" class="logo-main" alt="Voice of DFW Logo"
             onerror="this.style.boxShadow='0 0 0 2px var(--primary-gold)';this.style.background='transparent';this.style.minWidth='80px';">
             <div class="brand-text">
-                <h1>LINEUP CARD LIVE</h1>
+                <h1>FRIDAY NIGHT LIVE</h1>
                 <p>DIGITAL PRESSBOX</p>
             </div>
         </div>
@@ -1257,13 +1257,13 @@
     </main></div>
     <footer>
         <div class="footer-left">© 2026 <a href="https://voiceofdfw.com" target="_blank">Voice of DFW</a> Clayton E. Greenberg</div>
-        <div class="footer-center"><span class="footer-text">DIGITAL PRESSBOX COMMAND CENTER</span><img src="logos/VoiceRectGoldNew.png?v=5.3" class="footer-logo" alt="Voice of DFW Logo" onerror="this.style.minWidth='30px';"></div>
+        <div class="footer-center"><span class="footer-text">FRIDAY NIGHT LIVE COMMAND CENTER</span><img src="logos/VoiceRectGoldNew.png?v=5.3" class="footer-logo" alt="Voice of DFW Logo" onerror="this.style.minWidth='30px';"></div>
         <div class="footer-right"><span class="clock-footer" id="footerClock">00:00:00</span><span class="last-saved" id="lastSaved">Never saved</span></div>
     </footer>
     <script>
         (function() {
-            var APP_VERSION = '8.0',
-                CACHE_KEY = 'vdw_cache_version';
+            var APP_VERSION = 'FNL.1',
+                CACHE_KEY = 'fnl_cache_version';
 
             function checkCacheVersion() {
                 try {
@@ -1276,34 +1276,16 @@
 
             function clearAllCache() {
                 try {
-                    localStorage.removeItem('vdw_teams');
-                    localStorage.removeItem('vdw_game');
-                    localStorage.removeItem('vdw_settings');
-                    localStorage.removeItem('vdw_script');
+                    localStorage.removeItem('fnl_teams');
+                    localStorage.removeItem('fnl_game');
+                    localStorage.removeItem('fnl_settings');
+                    localStorage.removeItem('fnl_script');
                     localStorage.removeItem(CACHE_KEY);
                     sessionStorage.clear();
                     return true;
                 } catch (e) { return false; }
             }
             checkCacheVersion();
-
-            document.addEventListener('focusout', function(e) {
-                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
-                    setTimeout(function() { e.target.blur(); }, 100);
-                }
-            });
-            document.addEventListener('pointerdown', function(e) {
-                if (e.target.matches('button,select,input,textarea')) {
-                    e.target.focus();
-                    if (e.target.tagName === 'BUTTON') e.stopPropagation();
-                }
-            }, true);
-            document.body.addEventListener('touchmove', function(e) {
-                if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
-                if (e.target.closest('#admin')) return;
-                if (e.target.closest('.lineup-scroll')) return;
-                e.preventDefault();
-            }, { passive: false });
 
             function esc(str) { var d = document.createElement('div');
                 d.textContent = str; return d.innerHTML; }
@@ -1328,7 +1310,7 @@
                 weatherLocation: 'Dallas, TX',
                 weatherFallback: false,
                 settings: {
-                    brand: "LINEUP CARD LIVE",
+                    brand: "FRIDAY NIGHT LIVE",
                     subtext: "DIGITAL PRESSBOX",
                     subtextColor: "#e6b422",
                     theme: "light",
@@ -1397,7 +1379,7 @@
                 var dupes = {}; for (var n in count) { if (count[n] > 1) dupes[n] = true; } return dupes; }
 
             function buildPreloadedTeams() {
-                if (localStorage.getItem('vdw_teams')) return;
+                if (localStorage.getItem('fnl_teams')) return;
                 var teams = {
                     "arlington_outlaws": { id: "arlington_outlaws", name: "Arlington Outlaws", color: "#1d4ed8",
                         colorSecondary: "#ffffff", logo: "", players: [{ number: "2", name: "Caleb Beauchamp" }, { number: "16",
@@ -1464,17 +1446,17 @@
                 saveTeams();
             }
 
-            try { var t = localStorage.getItem("vdw_teams"); if (t) { STATE.teams = JSON.parse(t); } else {
+            try { var t = localStorage.getItem("fnl_teams"); if (t) { STATE.teams = JSON.parse(t); } else {
                     buildPreloadedTeams(); } } catch (e) { buildPreloadedTeams(); }
             for (var tid in STATE.teams) { var tm = STATE.teams[tid];
                 addNAXPlayersToTeam(tm); if (typeof tm.color !== 'string') tm.color = '#1d4ed8'; if (typeof tm
                     .colorSecondary !== 'string') tm.colorSecondary = '#ffffff'; if (typeof tm.logo !== 'string') tm.logo =
                     ''; }
-            try { var g = localStorage.getItem("vdw_game"); if (g) STATE.game = JSON.parse(g);
+            try { var g = localStorage.getItem("fnl_game"); if (g) STATE.game = JSON.parse(g);
             else { STATE.game.visitor.lineup = mkLineup();
                 STATE.game.home.lineup = mkLineup(); } } catch (e) { STATE.game.visitor.lineup = mkLineup();
                 STATE.game.home.lineup = mkLineup(); }
-            try { var s = localStorage.getItem("vdw_settings"); if (s) STATE.settings = JSON.parse(s); } catch (e) {}
+            try { var s = localStorage.getItem("fnl_settings"); if (s) STATE.settings = JSON.parse(s); } catch (e) {}
             STATE.game.visitor.runs = STATE.game.visitor.runs || 0;
             STATE.game.home.runs = STATE.game.home.runs || 0;
             STATE.game.inning = STATE.game.inning || 1;
@@ -1494,13 +1476,13 @@
             if (STATE.game.home.teamId && STATE.teams[STATE.game.home.teamId]) loadTeam('home', STATE.game.home.teamId, true);
             updateScoreBugVisibility();
 
-            function saveGame() { try { localStorage.setItem("vdw_game", JSON.stringify(STATE.game));
+            function saveGame() { try { localStorage.setItem("fnl_game", JSON.stringify(STATE.game));
                     updateLastSaved(); } catch (e) {} }
 
-            function saveTeams() { try { localStorage.setItem("vdw_teams", JSON.stringify(STATE.teams));
+            function saveTeams() { try { localStorage.setItem("fnl_teams", JSON.stringify(STATE.teams));
                     updateLastSaved(); } catch (e) {} }
 
-            function saveSettings() { try { localStorage.setItem("vdw_settings", JSON.stringify(STATE.settings));
+            function saveSettings() { try { localStorage.setItem("fnl_settings", JSON.stringify(STATE.settings));
                     updateLastSaved(); } catch (e) {} }
 
             function updateLastSaved() { var el = document.getElementById('lastSaved'); if (el) el.textContent = 'Saved ' +
@@ -1841,16 +1823,16 @@
 
             function clearScript() { document.getElementById('scriptTextarea').value = '';
                 STATE.script = '';
-                localStorage.removeItem('vdw_script'); }
+                localStorage.removeItem('fnl_script'); }
 
             function loadScriptFile(input) { var f = input.files[0]; if (!f) return; var r = new FileReader();
                 r.onload = function(e) { document.getElementById('scriptTextarea').value = e.target.result;
                     STATE.script = e.target.result;
-                    localStorage.setItem('vdw_script', e.target.result); };
+                    localStorage.setItem('fnl_script', e.target.result); };
                 r.readAsText(f); }
 
             function saveScript() { STATE.script = document.getElementById('scriptTextarea').value;
-                localStorage.setItem('vdw_script', STATE.script);
+                localStorage.setItem('fnl_script', STATE.script);
                 updateLastSaved(); }
 
             function pushRosterUndo(team) { if (!team._undoStack) team._undoStack = [];
@@ -2192,7 +2174,7 @@
                 var subtextEl = document.querySelector('.brand-text p');
                 if (subtextEl) subtextEl.style.color = s.subtextColor || '#e6b422';
                 var brandH1 = document.querySelector('.brand-text h1');
-                if (brandH1) brandH1.textContent = s.brand || 'LINEUP CARD LIVE';
+                if (brandH1) brandH1.textContent = s.brand || 'FRIDAY NIGHT LIVE';
                 var logoEl = document.querySelector('.logo-main');
                 if (logoEl && s.clientLogo) logoEl.src = s.clientLogo;
             }
@@ -2200,7 +2182,7 @@
             function exportAll() { var d = { teams: STATE.teams, game: STATE.game, settings: STATE.settings, script: STATE
                         .script }; var a = document.createElement('a');
                 a.href = URL.createObjectURL(new Blob([JSON.stringify(d)], { type: 'application/json' }));
-                a.download = 'backup-' + new Date().toISOString().slice(0, 10) + '.json';
+                a.download = 'fnl-backup-' + new Date().toISOString().slice(0, 10) + '.json';
                 a.click(); }
 
             function importAll(input) { var f = input.files[0]; if (!f) return; var r = new FileReader();
@@ -2386,7 +2368,7 @@
             updateScoreBug();
             updateScoreBugVisibility();
             updateLastSaved();
-            var savedScript = localStorage.getItem('vdw_script');
+            var savedScript = localStorage.getItem('fnl_script');
             if (savedScript) { STATE.script = savedScript;
                 document.getElementById('scriptTextarea').value = savedScript; }
 
