@@ -347,6 +347,26 @@ function clearClientLogo() {
     sv();
     t('Client logo cleared');
 }
+    // Show all client PINs (Admin only)
+function showAllPINs() {
+    const clients = S.cp || {};
+    const keys = Object.keys(clients);
+    
+    if (keys.length === 0) {
+        t('No clients found');
+        return;
+    }
+    
+    let msg = '📋 Client PINs:\n\n';
+    keys.forEach(p => {
+        const client = clients[p];
+        const hasLogo = client.l && client.l !== '' ? '✅' : '❌';
+        msg += `🔑 ${p} → ${client.n} ${hasLogo}\n`;
+    });
+    msg += `\nTotal: ${keys.length} clients`;
+    
+    alert(msg);
+}
     // Logout and show PIN screen - KEEPS ALL DATA
 function logoutAndShowPIN() {
     S.ap = '';
@@ -788,6 +808,8 @@ window.xA=xA;window.iA=iA;window.pL=pL;window.uploadPlayerPhoto=uploadPlayerPhot
 window.updateClientLogo=updateClientLogo;window.uploadClientLogo=uploadClientLogo;
 window.setClientLogoFromURL=setClientLogoFromURL;window.clearClientLogo=clearClientLogo;
 window.addClient=addClient;window.editClient=editClient;window.deleteClient=deleteClient;
+
+window.showAllPINs=showAllPINs;  // <-- ADD THIS LINE
 window.handleClientLogoUpload=handleClientLogoUpload;window.setClientLogoFromEdit=setClientLogoFromEdit;
 window.clearClientLogoFromEdit=clearClientLogoFromEdit;window.saveClientEdit=saveClientEdit;
 
