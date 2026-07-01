@@ -150,19 +150,22 @@
 <footer>
     <div class="ft-left"><img src="FNL.jpg" class="footer-logo" alt=""> FNL</div>
     <div class="ft-center">© 2026 Clayton E. Greenberg | <a href="https://voiceofdfw.com">VoiceofDFW.com</a></div>
-    <div class="ft-right"><span id="ftTicker">v11.2</span> · <span id="ftSaved">Never saved</span></div>
+    <div class="ft-right"><span id="ftTicker">v11.3</span> · <span id="ftSaved">Never saved</span></div>
 </footer>
 
 <script>
+// ═══════════════════════════════════════════════
+// FRIDAY NIGHT LIVE – FINAL STABLE BUILD
+// ═══════════════════════════════════════════════
 const CLOUD="https://lineup-api.claytongreenberg.workers.dev/api/lineup";
 const TACKLE={off:['QB','RB','FB','WR','TE','OL','C','G','T'],def:['DL','DE','DT','LB','OLB','ILB','CB','S','SS','FS','DB'],st:['K','P','LS','KR','PR']};
 const D7=['QB','Center','WR','WR','WR','DB','DB'];
 function dummy(){return{h:{id:"h",name:"Texas Hawks",color:"#1e3a5f",c2:"#fff",logo:"",mascot:"Hawks",pl:[{id:"h1",n:"7",na:"Marcus Johnson",po:"QB",st:!0,nt:"6'2\" Sr",ph:""},{id:"h2",n:"55",na:"Chris Williams",po:"Center",st:!0,nt:"6'0\" Jr",ph:""},{id:"h3",n:"11",na:"Jalen Smith",po:"WR",st:!0,nt:"5'11\" Sr",ph:""},{id:"h4",n:"88",na:"Ty Washington",po:"WR",st:!0,nt:"6'1\" So",ph:""},{id:"h5",n:"15",na:"Jordan Davis",po:"WR",st:!0,nt:"5'10\" Jr",ph:""},{id:"h6",n:"21",na:"Noah Brown",po:"DB",st:!0,nt:"6'0\" Sr",ph:""},{id:"h7",n:"33",na:"Elijah Jones",po:"DB",st:!0,nt:"5'9\" Jr",ph:""},{id:"h8",n:"44",na:"Isaiah Taylor",po:"LB",st:!1,nt:"6'0\" So",ph:""}]},s:{id:"s",name:"Dallas Stars",color:"#7f1d1d",c2:"#fff",logo:"",mascot:"Stars",pl:[{id:"s1",n:"12",na:"Caleb White",po:"QB",st:!0,nt:"6'3\" Sr",ph:""},{id:"s2",n:"72",na:"Mason Lee",po:"Center",st:!0,nt:"6'1\" Jr",ph:""},{id:"s3",n:"1",na:"Adrian Flores",po:"WR",st:!0,nt:"5'10\" Sr",ph:""},{id:"s4",n:"5",na:"Xavier Reed",po:"WR",st:!0,nt:"6'0\" Jr",ph:""},{id:"s5",n:"18",na:"Karter Hill",po:"WR",st:!0,nt:"6'2\" So",ph:""},{id:"s6",n:"23",na:"Malik Green",po:"DB",st:!0,nt:"5'11\" Sr",ph:""},{id:"s7",n:"27",na:"Tyler Wright",po:"DB",st:!0,nt:"6'0\" Jr",ph:""},{id:"s8",n:"9",na:"Brayden Scott",po:"LB",st:!1,nt:"5'9\" Fr",ph:""}]}}}
 function defGS(){return{aid:'h',hid:'s',as:0,hs:0,q:1,md:'7v7',p7:[...D7],poss:'home',tms:[dummy().h,dummy().s],cid:'h',sc:'',gc:{rem:1500,run:!1},us:[],rs:[],sb:!0}}
 
-let S={v:'sport',at:'branding',md:'light',ua:'all',uh:'all',br:{t:'FRIDAY NIGHT LIVE',st:'FOOTBALL PA CONSOLE',cl:'',wl:'',wlon:'',wg:!0},fn:"'Inter',sans-serif",cf:'12h',cs:!0,sp:{fb:defGS()},cp:{},wd:null,lw:0,ap:'',im:!0};
+let S={v:'sport',at:'branding',md:'light',ua:'all',uh:'all',br:{t:'FRIDAY NIGHT LIVE',st:'FOOTBALL PA CONSOLE',cl:''},fn:"'Inter',sans-serif",cf:'12h',cs:!0,sp:{fb:defGS()},cp:{},wd:null,lw:0,ap:'',im:!0};
 function g(){return S.sp.fb}
-const K='fnl_v12';
+const K='fnl_v13';
 function t(m){const x=document.getElementById('toast');x.textContent=m;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),1800)}
 function e(s){if(!s)return'';return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m])}
 function id(){return Date.now().toString(36)+Math.random().toString(36).substring(2)}
@@ -189,7 +192,7 @@ setInterval(()=>{const gc=g().gc;if(gc.run&&gc.rem>0){gc.rem--;ugc();if(gc.rem==
 async function fW(la,lo){try{const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${la}&longitude=${lo}&current_weather=true&temperature_unit=fahrenheit`);const d=await r.json();if(d.current_weather){S.wd=d.current_weather;S.lw=Date.now();uwd();sv()}}catch(e){}}
 function uwd(){const el=document.getElementById('weatherDisplay');if(S.wd){const w=S.wd;el.innerHTML=`${w.temperature}°F`}else{el.innerHTML='--'}}
 async function gW(){if(!navigator.geolocation)return;navigator.geolocation.getCurrentPosition(async p=>{await fW(p.coords.latitude,p.coords.longitude)},()=>{})}
-setInterval(()=>{if(S.br.wg&&(!S.wd||Date.now()-S.lw>900000))gW()},900000);
+setInterval(()=>{if(!S.wd||Date.now()-S.lw>900000)gW()},900000);
 
 // PIN
 function showPINEntry(){const o=document.createElement('div');o.className='pin-overlay';o.innerHTML=`<h2 style="color:#fff;">Enter PIN</h2><input id="pi" placeholder="PIN"><button class="btn" id="ps">Enter</button>`;document.body.appendChild(o);document.getElementById('ps').onclick=()=>{const p=document.getElementById('pi').value.trim().toUpperCase();if(S.cp[p]){ap(S.cp[p],p);o.remove();t('Welcome!')}else{t('Invalid PIN')}}}
@@ -197,9 +200,9 @@ function ap(pr,p){S.ap=p;S.im=!1;S.br.cl=pr.l||'';S.br.t=pr.n||'Friday Night Liv
 
 // SAVE/LOAD
 async function sv(){try{localStorage.setItem(K,JSON.stringify(S));document.getElementById('ftSaved').textContent='Saved '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}catch(e){}}
-async function ld(){try{const r=localStorage.getItem(K);if(r){const p=JSON.parse(r);S={...S,...p};if(p.sp?.fb){const sp=S.sp.fb;const d=defGS();for(const k of Object.keys(d)){if(sp[k]===undefined)sp[k]=d[k]}sp.tms.forEach(t=>{t.pl.forEach(p=>{if(!p.id)p.id=id()})});if(!sp.p7)sp.p7=[...D7];if(!sp.gc)sp.gc={rem:1500,run:!1};if(sp.sb===undefined)sp.sb=!0}if(p.md)S.md=p.md;if(!S.cp)S.cp={};if(!S.ap)S.ap='';if(S.im===undefined)S.im=!0}ucl()}catch(e){}ut();ra()}
+async function ld(){try{const r=localStorage.getItem(K);if(r){const p=JSON.parse(r);S={...S,...p};if(p.sp?.fb){const sp=S.sp.fb;const d=defGS();for(const k of Object.keys(d)){if(sp[k]===undefined)sp[k]=d[k]}sp.tms.forEach(t=>{t.pl.forEach(p=>{if(!p.id)p.id=id()})});if(!sp.p7)sp.p7=[...D7];if(!sp.gc)sp.gc={rem:1500,run:!1};if(sp.sb===undefined)sp.sb=!0}if(p.md)S.md=p.md;if(!S.cp)S.cp={};if(!S.ap)S.ap='';if(S.im===undefined)S.im=!0}ucl()}catch(e){}ut();try{ra()}catch(e){document.getElementById('main').innerHTML='<div class="panel"><h3>Error loading app</h3><p>Please clear your browser cache and reload.</p></div>'}}
 
-// NAV
+// NAV – always runs first
 function rn(){let tabs='';tabs+=`<button class="nav-link ${S.v==='sport'?'active':''}" data-view="sport">🏈 GAME</button>`;tabs+=`<button class="nav-link ${S.v==='roster'?'active':''}" data-view="roster">📋 ROSTERS</button>`;tabs+=`<button class="nav-link ${S.v==='script'?'active':''}" data-view="script">🎙️ SCRIPT</button>`;tabs+=`<button class="nav-link ${S.v==='score'?'active':''}" data-view="score">📺 SCORE</button>`;tabs+=`<button class="nav-link ${S.v==='admin'?'active':''}" data-view="admin">⚙️ ADMIN</button>`;if(S.im)tabs+=`<button class="nav-link ${S.v==='clients'?'active':''}" data-view="clients">👥 CLIENTS</button>`;document.getElementById('mainNav').innerHTML=tabs;document.getElementById('mainNav').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.v=b.dataset.view;rn();rm()}}
 function rm(){if(S.v==='roster')rR();else if(S.v==='script')rSC();else if(S.v==='admin')rA();else if(S.v==='clients')rC();else if(S.v==='score'){tS();S.v='sport';rn();rG()}else rG()}
 function ra(){rn();rm();usb();ugc();document.getElementById('scorebug').style.display=g().sb?'flex':'none'}
@@ -208,7 +211,7 @@ function ra(){rn();rm();usb();ugc();document.getElementById('scorebug').style.di
 function chS(s,d){const sp=g();if(s==='away')sp.as=Math.max(0,sp.as+d);else sp.hs=Math.max(0,sp.hs+d);usb();fl(s);sv()}
 function fl(s){const el=document.getElementById(s==='away'?'sbAwayScore':'sbHomeScore');if(el){el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),250)}}
 function chQ(d){const sp=g();const m=sp.md==='7v7'?2:6;sp.q=Math.min(m,Math.max(1,sp.q+d));usb();sv()}
-function usb(){const sp=g();const at=sp.tms.find(t=>t.id===sp.aid),ht=sp.tms.find(t=>t.id===sp.hid);document.getElementById('sbAwayAbbr').innerHTML=(at?.logo?`<img class="sb-logo-sm" src="${e(at.logo)}"> `:'')+(at?at.name.substring(0,4).toUpperCase():'AWAY');document.getElementById('sbHomeAbbr').innerHTML=(ht?.logo?`<img class="sb-logo-sm" src="${e(ht.logo)}"> `:'')+(ht?ht.name.substring(0,4).toUpperCase():'HOME');document.getElementById('sbAwayScore').textContent=sp.as||0;document.getElementById('sbHomeScore').textContent=sp.hs||0;const ls=sp.md==='7v7'?['1st Half','2nd Half']:['Q1','Q2','Q3','Q4'];document.getElementById('sbQuarter').textContent=ls[sp.q-1]||'Q1';document.getElementById('sbQLabel').textContent=sp.md==='7v7'?'HALF':'QTR';const an=at?at.name:'',hn=ht?ht.name:'';document.getElementById('ftTicker').textContent='v11.2 • '+an+' vs. '+hn}
+function usb(){const sp=g();const at=sp.tms.find(t=>t.id===sp.aid),ht=sp.tms.find(t=>t.id===sp.hid);document.getElementById('sbAwayAbbr').innerHTML=(at?.logo?`<img class="sb-logo-sm" src="${e(at.logo)}"> `:'')+(at?at.name.substring(0,4).toUpperCase():'AWAY');document.getElementById('sbHomeAbbr').innerHTML=(ht?.logo?`<img class="sb-logo-sm" src="${e(ht.logo)}"> `:'')+(ht?ht.name.substring(0,4).toUpperCase():'HOME');document.getElementById('sbAwayScore').textContent=sp.as||0;document.getElementById('sbHomeScore').textContent=sp.hs||0;const ls=sp.md==='7v7'?['1st Half','2nd Half']:['Q1','Q2','Q3','Q4'];document.getElementById('sbQuarter').textContent=ls[sp.q-1]||'Q1';document.getElementById('sbQLabel').textContent=sp.md==='7v7'?'HALF':'QTR';const an=at?at.name:'',hn=ht?ht.name:'';document.getElementById('ftTicker').textContent='v11.3 • '+an+' vs. '+hn}
 
 // HELPERS
 function tB(s){return g().tms.find(t=>t.id===(s==='away'?g().aid:g().hid))||null}
@@ -263,16 +266,16 @@ function gR(){if(confirm('Reset scores, quarter, and starters?')){const sp=g();s
 document.addEventListener('keydown',e=>{if(e.key==='s'&&(e.ctrlKey||e.metaKey)){e.preventDefault();sv();t('Saved')}});
 document.getElementById('resetBtn').onclick=gR;
 
-// AUDITED WINDOW EXPORTS – all names exist, no orphans
-window.chScore=chS; window.chQuarter=chQ; window.tP=tP; window.sU=sU; window.swT=swT; window.aP=aP;
-window.tS=tS; window.dP=dP; window.uF=uF; window.searchPlayers=searchPlayers; window.iM=iM; window.pS=pS;
-window.setGC=sGC; window.startGC=stGC; window.pauseGC=pGC; window.resetGC=rGC;
-window.uR=uR; window.reR=reR; window.eC=eC; window.pZR=pZR; window.sT=sT; window.nT=nT;
-window.li=li; window.da=da; window.tt=tt; window.xA=xA; window.iA=iA; window.pL=pL;
+// Final audited exports
+window.chScore=chS;window.chQuarter=chQ;window.tP=tP;window.sU=sU;window.swT=swT;window.aP=aP;
+window.tS=tS;window.dP=dP;window.uF=uF;window.searchPlayers=searchPlayers;
+window.setGC=sGC;window.startGC=stGC;window.pauseGC=pGC;window.resetGC=rGC;
+window.iM=iM;window.pS=pS;window.eC=eC;window.pZR=pZR;window.sT=sT;window.nT=nT;
+window.uR=uR;window.reR=reR;window.li=li;window.da=da;window.tt=tt;window.xA=xA;window.iA=iA;window.pL=pL;
 window.sCL=function(u){S.br.cl=u;ucl();sv();t('Logo set')};
 window.uCL=function(i){const f=i.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{S.br.cl=ev.target.result;ucl();sv();t('Logo uploaded')};r.readAsDataURL(f)};
 window.cCL=function(){S.br.cl='';ucl();sv();t('Logo cleared')};
-window.aCP=aCP; window.eCP=eCP; window.dCP=dCP; window.cSA=cSA; window.cLT=cLT;
+window.aCP=aCP;window.eCP=eCP;window.dCP=dCP;window.cSA=cSA;window.cLT=cLT;
 
 (async function(){await ld();if(S.ap&&S.cp[S.ap]){ap(S.cp[S.ap],S.ap)}else if(Object.keys(S.cp||{}).length>0&&!S.ap){setTimeout(showPINEntry,400)}ra();gW()})();
 </script>
