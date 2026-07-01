@@ -65,7 +65,7 @@
         .hdr-client{background:rgba(0,0,0,0.4);border-radius:10px;padding:3px 10px;max-height:42px}
         .client-logo{height:100%;max-height:36px;width:auto;object-fit:contain}
         .back-link{color:#fff;font-size:.7rem;font-weight:600;text-decoration:none;padding:3px 6px;border-radius:6px}
-        .brand-logo{height:38px;width:auto;object-fit:contain}
+        .brand-logo{height:38px;width:auto;object-fit:contain;border-radius:50%}
         .brand-text{display:flex;align-items:center;gap:6px;white-space:nowrap}
         .brand-text h1{font-size:.95rem;color:#fff;font-weight:900;letter-spacing:-0.2px;white-space:nowrap}
         .brand-text p{font-size:.55rem;color:var(--accent);font-weight:700;letter-spacing:0.5px;white-space:nowrap}
@@ -138,7 +138,7 @@
         .add-row input,.add-row select{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:3px 5px;font-size:.7rem;color:inherit;min-height:28px}
         footer{background:#0f172a;padding:6px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;border-top:1px solid var(--accent);color:#fff;font-size:.65rem;font-weight:700;flex-shrink:0}
         body.dark-mode footer,body.seven-mode footer{background:#080808;}
-        .footer-logo{height:22px;width:auto}
+        .footer-logo{height:22px;width:auto;border-radius:50%}
         .ft-left,.ft-center,.ft-right{display:flex;align-items:center;gap:8px}
         .ft-center{flex:1;justify-content:center;text-align:center}
         .ft-center a{color:#ef4444;text-decoration:underline;font-weight:800}
@@ -172,7 +172,13 @@
 <header>
     <div class="turf-overlay" aria-hidden="true"><svg viewBox="0 0 1000 60" preserveAspectRatio="none"><rect width="1000" height="60" fill="url(#tg)"/><defs><linearGradient id="tg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2d6a1e"/><stop offset="100%" stop-color="#1f4d14"/></linearGradient></defs><line x1="100" y1="0" x2="100" y2="60" stroke="white" stroke-width="1.5" opacity=".15"/><line x1="200" y1="0" x2="200" y2="60" stroke="white" stroke-width="1.5" opacity=".15"/><line x1="300" y1="0" x2="300" y2="60" stroke="white" stroke-width="1.5" opacity=".15"/><line x1="400" y1="0" x2="400" y2="60" stroke="white" stroke-width="1.5" opacity=".15"/><line x1="500" y1="0" x2="500" y2="60" stroke="white" stroke-width="1.5" opacity=".15"/><text x="495" y="18" fill="white" font-size="5" opacity=".25" text-anchor="middle">50</text></svg></div>
     <div class="hdr-l"><a href="https://voiceofdfw.com" class="back-link">← VODFW</a></div>
-    <div class="hdr-b"><img src="FNL.jpg" alt="FNL" class="brand-logo"><div class="brand-text"><h1>🏈 FRIDAY NIGHT LIVE</h1><p>PA CONSOLE</p></div></div>
+    <div class="hdr-b">
+        <img src="VoiceofDFWFOOTBALL2.png" alt="Voice of DFW" class="brand-logo">
+        <div class="brand-text">
+            <h1>🏈 FRIDAY NIGHT LIVE</h1>
+            <p>PA CONSOLE</p>
+        </div>
+    </div>
     <div class="hdr-client" id="clientLogoContainer"><img id="clientLogoImg" class="client-logo" src="" style="display:none"></div>
     <div class="hdr-c">
         <div class="wall-clock" id="wallClock">12:00 AM</div>
@@ -195,7 +201,7 @@
 <main id="main"></main>
 <div class="toast" id="toast"></div>
 <footer>
-    <div class="ft-left"><img src="FNL.jpg" class="footer-logo" alt=""> FNL</div>
+    <div class="ft-left"><img src="VoiceofDFWFOOTBALL2.png" class="footer-logo" alt="Voice of DFW"> VODFW</div>
     <div class="ft-center">© 2026 Clayton E. Greenberg | <a href="https://voiceofdfw.com">VoiceofDFW.com</a></div>
     <div class="ft-right"><span id="ftTicker">v20.0</span> · <span id="ftSaved">Never saved</span></div>
 </footer>
@@ -274,7 +280,6 @@ function uwd(){
         const wind=Math.round(S.wd.wind_speed_10m);
         let locDisplay=S.wd.location||'';
         if(S.wd.fallback)locDisplay+=' (default)';
-        // Truncate long location names for display
         if(locDisplay.length>20)locDisplay=locDisplay.substring(0,18)+'…';
         elH.innerHTML=`${icon} ${temp}°F | ${wind}mph | ${hum}%`;
         elH.title=`Temperature: ${temp}°F\nFeels Like: ${feels}°F\nWind: ${wind} mph\nHumidity: ${hum}%\nLocation: ${S.wd.location||'Unknown'}${S.wd.fallback?' (fallback)':''}`;
