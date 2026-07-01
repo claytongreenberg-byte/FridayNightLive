@@ -62,17 +62,11 @@
         .turf-overlay{position:absolute;inset:0;pointer-events:none;z-index:0}
         .hdr-l,.hdr-b,.hdr-c,.hdr-r,.hdr-client{display:flex;align-items:center;gap:6px;z-index:1}
         .hdr-l,.hdr-b,.hdr-r{background:rgba(0,0,0,0.5);border-radius:10px;padding:4px 12px}
-        .hdr-client{background:rgba(0,0,0,0.4);border-radius:10px;padding:3px 10px;max-height:42px}
-        .client-logo{height:100%;max-height:36px;width:auto;object-fit:contain}
+        .hdr-client{background:rgba(0,0,0,0.4);border-radius:10px;padding:3px 10px;max-height:42px;min-width:42px;min-height:36px}
+        .client-logo{height:100%;max-height:36px;width:auto;object-fit:contain;display:block}
         .back-link{color:#fff;font-size:.7rem;font-weight:600;text-decoration:none;padding:3px 6px;border-radius:6px}
         .brand-logo-wrapper{display:flex;align-items:center;gap:8px;background:transparent;padding:0}
-        .brand-logo{
-            height:48px;
-            width:auto;
-            object-fit:contain;
-            display:block;
-            flex-shrink:0;
-        }
+        .brand-logo{height:48px;width:auto;object-fit:contain;display:block;flex-shrink:0}
         .brand-text{display:flex;align-items:center;gap:6px;white-space:nowrap}
         .brand-text h1{font-size:.95rem;color:#fff;font-weight:900;letter-spacing:-0.2px;white-space:nowrap}
         .brand-text p{font-size:.55rem;color:var(--accent);font-weight:700;letter-spacing:0.5px;white-space:nowrap}
@@ -171,6 +165,9 @@
         .script-editor{flex:1;padding:10px;overflow-y:auto;font-size:.85rem;line-height:1.6;outline:none;background:var(--surface);color:inherit}
         .pin-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.92);z-index:5000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px}
         .pin-overlay input{font-size:1.2rem;text-align:center;width:200px;padding:8px;border-radius:8px;border:2px solid var(--accent);background:#111;color:#fff}
+        .client-logo-upload-area{border:2px dashed var(--border);border-radius:8px;padding:16px;text-align:center;margin:8px 0;cursor:pointer;transition:all .2s}
+        .client-logo-upload-area:hover{border-color:var(--accent);background:rgba(212,175,55,0.05)}
+        .client-logo-preview{max-width:100%;max-height:100px;object-fit:contain;margin:8px 0;border-radius:4px}
         @media(max-width:900px){.game-grid{flex-direction:column}.roster-layout{grid-template-columns:1fr}}
         @media(max-width:768px){
             header{flex-wrap:wrap;min-height:auto;padding:4px 8px}
@@ -188,33 +185,9 @@
             .hdr-l{display:none}
             .hdr-r .theme-btn{font-size:.6rem;padding:2px 8px}
         }
-                /* DEBUG - Client Logo Testing */
-        .debug-info {
-            position: fixed;
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.9);
-            color: #0f0;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-family: monospace;
-            font-size: 12px;
-            z-index: 99999;
-            max-width: 500px;
-            text-align: center;
-            pointer-events: none;
-            display: none;
-        }
-        .debug-info.show {
-            display: block;
-        }
     </style>
 </head>
 <body>
-    <body>
-<!-- ADD THIS RIGHT HERE -->
-<div id="debugInfo" class="debug-info"></div>
 <header>
     <div class="turf-overlay" aria-hidden="true"><svg viewBox="0 0 1000 60" preserveAspectRatio="none"><rect width="1000" height="60" fill="url(#tg)"/><defs><linearGradient id="tg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2d6a1e"/><stop offset="100%" stop-color="#1f4d14"/></linearGradient></defs><line x1="100" y1="0" x2="100" y2="60" stroke="white" stroke-width="1.5" opacity=".15"/><line x1="200" y1="0" x2="200" y2="60" stroke="white" stroke-width="1.5" opacity=".15"/><line x1="300" y1="0" x2="300" y2="60" stroke="white" stroke-width="1.5" opacity=".15"/><line x1="400" y1="0" x2="400" y2="60" stroke="white" stroke-width="1.5" opacity=".15"/><line x1="500" y1="0" x2="500" y2="60" stroke="white" stroke-width="1.5" opacity=".15"/><text x="495" y="18" fill="white" font-size="5" opacity=".25" text-anchor="middle">50</text></svg></div>
     <div class="hdr-l"><a href="https://voiceofdfw.com" class="back-link">← VODFW</a></div>
@@ -227,7 +200,9 @@
             <p>PA CONSOLE</p>
         </div>
     </div>
-    <div class="hdr-client" id="clientLogoContainer"><img id="clientLogoImg" class="client-logo" src="" style="display:none"></div>
+    <div class="hdr-client" id="clientLogoContainer">
+        <img id="clientLogoImg" class="client-logo" src="" style="display:none">
+    </div>
     <div class="hdr-c">
         <div class="wall-clock" id="wallClock">12:00 AM</div>
         <div class="weather-pill-header" id="weatherHeader" title="Weather information">--°F</div>
@@ -256,7 +231,7 @@
 
 <script>
 // ═══════════════════════════════════════════════
-// FRIDAY NIGHT LIVE v20.0 – All Revisions Applied
+// FRIDAY NIGHT LIVE v20.0 – Client Logo Centralized
 // ═══════════════════════════════════════════════
 const CLOUD="https://lineup-api.claytongreenberg.workers.dev/api/lineup";
 const TACKLE={off:['QB','RB','FB','WR','TE','OL','C','G','T'],def:['DL','DE','DT','LB','OLB','ILB','CB','S','SS','FS','DB'],st:['K','P','LS','KR','PR']};
@@ -271,11 +246,10 @@ function e(s){if(!s)return'';return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;
 function id(){return Date.now().toString(36)+Math.random().toString(36).substring(2)}
 
 // THEME
-function ut(){document.body.classList.remove('dark-mode','seven-mode');if(S.md==='dark')document.body.classList.add('dark-mode');if(g().md==='7v7')document.body.classList.add('seven-mode');document.getElementById('themeBtn').innerHTML=S.md==='dark'?'🌙 Dark':'☀️ Light';ucl();applyAdminStyles();sv()}
+function ut(){document.body.classList.remove('dark-mode','seven-mode');if(S.md==='dark')document.body.classList.add('dark-mode');if(g().md==='7v7')document.body.classList.add('seven-mode');document.getElementById('themeBtn').innerHTML=S.md==='dark'?'🌙 Dark':'☀️ Light';updateClientLogo();applyAdminStyles();sv()}
 function light(){S.md='light';ut();t('Light mode')}
 function dark(){S.md='dark';ut();t('Dark mode')}
 function toggleTheme(){S.md==='dark'?light():dark()}
-function ucl(){const i=document.getElementById('clientLogoImg'),c=document.getElementById('clientLogoContainer');if(S.br.cl){i.src=S.br.cl;i.style.display='block';c.style.display='flex'}else{i.style.display='none';c.style.display='none'}}
 function applyAdminStyles(){
     const r=document.documentElement.style;
     r.setProperty('--bug-team-name-font',S.bugTeamNameFont||"'Inter',sans-serif");
@@ -293,6 +267,86 @@ function applyAdminStyles(){
 }
 function toggleScorebugDisplay(){g().sb=!g().sb;document.getElementById('scorebug').style.display=g().sb?'flex':'none';sv()}
 
+// CLIENT LOGO - CENTRALIZED HANDLING
+function updateClientLogo() {
+    const img = document.getElementById('clientLogoImg');
+    const container = document.getElementById('clientLogoContainer');
+    
+    if (S.br.cl && S.br.cl !== '') {
+        img.src = S.br.cl;
+        img.style.display = 'block';
+        container.style.display = 'flex';
+        container.style.background = 'rgba(0,0,0,0.4)';
+        
+        img.onload = function() {
+            // Logo loaded successfully
+        };
+        img.onerror = function() {
+            // If logo fails to load, hide it
+            img.style.display = 'none';
+            container.style.display = 'none';
+            console.warn('Client logo failed to load:', S.br.cl);
+        };
+    } else {
+        img.style.display = 'none';
+        container.style.display = 'none';
+        container.style.background = 'rgba(0,0,0,0.4)';
+    }
+}
+
+// Upload client logo from file
+function uploadClientLogo(input) {
+    const file = input.files[0];
+    if (!file) {
+        t('No file selected');
+        return;
+    }
+    
+    // Check if it's an image
+    if (!file.type.startsWith('image/')) {
+        t('Please select an image file');
+        return;
+    }
+    
+    // Check file size (max 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+        t('Image too large. Max 2MB');
+        return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+        S.br.cl = ev.target.result;
+        updateClientLogo();
+        sv();
+        t('✅ Client logo uploaded!');
+    };
+    reader.onerror = function() {
+        t('❌ Upload failed');
+    };
+    reader.readAsDataURL(file);
+}
+
+// Set client logo from URL
+function setClientLogoFromURL(url) {
+    if (!url || url.trim() === '') {
+        t('Please enter a URL');
+        return;
+    }
+    S.br.cl = url.trim();
+    updateClientLogo();
+    sv();
+    t('✅ Client logo set from URL');
+}
+
+// Clear client logo
+function clearClientLogo() {
+    S.br.cl = '';
+    updateClientLogo();
+    sv();
+    t('Client logo cleared');
+}
+
 // CLOCK
 function uc(){const n=new Date();let h=n.getHours();const m=String(n.getMinutes()).padStart(2,'0'),s=String(n.getSeconds()).padStart(2,'0');let x='';if(S.cf==='12h'){const a=h>=12?'PM':'AM';h=h%12||12;x=`${h}:${m}`;if(S.cs)x+=`:${s}`;x+=` ${a}`}else{h=String(h).padStart(2,'0');x=`${h}:${m}`;if(S.cs)x+=`:${s}`}document.getElementById('wallClock').textContent=x}
 setInterval(uc,1000);uc();
@@ -303,7 +357,7 @@ function rGC(){g().gc.run=!1;g().gc.rem=0;ugc();sv()}
 function ugc(){const r=g().gc.rem||0;const m=Math.floor(r/60),s=r%60;document.getElementById('gameClockDisplay').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')}
 setInterval(()=>{const gc=g().gc;if(gc.run&&gc.rem>0){gc.rem--;ugc();if(gc.rem===0){gc.run=!1;t('Clock expired')}}},1000);
 
-// WEATHER (enhanced with clear location display)
+// WEATHER
 function getWeatherEmoji(code){if(code<=0)return'☀️';if(code<=3)return'⛅';if(code<=48)return'🌫️';if(code<=57)return'🌧️';if(code<=67)return'🌨️';if(code<=77)return'❄️';if(code<=82)return'🌧️';if(code<=86)return'🌨️';return'🌩️'}
 async function fW(la,lo,locName,isFallback){
     try{
@@ -348,16 +402,16 @@ setInterval(()=>{if(!S.wd||Date.now()-S.lw>900000)gW()},900000);
 
 // PIN
 function showPINEntry(){const o=document.createElement('div');o.className='pin-overlay';o.innerHTML='<h2 style="color:#fff">Enter PIN</h2><input id="pi" placeholder="PIN"><button class="btn" id="ps">Enter</button>';document.body.appendChild(o);document.getElementById('ps').onclick=()=>{const p=document.getElementById('pi').value.trim().toUpperCase();if(S.cp[p]){ap(S.cp[p],p);o.remove();t('Welcome!')}else{t('Invalid PIN')}}}
-function ap(pr,p){S.ap=p;S.im=!1;S.br.cl=pr.l||'';S.br.t=pr.n||'Friday Night Live';if(pr.wlat&&pr.wlon){S.br.wlat=pr.wlat;S.br.wlon=pr.wlon;fW(pr.wlat,pr.wlon,pr.n||'Client',false)}ucl();sv();ra()}
+function ap(pr,p){S.ap=p;S.im=!1;S.br.cl=pr.l||'';S.br.t=pr.n||'Friday Night Live';if(pr.wlat&&pr.wlon){S.br.wlat=pr.wlat;S.br.wlon=pr.wlon;fW(pr.wlat,pr.wlon,pr.n||'Client',false)}updateClientLogo();sv();ra()}
 
 // SAVE/LOAD
 async function sv(){try{localStorage.setItem(K,JSON.stringify(S));document.getElementById('ftSaved').textContent='Saved '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}catch(e){}}
-async function ld(){try{const r=localStorage.getItem(K);if(r){const p=JSON.parse(r);S={...S,...p};if(p.sp?.fb){const sp=S.sp.fb;const d=defGS();for(const k of Object.keys(d)){if(sp[k]===undefined)sp[k]=d[k]}sp.tms.forEach(t=>{t.pl.forEach(p=>{if(!p.id)p.id=id()})});if(!sp.p7)sp.p7=[...D7];if(!sp.gc)sp.gc={rem:1500,run:!1};if(sp.sb===undefined)sp.sb=!0}if(p.md)S.md=p.md;if(!S.cp)S.cp={};if(!S.ap)S.ap='';if(S.im===undefined)S.im=!0;if(!S.br.wlat)S.br.wlat='';if(!S.br.wlon)S.br.wlon=''}ucl()}catch(e){}ut();applyAdminStyles();try{ra()}catch(e){document.getElementById('main').innerHTML='<div class="panel"><h3>Error</h3><p>Clear site data and reload.</p></div>'}}
+async function ld(){try{const r=localStorage.getItem(K);if(r){const p=JSON.parse(r);S={...S,...p};if(p.sp?.fb){const sp=S.sp.fb;const d=defGS();for(const k of Object.keys(d)){if(sp[k]===undefined)sp[k]=d[k]}sp.tms.forEach(t=>{t.pl.forEach(p=>{if(!p.id)p.id=id()})});if(!sp.p7)sp.p7=[...D7];if(!sp.gc)sp.gc={rem:1500,run:!1};if(sp.sb===undefined)sp.sb=!0}if(p.md)S.md=p.md;if(!S.cp)S.cp={};if(!S.ap)S.ap='';if(S.im===undefined)S.im=!0;if(!S.br.wlat)S.br.wlat='';if(!S.br.wlon)S.br.wlon=''}updateClientLogo()}catch(e){}ut();applyAdminStyles();try{ra()}catch(e){document.getElementById('main').innerHTML='<div class="panel"><h3>Error</h3><p>Clear site data and reload.</p></div>'}}
 
-// NAV - Removed Score tab (eyeball handles it)
+// NAV
 function rn(){let tabs='';tabs+='<button class="nav-link '+(S.v==='sport'?'active':'')+'" data-view="sport">🏈 GAME</button>';tabs+='<button class="nav-link '+(S.v==='roster'?'active':'')+'" data-view="roster">📋 ROSTERS</button>';tabs+='<button class="nav-link '+(S.v==='script'?'active':'')+'" data-view="script">🎙️ SCRIPT</button>';tabs+='<button class="nav-link '+(S.v==='admin'?'active':'')+'" data-view="admin">⚙️ ADMIN</button>';if(S.im)tabs+='<button class="nav-link '+(S.v==='clients'?'active':'')+'" data-view="clients">👥 CLIENTS</button>';document.getElementById('mainNav').innerHTML=tabs;document.getElementById('mainNav').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.v=b.dataset.view;rn();rm()}}
 function rm(){if(S.v==='roster')rR();else if(S.v==='script')rSC();else if(S.v==='admin')rA();else if(S.v==='clients')rC();else rG()}
-function ra(){rn();rm();usb();ugc();document.getElementById('scorebug').style.display=g().sb?'flex':'none';gW()}
+function ra(){rn();rm();usb();ugc();document.getElementById('scorebug').style.display=g().sb?'flex':'none';gW();updateClientLogo()}
 
 // SCORE
 function chS(s,d){const sp=g();if(s==='away')sp.as=Math.max(0,sp.as+d);else sp.hs=Math.max(0,sp.hs+d);usb();fl(s);sv()}
@@ -412,24 +466,312 @@ function iM(tx){const ed=document.getElementById('se');if(!ed)return;ed.focus();
 function pS(fn){try{new Audio('sounds/'+fn+'.mp3').play().catch(()=>t('Sound unavailable'))}catch(e){t('Sound error')}}
 function rSC(){const sp=g();document.getElementById('main').innerHTML='<div class="script-container"><h3 style="padding:4px 8px 0;">PA SCRIPT</h3><div style="display:flex;gap:2px;flex-wrap:wrap;padding:3px 6px;"><button class="btn-sm" onclick="iM(\'Welcome!\')">Welcome</button><button class="btn-sm" onclick="iM(\'First down!\')">1st Down</button><button class="btn-sm" onclick="iM(\'Touchdown!\')">Touchdown</button></div><div class="script-toolbar"><select onchange="document.execCommand(\'fontName\',false,this.value)"><option>Inter</option><option>Roboto</option><option>monospace</option></select><button onclick="document.execCommand(\'bold\')"><b>B</b></button><button onclick="document.execCommand(\'italic\')"><i>I</i></button></div><div id="se" class="script-editor" contenteditable="true" placeholder="PA announcements...">'+(sp.sc||'')+'</div><div class="soundboard-panel"><details><summary>Soundboard</summary><div style="display:flex;gap:2px;flex-wrap:wrap;margin-top:2px;"><button class="btn-sm" onclick="pS(\'firstdown\')">1st</button><button class="btn-sm" onclick="pS(\'touchdown\')">TD</button><button class="btn-sm" onclick="pS(\'horn\')">Horn</button><button class="btn-sm" onclick="pS(\'crowd\')">Crowd</button></div></details></div><div style="display:flex;gap:3px;padding:4px 6px;"><button class="btn btn-sm" id="svSc">Save</button><button class="btn btn-sm" id="prSc">Print</button></div></div>';document.getElementById('svSc').onclick=()=>{sp.sc=document.getElementById('se').innerHTML;sv();t('Saved')};document.getElementById('prSc').onclick=()=>{const w=window.open();w.document.write('<pre>'+document.getElementById('se').innerHTML+'</pre>');w.print()}}
 
-function rC(){if(!S.im){S.v='sport';ra();return}let h='<div class="panel"><h3>👥 CLIENT PROFILES</h3><p style="font-size:.7rem;opacity:.6;">Assign PINs for client access.</p><button class="btn" onclick="aCP()" style="margin:8px 0;">+ Add Client</button>';const ps=S.cp||{};Object.keys(ps).forEach(p=>{const x=ps[p];h+='<div style="display:flex;gap:6px;align-items:center;padding:6px;border:1px solid var(--border);border-radius:6px;margin-bottom:4px;font-size:.72rem;"><span style="font-weight:700;min-width:70px;">'+e(p)+'</span><span style="flex:1;">'+e(x.n||'Unnamed')+'</span><button class="btn-sm" onclick="eCP(\''+p+'\')">Edit</button><button class="btn-sm btn-red" onclick="dCP(\''+p+'\')">✕</button></div>'});if(!Object.keys(ps).length)h+='<p style="opacity:.5;">No clients yet.</p>';h+='</div>';document.getElementById('main').innerHTML=h}
-function aCP(){const p=prompt('PIN:');if(!p||S.cp[p]){t('Invalid');return}const n=prompt('Name:');if(!n)return;S.cp[p.toUpperCase()]={n,l:'',c:'#d4af37',wlat:'',wlon:''};sv();rC();t('Added')}
-function eCP(p){const x=S.cp[p];if(!x)return;const n=prompt('Name:',x.n);if(n)x.n=n;const l=prompt('Logo URL:',x.l||'');x.l=l;const wlat=prompt('Weather lat:',x.wlat||'');if(wlat)x.wlat=wlat;const wlon=prompt('Weather lon:',x.wlon||'');if(wlon)x.wlon=wlon;sv();rC();t('Updated')}
-function dCP(p){if(!confirm('Delete '+p+'?'))return;delete S.cp[p];sv();rC();t('Deleted')}
-async function cSA(){if(!confirm('Save all?'))return;try{let c=0;for(const t of g().tms){try{await fetch(C+'?id=friday_'+encodeURIComponent(t.id),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(t)});c++}catch(e){}}t(c+' saved')}catch(e){t('Failed')}}
-async function cLT(){try{const r=await fetch(C+'?list=true');const d=await r.json();const ks=(d.keys||[]).filter(k=>k.startsWith('friday_'));if(!ks.length){t('None');return}const k=prompt('Key:\n'+ks.map(k=>k.replace('friday_','')).join(', '));if(!k)return;const r2=await fetch(C+'?id='+encodeURIComponent(k.startsWith('friday_')?k:'friday_'+k));const x=await r2.json();if(!x.id||!x.name)throw new Error('Invalid');const sp=g();const ex=sp.tms.find(t=>t.id===x.id);if(ex&&!confirm('Overwrite?'))return;if(x.pl)x.pl.forEach(p=>{if(!p.id)p.id=id()});if(ex){ex.name=x.name;ex.pl=x.pl||[]}else{x.id=x.id.replace('friday_','');sp.tms.push(x)}sp.cid=x.id;sv();rR();rn();t('Loaded')}catch(e){t('Failed')}}
+// CLIENTS SECTION - All client management happens here
+function rC(){
+    if(!S.im){
+        S.v='sport';
+        ra();
+        return;
+    }
+    
+    let h = `
+        <div class="panel">
+            <h3>👥 CLIENT PROFILES</h3>
+            <p style="font-size:.7rem;opacity:.6;margin-bottom:12px;">Manage client PINs, logos, and branding. All client data is stored here.</p>
+            <button class="btn" onclick="addClient()" style="margin:8px 0;">+ Add Client</button>
+            <div style="margin-top:12px;">
+    `;
+    
+    const ps = S.cp || {};
+    const clientKeys = Object.keys(ps);
+    
+    if (clientKeys.length === 0) {
+        h += '<p style="opacity:.5;padding:20px;text-align:center;">No clients yet. Add your first client above.</p>';
+    } else {
+        clientKeys.forEach(p => {
+            const x = ps[p];
+            const hasLogo = x.l && x.l !== '';
+            h += `
+                <div style="display:flex;gap:8px;align-items:center;padding:10px;border:1px solid var(--border);border-radius:8px;margin-bottom:6px;flex-wrap:wrap;">
+                    <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:150px;">
+                        <span style="font-weight:700;min-width:50px;background:var(--accent);color:#000;padding:2px 8px;border-radius:4px;font-size:.7rem;">${e(p)}</span>
+                        <span style="flex:1;font-weight:600;">${e(x.n || 'Unnamed')}</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:6px;">
+                        ${hasLogo ? '<span style="font-size:.7rem;color:var(--accent);">✅ Logo</span>' : '<span style="font-size:.7rem;opacity:.4;">No logo</span>'}
+                        <button class="btn-sm" onclick="editClient('${p}')">✏️ Edit</button>
+                        <button class="btn-sm btn-red" onclick="deleteClient('${p}')">🗑️</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+    
+    h += `
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('main').innerHTML = h;
+}
+
+// Add a new client
+function addClient() {
+    const pin = prompt('Enter a PIN for this client (e.g., ABC123):');
+    if (!pin || pin.trim() === '') {
+        t('PIN required');
+        return;
+    }
+    
+    const upperPin = pin.trim().toUpperCase();
+    if (S.cp[upperPin]) {
+        t('PIN already exists');
+        return;
+    }
+    
+    const name = prompt('Enter client name:');
+    if (!name || name.trim() === '') {
+        t('Name required');
+        return;
+    }
+    
+    S.cp[upperPin] = {
+        n: name.trim(),
+        l: '',  // Logo (URL or data URL)
+        c: '#d4af37',
+        wlat: '',
+        wlon: ''
+    };
+    
+    sv();
+    rC();
+    t('✅ Client added: ' + name.trim());
+}
+
+// Edit a client
+function editClient(pin) {
+    const client = S.cp[pin];
+    if (!client) {
+        t('Client not found');
+        return;
+    }
+    
+    // Create a modal-like edit interface
+    const editHTML = `
+        <div class="panel" style="max-width:600px;margin:20px auto;">
+            <h3>✏️ Edit Client: ${e(pin)}</h3>
+            
+            <label>Client Name</label>
+            <input type="text" id="editClientName" value="${e(client.n)}">
+            
+            <label>Client Logo</label>
+            <div style="margin:8px 0;">
+                <div class="client-logo-upload-area" onclick="document.getElementById('editClientLogoFile').click()">
+                    ${client.l && client.l !== '' ? 
+                        `<img src="${client.l}" class="client-logo-preview" alt="Client logo">` :
+                        '<p style="color:var(--text);opacity:.5;">Click to upload or drag & drop a logo image (PNG, JPG)</p>'
+                    }
+                    <input type="file" id="editClientLogoFile" accept="image/*" style="display:none;" onchange="handleClientLogoUpload(this, '${pin}')">
+                </div>
+                <div style="display:flex;gap:8px;margin-top:4px;">
+                    <input type="text" id="editClientLogoUrl" placeholder="Or enter image URL" style="flex:1;" value="${e(client.l || '')}">
+                    <button class="btn-sm" onclick="setClientLogoFromEdit('${pin}')">Set URL</button>
+                    <button class="btn-sm btn-red" onclick="clearClientLogoFromEdit('${pin}')">Clear</button>
+                </div>
+                ${client.l && client.l !== '' ? 
+                    `<div style="margin-top:4px;font-size:.65rem;opacity:.5;word-break:break-all;">Current: ${client.l.substring(0,50)}${client.l.length > 50 ? '...' : ''}</div>` : 
+                    ''
+                }
+            </div>
+            
+            <label>Weather Location (optional)</label>
+            <div style="display:flex;gap:8px;">
+                <input type="text" id="editClientWlat" placeholder="Latitude" value="${e(client.wlat || '')}" style="flex:1;">
+                <input type="text" id="editClientWlon" placeholder="Longitude" value="${e(client.wlon || '')}" style="flex:1;">
+            </div>
+            
+            <div style="display:flex;gap:8px;margin-top:12px;">
+                <button class="btn" onclick="saveClientEdit('${pin}')">💾 Save</button>
+                <button class="btn btn-sm" onclick="rC()">Cancel</button>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('main').innerHTML = editHTML;
+}
+
+// Handle client logo upload from edit form
+function handleClientLogoUpload(input, pin) {
+    const file = input.files[0];
+    if (!file) return;
+    
+    if (!file.type.startsWith('image/')) {
+        t('Please select an image file');
+        return;
+    }
+    
+    if (file.size > 2 * 1024 * 1024) {
+        t('Image too large. Max 2MB');
+        return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+        const client = S.cp[pin];
+        if (client) {
+            client.l = ev.target.result;
+            sv();
+            editClient(pin); // Refresh the edit view
+            t('✅ Logo uploaded for ' + client.n);
+        }
+    };
+    reader.onerror = function() {
+        t('❌ Upload failed');
+    };
+    reader.readAsDataURL(file);
+}
+
+// Set client logo from URL in edit form
+function setClientLogoFromEdit(pin) {
+    const urlInput = document.getElementById('editClientLogoUrl');
+    if (!urlInput || !urlInput.value.trim()) {
+        t('Please enter a URL');
+        return;
+    }
+    
+    const client = S.cp[pin];
+    if (client) {
+        client.l = urlInput.value.trim();
+        sv();
+        editClient(pin);
+        t('✅ Logo URL set');
+    }
+}
+
+// Clear client logo from edit form
+function clearClientLogoFromEdit(pin) {
+    const client = S.cp[pin];
+    if (client) {
+        client.l = '';
+        sv();
+        editClient(pin);
+        t('Logo cleared');
+    }
+}
+
+// Save client edits
+function saveClientEdit(pin) {
+    const client = S.cp[pin];
+    if (!client) {
+        t('Client not found');
+        return;
+    }
+    
+    const nameInput = document.getElementById('editClientName');
+    const wlatInput = document.getElementById('editClientWlat');
+    const wlonInput = document.getElementById('editClientWlon');
+    
+    if (nameInput && nameInput.value.trim()) {
+        client.n = nameInput.value.trim();
+    }
+    
+    if (wlatInput) client.wlat = wlatInput.value.trim();
+    if (wlonInput) client.wlon = wlonInput.value.trim();
+    
+    sv();
+    rC();
+    t('✅ Client saved: ' + client.n);
+}
+
+// Delete a client
+function deleteClient(pin) {
+    const client = S.cp[pin];
+    if (!client) {
+        t('Client not found');
+        return;
+    }
+    
+    if (!confirm('Delete client "' + client.n + '" (PIN: ' + pin + ')?')) {
+        return;
+    }
+    
+    delete S.cp[pin];
+    if (S.ap === pin) {
+        S.ap = '';
+        S.br.cl = '';
+        updateClientLogo();
+    }
+    sv();
+    rC();
+    t('🗑️ Client deleted');
+}
+
+// ADMIN PANEL (simplified - branding removed since clients handle logos)
+function rA(){
+    const ts=['theme','fonts','clock','7v7','teams','backup','cloud'];
+    const ls={theme:'Theme',fonts:'Fonts',clock:'Clock','7v7':'7v7',teams:'Teams',backup:'Backup',cloud:'Cloud'};
+    let h='<div class="panel"><h3>⚙️ ADMIN</h3><p style="font-size:.7rem;opacity:.6;margin-bottom:12px;">Note: Client logos and branding are managed in the <strong>👥 CLIENTS</strong> tab.</p><div class="admin-tabs">';
+    ts.forEach(x=>h+='<button class="admin-tab '+(S.at===x?'active':'')+'" data-at="'+x+'">'+ls[x]+'</button>');
+    h+='</div><div id="ac"></div></div>';
+    document.getElementById('main').innerHTML=h;
+    document.querySelectorAll('[data-at]').forEach(b=>b.onclick=()=>{S.at=b.dataset.at;rA()});
+    rAC();
+}
+
+function rAC(){
+    const c = document.getElementById('ac');
+    if(!c) return;
+    const sp = g();
+    
+    if(S.at === 'theme'){
+        c.innerHTML = '<h4>Theme</h4><p>Current: <strong>' + (S.md === 'dark' ? 'Dark' : 'Light') + '</strong></p><button class="btn" onclick="dark()">🌙 Dark</button> <button class="btn" onclick="light()">☀️ Light</button>';
+    } else if(S.at === 'fonts'){
+        c.innerHTML = '<h4>Font</h4><select id="fs">' + [{n:'Inter',v:"'Inter',sans-serif"},{n:'Roboto',v:"'Roboto',sans-serif"},{n:'System UI',v:'system-ui'}].map(f => '<option value="' + f.v + '" ' + (S.fn === f.v ? 'selected' : '') + '>' + f.n + '</option>').join('') + '</select><button class="btn-sm" onclick="S.fn=document.getElementById(\'fs\').value;ut()">Apply</button>';
+    } else if(S.at === 'clock'){
+        c.innerHTML = '<h4>Clock</h4><label><input type="radio" name="cf" value="12h" ' + (S.cf === '12h' ? 'checked' : '') + '> 12h</label> <label><input type="radio" name="cf" value="24h" ' + (S.cf === '24h' ? 'checked' : '') + '> 24h</label><br><label><input type="checkbox" id="cs" ' + (S.cs ? 'checked' : '') + '> Seconds</label><br><button class="btn-sm" onclick="S.cf=document.querySelector(\'input[name=cf]:checked\').value;S.cs=document.getElementById(\'cs\').checked;sv();uc()">Apply</button>';
+    } else if(S.at === '7v7'){
+        const cm = sp.md || 'tackle';
+        const p7 = sp.p7 ? sp.p7.join(', ') : D7.join(', ');
+        c.innerHTML = '<h4>7v7</h4><p>Current: <strong>' + (cm === '7v7' ? '7v7' : 'Tackle') + '</strong></p><button class="btn" onclick="x7()">' + (cm === '7v7' ? 'Switch to Tackle' : 'Switch to 7v7') + '</button><div style="margin-top:8px;"><h5>Positions</h5><textarea id="p7e" style="width:100%;height:40px;font-family:monospace;">' + e(p7) + '</textarea><button class="btn-sm" onclick="sp.p7=document.getElementById(\'p7e\').value.split(\',\').map(s=>s.trim()).filter(Boolean);sv();t(\'Saved\')" style="margin-top:4px;">Save</button></div>';
+        window.x7 = function(){sp.md = sp.md === '7v7' ? 'tackle' : '7v7'; usb(); sv(); rG(); rR(); rA(); t('Switched')};
+    } else if(S.at === 'teams'){
+        let h = '';
+        sp.tms.forEach(t => h += '<div style="display:flex;gap:6px;padding:4px;font-size:.72rem;"><span style="flex:1;">' + e(t.name) + ' (' + t.pl.length + ')</span><button class="btn-sm" onclick="g().cid=\'' + t.id + '\';S.v=\'roster\';ra()">Edit</button></div>');
+        c.innerHTML = h || '<p>No teams.</p>';
+    } else if(S.at === 'backup'){
+        c.innerHTML = '<h4>Backup</h4><button class="btn" onclick="xA()">📤 Export</button><button class="btn" onclick="document.getElementById(\'impf\').click()">📥 Import</button><input type="file" id="impf" hidden accept=".json" onchange="iA(this)"><button class="btn-red btn" onclick="if(confirm(\'Clear?\')){localStorage.clear();location.reload()}">🧹 Clear</button>';
+    } else if(S.at === 'cloud'){
+        c.innerHTML = '<h4>Cloud</h4><button class="btn" onclick="cSA()">Save All</button><button class="btn" onclick="cLT()">Load</button>';
+    }
+}
+
+// Additional functions
 function xA(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,2)]));a.download='fnl_backup.json';a.click()}
-function iA(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);S=d;sv();ut();applyAdminStyles();ra();t('Restored')}catch(e){t('Invalid')}};r.readAsText(f)}
+function iA(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);S=d;sv();ut();applyAdminStyles();updateClientLogo();ra();t('Restored')}catch(e){t('Invalid')}};r.readAsText(f)}
 function pL(){const sp=g();const at=sp.tms.find(t=>t.id===sp.aid),ht=sp.tms.find(t=>t.id===sp.hid);if(!at||!ht)return;let h='<html><head><title>Lineup</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse;margin-bottom:20px}th,td{border:1px solid #000;padding:4px 6px}th{background:#ddd}</style></head><body>';[at,ht].forEach(t=>{h+='<h2>'+e(t.name)+'</h2><table><tr><th>#</th><th>Name</th><th>Pos</th><th>Notes</th></tr>';t.pl.filter(p=>p.st).forEach(p=>{h+='<tr><td>'+e(p.n)+'</td><td>'+e(p.na)+'</td><td>'+e(p.po)+'</td><td>'+e(p.nt||'')+'</td></tr>'});h+='</table>'});h+='</body></html>';const w=window.open();w.document.write(h);w.print()}
+function printLU(){pL()}
+function gR(){if(confirm('Reset scores, quarter, and starters?')){const sp=g();sp.as=0;sp.hs=0;sp.q=1;sp.tms.forEach(t=>t.pl.forEach(p=>p.st=!1));sv();ra();t('Game reset')}}
 
-// ADMIN PANEL
-function rA(){const ts=['branding','theme','fonts','clock','7v7','teams','backup','cloud'];const ls={branding:'Branding',theme:'Theme',fonts:'Fonts',clock:'Clock','7v7':'7v7',teams:'Teams',backup:'Backup',cloud:'Cloud'};let h='<div class="panel"><h3>ADMIN</h3><div class="admin-tabs">';ts.forEach(x=>h+='<button class="admin-tab '+(S.at===x?'active':'')+'" data-at="'+x+'">'+ls[x]+'</button>');h+='</div><div id="ac"></div></div>';document.getElementById('main').innerHTML=h;document.querySelectorAll('[data-at]').forEach(b=>b.onclick=()=>{S.at=b.dataset.at;rA()});rAC()}
-function rAC(){const c=document.getElementById('ac');if(!c)return;const sp=g();if(S.at==='branding'){c.innerHTML='<h4>Branding</h4><label>Title</label><input type="text" id="bt" value="'+e(S.br.t)+'"><label>Subtitle</label><input type="text" id="bs" value="'+e(S.br.st)+'"><label>Client Logo URL</label><input type="text" id="clUrl"><button class="btn-sm" onclick="sCL(document.getElementById(\'clUrl\').value)">Set</button><input type="file" id="clFile" accept="image/*" onchange="uCL(this)"><button class="btn-sm btn-red" onclick="cCL()">Clear Logo</button><label>Weather (lat,lon)</label><input type="text" id="wlat" value="'+e(S.br.wlat)+'"><input type="text" id="wlon" value="'+e(S.br.wlon)+'"><button class="btn-sm" onclick="S.br.wlat=document.getElementById(\'wlat\').value;S.br.wlon=document.getElementById(\'wlon\').value;sv();gW()">Update Weather</button><button class="btn" onclick="S.br.t=document.getElementById(\'bt\').value;S.br.st=document.getElementById(\'bs\').value;sv();t(\'Updated\')" style="margin-top:8px;">Apply</button>'}else if(S.at==='theme'){c.innerHTML='<h4>Theme</h4><p>Current: <strong>'+(S.md==='dark'?'Dark':'Light')+'</strong></p><button class="btn" onclick="dark()">🌙 Dark</button> <button class="btn" onclick="light()">☀️ Light</button>'}else if(S.at==='fonts'){c.innerHTML='<h4>Font</h4><select id="fs">'+[{n:'Inter',v:"'Inter',sans-serif"},{n:'Roboto',v:"'Roboto',sans-serif"},{n:'System UI',v:'system-ui'}].map(f=>'<option value="'+f.v+'" '+(S.fn===f.v?'selected':'')+'>'+f.n+'</option>').join('')+'</select><button class="btn-sm" onclick="S.fn=document.getElementById(\'fs\').value;ut()">Apply</button>'}else if(S.at==='clock'){c.innerHTML='<h4>Clock</h4><label><input type="radio" name="cf" value="12h" '+(S.cf==='12h'?'checked':'')+'> 12h</label> <label><input type="radio" name="cf" value="24h" '+(S.cf==='24h'?'checked':'')+'> 24h</label><br><label><input type="checkbox" id="cs" '+(S.cs?'checked':'')+'> Seconds</label><br><button class="btn-sm" onclick="S.cf=document.querySelector(\'input[name=cf]:checked\').value;S.cs=document.getElementById(\'cs\').checked;sv();uc()">Apply</button>'}else if(S.at==='7v7'){const cm=sp.md||'tackle';const p7=sp.p7?sp.p7.join(', '):D7.join(', ');c.innerHTML='<h4>7v7</h4><p>Current: <strong>'+(cm==='7v7'?'7v7':'Tackle')+'</strong></p><button class="btn" onclick="x7()">'+(cm==='7v7'?'Switch to Tackle':'Switch to 7v7')+'</button><div style="margin-top:8px;"><h5>Positions</h5><textarea id="p7e" style="width:100%;height:40px;font-family:monospace;">'+e(p7)+'</textarea><button class="btn-sm" onclick="sp.p7=document.getElementById(\'p7e\').value.split(\',\').map(s=>s.trim()).filter(Boolean);sv();t(\'Saved\')" style="margin-top:4px;">Save</button></div>';window.x7=function(){sp.md=sp.md==='7v7'?'tackle':'7v7';usb();sv();rG();rR();rA();t('Switched')}}else if(S.at==='teams'){let h='';sp.tms.forEach(t=>h+='<div style="display:flex;gap:6px;padding:4px;font-size:.72rem;"><span style="flex:1;">'+e(t.name)+' ('+t.pl.length+')</span><button class="btn-sm" onclick="g().cid=\''+t.id+'\';S.v=\'roster\';ra()">Edit</button></div>');c.innerHTML=h||'<p>No teams.</p>'}else if(S.at==='backup'){c.innerHTML='<h4>Backup</h4><button class="btn" onclick="xA()">📤 Export</button><button class="btn" onclick="document.getElementById(\'impf\').click()">📥 Import</button><input type="file" id="impf" hidden accept=".json" onchange="iA(this)"><button class="btn-red btn" onclick="if(confirm(\'Clear?\')){localStorage.clear();location.reload()}">🧹 Clear</button>'}else if(S.at==='cloud'){c.innerHTML='<h4>Cloud</h4><button class="btn" onclick="cSA()">Save All</button><button class="btn" onclick="cLT()">Load</button>'}}
+// Cloud functions
+async function cSA(){if(!confirm('Save all?'))return;try{let c=0;for(const t of g().tms){try{await fetch(CLOUD+'?id=friday_'+encodeURIComponent(t.id),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(t)});c++}catch(e){}}t(c+' saved')}catch(e){t('Failed')}}
+async function cLT(){try{const r=await fetch(CLOUD+'?list=true');const d=await r.json();const ks=(d.keys||[]).filter(k=>k.startsWith('friday_'));if(!ks.length){t('None');return}const k=prompt('Key:\n'+ks.map(k=>k.replace('friday_','')).join(', '));if(!k)return;const r2=await fetch(CLOUD+'?id='+encodeURIComponent(k.startsWith('friday_')?k:'friday_'+k));const x=await r2.json();if(!x.id||!x.name)throw new Error('Invalid');const sp=g();const ex=sp.tms.find(t=>t.id===x.id);if(ex&&!confirm('Overwrite?'))return;if(x.pl)x.pl.forEach(p=>{if(!p.id)p.id=id()});if(ex){ex.name=x.name;ex.pl=x.pl||[]}else{x.id=x.id.replace('friday_','');sp.tms.push(x)}sp.cid=x.id;sv();rR();rn();t('Loaded')}catch(e){t('Failed')}}
 
-// Additional admin customization functions
-function sCL(u){S.br.cl=u;ucl();sv();t('Logo set')}
-function uCL(i){const f=i.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{S.br.cl=ev.target.result;ucl();sv();t('Logo uploaded')};r.readAsDataURL(f)}
-function cCL(){S.br.cl='';ucl();sv();t('Logo cleared')}
+// Keyboard shortcuts
+document.addEventListener('keydown',e=>{if(e.key==='s'&&(e.ctrlKey||e.metaKey)){e.preventDefault();sv();t('Saved')}});
+document.getElementById('resetBtn').onclick=gR;
+
+// Global functions
+window.chScore=chS;window.chQuarter=chQ;window.tP=tP;window.sU=sU;window.swT=swT;window.aP=aP;
+window.tS=tS;window.dP=dP;window.uF=uF;window.searchPlayers=searchPlayers;
+window.setGC=sGC;window.startGC=stGC;window.pauseGC=pGC;window.resetGC=rGC;
+window.iM=iM;window.pS=pS;window.eC=eC;window.pZR=pZR;window.sT=sT;window.nT=nT;
+window.uR=uR;window.reR=reR;window.light=light;window.dark=dark;window.toggleTheme=toggleTheme;
+window.xA=xA;window.iA=iA;window.pL=pL;window.uploadPlayerPhoto=uploadPlayerPhoto;
+window.updateClientLogo=updateClientLogo;window.uploadClientLogo=uploadClientLogo;
+window.setClientLogoFromURL=setClientLogoFromURL;window.clearClientLogo=clearClientLogo;
+window.addClient=addClient;window.editClient=editClient;window.deleteClient=deleteClient;
+window.handleClientLogoUpload=handleClientLogoUpload;window.setClientLogoFromEdit=setClientLogoFromEdit;
+window.clearClientLogoFromEdit=clearClientLogoFromEdit;window.saveClientEdit=saveClientEdit;
 
 // Initialize
 ld();
