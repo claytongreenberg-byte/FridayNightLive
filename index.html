@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Friday Night Live | Digital Pressbox</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+        :root{--primary-navy:#1f3a5e;--primary-gold:#e6b422;--accent-red:#c41e3a;--bg-light:#f4f6fa;--surface-light:#fff;--text-light:#0f172a;--border-light:#dce3ec;--bg-dark:#0f172a;--surface-dark:#1e293b;--text-dark:#f1f5f9;--border-dark:#334155;--touch-target:44px;--font-base:18px;--atbat-bg:#fff9c4;--atbat-text:#000;--dark-atbat-bg:#5c4200;--dark-atbat-text:#ffe082;--away-color:#1d4ed8;--home-color:#c41e3a;--hud-away-bg:#e8f0fe;--hud-home-bg:#fce8e8;--bug-team-name-font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;--bug-team-name-size:0.65rem;--bug-team-name-color:#ffffff;--bug-team-name-weight:700;--card-team-label-font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;--card-team-label-size:0.85rem;--card-team-label-color:var(--text-light);--card-team-label-weight:700;--card-head-visitor-bg:#ffffff;--card-head-home-bg:#ffffff;--scorebug-bg:rgba(0,0,0,.3);--scorebug-text-color:#ffffff;--clock-footer-bg:#111111;--clock-footer-text:#ffffff;--clock-footer-size:13px;--version:'FNL.2'}
+        body.dark-mode{--bg-light:var(--bg-dark);--surface-light:var(--surface-dark);--text-light:var(--text-dark);--border-light:var(--border-dark);--atbat-bg:var(--dark-atbat-bg);--atbat-text:var(--dark-atbat-text);--hud-away-bg:#1e293b;--hud-home-bg:#1e293b;--card-head-visitor-bg:#1e293b;--card-head-home-bg:#1e293b;--scorebug-bg:rgba(255,255,255,.08);--scorebug-text-color:#f1f5f9}
+        body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg-light);color:var(--text-light);height:100dvh;display:flex;flex-direction:column;overflow:hidden;font-size:var(--font-base);transition:background 0.2s,color 0.2s;padding-top:env(safe-area-inset-top);padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
+        body::before{content:'';position:fixed;top:env(safe-area-inset-top);left:0;width:100%;height:4px;background:var(--accent-red);z-index:2000}
+        header{background:var(--primary-navy);color:#fff;padding:8px 12px;padding-top:max(8px,calc(env(safe-area-inset-top) - 4px));display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--primary-gold);flex-shrink:0;gap:12px;min-height:56px;flex-wrap:nowrap}
+        .header-left{display:flex;align-items:center;gap:10px;flex-shrink:0}
+        .logo-main{height:38px;width:auto;object-fit:contain;border-radius:3px;padding:1px;background:transparent!important;box-shadow:0 0 0 2px var(--primary-gold)}
+        .brand-text{display:flex;flex-direction:column;line-height:1.1;text-align:center;justify-content:center}
+        .brand-text h1{font-size:.95rem;font-weight:800;color:#fff;white-space:nowrap}
+        .brand-text p{font-size:.7rem;text-transform:uppercase;color:var(--primary-gold);font-weight:800;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+        .header-center{display:flex;align-items:center;gap:8px;flex-shrink:0}
+        .header-right{display:flex;align-items:center;gap:6px;flex-shrink:0;flex-wrap:wrap}
+        .score-bug{display:flex;align-items:center;gap:8px;background:var(--scorebug-bg);border-radius:20px;padding:6px 12px;border:1px solid rgba(255,255,255,.1)}
+        .score-bug.hidden{display:none}
+        .bug-team{display:flex;flex-direction:column;align-items:center;min-width:50px}
+        .bug-team-logo{width:24px;height:24px;object-fit:contain;border-radius:3px;margin-bottom:2px}
+        .bug-team-name{font-weight:var(--bug-team-name-weight);font-size:var(--bug-team-name-size);font-family:var(--bug-team-name-font);color:var(--bug-team-name-color);text-align:center}
+        .bug-score{font-weight:900;font-size:1.4rem;color:var(--scorebug-text-color);min-width:24px;text-align:center}
+        .bug-score-btn{background:rgba(255,255,255,.15);border:none;color:var(--scorebug-text-color);width:20px;height:20px;border-radius:50%;font-size:10px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0;flex-shrink:0}
+        .bug-divider{color:#666;font-weight:300;font-size:1rem}
+        .bug-inning{display:flex;align-items:center;gap:3px;background:rgba(0,0,0,.3);border-radius:12px;padding:3px 8px}
+        .bug-inning span{font-weight:700;font-size:.65rem;color:var(--primary-gold);min-width:24px;text-align:center}
+        .bug-inning button{background:rgba(255,255,255,.15);border:none;color:#fff;width:18px;height:18px;border-radius:50%;font-size:9px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0}
+        .header-hud-row{display:flex;gap:6px;align-items:center;flex-shrink:0}
+        .header-hud-badge{border:2px solid var(--primary-gold);border-radius:8px;padding:4px 10px;font-size:.75rem;font-weight:700;white-space:nowrap;color:var(--text-light);min-height:32px;display:flex;align-items:center}
+        #headerHudAway{background:var(--hud-away-bg)}#headerHudHome{background:var(--hud-home-bg)}
+        .timers-area{display:flex;gap:4px;align-items:center;flex-shrink:0}
+        .timer-pill{background:rgba(0,0,0,.35);border:1px solid var(--accent-red);border-radius:16px;padding:3px 8px;display:flex;align-items:center;gap:4px;font-size:.65rem}
+        .timer-label{font-weight:600;color:var(--primary-gold)}.timer-value{font-family:monospace;font-weight:700;min-width:28px;font-size:.7rem}
+        .weather-pill{background:rgba(0,0,0,.35);border:1px solid var(--primary-gold);border-radius:16px;padding:3px 10px;display:flex;align-items:center;gap:5px;font-size:.62rem;color:#fff;white-space:nowrap;flex-shrink:0;cursor:default}
+        .weather-pill .wx-icon{font-size:.85rem}.weather-pill .wx-location{color:var(--primary-gold);font-weight:600;font-size:.58rem}.weather-pill .wx-detail{color:#cbd5e1;font-size:.56rem}
+        button{cursor:pointer;font-family:inherit;touch-action:manipulation;pointer-events:auto!important}
+        .btn-icon{background:rgba(255,255,255,.2);border:none;color:#fff;padding:4px 6px;border-radius:12px;font-size:.65rem;min-height:28px;min-width:28px;display:inline-flex;align-items:center;justify-content:center}
+        .btn-icon.green{background:#2e7d32}.btn-icon.wx-color{background:#e6a817;color:#000}
+        .reset-pill{background:var(--accent-red);color:#fff;border:none;padding:5px 10px;border-radius:16px;font-weight:700;font-size:.7rem}
+        .header-btn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);color:#fff;padding:5px 10px;border-radius:10px;font-size:.7rem;font-weight:600;white-space:nowrap}
+        .toggle-bug-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:4px 10px;border-radius:10px;font-size:.65rem;font-weight:600;cursor:pointer;white-space:nowrap}
+        .toggle-bug-btn.active{background:var(--primary-gold);color:#0a1c3a;border-color:var(--primary-gold)}
+        .back-link{color:var(--primary-gold);text-decoration:none;font-weight:700;font-size:.7rem;padding:4px 8px;border-radius:10px;background:rgba(255,255,255,.12);white-space:nowrap;display:inline-flex;align-items:center}
+        .theme-toggle{background:rgba(0,0,0,.4);border-radius:12px;padding:1px;display:flex}
+        .theme-btn{background:none;border:none;padding:3px 8px;border-radius:10px;font-size:.65rem;color:#fff;font-weight:600}.theme-btn.active{background:var(--primary-gold);color:#0a1c3a}
+        nav{background:#374151;display:flex;padding:0 8px;gap:2px;flex-shrink:0;overflow-x:auto}
+        .nav-link{padding:10px 14px;background:none;border:none;font-weight:700;font-size:.8rem;text-transform:uppercase;color:#fff;border-bottom:3px solid transparent;min-height:40px;white-space:nowrap}.nav-link.active{border-bottom-color:var(--primary-gold)}
+        :focus-visible{outline:2px solid var(--primary-gold);outline-offset:2px}
+        #main-container{flex:1;overflow:hidden;display:flex;flex-direction:column;min-height:0}
+        main{flex:1;padding:6px;display:flex;flex-direction:column;min-height:0}
+        .view-pane{display:none;flex:1;flex-direction:column;overflow:hidden;min-height:0}.view-pane.active{display:flex}
+        #admin.view-pane.active{overflow-y:auto!important;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:6px}
+        .gameday-container{display:flex;flex-direction:column;flex:1;gap:8px;min-height:0;overflow:hidden}
+        .card-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;flex:1;min-height:0;overflow:hidden}
+        .lineup-card{background:var(--surface-light);border-radius:12px;border:1px solid var(--border-light);box-shadow:0 2px 8px rgba(0,0,0,.05);display:grid;grid-template-rows:auto 1fr;overflow:hidden;min-height:0}
+        .card-head{padding:8px 10px;border-bottom:1px solid var(--border-light);display:flex;gap:6px;align-items:center;flex-wrap:wrap;border-left-width:5px;border-left-style:solid;min-height:42px;z-index:2}
+        .card-head.visitor{border-left-color:var(--away-color);background:var(--card-head-visitor-bg)}.card-head.home{border-left-color:var(--home-color);background:var(--card-head-home-bg)}
+        .team-label{font-size:var(--card-team-label-size);font-family:var(--card-team-label-font);font-weight:var(--card-team-label-weight);color:var(--card-team-label-color);text-transform:uppercase}
+        .team-logo-inline{width:28px;height:28px;object-fit:contain;border-radius:3px;flex-shrink:0}
+        .team-select-wrapper{position:relative;flex:1;min-width:130px}.team-select-wrapper::after{content:"▼";position:absolute;right:8px;top:50%;transform:translateY(-50%);pointer-events:none;font-size:.6rem;color:#666;z-index:1}
+        .team-select{width:100%;padding:8px 24px 8px 8px;border-radius:8px;font-weight:700;font-size:.88rem;background:var(--surface-light);color:var(--text-light);border:2px solid var(--border-light);min-height:40px;appearance:none;-webkit-appearance:none;position:relative;pointer-events:auto}
+        #visitorTeamSelect{color:var(--away-color);border-color:var(--away-color)}#homeTeamSelect{color:var(--home-color);border-color:var(--home-color)}
+        .lineup-scroll{overflow-y:scroll;overflow-x:auto;-webkit-overflow-scrolling:touch;min-height:0;background:var(--surface-light)}
+        .lineup-scroll::-webkit-scrollbar{width:12px;height:12px;-webkit-appearance:none}
+        .lineup-scroll::-webkit-scrollbar-track{background:var(--border-light);border-radius:6px}
+        .lineup-scroll::-webkit-scrollbar-thumb{background:#94a3b8;border-radius:6px;border:2px solid var(--surface-light)}
+        .lineup-table{width:100%;border-collapse:separate;border-spacing:0;font-size:.9rem;table-layout:fixed;min-width:500px}
+        .lineup-table thead{position:sticky;top:0;z-index:3}
+        .lineup-table th{position:sticky;top:0;z-index:2;text-align:left;padding:7px 5px;font-weight:700;background:#3b82f6;color:#fff;font-size:.8rem;border-bottom:2px solid rgba(0,0,0,.2)}
+        .lineup-card:last-child .lineup-table th{background:rgba(198,28,56,.85)}
+        .lineup-table td{padding:5px 5px;border-bottom:1px solid var(--border-light);vertical-align:middle;font-size:.9rem}
+        .lineup-table th:nth-child(1),.lineup-table td:nth-child(1){width:46px;min-width:46px;text-align:center}
+        .lineup-table th:nth-child(2),.lineup-table td:nth-child(2){width:44px;min-width:44px;text-align:center}
+        .lineup-table th:nth-child(3),.lineup-table td:nth-child(3){min-width:120px;width:40%}
+        .lineup-table th:nth-child(4),.lineup-table td:nth-child(4){width:68px;min-width:68px}
+        .lineup-table th:nth-child(5),.lineup-table td:nth-child(5){min-width:90px;width:18%}
+        .lineup-table th:nth-child(6),.lineup-table td:nth-child(6){width:50px;min-width:50px;text-align:center}
+        .row-current{background:var(--atbat-bg)!important;border-left:5px solid var(--primary-gold)}.row-current td{color:var(--atbat-text)!important;font-weight:700}
+        .row-ondeck{background:rgba(100,116,139,.15)!important;border-left:4px solid #94a3b8}body.dark-mode .row-ondeck{background:rgba(148,163,184,.35)!important}
+        .atbat-btn{background:#fff;border:2px solid #3b82f6;color:#3b82f6;padding:4px 8px;border-radius:14px;font-weight:800;font-size:.72rem;white-space:nowrap}
+        .drag-handle{cursor:grab;font-size:.9rem;user-select:none;flex-shrink:0;margin-right:3px;line-height:1}
+        .duplicate-warn{color:#ef4444;font-size:.7rem;margin-left:3px;font-weight:800}
+        select,input,textarea{background:var(--surface-light);border:1px solid var(--border-light);padding:3px 4px;border-radius:6px;font-size:.82rem;width:100%;min-height:30px;color:var(--text-light);pointer-events:auto!important}
+        .jersey-input{width:100%;text-align:center;font-weight:700;padding:3px;min-height:30px;font-size:.92rem!important}
+        .player-cell{display:flex;align-items:center;gap:3px}.player-cell select{flex:1;min-width:95px;font-size:.88rem!important}
+        .notes-textarea{font-style:italic;width:100%;min-width:75px;white-space:normal;word-wrap:break-word;overflow-wrap:break-word;resize:vertical;min-height:28px;max-height:56px;font-size:.75rem;font-family:inherit;background:var(--surface-light);border:1px solid var(--border-light);padding:3px 4px;border-radius:6px;color:var(--text-light);line-height:1.3}body.dark-mode .notes-textarea{background:var(--surface-dark);color:var(--text-dark);border-color:var(--border-dark)}
+        .order-circle{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--primary-gold);color:#0a1c3a;font-weight:900;font-size:.78rem;flex-shrink:0}.order-circle.dh{background:#9aa;font-size:.58rem;width:auto;min-width:44px;padding:0 4px;border-radius:12px}.order-circle.p{background:#9aa;font-size:.62rem}
+        .toggle-btn{background:#2e7d32;color:#fff;border:none;border-radius:6px;font-size:.58rem;font-weight:700;padding:0 5px;line-height:1.5;cursor:pointer;text-transform:uppercase;min-width:26px}.toggle-btn.off{background:#999}
+        .header-toggle{background:#2e7d32;color:#fff;border:none;border-radius:6px;font-size:.72rem;font-weight:700;padding:4px 10px;line-height:1.4;cursor:pointer;text-transform:uppercase;min-width:34px}.header-toggle.off{background:#999}
+        .add-player-btn{background:var(--primary-gold);color:#0a1c3a;border:none;border-radius:8px;font-size:.62rem;font-weight:800;padding:3px 10px;cursor:pointer;white-space:nowrap}
+        .row-toggle-btn{background:#2e7d32;color:#fff;border:none;border-radius:50%;width:22px;height:22px;font-size:.58rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;margin-left:3px;flex-shrink:0}.row-toggle-btn.off{background:#999}
+        .roster-layout{display:grid;grid-template-columns:230px 1fr;gap:12px;height:100%}
+        .team-sidebar{background:var(--surface-light);border-radius:12px;padding:12px;overflow-y:auto}
+        .team-item{padding:10px;border-radius:8px;margin-bottom:4px;cursor:pointer;background:rgba(0,0,0,.04);font-weight:600;font-size:.88rem;min-height:46px;display:flex;align-items:center}
+        .roster-workspace{background:var(--surface-light);border-radius:12px;padding:12px;overflow-y:auto}
+        .player-row{display:grid;grid-template-columns:52px 1fr 82px 1fr 1fr 82px 34px;gap:5px;margin-bottom:5px;align-items:center}.player-row input{font-size:.8rem;padding:6px 4px}
+        .bulk-add-area{width:100%;min-height:120px;font-family:monospace;padding:8px;border-radius:6px;border:1px solid var(--border-light);background:var(--surface-light);color:var(--text-light);font-size:.8rem;margin-top:8px}
+        .script-area{width:100%;height:70vh;font-family:monospace;padding:10px;border-radius:10px;border:1px solid var(--border-light);background:var(--surface-light);font-size:1rem;color:var(--text-light)}
+        .admin-panel{background:var(--surface-light);border-radius:12px;padding:16px;max-width:750px;width:100%;min-height:min-content}.admin-panel h3{font-weight:700;margin:14px 0 8px;border-bottom:1px solid var(--border-light);padding-bottom:4px;font-size:.92rem;color:var(--primary-navy)}body.dark-mode .admin-panel h3{color:var(--primary-gold)}
+        .admin-panel label{display:block;margin-bottom:6px;font-size:.82rem;font-weight:600;color:var(--text-light)}
+        .admin-panel input[type="text"],.admin-panel input[type="number"],.admin-panel select{width:100%;padding:8px;border-radius:8px;border:1px solid var(--border-light);font-size:.88rem;margin-bottom:6px;background:var(--surface-light);color:var(--text-light)}
+        .admin-panel input[type="color"]{width:56px;height:38px;border:none;cursor:pointer;margin-left:8px;vertical-align:middle}
+        .admin-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:4px}
+        .admin-row label{margin-bottom:0;flex-shrink:0;min-width:60px;font-size:.72rem}
+        .admin-row input[type="color"]{width:40px;height:32px;margin-left:0}
+        .admin-row select{width:auto;flex:1;min-width:100px}
+        .admin-row input[type="text"]{width:auto;flex:1;min-width:80px}
+        .admin-section{background:rgba(0,0,0,.02);border-radius:8px;padding:10px;margin-bottom:8px;border:1px solid var(--border-light)}body.dark-mode .admin-section{background:rgba(255,255,255,.03)}
+        .admin-section h4{font-size:.8rem;font-weight:700;margin-bottom:6px;color:var(--primary-navy)}body.dark-mode .admin-section h4{color:var(--primary-gold)}
+        .logo-preview-sm{width:36px;height:36px;object-fit:contain;background:#fff;border-radius:4px;border:1px solid var(--border-light)}
+        .branding-section{margin-top:10px;padding-top:8px;border-top:1px solid var(--border-light)}.branding-section h5{font-size:.78rem;font-weight:700;margin-bottom:6px}
+        footer{background:var(--primary-navy);padding:3px 14px;padding-bottom:calc(3px + env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:space-between;font-size:.65rem;color:#94a3b8;flex-shrink:0;gap:8px}
+        .footer-logo{height:34px;width:auto;border-radius:4px;padding:2px}.footer-left,.footer-center,.footer-right{display:flex;align-items:center;gap:6px}.footer-center{flex:1;justify-content:center;flex-direction:column;gap:2px}
+        footer a{color:var(--primary-gold);text-decoration:none;font-weight:600}.footer-text{color:var(--primary-gold);font-weight:600;font-size:.62rem}
+        .clock-footer{font-family:'Share Tech Mono',monospace;font-weight:700;padding:2px 8px;font-size:var(--clock-footer-size);border-radius:4px;background:var(--clock-footer-bg);color:var(--clock-footer-text);border-bottom:2px solid var(--accent-red);white-space:nowrap}
+        .last-saved{color:var(--primary-gold);font-size:.62rem;opacity:.9}
+        .btn-sm{background:rgba(0,0,0,.05);border:1px solid var(--border-light);padding:6px 12px;border-radius:10px;cursor:pointer;font-weight:600;font-size:.78rem;min-height:34px;color:var(--text-light)}.btn-danger{background:var(--accent-red);color:#fff}
+        @media(max-width:1100px){header{gap:6px}.header-hud-row{order:3;width:100%;justify-content:center}.timers-area{order:2}.weather-pill{order:4;width:100%;justify-content:center;font-size:.6rem}}
+        @media(max-width:900px){.card-grid{grid-template-columns:1fr;grid-template-rows:1fr 1fr}.roster-layout{grid-template-columns:1fr}footer{flex-direction:column}}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <img src="LUCL.png" class="logo-main" alt="Voice of DFW Logo"
+            onerror="this.style.boxShadow='0 0 0 2px var(--primary-gold)';this.style.background='transparent';this.style.minWidth='80px';">
+            <div class="brand-text">
+                <h1>FRIDAY NIGHT LIVE</h1>
+                <p>DIGITAL PRESSBOX</p>
+            </div>
+        </div>
+
+        <div class="header-center">
+            <div class="score-bug" id="scoreBug">
+                <div class="bug-team">
+                    <img class="bug-team-logo" id="bugAwayLogo" src="" style="display:none" onerror="this.style.display='none'">
+                    <span class="bug-team-name" id="bugAwayName">AWAY</span>
+                </div>
+                <button class="bug-score-btn" onclick="window.changeRuns('visitor',-1)">−</button>
+                <span class="bug-score" id="bugAwayScore">0</span>
+                <button class="bug-score-btn" onclick="window.changeRuns('visitor',1)">+</button>
+                <span class="bug-divider">–</span>
+                <button class="bug-score-btn" onclick="window.changeRuns('home',-1)">−</button>
+                <span class="bug-score" id="bugHomeScore">0</span>
+                <button class="bug-score-btn" onclick="window.changeRuns('home',1)">+</button>
+                <div class="bug-team">
+                    <img class="bug-team-logo" id="bugHomeLogo" src="" style="display:none" onerror="this.style.display='none'">
+                    <span class="bug-team-name" id="bugHomeName">HOME</span>
+                </div>
+                <div class="bug-inning">
+                    <button onclick="window.changeInning(-1)">◀</button>
+                    <span id="bugInning">1st</span>
+                    <button onclick="window.changeInning(1)">▶</button>
+                </div>
+            </div>
+
+            <div class="header-hud-row">
+                <div class="header-hud-badge" id="headerHudAway">AWAY: NO AT BAT</div>
+                <div class="header-hud-badge" id="headerHudHome">HOME: NO AT BAT</div>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <div class="weather-pill" id="weatherPill" title="Loading weather...">
+                <span class="wx-icon">🌤️</span>
+                <span id="weatherTemp">--°F</span>
+                <span class="wx-detail" id="weatherDetail"></span>
+                <span class="wx-location" id="weatherLocation">📍 Locating...</span>
+            </div>
+            <div class="timers-area">
+                <div class="timer-pill"><span class="timer-label">⚾</span><span class="timer-value" id="firstPitchDisplay">--:--</span><button class="btn-icon green" onclick="window.markPitch()">⏺</button><button class="btn-icon" onclick="window.setCountdown()">⏳</button></div>
+                <div class="timer-pill"><span class="timer-label">⛈️</span><span class="timer-value" id="wxTimerDisplay">--:--</span><button class="btn-icon wx-color" onclick="window.startWx()">▶</button><button class="btn-icon wx-color" onclick="window.resetWx()">◼</button></div>
+            </div>
+            <button class="toggle-bug-btn active" id="toggleBugBtn" onclick="window.toggleScorebugDisplay()">👁️</button>
+            <a href="https://voiceofdfw.com" class="back-link">← VODFW</a>
+            <button class="header-btn" onclick="window.printBothLineups()">🖨️</button>
+            <button class="reset-pill" onclick="window.confirmResetGame()">↺ RESET</button>
+            <button class="reset-pill" style="background:#e6a817;color:#000;" onclick="window.clearCache()">🗑️</button>
+            <div class="theme-toggle">
+                <button class="theme-btn active" id="lightModeBtn" onclick="window.setTheme('light')">☀️</button>
+                <button class="theme-btn" id="darkModeBtn" onclick="window.setTheme('dark')">🌙</button>
+            </div>
+        </div>
+    </header>
+    <nav>
+        <button class="nav-link active" data-view="gameday">📋 GAME</button>
+        <button class="nav-link" data-view="score">📊 SCORE</button>
+        <button class="nav-link" data-view="roster">📋 ROSTERS</button>
+        <button class="nav-link" data-view="script">🎙️ SCRIPT</button>
+        <button class="nav-link" data-view="admin">⚙️ ADMIN</button>
+    </nav>
+    <div id="main-container"><main>
+            <div id="gameday" class="view-pane active">
+                <div class="gameday-container">
+                    <div class="card-grid">
+                        <div class="lineup-card">
+                            <div class="card-head visitor" id="visitorCardHead">
+                                <span class="team-label">AWAY</span><span id="visitorLogoSlot"></span>
+                                <div class="team-select-wrapper"><select id="visitorTeamSelect" class="team-select"></select></div>
+                                <button class="btn-sm" onclick="window.clearSide('visitor')">CLEAR</button>
+                                <button class="add-player-btn" onclick="window.addPlayerToLineup('visitor')">+ADD</button>
+                                <button class="header-toggle off" id="visitorEHToggle" onclick="window.toggleHeaderSlot('visitor','eh')">EH</button>
+                                <button class="header-toggle" id="visitorDHToggle" onclick="window.toggleHeaderSlot('visitor','dh')">DH</button>
+                                <button class="header-toggle" id="visitorPToggle" onclick="window.toggleHeaderSlot('visitor','p')">P</button>
+                            </div>
+                            <div class="lineup-scroll">
+                                <table class="lineup-table">
+                                    <thead><tr><th>#</th><th>JER</th><th>PLAYER</th><th>POS</th><th>NOTES</th><th>AB</th></tr></thead>
+                                    <tbody id="visitorLineupBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="lineup-card">
+                            <div class="card-head home" id="homeCardHead">
+                                <span class="team-label">HOME</span><span id="homeLogoSlot"></span>
+                                <div class="team-select-wrapper"><select id="homeTeamSelect" class="team-select"></select></div>
+                                <button class="btn-sm" onclick="window.clearSide('home')">CLEAR</button>
+                                <button class="add-player-btn" onclick="window.addPlayerToLineup('home')">+ADD</button>
+                                <button class="header-toggle off" id="homeEHToggle" onclick="window.toggleHeaderSlot('home','eh')">EH</button>
+                                <button class="header-toggle" id="homeDHToggle" onclick="window.toggleHeaderSlot('home','dh')">DH</button>
+                                <button class="header-toggle" id="homePToggle" onclick="window.toggleHeaderSlot('home','p')">P</button>
+                            </div>
+                            <div class="lineup-scroll">
+                                <table class="lineup-table">
+                                    <thead><tr><th>#</th><th>JER</th><th>PLAYER</th><th>POS</th><th>NOTES</th><th>AB</th></tr></thead>
+                                    <tbody id="homeLineupBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="roster" class="view-pane">
+                <div class="roster-layout">
+                    <div class="team-sidebar" id="teamSidebar">
+                        <h3>🏆 TEAM LIBRARY</h3>
+                        <div id="teamListContainer"></div>
+                        <button class="btn-sm" style="margin-top:8px;width:100%" onclick="window.newTeam()">+ NEW TEAM</button>
+                    </div>
+                    <div class="roster-workspace" id="rosterWorkspace"></div>
+                </div>
+            </div>
+            <div id="script" class="view-pane">
+                <div style="background:var(--surface-light);border-radius:10px;padding:10px;height:100%;display:flex;flex-direction:column;">
+                    <div style="display:flex;gap:6px;margin-bottom:8px;">
+                        <button class="btn-sm" onclick="window.printScript()">🖨️</button>
+                        <button class="btn-sm" onclick="document.getElementById('scriptFileInput').click()">📂</button>
+                        <button class="btn-sm" onclick="window.saveScript()">💾 SAVE</button>
+                        <button class="btn-sm btn-danger" onclick="window.clearScript()">CLEAR</button>
+                    </div>
+                    <textarea id="scriptTextarea" class="script-area" placeholder="Announcer notes..."></textarea>
+                    <input type="file" id="scriptFileInput" hidden accept=".txt,.csv" onchange="window.loadScriptFile(this)">
+                </div>
+            </div>
+            <div id="admin" class="view-pane">
+                <div class="admin-panel" id="adminPanel"></div>
+            </div>
+    </main></div>
+    <footer>
+        <div class="footer-left">© 2026 <a href="https://voiceofdfw.com" target="_blank">Voice of DFW</a> Clayton E. Greenberg</div>
+        <div class="footer-center"><span class="footer-text">FRIDAY NIGHT LIVE COMMAND CENTER</span><img src="logos/VoiceRectGoldNew.png?v=5.3" class="footer-logo" alt="Voice of DFW Logo" onerror="this.style.minWidth='30px';"></div>
+        <div class="footer-right"><span class="clock-footer" id="footerClock">00:00:00</span><span class="last-saved" id="lastSaved">Never saved</span></div>
+    </footer>
+    <script>
+        (function() {
+            var APP_VERSION = 'FNL.2',
+                CACHE_KEY = 'fnl_cache_version';
+
+            function checkCacheVersion() {
+                try {
+                    if (localStorage.getItem(CACHE_KEY) !== APP_VERSION) {
+                        clearAllCache();
+                        localStorage.setItem(CACHE_KEY, APP_VERSION);
+                    }
+                } catch (e) {}
+            }
+
+            function clearAllCache() {
+                try {
+                    localStorage.removeItem('fnl_teams');
+                    localStorage.removeItem('fnl_game');
+                    localStorage.removeItem('fnl_settings');
+                    localStorage.removeItem('fnl_script');
+                    localStorage.removeItem(CACHE_KEY);
+                    sessionStorage.clear();
+                    return true;
+                } catch (e) { return false; }
+            }
+            checkCacheVersion();
+
+            function esc(str) { var d = document.createElement('div');
+                d.textContent = str; return d.innerHTML; }
+            var CLOUD_API_BASE = "https://lineup-api.claytongreenberg.workers.dev/api/lineup";
+
+            var STATE = {
+                teams: {},
+                game: {
+                    visitor: { teamId: "", lineup: [], battingIdx: -1, onDeck: 0, runs: 0, use10th: false, showDH: true,
+                        showP: true },
+                    home: { teamId: "", lineup: [], battingIdx: -1, onDeck: 0, runs: 0, use10th: false, showDH: true,
+                    showP: true },
+                    inning: 1,
+                    showScoreBug: true
+                },
+                script: '',
+                wxTimer: null,
+                wxSeconds: 0,
+                cdTimer: null,
+                cdTarget: null,
+                weatherData: null,
+                weatherLocation: 'Dallas, TX',
+                weatherFallback: false,
+                settings: {
+                    brand: "FRIDAY NIGHT LIVE",
+                    subtext: "DIGITAL PRESSBOX",
+                    subtextColor: "#e6b422",
+                    theme: "light",
+                    fontScale: 100,
+                    atbatBg: "#fff9c4",
+                    atbatText: "#000000",
+                    clockBg: "#111111",
+                    clockText: "#ffffff",
+                    clockSize: "13",
+                    lastBackup: null,
+                    customPositions: [],
+                    posLabelStyle: "short",
+                    awayColor: "#1d4ed8",
+                    homeColor: "#c41e3a",
+                    hudAwayBg: "#e8f0fe",
+                    hudHomeBg: "#fce8e8",
+                    clientLogo: "LUCL.png",
+                    bugTeamNameFont: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                    bugTeamNameSize: "0.65rem",
+                    bugTeamNameColor: "#ffffff",
+                    bugTeamNameWeight: "700",
+                    cardTeamLabelFont: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                    cardTeamLabelSize: "0.85rem",
+                    cardTeamLabelColor: "",
+                    cardTeamLabelWeight: "700",
+                    cardHeadVisitorBg: "#ffffff",
+                    cardHeadHomeBg: "#ffffff",
+                    scorebugBg: "rgba(0,0,0,.3)",
+                    scorebugTextColor: "#ffffff"
+                }
+            };
+            var DEFAULT_POSITIONS = ["P", "C", "1B", "2B", "3B", "SS", "LF", "CF", "RF", "DH", "EH", "NA", "PR", "CR",
+            "X"];
+            var POSITIONS = [],
+                POS_NUMBERS = { P: 1, C: 2, "1B": 3, "2B": 4, "3B": 5, SS: 6, LF: 7, CF: 8, RF: 9 };
+
+            function formatPosLabel(abbr) {
+                var s = STATE.settings.posLabelStyle || 'short';
+                if (s === 'classic') return abbr;
+                if (s === 'number') { if (POS_NUMBERS[abbr] !== undefined) return String(POS_NUMBERS[abbr]);
+                    return abbr; }
+                if (POS_NUMBERS[abbr] !== undefined) return abbr + ' (' + POS_NUMBERS[abbr] + ')';
+                return abbr;
+            }
+
+            function rebuildPositions() {
+                POSITIONS = DEFAULT_POSITIONS.slice();
+                var c = STATE.settings.customPositions;
+                if (c && Array.isArray(c)) { c.forEach(function(p) { if (POSITIONS.indexOf(p) < 0) POSITIONS.push(
+                        p); }); }
+            }
+
+            function mkLineup() { var a = []; for (var i = 0; i < 9; i++) a.push({ num: "", name: "", pos: "", notes: "",
+                    active: true });
+                a.push({ num: "", name: "", pos: "", notes: "", active: false });
+                a.push({ num: "", name: "", pos: "DH For", notes: "", active: true });
+                a.push({ num: "", name: "", pos: "P", notes: "", active: true }); return a; }
+
+            function addNAXPlayersToTeam(team) { if (!team.players) team.players = []; if (!team.players.some(function(p) { return p
+                        .name === "NA"; })) team.players.unshift({ number: "", name: "NA", position: "NA", pronunciation: "",
+                    college: "" }); if (!team.players.some(function(p) { return p.name === "X"; })) team.players.unshift({ number: "",
+                    name: "X", position: "X", pronunciation: "", college: "" }); }
+
+            function findDuplicateNumbers(team) { var count = {};
+                team.players.forEach(function(p) { if (p.number) { count[p.number] = (count[p.number] || 0) + 1; } });
+                var dupes = {}; for (var n in count) { if (count[n] > 1) dupes[n] = true; } return dupes; }
+
+            function buildPreloadedTeams() {
+                if (localStorage.getItem('fnl_teams')) return;
+                var teams = {
+                    "arlington_outlaws": { id: "arlington_outlaws", name: "Arlington Outlaws", color: "#1d4ed8",
+                        colorSecondary: "#ffffff", logo: "", players: [{ number: "2", name: "Caleb Beauchamp" }, { number: "16",
+                            name: "Kaden Brasher" }, { number: "4", name: "Ethan Westrup" }, { number: "15",
+                            name: "Austin Henry" }, { number: "14", name: "Ben Macenzie" }, { number: "7",
+                            name: "Ramiro Encinia" }, { number: "6", name: "Davin Luck" }, { number: "12",
+                            name: "Dakota Masters" }, { number: "5", name: "Brady Ellison" }, { number: "8",
+                            name: "Gabriel Watson" }, { number: "9", name: "Jasiah Mendoza" }, { number: "1",
+                            name: "Cruze Pettay" }, { number: "11", name: "William Velazquez" }, { number: "",
+                            name: "Caden Goad" }, { number: "", name: "Garrett Salada" }] },
+                    "grapevine_greyhounds": { id: "grapevine_greyhounds", name: "Grapevine Greyhounds", color: "#c41e3a",
+                        colorSecondary: "#ffffff", logo: "", players: [{ number: "7", name: "D'Angelo Williams" },
+                        { number: "6", name: "Ian Thomas" }, { number: "8", name: "Adam Mendoza" }, { number: "13",
+                            name: "Jonah Timmons" }, { number: "10", name: "Ryan Castilleja" }, { number: "12",
+                            name: "Antonio Friedman" }, { number: "1", name: "Brayden Bowman" }, { number: "14",
+                            name: "Robert Matteson" }, { number: "3", name: "Brenden Bell" }, { number: "2",
+                            name: "River Kirkuff" }, { number: "19", name: "Giovanny Orozco" }, { number: "9",
+                            name: "Tyler Baer" }, { number: "4", name: "Jake Ross" }, { number: "15",
+                            name: "Javier Ramos" }, { number: "17", name: "Colby Minshew" }, { number: "",
+                            name: "Maddox Chapman" }, { number: "11", name: "Miguel Perez" }] },
+                    "dallas_skyline": { id: "dallas_skyline", name: "Dallas Skyline", color: "#1d4ed8",
+                        colorSecondary: "#ffffff", logo: "", players: [{ number: "4", name: "Bryson Tenorio" }, { number: "7",
+                            name: "Brett Holmes" }, { number: "9", name: "Ramarion Durham" }, { number: "6",
+                            name: "Connor Hazel" }, { number: "2", name: "DJ Johnson" }, { number: "10",
+                            name: "Barrett Howard" }, { number: "14", name: "Nathaniel Lebron" }, { number: "8",
+                            name: "Braden Duff" }, { number: "5", name: "Max Mclemore" }, { number: "17",
+                            name: "Reginald Reed" }, { number: "12", name: "Trenton Giles" }, { number: "16",
+                            name: "Jake Gilbreath" }, { number: "1", name: "Jacob Villagran" }, { number: "4",
+                            name: "Aiden Valenzuela" }, { number: "3", name: "Grayson West" }, { number: "",
+                            name: "Aiden Vensel" }] },
+                    "ft_worth_wranglers": { id: "ft_worth_wranglers", name: "Ft. Worth Wranglers", color: "#c41e3a",
+                        colorSecondary: "#ffffff", logo: "", players: [{ number: "14", name: "Brady Pike" }, { number: "1",
+                            name: "Jones Stephenson" }, { number: "5", name: "Cayden Williams" }, { number: "7",
+                            name: "Kaden Finley" }, { number: "18", name: "Lawson Darthard" }, { number: "12",
+                            name: "Delmonico Granger-Moreno" }, { number: "2", name: "Cash Kubicek" }, { number: "13",
+                            name: "Noah Munoz" }, { number: "8", name: "Julian Benford" }, { number: "9",
+                            name: "Crystian Edwards" }, { number: "4", name: "Wyatt Smith" }, { number: "11",
+                            name: "Payton Stephenson" }, { number: "3", name: "Ryan Huffman" }, { number: "10",
+                            name: "Jaxyn Rogers" }, { number: "6", name: "Angel Ontiveros" }, { number: "16",
+                            name: "Tracy Brees" }, { number: "15", name: "Tristian Boyer" }] },
+                    "love_field_aviators": { id: "love_field_aviators", name: "Love Field Aviators", color: "#1d4ed8",
+                        colorSecondary: "#ffffff", logo: "", players: [{ number: "3", name: "Trevyn Hooper" },
+                        { number: "12", name: "Piero Figueroa" }, { number: "14", name: "Dalyn Ellison" },
+                        { number: "7", name: "Nicodemius Garcia" }, { number: "1", name: "Josh Hokenson" },
+                        { number: "4", name: "Trajan East" }, { number: "15", name: "Joaquin Pfeiffer" },
+                        { number: "9", name: "Nicolas Walker" }, { number: "6", name: "Colin Kersten" },
+                        { number: "17", name: "Will Grant" }, { number: "2", name: "Jackson Anderson" },
+                        { number: "8", name: "Reid Hurtt" }, { number: "13", name: "Wyatt East" }, { number: "11",
+                            name: "Preston Steeno" }, { number: "10", name: "Ian Kersten" }, { number: "16",
+                            name: "Payne Williams" }, { number: "", name: "Braedon Stewart" }] },
+                    "denton_desperados": { id: "denton_desperados", name: "Denton Desperados", color: "#c41e3a",
+                        colorSecondary: "#ffffff", logo: "", players: [{ number: "10", name: "Peyton Peoples" },
+                        { number: "2", name: "Ryan Branch" }, { number: "7", name: "Cayman Pluma" }, { number: "12",
+                            name: "Mikael Castor" }, { number: "3", name: "Ryder Scheibelhut" }, { number: "5",
+                            name: "Trevor Thompson" }, { number: "11", name: "Cayden Johnson" }, { number: "4",
+                            name: "Harrison Golden" }, { number: "13", name: "Eris Smith" }, { number: "16",
+                            name: "Malaki Edwards" }, { number: "14", name: "Toby Myers" }, { number: "17",
+                            name: "Kaedon Allen" }, { number: "1", name: "Emmanuel Chavez" }, { number: "8",
+                            name: "Evan Duncan" }, { number: "9", name: "Kellen Scarborough" }, { number: "",
+                            name: "Dominick Guidice" }] }
+                };
+                for (var tid in teams) { addNAXPlayersToTeam(teams[tid]); }
+                STATE.teams = teams;
+                saveTeams();
+            }
+
+            try { var t = localStorage.getItem("fnl_teams"); if (t) { STATE.teams = JSON.parse(t); } else {
+                    buildPreloadedTeams(); } } catch (e) { buildPreloadedTeams(); }
+            for (var tid in STATE.teams) { var tm = STATE.teams[tid];
+                addNAXPlayersToTeam(tm); if (typeof tm.color !== 'string') tm.color = '#1d4ed8'; if (typeof tm
+                    .colorSecondary !== 'string') tm.colorSecondary = '#ffffff'; if (typeof tm.logo !== 'string') tm.logo =
+                    ''; }
+            try { var g = localStorage.getItem("fnl_game"); if (g) STATE.game = JSON.parse(g);
+            else { STATE.game.visitor.lineup = mkLineup();
+                STATE.game.home.lineup = mkLineup(); } } catch (e) { STATE.game.visitor.lineup = mkLineup();
+                STATE.game.home.lineup = mkLineup(); }
+            try { var s = localStorage.getItem("fnl_settings"); if (s) STATE.settings = JSON.parse(s); } catch (e) {}
+            
+            // Ensure brand is always Friday Night Live
+            if (STATE.settings.brand !== "FRIDAY NIGHT LIVE") {
+                STATE.settings.brand = "FRIDAY NIGHT LIVE";
+                saveSettings();
+            }
+
+            STATE.game.visitor.runs = STATE.game.visitor.runs || 0;
+            STATE.game.home.runs = STATE.game.home.runs || 0;
+            STATE.game.inning = STATE.game.inning || 1;
+            if (typeof STATE.game.visitor.use10th == 'undefined') STATE.game.visitor.use10th = false;
+            if (typeof STATE.game.home.use10th == 'undefined') STATE.game.home.use10th = false;
+            if (typeof STATE.game.visitor.showDH == 'undefined') STATE.game.visitor.showDH = true;
+            if (typeof STATE.game.home.showDH == 'undefined') STATE.game.home.showDH = true;
+            if (typeof STATE.game.visitor.showP == 'undefined') STATE.game.visitor.showP = true;
+            if (typeof STATE.game.home.showP == 'undefined') STATE.game.home.showP = true;
+            if (typeof STATE.game.showScoreBug == 'undefined') STATE.game.showScoreBug = true;
+
+            rebuildPositions();
+            applyAllStyles();
+            if (STATE.settings.theme === 'dark') setTheme('dark');
+            if (STATE.game.visitor.teamId && STATE.teams[STATE.game.visitor.teamId]) loadTeam('visitor', STATE.game.visitor
+                .teamId, true);
+            if (STATE.game.home.teamId && STATE.teams[STATE.game.home.teamId]) loadTeam('home', STATE.game.home.teamId, true);
+            updateScoreBugVisibility();
+
+            function saveGame() { try { localStorage.setItem("fnl_game", JSON.stringify(STATE.game));
+                    updateLastSaved(); } catch (e) {} }
+
+            function saveTeams() { try { localStorage.setItem("fnl_teams", JSON.stringify(STATE.teams));
+                    updateLastSaved(); } catch (e) {} }
+
+            function saveSettings() { try { localStorage.setItem("fnl_settings", JSON.stringify(STATE.settings));
+                    updateLastSaved(); } catch (e) {} }
+
+            function updateLastSaved() { var el = document.getElementById('lastSaved'); if (el) el.textContent = 'Saved ' +
+                    new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); }
+
+            function getDHIdx(lineup) { for (var i = 0; i < lineup.length; i++) { if (lineup[i].pos === 'DH For') return i; }
+                return 10; }
+
+            function getPIdx(lineup) { for (var i = 0; i < lineup.length; i++) { if (lineup[i].pos === 'P') return i; }
+            return 11; }
+
+            function getActiveHitters(side) { var a = []; var lineup = STATE.game[side].lineup; var g = STATE.game[side]; for (
+                    var i = 0; i < 9; i++) { a.push(i); } if (g.use10th) { a.push(9); } var dhIdx = getDHIdx(lineup),
+                    pIdx = getPIdx(lineup); for (var i = 10; i < lineup.length; i++) { if (i !== dhIdx && i !== pIdx &&
+                        lineup[i] && lineup[i].active !== false) a.push(i); } return a; }
+
+            function getHitterByOrder(side, ord) { var act = getActiveHitters(side); return act[ord] !== undefined ? act[ord] :
+                    -1; }
+
+            function renderDDs() { var vs = document.getElementById('visitorTeamSelect'),
+                    hs = document.getElementById('homeTeamSelect'); var opts =
+                    '<option value="">-- SELECT TEAM --</option>';
+                Object.keys(STATE.teams).forEach(function(k) { opts += '<option value="' + k + '">' + esc(STATE.teams[k]
+                        .name) + '</option>'; });
+                vs.innerHTML = opts;
+                hs.innerHTML = opts;
+                vs.value = STATE.game.visitor.teamId || '';
+                hs.value = STATE.game.home.teamId || '';
+                vs.onchange = function() { loadTeam('visitor', this.value); };
+                hs.onchange = function() { loadTeam('home', this.value); }; }
+
+            function loadTeam(side, id, preserveState) { if (!id || !STATE.teams[id]) return; var team = STATE.teams[id]; if (
+                    !preserveState) { STATE.game[side].lineup = mkLineup();
+                STATE.game[side].teamId = id;
+                STATE.game[side].battingIdx = -1;
+                STATE.game[side].onDeck = 0;
+                STATE.game[side].use10th = false;
+                STATE.game[side].showDH = true;
+                STATE.game[side].showP = true; } else { STATE.game[side].teamId = id; }
+            renderLineup(side);
+            updateScoreBug(); if (!preserveState) saveGame(); }
+
+            function markAB(side, idx) { var act = getActiveHitters(side); if (idx >= act.length) return;
+                STATE.game[side].battingIdx = idx;
+                STATE.game[side].onDeck = (idx + 1) % act.length;
+                renderLineup('visitor');
+                renderLineup('home');
+                saveGame(); }
+
+            function updateScoreBug() { var at = STATE.teams[STATE.game.visitor.teamId],
+                    ht = STATE.teams[STATE.game.home.teamId];
+                document.getElementById('bugAwayName').textContent = at ? at.name.substring(0, 8).toUpperCase() : 'AWAY';
+                document.getElementById('bugHomeName').textContent = ht ? ht.name.substring(0, 8).toUpperCase() : 'HOME';
+                document.getElementById('bugAwayScore').textContent = STATE.game.visitor.runs || 0;
+                document.getElementById('bugHomeScore').textContent = STATE.game.home.runs || 0; var inn = STATE.game.inning ||
+                    1; var labels = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th'];
+                document.getElementById('bugInning').textContent = labels[inn - 1] || inn + 'th'; var awayLogo = document
+                    .getElementById('bugAwayLogo'); var homeLogo = document.getElementById('bugHomeLogo'); if (at && at.logo) {
+                    awayLogo.src = at.logo;
+                    awayLogo.style.display = 'block'; } else { awayLogo.style.display = 'none'; } if (ht && ht.logo) {
+                    homeLogo.src = ht.logo;
+                    homeLogo.style.display = 'block'; } else { homeLogo.style.display = 'none'; } }
+
+            function updateScoreBugVisibility() { var bug = document.getElementById('scoreBug'); var btn = document
+                    .getElementById('toggleBugBtn'); if (STATE.game.showScoreBug) { bug.classList.remove('hidden');
+                    btn.classList.add('active'); } else { bug.classList.add('hidden');
+                    btn.classList.remove('active'); } }
+
+            function toggleScorebugDisplay() { STATE.game.showScoreBug = !STATE.game.showScoreBug;
+                updateScoreBugVisibility();
+                saveGame(); }
+
+            function changeRuns(side, d) { var s = (side === 'away' || side === 'visitor') ? 'visitor' : 'home';
+                STATE.game[s].runs = Math.max(0, (STATE.game[s].runs || 0) + d);
+                updateScoreBug();
+                saveGame(); }
+
+            function changeInning(d) { STATE.game.inning = Math.max(1, Math.min(99, (STATE.game.inning || 1) + d));
+                updateScoreBug();
+                saveGame(); }
+
+            function updateHeaderHUD() {
+                function build(side, label) { var act = getActiveHitters(side); var bat = STATE.game[side].battingIdx; var od =
+                        STATE.game[side].onDeck; var team = STATE.teams[STATE.game[side].teamId]; var name = team ? team.name :
+                        label; var badge = document.getElementById(side === 'visitor' ? 'headerHudAway' : 'headerHudHome'); if (
+                        !badge) return; if (bat < 0 || bat >= act.length) { badge.textContent = name + ': NO AT BAT'; return; }
+                    var bi = getHitterByOrder(side, bat),
+                        oi = getHitterByOrder(side, od); var b = STATE.game[side].lineup[bi] || {},
+                        o = STATE.game[side].lineup[oi] || {};
+                    badge.textContent = name + ' AT BAT: ' + (b.num ? b.num + ' ' : '') + (b.name || '--') +
+                        ' | ON DECK: ' + (o.num ? o.num + ' ' : '') + (o.name || '--'); }
+                build('visitor', 'AWAY');
+                build('home', 'HOME'); }
+
+            function addPlayerToLineup(side) { var name = prompt('Enter player name:', ''); if (!name || !name.trim()) return;
+                var num = prompt('Enter jersey number (optional):', '') || ''; var team = STATE.teams[STATE.game[side].teamId]; if (
+                    team) { team.players.push({ number: num, name: name.trim(), position: '', pronunciation: '',
+                    college: '' });
+                addNAXPlayersToTeam(team);
+                saveTeams(); } var lineup = STATE.game[side].lineup; var dhIdx = getDHIdx(lineup);
+                lineup.splice(dhIdx, 0, { num: num, name: name.trim(), pos: "", notes: "", active: true });
+                saveGame();
+                renderLineup(side); }
+
+            function toggleHeaderSlot(side, which) { var g = STATE.game[side]; if (which === 'eh') { g.use10th = !g.use10th; if (
+                        g.lineup[9]) g.lineup[9].active = g.use10th; } else if (which === 'dh') { g.showDH = !g.showDH; } else if (
+                    which === 'p') { g.showP = !g.showP; } var act = getActiveHitters(side); if (g.battingIdx >= act.length) { g
+                    .battingIdx = -1;
+                g.onDeck = 0; }
+            saveGame();
+            renderLineup(side); }
+
+            function toggleSlot(side, idx) { var lineup = STATE.game[side].lineup; var g = STATE.game[side]; if (idx === 9) { g
+                    .use10th = !g.use10th;
+                lineup[idx].active = g.use10th; } else { lineup[idx].active = !lineup[idx].active; } var act =
+                    getActiveHitters(side); if (g.battingIdx >= act.length) { g.battingIdx = -1;
+                g.onDeck = 0; }
+            saveGame();
+            renderLineup(side); }
+
+            function renderLineup(side) { var tbody = document.getElementById(side + 'LineupBody'); if (!tbody) return; var
+                    lineup = STATE.game[side].lineup,
+                    team = STATE.teams[STATE.game[side].teamId],
+                    g = STATE.game[side]; var act = getActiveHitters(side),
+                    bat = g.battingIdx,
+                    od = (bat >= 0 && bat < act.length) ? (bat + 1) % act.length : -1; var dhIdx = getDHIdx(lineup),
+                    pIdx = getPIdx(lineup); var dupes = team ? findDuplicateNumbers(team) : {};
+                tbody.innerHTML = ""; var popts = '<option value="">-- Select Player --</option>'; if (team && team.players) { var
+                        addedNames = {};
+                    team.players.forEach(function(p) { var nm = p.name || 'Unnamed'; if (!addedNames[nm]) { addedNames[
+                            nm] = true;
+                        popts += '<option value="' + esc(nm) + '">' + esc(nm) + '</option>'; } }); } var posopts =
+                    '<option value="">--</option>';
+                POSITIONS.forEach(function(p) { posopts += '<option value="' + esc(p) + '">' + esc(formatPosLabel(p)) +
+                    '</option>'; }); var ehBtn = document.getElementById(side + 'EHToggle'),
+                    dhBtn = document.getElementById(side + 'DHToggle'),
+                    pBtn = document.getElementById(side + 'PToggle'); if (ehBtn) { ehBtn.className = 'header-toggle' + (g
+                        .use10th ? '' : ' off'); } if (dhBtn) { dhBtn.className = 'header-toggle' + (g.showDH ? '' :
+                    ' off'); } if (pBtn) { pBtn.className = 'header-toggle' + (g.showP ? '' : ' off'); } var
+                    hitterToBatNum = {}; for (var h = 0; h < act.length; h++) { hitterToBatNum[act[h]] = h; } var logoSpan =
+                    document.getElementById(side + 'LogoSlot'); if (logoSpan) { logoSpan.innerHTML = team && team.logo ?
+                        '<img class="team-logo-inline" src="' + esc(team.logo) + '" alt="">' : ''; } var cardHead = document
+                    .getElementById(side + 'CardHead'); if (cardHead && team) { cardHead.style.borderLeftColor = team.color || (
+                        side === 'visitor' ? '#1d4ed8' : '#c41e3a'); } for (var i = 0; i < lineup.length; i++) { var sl =
+                        lineup[i]; var isDH = (i === dhIdx); var isP = (i === pIdx); var isEH = (i === 9); var isExtra = !
+                        isDH && !isP && i > 9 && i !== 9; var shouldShow = false; if (i < 9) shouldShow = true; else if (
+                        isEH) shouldShow = g.use10th; else if (isDH) shouldShow = g.showDH; else if (isP) shouldShow = g
+                    .showP; else shouldShow = (sl.active === true); if (!shouldShow) continue; var row = tbody.insertRow();
+                    row.draggable = true;
+                    row.dataset.index = i; var hasPlayer = !!(sl.name || sl.num); var isHitter = !isDH && !isP; var
+                        thisBatNum = hitterToBatNum[i] !== undefined ? hitterToBatNum[i] : -1; if (thisBatNum === bat &&
+                        isHitter && (hasPlayer || isEH)) row.className = 'row-current'; else if (thisBatNum === od &&
+                        isHitter && (hasPlayer || isEH)) row.className = 'row-ondeck'; var orderHTML = ''; if (isDH) {
+                        orderHTML = '<span class="order-circle dh">DH For</span>'; } else if (isP) { orderHTML =
+                        '<span class="order-circle p">P</span>'; } else if (isEH) { orderHTML =
+                        '<span class="order-circle">10</span>'; } else if (isExtra) { if (sl.active !== false && thisBatNum >=
+                        0) { orderHTML = '<span class="order-circle">' + (thisBatNum + 1) +
+                            '</span><button class="row-toggle-btn" onclick="window.toggleSlot(\'' + side + '\',' + i +
+                            ');event.stopPropagation();" title="Remove hitter">✕</button>'; } else { orderHTML =
+                            '<button class="toggle-btn off" onclick="window.toggleSlot(\'' + side + '\',' + i +
+                            ');event.stopPropagation();">ON</button>'; } } else { orderHTML =
+                        '<span class="order-circle">' + (thisBatNum + 1) + '</span>'; } var showAB = isHitter && (hasPlayer ||
+                        isEH) && sl.active !== false && thisBatNum >= 0 && thisBatNum < act.length; var dupeWarn = dupes[sl
+                        .num] ? ' <span class="duplicate-warn">⚠️</span>' : '';
+                    row.innerHTML = '<td style="text-align:center">' + orderHTML +
+                        '</td><td><input type="text" class="jersey-input" value="' + esc(sl.num || '') +
+                        '" onchange="window.updNum(\'' + side + '\',' + i +
+                        ',this.value)" placeholder="##" inputmode="numeric" autocomplete="off">' + dupeWarn +
+                        '</td><td><div class="player-cell"><span class="drag-handle">☰</span><select class="player-select" onchange="window.updPlayerFromSelect(\'' +
+                        side + '\',' + i + ',this)">' + popts + '<option value="' + esc(sl.name || '') + '" selected>' + esc(sl
+                        .name || '-- Select Player --') +
+                        '</option></select></div></td><td><select class="pos-select" onchange="window.updPos(\'' + side +
+                        '\',' + i + ',this.value)">' + posopts + '<option value="' + esc(sl.pos || '') + '" selected>' + esc(
+                        formatPosLabel(sl.pos) || '--') +
+                        '</option></select></td><td><textarea class="notes-textarea" onchange="window.updNotes(\'' + side +
+                        '\',' + i +
+                        ',this.value)" placeholder="Notes" autocomplete="off" spellcheck="false">' + esc(sl.notes || '') +
+                        '</textarea></td><td>' + (showAB ? '<button class="atbat-btn" onclick="window.markAB(\'' + side +
+                            '\',' + thisBatNum + ')">AB</button>' : '') + '</td>'; var sel = row.querySelector(
+                        '.player-select'); if (sl.name && !Array.from(sel.options).some(function(o) { return o.value === sl
+                            .name; })) { var co = document.createElement('option');
+                        co.value = sl.name;
+                        co.text = sl.name;
+                        co.selected = true;
+                        sel.appendChild(co); } var ps = row.querySelector('.pos-select'); if (ps && sl.pos) ps.value = sl.pos; }
+                updateHeaderHUD();
+                updateScoreBug(); }
+
+            function updNum(side, idx, val) { STATE.game[side].lineup[idx].num = val.trim();
+                saveGame(); var team = STATE.teams[STATE.game[side].teamId]; if (team) { var p = team.players.find(function(x) {
+                        return x.name === STATE.game[side].lineup[idx].name; }); if (p) p.number = val.trim();
+                    saveTeams(); } }
+
+            function updPlayerFromSelect(side, idx, sel) { var name = sel.value;
+                STATE.game[side].lineup[idx].name = name;
+                STATE.game[side].lineup[idx].num = '';
+                STATE.game[side].lineup[idx].notes = ''; var team = STATE.teams[STATE.game[side].teamId]; if (team && team
+                    .players) { var rp = team.players.find(function(p) { return p.name === name; }); if (rp) {
+                        STATE.game[side].lineup[idx].num = rp.number || '';
+                        STATE.game[side].lineup[idx].notes = [rp.pronunciation, rp.college].filter(Boolean).join(
+                        ' | '); } }
+            saveGame();
+            renderLineup(side); }
+
+            function updPos(side, idx, val) { var lineup = STATE.game[side].lineup; if (idx === getDHIdx(lineup) || idx ===
+                    getPIdx(lineup)) return;
+                lineup[idx].pos = val;
+                saveGame(); }
+
+            function updNotes(side, idx, val) { STATE.game[side].lineup[idx].notes = val;
+                saveGame(); }
+
+            document.addEventListener('dragstart', function(e) { var r = e.target.closest('tr'); if (!r) return;
+                e.dataTransfer.setData('text/plain', r.dataset.index); });
+            document.addEventListener('dragover', function(e) { e.preventDefault(); });
+            document.addEventListener('drop', function(e) { e.preventDefault(); var r = e.target.closest('tr'); if (!r)
+                return; var side = r.parentElement.id.startsWith('visitor') ? 'visitor' : 'home'; var from = parseInt(e
+                    .dataTransfer.getData('text/plain')),
+                    to = parseInt(r.dataset.index); if (isNaN(from) || isNaN(to) || from === to) return; var lineup = STATE
+                    .game[side].lineup; var moved = lineup.splice(from, 1)[0];
+                lineup.splice(to, 0, moved);
+                renderLineup(side);
+                saveGame(); });
+
+            function clearSide(side) { if (!confirm('Clear lineup?')) return;
+                STATE.game[side].lineup = mkLineup();
+                STATE.game[side].teamId = '';
+                STATE.game[side].battingIdx = -1;
+                STATE.game[side].onDeck = 0;
+                STATE.game[side].use10th = false;
+                STATE.game[side].showDH = true;
+                STATE.game[side].showP = true;
+                document.getElementById(side + 'TeamSelect').value = '';
+                renderLineup(side);
+                saveGame();
+                updateScoreBug(); }
+
+            function printBothLineups() { var vT = STATE.teams[STATE.game.visitor.teamId],
+                    hT = STATE.teams[STATE.game.home.teamId];
+                vT = vT ? vT.name : 'AWAY';
+                hT = hT ? hT.name : 'HOME'; var w = window.open('', '_blank');
+                w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Lineup</title><style>body{font-family:Arial,sans-serif;padding:20px}table{border-collapse:collapse;width:100%;margin-bottom:20px}th,td{border:1px solid #000;padding:4px 6px}th{background:#ddd}</style></head><body><h2>' +
+                    esc(vT) + '</h2><table><tr><th>#</th><th>Jersey</th><th>Player</th><th>Pos</th><th>Notes</th></tr>' +
+                    STATE.game.visitor.lineup.filter(function(s, i) { var dh = getDHIdx(STATE.game.visitor.lineup),
+                            p = getPIdx(STATE.game.visitor.lineup); var g = STATE.game.visitor; if (i < 9) return true; if (
+                            i === 9) return g.use10th; if (i === dh) return g.showDH; if (i === p) return g.showP; return s
+                        .active !== false; }).map(function(s, i) { return '<tr><td>' + (i + 1) + '</td><td>' + esc(s.num) +
+                        '</td><td>' + esc(s.name) + '</td><td>' + esc(s.pos) + '</td><td>' + esc(s.notes || '') +
+                        '</td></tr>'; }).join('') + '</table><h2>' + esc(hT) +
+                    '</h2><table><tr><th>#</th><th>Jersey</th><th>Player</th><th>Pos</th><th>Notes</th></tr>' + STATE.game.home
+                    .lineup.filter(function(s, i) { var dh = getDHIdx(STATE.game.home.lineup),
+                            p = getPIdx(STATE.game.home.lineup); var g = STATE.game.home; if (i < 9) return true; if (i ===
+                            9) return g.use10th; if (i === dh) return g.showDH; if (i === p) return g.showP; return s
+                        .active !== false; }).map(function(s, i) { return '<tr><td>' + (i + 1) + '</td><td>' + esc(s.num) +
+                        '</td><td>' + esc(s.name) + '</td><td>' + esc(s.pos) + '</td><td>' + esc(s.notes || '') +
+                        '</td></tr>'; }).join('') + '</table></body></html>');
+                w.document.close();
+                w.onload = function() { w.print(); }; }
+
+            function confirmResetGame() { if (!confirm('Reset game?')) return;
+                STATE.game.visitor.lineup = mkLineup();
+                STATE.game.home.lineup = mkLineup();
+                STATE.game.visitor.teamId = '';
+                STATE.game.home.teamId = '';
+                STATE.game.visitor.runs = 0;
+                STATE.game.home.runs = 0;
+                STATE.game.inning = 1;
+                STATE.game.visitor.battingIdx = -1;
+                STATE.game.home.battingIdx = -1;
+                STATE.game.visitor.use10th = false;
+                STATE.game.home.use10th = false;
+                STATE.game.visitor.showDH = true;
+                STATE.game.home.showDH = true;
+                STATE.game.visitor.showP = true;
+                STATE.game.home.showP = true;
+                STATE.game.showScoreBug = true;
+                document.getElementById('firstPitchDisplay').innerText = '--:--';
+                resetWx();
+                renderLineup('visitor');
+                renderLineup('home');
+                renderDDs();
+                saveGame();
+                updateScoreBug();
+                updateScoreBugVisibility(); }
+
+            function setTheme(mode) { STATE.settings.theme = mode;
+                saveSettings();
+                document.body.classList.toggle('dark-mode', mode === 'dark');
+                document.getElementById('lightModeBtn').classList.toggle('active', mode === 'light');
+                document.getElementById('darkModeBtn').classList.toggle('active', mode === 'dark'); }
+
+            function clearCache() { if (confirm('Clear ALL cached data?')) { if (confirm(
+                    'FINAL WARNING: Are you sure?')) { clearAllCache();
+                    alert('Cache cleared! Reloading...');
+                    window.location.reload(true); } } }
+
+            function markPitch() { if (STATE.cdTimer) { clearInterval(STATE.cdTimer);
+                    STATE.cdTimer = null; }
+                STATE.cdTarget = null; var d = new Date(); var h = d.getHours() % 12 || 12;
+                document.getElementById("firstPitchDisplay").innerText = h + ':' + String(d.getMinutes()).padStart(2, '0'); }
+
+            function setCountdown() { var inp = prompt("Countdown (HH:MM):"); if (!inp) return; var parts = inp.split(
+                ':'); var hh = parseInt(parts[0]),
+                    mm = parseInt(parts[1]); if (isNaN(hh) || isNaN(mm)) return; var target = new Date();
+                target.setHours(target.getHours() + hh, target.getMinutes() + mm, 0, 0);
+                STATE.cdTarget = target; if (STATE.cdTimer) clearInterval(STATE.cdTimer);
+
+                function tick() { var diff = STATE.cdTarget - new Date(); var el = document.getElementById(
+                        "firstPitchDisplay"); if (diff <= 0) { el.innerText = "00:00";
+                        clearInterval(STATE.cdTimer);
+                        STATE.cdTimer = null; } else { var ts = Math.floor(diff / 1000);
+                        el.innerText = String(Math.floor(ts / 60)).padStart(2, '0') + ':' + String(ts % 60).padStart(2,
+                        '0'); } }
+                tick();
+                STATE.cdTimer = setInterval(tick, 500); }
+
+            function startWx() { if (STATE.wxTimer) clearInterval(STATE.wxTimer);
+                STATE.wxSeconds = 1800;
+
+                function tick() { if (STATE.wxSeconds <= 0) { document.getElementById("wxTimerDisplay").innerText =
+                        "00:00";
+                        clearInterval(STATE.wxTimer); return; } var m = Math.floor(STATE.wxSeconds / 60),
+                        s = STATE.wxSeconds % 60;
+                    document.getElementById("wxTimerDisplay").innerText = String(m).padStart(2, '0') + ':' + String(s)
+                        .padStart(2, '0');
+                    STATE.wxSeconds--; }
+                tick();
+                STATE.wxTimer = setInterval(tick, 1000); }
+
+            function resetWx() { if (STATE.wxTimer) clearInterval(STATE.wxTimer);
+                STATE.wxSeconds = 0;
+                document.getElementById("wxTimerDisplay").innerText = "--:--"; }
+
+            function printScript() { var w = window.open('', '_blank');
+                w.document.write('<pre>' + esc(document.getElementById('scriptTextarea').value) + '</pre>');
+                w.document.close();
+                w.onload = function() { w.print(); }; }
+
+            function clearScript() { document.getElementById('scriptTextarea').value = '';
+                STATE.script = '';
+                localStorage.removeItem('fnl_script'); }
+
+            function loadScriptFile(input) { var f = input.files[0]; if (!f) return; var r = new FileReader();
+                r.onload = function(e) { document.getElementById('scriptTextarea').value = e.target.result;
+                    STATE.script = e.target.result;
+                    localStorage.setItem('fnl_script', e.target.result); };
+                r.readAsText(f); }
+
+            function saveScript() { STATE.script = document.getElementById('scriptTextarea').value;
+                localStorage.setItem('fnl_script', STATE.script);
+                updateLastSaved(); }
+
+            function pushRosterUndo(team) { if (!team._undoStack) team._undoStack = [];
+                team._undoStack.push(JSON.parse(JSON.stringify(team.players))); if (!team._redoStack) team._redoStack = [];
+                team._redoStack = []; if (team._undoStack.length > 50) team._undoStack.shift(); }
+
+            function undoRoster() { var ws = document.getElementById('rosterWorkspace'); var id = ws.dataset.editingTeam; if (
+                    !id) return; var team = STATE.teams[id]; if (!team || !team._undoStack || !team._undoStack.length) { alert(
+                        'Nothing to undo'); return; }
+                team._redoStack.push(JSON.parse(JSON.stringify(team.players)));
+                team.players = team._undoStack.pop();
+                saveTeams();
+                editTeam(id); }
+
+            function redoRoster() { var ws = document.getElementById('rosterWorkspace'); var id = ws.dataset.editingTeam; if (
+                    !id) return; var team = STATE.teams[id]; if (!team || !team._redoStack || !team._redoStack.length) { alert(
+                        'Nothing to redo'); return; }
+                team._undoStack.push(JSON.parse(JSON.stringify(team.players)));
+                team.players = team._redoStack.pop();
+                saveTeams();
+                editTeam(id); }
+
+            function exportCSV(teamId) { var team = STATE.teams[teamId]; if (!team) return; var csv =
+                    'Number,Name,Position,Pronunciation,College,Photo\n';
+                team.players.forEach(function(p) { csv += '"' + esc(p.number || '') + '","' + esc(p.name || '') + '","' +
+                    esc(p.position || '') + '","' + esc(p.pronunciation || '') + '","' + esc(p.college || '') + '","' + esc(
+                        p.photo || '') + '"\n'; }); var a = document.createElement('a');
+                a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+                a.download = (team.name || 'roster').replace(/\s/g, '_') + '.csv';
+                a.click(); }
+
+            function newTeam() { var id = Date.now().toString();
+                STATE.teams[id] = { id: id, name: "New Team", color: "#1d4ed8", colorSecondary: "#ffffff", logo: "",
+                    players: [] };
+                addNAXPlayersToTeam(STATE.teams[id]);
+                saveTeams();
+                renderTeamList();
+                renderDDs();
+                editTeam(id); }
+
+            function renderTeamList() { var c = document.getElementById('teamListContainer');
+                c.innerHTML = Object.keys(STATE.teams).map(function(k) { var cnt = STATE.teams[k].players ? STATE.teams[k]
+                        .players.filter(function(p) { return p.name !== "NA" && p.name !== "X"; }).length : 0; return '<div class="team-item" onclick="window.editTeam(\'' +
+                        k + '\')">' + esc(STATE.teams[k].name) + ' (' + cnt + ' players)</div>'; }).join(''); }
+
+            function editTeam(id) { var t = STATE.teams[id]; if (!t) return; var ws = document.getElementById(
+                    'rosterWorkspace');
+                ws.dataset.editingTeam = id; var posSelectOptions = '<option value="">--</option>';
+                POSITIONS.forEach(function(pos) { posSelectOptions += '<option value="' + esc(pos) + '">' + esc(
+                    formatPosLabel(pos)) + '</option>'; });
+                ws.innerHTML =
+                    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><input id="editTeamName" value="' +
+                    esc(t.name) +
+                    '" style="width:60%;padding:6px;border-radius:6px;border:1px solid var(--border-light);font-size:.85rem;"><div style="display:flex;gap:6px;"><button class="btn-sm" id="svBtn">💾 SAVE</button><button class="btn-sm" id="csvBtn">📊 CSV</button><button class="btn-sm btn-danger" id="delBtn">🗑️ DELETE</button></div></div><div style="display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap;"><button class="btn-sm" id="adBtn">➕ ADD ROW</button><button class="btn-sm" id="blkBtn">📋 BULK ADD</button><button class="btn-sm" onclick="undoRoster()">↩ Undo</button><button class="btn-sm" onclick="redoRoster()">↪ Redo</button><button class="btn-sm" onclick="window.cloudSaveTeam(\'' +
+                    id + '\')">☁️ Save</button><button class="btn-sm" onclick="window.cloudLoadTeam()">📥 Load</button></div><div class="branding-section"><h5>🎨 Team Branding</h5><div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;"><div><label style="font-size:.65rem;">Primary</label><input type="color" id="teamColor" value="' +
+                    (t.color || '#1d4ed8') +
+                    '"></div><div><label style="font-size:.65rem;">Secondary</label><input type="color" id="teamColorSec" value="' +
+                    (t.colorSecondary || '#ffffff') +
+                    '"></div><div><label style="font-size:.65rem;">Logo (appears on scorebug & cards)</label><img class="logo-preview-sm" id="teamLogoPreview" src="' +
+                    (t.logo || '') + '" style="' + (t.logo ? '' : 'display:none') +
+                    '"><input type="file" id="teamLogoFile" accept="image/*" style="font-size:.65rem;"></div></div></div><div id="bulkAddContainer" style="display:none;margin-bottom:8px;"><textarea id="bulkAddText" class="bulk-add-area" placeholder="Paste players here (one per line)"></textarea><button class="btn-sm" id="bulkAddBtn" style="margin-top:6px;">✅ ADD THESE PLAYERS</button></div><div style="display:grid;grid-template-columns:52px 1fr 82px 1fr 1fr 82px 34px;gap:5px;font-size:.65rem;font-weight:600;margin-bottom:4px;"><span>#</span><span>Name</span><span>Position</span><span>Pron</span><span>Notes</span><span>Photo</span><span></span></div><div id="rosterEditGrid"></div>'; var g = document
+                    .getElementById('rosterEditGrid');
+                t.players.forEach(function(p) { addPRow(g, p, posSelectOptions); });
+                document.getElementById('svBtn').onclick = function() { pushRosterUndo(t);
+                    t.name = document.getElementById('editTeamName').value;
+                    t.color = document.getElementById('teamColor').value;
+                    t.colorSecondary = document.getElementById('teamColorSec').value;
+                    t.players = collectP(g);
+                    addNAXPlayersToTeam(t);
+                    saveTeams();
+                    renderTeamList();
+                    renderDDs();
+                    renderLineup('visitor');
+                    renderLineup('home');
+                    updateScoreBug();
+                    alert('✅ Team saved!'); };
+                document.getElementById('csvBtn').onclick = function() { exportCSV(id); };
+                document.getElementById('adBtn').onclick = function() { addPRow(g, { number: '', name: '', position: '',
+                        pronunciation: '', college: '', photo: '' }, posSelectOptions); };
+                document.getElementById('delBtn').onclick = function() { deleteTeam(id); };
+                document.getElementById('blkBtn').onclick = function() { var c = document.getElementById(
+                    'bulkAddContainer');
+                    c.style.display = c.style.display === 'none' ? 'block' : 'none'; };
+                document.getElementById('bulkAddBtn').onclick = function() { var txt = document.getElementById('bulkAddText')
+                        .value; var ls = txt.split(/\r?\n/); var added = 0;
+                    ls.forEach(function(l) { if (!l.trim()) return; var num = '',
+                            name = ''; var m = l.match(/^(\d+)\s+(.+)/); if (m) { num = m[1];
+                            name = m[2].trim(); } else { name = l.trim(); }
+                        addPRow(g, { number: num, name: name, position: '', pronunciation: '', college: '',
+                            photo: '' }, posSelectOptions);
+                        added++; }); if (added > 0) { document.getElementById('bulkAddText').value = '';
+                        alert('✅ Added ' + added + ' players! Click SAVE to keep them.'); } };
+                document.getElementById('teamLogoFile').addEventListener('change', function(e) { var f = e.target.files[
+                    0]; if (!f || !f.type.startsWith('image/')) return; var r = new FileReader();
+                    r.onload = function(ev) { t.logo = ev.target.result;
+                        document.getElementById('teamLogoPreview').src = ev.target.result;
+                        document.getElementById('teamLogoPreview').style.display = 'inline-block';
+                        saveTeams();
+                        renderLineup('visitor');
+                        renderLineup('home');
+                        updateScoreBug(); };
+                    r.readAsDataURL(f); }); }
+
+            function addPRow(g, p, posSelectOptions) { var d = document.createElement('div');
+                d.className = 'player-row'; var sp = p.position || '';
+                d.innerHTML = '<input value="' + esc(p.number || '') + '" placeholder="#"><input value="' + esc(p.name || '') +
+                    '"><select class="pos-select">' + posSelectOptions + '<option value="' + esc(sp) + '" selected>' + esc(
+                        formatPosLabel(sp) || '--') + '</option></select><input value="' + esc(p.pronunciation || '') +
+                    '"><input value="' + esc(p.college || '') + '"><input value="' + esc(p.photo || '') +
+                    '" placeholder="URL"><button style="background:var(--accent-red);color:#fff;border:none;border-radius:4px;cursor:pointer;" onclick="this.parentElement.remove()">✖</button>';
+                g.appendChild(d); }
+
+            function collectP(g) { var a = [];
+                g.querySelectorAll('.player-row').forEach(function(rw) { var inp = rw.querySelectorAll('input,select');
+                    a.push({ number: inp[0].value, name: inp[1].value, position: inp[2].value, pronunciation: inp[3]
+                            .value, college: inp[4].value, photo: inp[5] ? inp[5].value : '' }); }); return a; }
+
+            function deleteTeam(id) { if (!confirm('Delete team "' + STATE.teams[id].name + '"?')) return;
+                delete STATE.teams[id];
+                saveTeams();
+                renderTeamList();
+                renderDDs();
+                document.getElementById('rosterWorkspace').innerHTML = '';
+                document.getElementById('rosterWorkspace').dataset.editingTeam = ''; if (STATE.game.visitor.teamId === id) {
+                    STATE.game.visitor.teamId = '';
+                    STATE.game.visitor.lineup = mkLineup();
+                    renderLineup('visitor'); } if (STATE.game.home.teamId === id) { STATE.game.home.teamId = '';
+                    STATE.game.home.lineup = mkLineup();
+                    renderLineup('home'); }
+                updateScoreBug();
+                saveGame(); }
+
+            function cloudSaveTeam(teamId) { var team = STATE.teams[teamId]; if (!team) return; if (!confirm('Save team "' +
+                        team.name + '" to cloud?')) return;
+                fetch(CLOUD_API_BASE + '?id=team_' + encodeURIComponent(teamId), { method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(team) }).then(function(r) { if (!r
+                        .ok) throw new Error('HTTP ' + r.status);
+                    alert('✅ Team saved.'); }).catch(function(e) { alert('❌ ' + e.message); }); }
+
+            function cloudLoadTeam() { fetch(CLOUD_API_BASE + '?list=true').then(function(r) { return r.json(); }).then(
+                function(data) { var keys = (data.keys || []).filter(function(k) { return k.startsWith('team_'); }); if (
+                        !keys.length) { alert('No teams found.'); return; } var key = prompt('Enter team key:\n' + keys.join(
+                        ', ')); if (!key) return; if (!key.startsWith('team_')) key = 'team_' + key;
+                    fetch(CLOUD_API_BASE + '?id=' + encodeURIComponent(key)).then(function(r) { return r.json(); }).then(
+                        function(team) { if (!team.id || !team.name) throw new Error('Invalid data'); if (STATE.teams[
+                                team.id] && !confirm('Team exists. Overwrite?')) return; if (typeof team.color !==
+                            'string') team.color = '#1d4ed8'; if (typeof team.colorSecondary !== 'string') team
+                            .colorSecondary = '#ffffff'; if (typeof team.logo !== 'string') team.logo = '';
+                        addNAXPlayersToTeam(team);
+                        STATE.teams[team.id] = team;
+                        saveTeams();
+                        renderTeamList();
+                        renderDDs();
+                        editTeam(team.id);
+                        alert('✅ Team loaded.'); }).catch(function(e) { alert('❌ ' + e.message); }); }).catch(function(e) {
+                    alert('❌ ' + e.message); }); }
+
+            async function cloudDelete(id, li) { if (!confirm('Delete "' + id + '"?')) return; var st = document.getElementById(
+                    'cloud-status');
+                st.textContent = 'Deleting...'; try { var r = await fetch(CLOUD_API_BASE + '?id=' + encodeURIComponent(id), {
+                    method: 'DELETE' }); if (!r.ok) throw new Error('HTTP ' + r.status); if (li) li.remove();
+                    st.textContent = '✅ Deleted.';
+                    setTimeout(cloudList, 800); } catch (e) { st.textContent = '❌ ' + e.message; } }
+
+            function renderAdmin() {
+                var p = document.getElementById('adminPanel');
+                var fontOptions = [
+                    "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                    'Arial, sans-serif',
+                    'Helvetica, sans-serif',
+                    'Georgia, serif',
+                    "'Times New Roman', serif",
+                    "'Courier New', monospace",
+                    'Verdana, sans-serif',
+                    "'Trebuchet MS', sans-serif",
+                    'Impact, sans-serif',
+                    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                    "'Share Tech Mono', monospace"
+                ];
+                var fontLabels = ['Inter (Modern)', 'Arial', 'Helvetica', 'Georgia', 'Times New Roman', 'Courier New',
+                    'Verdana', 'Trebuchet MS', 'Impact', 'System UI', 'Share Tech Mono'
+                ];
+                var fontOptsHTML = fontOptions.map(function(f, i) { return '<option value="' + esc(f) + '"' + (
+                    STATE.settings.bugTeamNameFont === f ? ' selected' : '') + '>' + fontLabels[i] +
+                    '</option>'; }).join('');
+                var fontOptsCardHTML = fontOptions.map(function(f, i) { return '<option value="' + esc(f) + '"' + (
+                    STATE.settings.cardTeamLabelFont === f ? ' selected' : '') + '>' + fontLabels[i] +
+                    '</option>'; }).join('');
+                var weightOptions = ['300', '400', '500', '600', '700', '800', '900', 'normal', 'bold'];
+                var weightOptsBugHTML = weightOptions.map(function(w) { return '<option value="' + w + '"' + (String(
+                    STATE.settings.bugTeamNameWeight) === w ? ' selected' : '') + '>' + w + '</option>'; }).join(
+                '');
+                var weightOptsCardHTML = weightOptions.map(function(w) { return '<option value="' + w + '"' + (String(
+                    STATE.settings.cardTeamLabelWeight) === w ? ' selected' : '') + '>' + w + '</option>'; }).join(
+                '');
+
+                p.innerHTML =
+                    '<h2>🎛️ ADMIN SUITE</h2>' +
+                    '<div class="admin-section"><h4>🏷️ Client Branding</h4>' +
+                    '<label>Brand Title<input id="adminBrand" value="' + esc(STATE.settings.brand) +
+                    '"></label>' +
+                    '<label>Subtext<input id="adminSubtext" value="' + esc(STATE.settings.subtext) +
+                    '"></label>' +
+                    '<label>Subtext Color <input type="color" id="subtextColor" value="' + esc(STATE.settings.subtextColor ||
+                        '#e6b422') + '"></label>' +
+                    '<label>Client Logo URL<input id="adminClientLogo" value="' + esc(STATE.settings.clientLogo ||
+                        'LUCL.png') + '" placeholder="URL or filename"></label></div>' +
+
+                    '<div class="admin-section"><h4>📊 Scorebug Appearance</h4>' +
+                    '<label>Background Color <input type="color" id="scorebugBgColor" value="' + esc(STATE.settings
+                        .scorebugBg || 'rgba(0,0,0,.3)') +
+                    '"><small style="font-size:.6rem;color:#888;"> (use rgba for transparency)</small></label>' +
+                    '<label>Text Color <input type="color" id="scorebugTextColor" value="' + esc(STATE.settings
+                        .scorebugTextColor || '#ffffff') + '"></label>' +
+                    '<h5 style="margin-top:6px;">Team Name in Scorebug</h5>' +
+                    '<div class="admin-row"><label>Font</label><select id="bugTeamNameFont">' + fontOptsHTML +
+                    '</select></div>' +
+                    '<div class="admin-row"><label>Size</label><input type="text" id="bugTeamNameSize" value="' + esc(STATE
+                        .settings.bugTeamNameSize || '0.65rem') + '" placeholder="0.65rem"></div>' +
+                    '<div class="admin-row"><label>Weight</label><select id="bugTeamNameWeight">' + weightOptsBugHTML +
+                    '</select></div>' +
+                    '<div class="admin-row"><label>Color</label><input type="color" id="bugTeamNameColor" value="' + esc(STATE
+                        .settings.bugTeamNameColor || '#ffffff') + '"></div></div>' +
+
+                    '<div class="admin-section"><h4>🃏 Card Appearance</h4>' +
+                    '<h5>Team Label on Cards</h5>' +
+                    '<div class="admin-row"><label>Font</label><select id="cardTeamLabelFont">' + fontOptsCardHTML +
+                    '</select></div>' +
+                    '<div class="admin-row"><label>Size</label><input type="text" id="cardTeamLabelSize" value="' + esc(STATE
+                        .settings.cardTeamLabelSize || '0.85rem') + '" placeholder="0.85rem"></div>' +
+                    '<div class="admin-row"><label>Weight</label><select id="cardTeamLabelWeight">' + weightOptsCardHTML +
+                    '</select></div>' +
+                    '<div class="admin-row"><label>Color</label><input type="color" id="cardTeamLabelColor" value="' + esc(
+                        STATE.settings.cardTeamLabelColor || '#0f172a') +
+                    '"><small style="font-size:.6rem;"> (empty = follows theme)</small></div>' +
+                    '<h5 style="margin-top:6px;">Card Head Backgrounds</h5>' +
+                    '<div class="admin-row"><label>Visitor Card</label><input type="color" id="cardHeadVisitorBg" value="' +
+                    esc(STATE.settings.cardHeadVisitorBg || '#ffffff') + '"></div>' +
+                    '<div class="admin-row"><label>Home Card</label><input type="color" id="cardHeadHomeBg" value="' + esc(
+                        STATE.settings.cardHeadHomeBg || '#ffffff') + '"></div></div>' +
+
+                    '<div class="admin-section"><h4>🎨 Team Colors</h4>' +
+                    '<div class="admin-row"><label>Away</label><input type="color" id="awayColorVal" value="' + esc(STATE
+                        .settings.awayColor || '#1d4ed8') + '"></div>' +
+                    '<div class="admin-row"><label>Home</label><input type="color" id="homeColorVal" value="' + esc(STATE
+                        .settings.homeColor || '#c41e3a') + '"></div></div>' +
+
+                    '<div class="admin-section"><h4>📡 HUD Colors</h4>' +
+                    '<div class="admin-row"><label>Away HUD</label><input type="color" id="hudAwayBgVal" value="' + esc(STATE
+                        .settings.hudAwayBg || '#e8f0fe') + '"></div>' +
+                    '<div class="admin-row"><label>Home HUD</label><input type="color" id="hudHomeBgVal" value="' + esc(STATE
+                        .settings.hudHomeBg || '#fce8e8') + '"></div></div>' +
+
+                    '<div class="admin-section"><h4>⚡ At-Bat Highlight</h4>' +
+                    '<div class="admin-row"><label>Bg</label><input type="color" id="atbatBgVal" value="' + esc(STATE.settings
+                        .atbatBg || '#fff9c4') + '"></div>' +
+                    '<div class="admin-row"><label>Text</label><input type="color" id="atbatTextVal" value="' + esc(STATE
+                        .settings.atbatText || '#000') + '"></div></div>' +
+
+                    '<div class="admin-section"><h4>🕐 Footer Clock</h4>' +
+                    '<div class="admin-row"><label>Bg</label><input type="color" id="clockBgVal" value="' + esc(STATE.settings
+                        .clockBg || '#111111') + '"></div>' +
+                    '<div class="admin-row"><label>Text</label><input type="color" id="clockTextVal" value="' + esc(STATE
+                        .settings.clockText || '#ffffff') + '"></div>' +
+                    '<div class="admin-row"><label>Size</label><input type="text" id="clockSizeVal" value="' + esc(STATE
+                        .settings.clockSize || '13') + '" placeholder="13px"></div></div>' +
+
+                    '<div class="admin-section"><h4>☁️ Cloud</h4>' +
+                    '<input type="text" id="cloud-save-id" placeholder="Save ID">' +
+                    '<button class="btn-sm" onclick="window.cloudSave()">Save</button> ' +
+                    '<button class="btn-sm" onclick="window.cloudLoad()">Load</button> ' +
+                    '<button class="btn-sm" onclick="window.cloudList()">List</button>' +
+                    '<div id="cloud-status"></div><ul id="cloud-list"></ul></div>' +
+
+                    '<button class="btn-sm" style="margin-top:10px;background:var(--primary-gold);color:#0a1c3a;font-weight:800;width:100%;font-size:.9rem;padding:10px;" onclick="window.saveAdmin()">💾 APPLY ALL CHANGES</button>';
+            }
+
+            function saveAdmin() {
+                var f = document;
+                STATE.settings.brand = f.getElementById('adminBrand').value;
+                STATE.settings.subtext = f.getElementById('adminSubtext').value;
+                STATE.settings.subtextColor = f.getElementById('subtextColor').value;
+                STATE.settings.clientLogo = f.getElementById('adminClientLogo').value;
+                STATE.settings.atbatBg = f.getElementById('atbatBgVal').value;
+                STATE.settings.atbatText = f.getElementById('atbatTextVal').value;
+                STATE.settings.clockBg = f.getElementById('clockBgVal').value;
+                STATE.settings.clockText = f.getElementById('clockTextVal').value;
+                STATE.settings.clockSize = f.getElementById('clockSizeVal').value;
+                STATE.settings.awayColor = f.getElementById('awayColorVal').value;
+                STATE.settings.homeColor = f.getElementById('homeColorVal').value;
+                STATE.settings.hudAwayBg = f.getElementById('hudAwayBgVal').value;
+                STATE.settings.hudHomeBg = f.getElementById('hudHomeBgVal').value;
+                STATE.settings.scorebugBg = f.getElementById('scorebugBgColor').value;
+                STATE.settings.scorebugTextColor = f.getElementById('scorebugTextColor').value;
+                STATE.settings.bugTeamNameFont = f.getElementById('bugTeamNameFont').value;
+                STATE.settings.bugTeamNameSize = f.getElementById('bugTeamNameSize').value;
+                STATE.settings.bugTeamNameColor = f.getElementById('bugTeamNameColor').value;
+                STATE.settings.bugTeamNameWeight = f.getElementById('bugTeamNameWeight').value;
+                STATE.settings.cardTeamLabelFont = f.getElementById('cardTeamLabelFont').value;
+                STATE.settings.cardTeamLabelSize = f.getElementById('cardTeamLabelSize').value;
+                STATE.settings.cardTeamLabelColor = f.getElementById('cardTeamLabelColor').value;
+                STATE.settings.cardTeamLabelWeight = f.getElementById('cardTeamLabelWeight').value;
+                STATE.settings.cardHeadVisitorBg = f.getElementById('cardHeadVisitorBg').value;
+                STATE.settings.cardHeadHomeBg = f.getElementById('cardHeadHomeBg').value;
+                applyAllStyles();
+                saveSettings();
+                alert('✅ All changes applied!');
+                renderLineup('visitor');
+                renderLineup('home');
+            }
+
+            function applyAllStyles() {
+                var r = document.documentElement.style;
+                var s = STATE.settings;
+                r.setProperty('--atbat-bg', s.atbatBg || '#fff9c4');
+                r.setProperty('--atbat-text', s.atbatText || '#000');
+                r.setProperty('--away-color', s.awayColor || '#1d4ed8');
+                r.setProperty('--home-color', s.homeColor || '#c41e3a');
+                r.setProperty('--hud-away-bg', s.hudAwayBg || '#e8f0fe');
+                r.setProperty('--hud-home-bg', s.hudHomeBg || '#fce8e8');
+                r.setProperty('--clock-footer-bg', s.clockBg || '#111111');
+                r.setProperty('--clock-footer-text', s.clockText || '#ffffff');
+                r.setProperty('--clock-footer-size', (s.clockSize || '13') + 'px');
+                r.setProperty('--bug-team-name-font', s.bugTeamNameFont ||
+                    "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif");
+                r.setProperty('--bug-team-name-size', s.bugTeamNameSize || '0.65rem');
+                r.setProperty('--bug-team-name-color', s.bugTeamNameColor || '#ffffff');
+                r.setProperty('--bug-team-name-weight', s.bugTeamNameWeight || '700');
+                r.setProperty('--card-team-label-font', s.cardTeamLabelFont ||
+                    "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif");
+                r.setProperty('--card-team-label-size', s.cardTeamLabelSize || '0.85rem');
+                r.setProperty('--card-team-label-color', s.cardTeamLabelColor || 'var(--text-light)');
+                r.setProperty('--card-team-label-weight', s.cardTeamLabelWeight || '700');
+                r.setProperty('--card-head-visitor-bg', s.cardHeadVisitorBg || '#ffffff');
+                r.setProperty('--card-head-home-bg', s.cardHeadHomeBg || '#ffffff');
+                r.setProperty('--scorebug-bg', s.scorebugBg || 'rgba(0,0,0,.3)');
+                r.setProperty('--scorebug-text-color', s.scorebugTextColor || '#ffffff');
+
+                var subtextEl = document.querySelector('.brand-text p');
+                if (subtextEl) subtextEl.style.color = s.subtextColor || '#e6b422';
+                var brandH1 = document.querySelector('.brand-text h1');
+                if (brandH1) brandH1.textContent = s.brand || 'FRIDAY NIGHT LIVE';
+                var logoEl = document.querySelector('.logo-main');
+                if (logoEl && s.clientLogo) logoEl.src = s.clientLogo;
+            }
+
+            function exportAll() { var d = { teams: STATE.teams, game: STATE.game, settings: STATE.settings, script: STATE
+                        .script }; var a = document.createElement('a');
+                a.href = URL.createObjectURL(new Blob([JSON.stringify(d)], { type: 'application/json' }));
+                a.download = 'fnl-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+                a.click(); }
+
+            function importAll(input) { var f = input.files[0]; if (!f) return; var r = new FileReader();
+                r.onload = function(e) { try { var d = JSON.parse(e.target.result); if (d.teams) { STATE.teams = d.teams; for (
+                            var tid in STATE.teams) { var tm = STATE.teams[tid];
+                            addNAXPlayersToTeam(tm); if (typeof tm.color !== 'string') tm.color = '#1d4ed8'; if (typeof tm
+                                .colorSecondary !== 'string') tm.colorSecondary = '#ffffff'; if (typeof tm.logo !==
+                                'string') tm.logo = ''; } } if (d.settings) STATE.settings = d.settings; if (d.script) {
+                            STATE.script = d.script;
+                            document.getElementById('scriptTextarea').value = d.script; }
+                    rebuildPositions();
+                    applyAllStyles();
+                    saveTeams();
+                    saveSettings();
+                    renderDDs();
+                    renderLineup('visitor');
+                    renderLineup('home');
+                    renderTeamList();
+                    renderAdmin();
+                    alert('✅ Restored!'); } catch (ex) { alert('❌ Invalid file.'); } };
+                r.readAsText(f); }
+
+            function getSerializableState() { var c = JSON.parse(JSON.stringify(STATE));
+                delete c.wxTimer;
+                delete c.cdTimer;
+                delete c.cdTarget;
+                delete c.weatherData; return c; }
+            async function cloudSave() { var id = document.getElementById('cloud-save-id').value.trim(); if (!id) return; if (
+                    !confirm('Save as "' + id + '"?')) return; var st = document.getElementById('cloud-status');
+                st.textContent = 'Saving...'; try { var p = getSerializableState(); var r = await fetch(CLOUD_API_BASE +
+                        '?id=' + encodeURIComponent(id), { method: 'POST',
+                        headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(p) }); if (!r.ok) throw new Error(
+                        'HTTP ' + r.status);
+                    st.textContent = '✅ Saved.'; } catch (e) { st.textContent = '❌ Error: ' + e.message; } }
+            async function cloudLoad() { var id = document.getElementById('cloud-save-id').value.trim(); if (!id) return; if (
+                    !confirm('Load "' + id + '"?')) return; var st = document.getElementById('cloud-status');
+                st.textContent = 'Loading...'; try { var r = await fetch(CLOUD_API_BASE + '?id=' + encodeURIComponent(
+                    id)); if (!r.ok) throw new Error('HTTP ' + r.status); var d = await r.json(); if (d.teams) { STATE
+                        .teams = d.teams; for (var tid in STATE.teams) { var tm = STATE.teams[tid];
+                        addNAXPlayersToTeam(tm); if (typeof tm.color !== 'string') tm.color = '#1d4ed8'; if (typeof tm
+                            .colorSecondary !== 'string') tm.colorSecondary = '#ffffff'; if (typeof tm.logo !== 'string')
+                            tm.logo = ''; } } if (d.settings) STATE.settings = d.settings; if (d.script) { STATE.script = d
+                        .script;
+                    document.getElementById('scriptTextarea').value = d.script; }
+                rebuildPositions();
+                applyAllStyles();
+                renderDDs();
+                renderLineup('visitor');
+                renderLineup('home');
+                renderTeamList();
+                renderAdmin();
+                saveTeams();
+                saveSettings();
+                st.textContent = '✅ Loaded.'; } catch (e) { st.textContent = '❌ Error: ' + e.message; } }
+            async function cloudList() { var st = document.getElementById('cloud-status'),
+                    le = document.getElementById('cloud-list');
+                st.textContent = 'Listing...'; try { var r = await fetch(CLOUD_API_BASE + '?list=true'); var d = await r
+                    .json();
+                le.innerHTML = ''; if (d.keys && d.keys.length) { d.keys.forEach(function(k) { var li = document
+                        .createElement('li');
+                    li.textContent = k;
+                    li.style.cursor = 'pointer';
+                    li.onclick = function() { document.getElementById('cloud-save-id').value = k; }; var del =
+                        document.createElement('button');
+                    del.textContent = 'X';
+                    del.style.cssText =
+                        'margin-left:8px;background:var(--accent-red);color:#fff;border:none;border-radius:4px;font-size:.7rem;';
+                    del.onclick = function(e) { e.stopPropagation();
+                        cloudDelete(k, li); };
+                    li.appendChild(del);
+                    le.appendChild(li); });
+                    st.textContent = d.keys.length + ' save(s).'; } else { st.textContent = 'No saves found.'; } } catch (e) {
+                    st.textContent = '❌ Error: ' + e.message; } }
+
+            document.querySelectorAll('.nav-link').forEach(function(b) {
+                b.onclick = function() {
+                    var view = this.dataset.view;
+                    document.querySelectorAll('.view-pane').forEach(function(p) { p.classList.remove(
+                        'active'); });
+                    if (view === 'score') {
+                        document.getElementById('gameday').classList.add('active');
+                        STATE.game.showScoreBug = true;
+                        updateScoreBugVisibility();
+                        saveGame();
+                    } else {
+                        var targetPane = document.getElementById(view);
+                        if (targetPane) targetPane.classList.add('active');
+                    }
+                    document.querySelectorAll('.nav-link').forEach(function(n) { n.classList.remove('active'); });
+                    this.classList.add('active');
+                    if (view === 'roster') renderTeamList();
+                    if (view === 'admin') renderAdmin();
+                };
+            });
+
+            (function updateClock() {
+                document.getElementById('footerClock').innerText = new Date().toLocaleTimeString('en-US', { hour: '2-digit',
+                    minute: '2-digit', second: '2-digit' });
+                setTimeout(updateClock, 1000);
+            })();
+
+            function getWeatherEmoji(code) {
+                if (code <= 0) return '☀️';
+                if (code <= 3) return '⛅';
+                if (code <= 48) return '🌫️';
+                if (code <= 55) return '🌧️';
+                if (code <= 57) return '🌧️';
+                if (code <= 65) return '🌧️';
+                if (code <= 67) return '🌧️';
+                if (code <= 77) return '❄️';
+                if (code <= 82) return '🌧️';
+                if (code <= 86) return '❄️';
+                if (code <= 99) return '⛈️';
+                return '🌤️';
+            }
+
+            function updateWeatherDisplay(current, locationLabel, isFallback) {
+                STATE.weatherData = current;
+                STATE.weatherLocation = locationLabel;
+                STATE.weatherFallback = isFallback;
+                var icon = getWeatherEmoji(current.weather_code);
+                var temp = Math.round(current.temperature_2m);
+                var feelsLike = Math.round(current.apparent_temperature);
+                var humidity = current.relative_humidity_2m;
+                var windSpeed = Math.round(current.wind_speed_10m);
+                var iconEl = document.querySelector('#weatherPill .wx-icon');
+                var tempEl = document.getElementById('weatherTemp');
+                var detailEl = document.getElementById('weatherDetail');
+                var locEl = document.getElementById('weatherLocation');
+                var pill = document.getElementById('weatherPill');
+                if (iconEl) iconEl.textContent = icon;
+                if (tempEl) tempEl.textContent = temp + '°F';
+                if (detailEl) detailEl.textContent = 'Feels ' + feelsLike + '° | 💨' + windSpeed + 'mph | 💧' + humidity +
+                    '%';
+                if (locEl) locEl.textContent = '📍 ' + locationLabel + (isFallback ? ' (default)' : '');
+                if (pill) pill.title = 'Temperature: ' + temp + '°F\nFeels Like: ' + feelsLike + '°F\nWind: ' + windSpeed +
+                    ' mph\nHumidity: ' + humidity + '%\nLocation: ' + locationLabel + (isFallback ? ' (fallback)' : '');
+            }
+
+            async function fetchWeatherData(lat, lon, locationLabel, isFallback) {
+                try {
+                    var url =
+                        'https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon +
+                        '&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph';
+                    var response = await fetch(url);
+                    var data = await response.json();
+                    if (data && data.current) {
+                        updateWeatherDisplay(data.current, locationLabel, isFallback);
+                    }
+                } catch (e) {
+                    console.log('Weather fetch failed:', e);
+                    var tempEl = document.getElementById('weatherTemp');
+                    var locEl = document.getElementById('weatherLocation');
+                    if (tempEl) tempEl.textContent = '--°F';
+                    if (locEl) locEl.textContent = '📍 ' + locationLabel;
+                }
+            }
+
+            function initWeather() {
+                var dallasLat = 32.7767,
+                    dallasLon = -96.7970;
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        function(pos) {
+                            var lat = pos.coords.latitude;
+                            var lon = pos.coords.longitude;
+                            fetchWeatherData(lat, lon, 'GPS (' + lat.toFixed(1) + ',' + lon.toFixed(1) + ')',
+                                false);
+                        },
+                        function() {
+                            fetchWeatherData(dallasLat, dallasLon, 'Dallas, TX', true);
+                        }, { timeout: 5000, maximumAge: 600000 }
+                    );
+                } else {
+                    fetchWeatherData(dallasLat, dallasLon, 'Dallas, TX', true);
+                }
+            }
+
+            rebuildPositions();
+            renderDDs();
+            renderLineup('visitor');
+            renderLineup('home');
+            updateScoreBug();
+            updateScoreBugVisibility();
+            updateLastSaved();
+            var savedScript = localStorage.getItem('fnl_script');
+            if (savedScript) { STATE.script = savedScript;
+                document.getElementById('scriptTextarea').value = savedScript; }
+
+            initWeather();
+            setInterval(initWeather, 1800000);
+
+            window.markPitch = markPitch;
+            window.setCountdown = setCountdown;
+            window.startWx = startWx;
+            window.resetWx = resetWx;
+            window.printBothLineups = printBothLineups;
+            window.confirmResetGame = confirmResetGame;
+            window.setTheme = setTheme;
+            window.markAB = markAB;
+            window.updPlayerFromSelect = updPlayerFromSelect;
+            window.updPos = updPos;
+            window.updNotes = updNotes;
+            window.updNum = updNum;
+            window.clearSide = clearSide;
+            window.printScript = printScript;
+            window.clearScript = clearScript;
+            window.loadScriptFile = loadScriptFile;
+            window.saveScript = saveScript;
+            window.newTeam = newTeam;
+            window.editTeam = editTeam;
+            window.exportAll = exportAll;
+            window.importAll = importAll;
+            window.saveAdmin = saveAdmin;
+            window.cloudSave = cloudSave;
+            window.cloudLoad = cloudLoad;
+            window.cloudList = cloudList;
+            window.deleteTeam = deleteTeam;
+            window.cloudSaveTeam = cloudSaveTeam;
+            window.cloudLoadTeam = cloudLoadTeam;
+            window.toggleSlot = toggleSlot;
+            window.toggleHeaderSlot = toggleHeaderSlot;
+            window.clearCache = clearCache;
+            window.cloudDelete = cloudDelete;
+            window.addPlayerToLineup = addPlayerToLineup;
+            window.undoRoster = undoRoster;
+            window.redoRoster = redoRoster;
+            window.exportCSV = exportCSV;
+            window.changeRuns = changeRuns;
+            window.changeInning = changeInning;
+            window.toggleScorebugDisplay = toggleScorebugDisplay;
+        })();
+    </script>
+</body>
+</html>
