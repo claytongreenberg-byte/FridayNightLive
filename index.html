@@ -57,15 +57,24 @@
             background:linear-gradient(180deg, #2d6a1e, #1f4d14);
             padding:6px 12px;display:flex;align-items:center;justify-content:space-between;
             gap:8px;border-bottom:2px solid var(--accent);
-            flex-shrink:0;min-height:50px;overflow:hidden;z-index:10;
+            flex-shrink:0;min-height:60px;overflow:hidden;z-index:10;
         }
         .turf-overlay{position:absolute;inset:0;pointer-events:none;z-index:0}
         .hdr-l,.hdr-b,.hdr-c,.hdr-r,.hdr-client{display:flex;align-items:center;gap:6px;z-index:1}
-        .hdr-l,.hdr-b,.hdr-r{background:rgba(0,0,0,0.5);border-radius:10px;padding:3px 10px}
+        .hdr-l,.hdr-b,.hdr-r{background:rgba(0,0,0,0.5);border-radius:10px;padding:4px 12px}
         .hdr-client{background:rgba(0,0,0,0.4);border-radius:10px;padding:3px 10px;max-height:42px}
         .client-logo{height:100%;max-height:36px;width:auto;object-fit:contain}
         .back-link{color:#fff;font-size:.7rem;font-weight:600;text-decoration:none;padding:3px 6px;border-radius:6px}
-        .brand-logo{height:38px;width:auto;object-fit:contain;border-radius:50%}
+        .brand-logo-wrapper{display:flex;align-items:center;gap:8px;background:transparent;padding:0}
+        .brand-logo{
+            height:52px;
+            width:52px;
+            object-fit:contain;
+            border-radius:50%;
+            background:transparent;
+            display:block;
+            flex-shrink:0;
+        }
         .brand-text{display:flex;align-items:center;gap:6px;white-space:nowrap}
         .brand-text h1{font-size:.95rem;color:#fff;font-weight:900;letter-spacing:-0.2px;white-space:nowrap}
         .brand-text p{font-size:.55rem;color:var(--accent);font-weight:700;letter-spacing:0.5px;white-space:nowrap}
@@ -138,7 +147,7 @@
         .add-row input,.add-row select{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:3px 5px;font-size:.7rem;color:inherit;min-height:28px}
         footer{background:#0f172a;padding:6px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;border-top:1px solid var(--accent);color:#fff;font-size:.65rem;font-weight:700;flex-shrink:0}
         body.dark-mode footer,body.seven-mode footer{background:#080808;}
-        .footer-logo{height:22px;width:auto;border-radius:50%}
+        .footer-logo{height:26px;width:26px;object-fit:contain;border-radius:50%;background:transparent}
         .ft-left,.ft-center,.ft-right{display:flex;align-items:center;gap:8px}
         .ft-center{flex:1;justify-content:center;text-align:center}
         .ft-center a{color:#ef4444;text-decoration:underline;font-weight:800}
@@ -165,7 +174,22 @@
         .pin-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.92);z-index:5000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px}
         .pin-overlay input{font-size:1.2rem;text-align:center;width:200px;padding:8px;border-radius:8px;border:2px solid var(--accent);background:#111;color:#fff}
         @media(max-width:900px){.game-grid{flex-direction:column}.roster-layout{grid-template-columns:1fr}}
-        @media(max-width:600px){header{flex-wrap:wrap;min-height:auto;padding:4px 8px}.hdr-c{flex-wrap:wrap;justify-content:center}.brand-text h1{font-size:.75rem}.brand-text p{font-size:.45rem}.wall-clock{font-size:.85rem;min-width:60px;padding:4px 8px}.scorebug{padding:3px 6px;flex-wrap:wrap}}
+        @media(max-width:768px){
+            header{flex-wrap:wrap;min-height:auto;padding:4px 8px}
+            .hdr-b{flex-wrap:wrap;justify-content:center;padding:4px 8px}
+            .hdr-c{flex-wrap:wrap;justify-content:center}
+            .brand-text h1{font-size:.75rem}
+            .brand-text p{font-size:.45rem}
+            .brand-logo{height:40px;width:40px}
+            .wall-clock{font-size:.85rem;min-width:60px;padding:4px 8px}
+            .scorebug{padding:3px 6px;flex-wrap:wrap}
+        }
+        @media(max-width:480px){
+            .brand-logo{height:34px;width:34px}
+            .brand-text h1{font-size:.65rem}
+            .hdr-l{display:none}
+            .hdr-r .theme-btn{font-size:.6rem;padding:2px 8px}
+        }
     </style>
 </head>
 <body>
@@ -173,7 +197,9 @@
     <div class="turf-overlay" aria-hidden="true"><svg viewBox="0 0 1000 60" preserveAspectRatio="none"><rect width="1000" height="60" fill="url(#tg)"/><defs><linearGradient id="tg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2d6a1e"/><stop offset="100%" stop-color="#1f4d14"/></linearGradient></defs><line x1="100" y1="0" x2="100" y2="60" stroke="white" stroke-width="1.5" opacity=".15"/><line x1="200" y1="0" x2="200" y2="60" stroke="white" stroke-width="1.5" opacity=".15"/><line x1="300" y1="0" x2="300" y2="60" stroke="white" stroke-width="1.5" opacity=".15"/><line x1="400" y1="0" x2="400" y2="60" stroke="white" stroke-width="1.5" opacity=".15"/><line x1="500" y1="0" x2="500" y2="60" stroke="white" stroke-width="1.5" opacity=".15"/><text x="495" y="18" fill="white" font-size="5" opacity=".25" text-anchor="middle">50</text></svg></div>
     <div class="hdr-l"><a href="https://voiceofdfw.com" class="back-link">← VODFW</a></div>
     <div class="hdr-b">
-        <img src="VoiceofDFWFOOTBALL2.png" alt="Voice of DFW" class="brand-logo">
+        <div class="brand-logo-wrapper">
+            <img src="VoiceofDFWFOOTBALL2.png" alt="Voice of DFW" class="brand-logo">
+        </div>
         <div class="brand-text">
             <h1>🏈 FRIDAY NIGHT LIVE</h1>
             <p>PA CONSOLE</p>
@@ -201,7 +227,7 @@
 <main id="main"></main>
 <div class="toast" id="toast"></div>
 <footer>
-    <div class="ft-left"><img src="VoiceofDFWFOOTBALL2.png" class="footer-logo" alt="Voice of DFW"> VODFW</div>
+    <div class="ft-left"><img src="VoiceofDFWFOOTBALL2.png" class="footer-logo" alt="Voice of DFW"></div>
     <div class="ft-center">© 2026 Clayton E. Greenberg | <a href="https://voiceofdfw.com">VoiceofDFW.com</a></div>
     <div class="ft-right"><span id="ftTicker">v20.0</span> · <span id="ftSaved">Never saved</span></div>
 </footer>
