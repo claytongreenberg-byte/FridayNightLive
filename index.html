@@ -483,14 +483,23 @@ function rC(){
         return;
     }
     
+    function rC(){
+    if(!S.im){
+        S.v='sport';
+        ra();
+        return;
+    }
+    
     let h = `
         <div class="panel">
             <h3>👥 CLIENT PROFILES</h3>
             <p style="font-size:.7rem;opacity:.6;margin-bottom:12px;">Manage client PINs, logos, and branding. All client data is stored here.</p>
-            <button class="btn" onclick="addClient()" style="margin:8px 0;">+ Add Client</button>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0;">
+                <button class="btn" onclick="addClient()">+ Add Client</button>
+                <button class="btn btn-sm" onclick="showAllPINs()" style="background:#666;color:#fff;">🔑 Show All PINs</button>
+            </div>
             <div style="margin-top:12px;">
     `;
-    
     const ps = S.cp || {};
     const clientKeys = Object.keys(ps);
     
