@@ -891,12 +891,31 @@ window.clearClientLogoFromEdit=clearClientLogoFromEdit;window.saveClientEdit=sav
 // Initialize - Admin always bypasses PIN
 ld();
 
+// Initialize - Admin always bypasses PIN
+ld();
+
 setTimeout(() => {
-    if (S.ap && S.cp[S.ap]) {
-        ap(S.cp[S.ap], S.ap);
+    // Check if we have a saved client PIN
+    if (S.ap && S.cp && S.cp[S.ap]) {
+        // Restore client branding
+        const client = S.cp[S.ap];
+        S.br.cl = client.l || '';
+        S.br.cn = client.n || '';
+        S.br.t = client.n || 'Friday Night Live';
+        if (client.wlat && client.wlon) {
+            S.br.wlat = client.wlat;
+            S.br.wlon = client.wlon;
+            fW(client.wlat, client.wlon, client.n || 'Client', false);
+        }
+        updateClientLogo();
+        S.im = false;
+        ra();
+        t('Welcome back, ' + (client.n || 'Client') + '!');
     } else if (Object.keys(S.cp || {}).length > 0) {
+        // There are clients but not logged in - show PIN
         showPINEntry();
     } else {
+        // No clients - go straight to admin mode
         S.im = true;
         ra();
     }
