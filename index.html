@@ -491,7 +491,7 @@ async function gW(){
 setInterval(()=>{if(!S.wd||Date.now()-S.lw>900000)gW()},900000);
 
 // PIN
-function showPINEntry(){const o=document.createElement('div');o.className='pin-overlay';o.innerHTML='<h2 style="color:#fff">Enter PIN</h2><input id="pi" placeholder="PIN"><button class="btn" id="ps">Enter</button>';document.body.appendChild(o);document.getElementById('ps').onclick=()=>{const p=document.getElementById('pi').value.trim().toUpperCase();if(S.cp[p]){ap(S.cp[p],p);o.remove();t('Welcome!')}else{t('Invalid PIN')}}}
+function showPINEntry(){const o=document.createElement('div');o.className='pin-overlay';o.innerHTML='<h2 style="color:#fff">Enter PIN</h2><input id="pi" placeholder="PIN"><div style="display:flex;gap:10px;margin-top:4px;"><button class="btn" id="ps">Enter</button><button class="btn" id="pc" style="background:#666;color:#fff;">Cancel</button></div>';document.body.appendChild(o);document.getElementById('ps').onclick=()=>{const p=document.getElementById('pi').value.trim().toUpperCase();if(S.cp[p]){ap(S.cp[p],p);o.remove();t('Welcome!')}else{t('Invalid PIN')}};document.getElementById('pc').onclick=()=>{o.remove();S.im=true;ra();t('Returned to admin')}}
 function ap(pr,p){
     S.ap=p;
     S.im=!1;
