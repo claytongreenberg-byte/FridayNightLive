@@ -468,22 +468,43 @@ async function gW(){
 setInterval(()=>{if(!S.wd||Date.now()-S.lw>900000)gW()},900000);
 
 // PIN - WITH CANCEL BUTTON
-function showPINEntry(){const o=document.createElement('div');o.className='pin-overlay';o.innerHTML='<h2 style="color:#fff">Enter PIN</h2><input id="pi" placeholder="PIN"><div class="btn-group"><button class="btn" id="ps">Enter</button><button class="btn" id="pc" style="background:#666;color:#fff;">Cancel</button></div>';document.body.appendChild(o);document.getElementById('ps').onclick=()=>{const p=document.getElementById('pi').value.trim().toUpperCase();if(S.cp[p]){ap(S.cp[p],p);o.remove();t('Welcome!')}else{t('Invalid PIN')}};document.getElementById('pc').onclick=()=>{o.remove();S.im=true;ra();t('Returned to admin')}}
+function showPINEntry(){
+  const o = document.createElement('div');
+  o.className = 'pin-overlay';
+  o.innerHTML = `<h2 style="color:#fff">Enter PIN</h2>
+    <input id="pi" placeholder="PIN" autofocus>
+    <div class="btn-group">
+      <button class="btn" id="ps">Enter</button>
+      <button class="btn" id="pc" style="background:#666;color:#fff;">Cancel</button>
+    </div>`;
+  document.body.appendChild(o);
 
-function ap(pr,p){
-    S.ap=p;
-    S.im=!1;
-    S.br.cl=pr.l||'';
-    S.br.cn=pr.n||'';
-    S.br.t=pr.n||'Friday Night Live';
-    if(pr.wlat&&pr.wlon){
-        S.br.wlat=pr.wlat;
-        S.br.wlon=pr.wlon;
-        fW(pr.wlat,pr.wlon,pr.n||'Client',false);
-    }
-    updateClientLogo();
-    sv();
+  // Cancel action – also removes the overlay
+  const doCancel = () => {
+    if (o.parentNode) o.remove();
+    S.im = true;                // return to admin mode
     ra();
+    t('Returned to admin');
+  };
+
+  // Multiple ways to cancel:
+  document.getElementById('pc').onclick = doCancel;               // Cancel button
+  o.addEventListener('click', (e) => { if (e.target === o) doCancel(); }); // click on dark background
+  document.addEventListener('keydown', function escHandler(e) {
+    if (e.key === 'Escape') { doCancel(); document.removeEventListener('keydown', escHandler); }
+  });
+
+  // Enter button
+  document.getElementById('ps').onclick = () => {
+    const p = document.getElementById('pi').value.trim().toUpperCase();
+    if (S.cp[p]) {
+      ap(S.cp[p], p);
+      doCancel();
+      t('Welcome!');
+    } else {
+      t('Invalid PIN');
+    }
+  };
 }
 
 // SAVE/LOAD LOCAL
