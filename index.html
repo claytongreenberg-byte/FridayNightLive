@@ -53,6 +53,28 @@
             --grid-bg:#050505;
             --card-shadow:0 1px 3px rgba(0,0,0,0.4);
         }
+        body.outdoor-mode {
+            --outdoor-scale:1.15;
+            --outdoor-font-size:1.15rem;
+            --outdoor-border-width:3px;
+        }
+        body.outdoor-mode .btn,
+        body.outdoor-mode .btn-sm {
+            font-size:1rem !important;
+            padding:8px 16px !important;
+            min-height:44px !important;
+        }
+        body.outdoor-mode .player-row-item {
+            font-size:1rem !important;
+            min-height:36px !important;
+        }
+        body.outdoor-mode .lineup-table td {
+            font-size:1rem !important;
+            padding:6px 8px !important;
+        }
+        body.outdoor-mode .team-header {
+            font-size:1.1rem !important;
+        }
         body {
             font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
             background:var(--bg);color:var(--text);
@@ -135,7 +157,51 @@
         .nav-link{padding:6px 12px;font-size:.6rem;font-weight:600;background:none;border:none;color:rgba(255,255,255,.7);cursor:pointer;border-radius:6px 6px 0 0;white-space:nowrap;min-height:30px}
         .nav-link.active{background:var(--btn);color:#000}
         main{flex:1;overflow:hidden;padding:3px;display:flex;gap:3px}
-        .game-grid{display:flex;gap:4px;width:100%;height:100%;background:var(--grid-bg);border-radius:8px;padding:3px}
+        .game-grid{display:flex;gap:4px;width:100%;height:100%;background:var(--grid-bg);border-radius:8px;padding:3px;flex-direction:column}
+        .game-controls{
+            background:var(--surface);border-radius:6px;border:1px solid var(--border);padding:4px 8px;
+            display:flex;flex-wrap:wrap;gap:4px;align-items:center;flex-shrink:0;
+        }
+        .game-controls .state-badge{
+            padding:2px 10px;border-radius:20px;font-weight:700;font-size:.7rem;white-space:nowrap;
+        }
+        .game-controls .state-badge.pregame{background:#94a3b8;color:#fff}
+        .game-controls .state-badge.first_half{background:#22c55e;color:#000}
+        .game-controls .state-badge.halftime{background:#f59e0b;color:#000}
+        .game-controls .state-badge.second_half{background:#3b82f6;color:#fff}
+        .game-controls .state-badge.overtime{background:#ef4444;color:#fff}
+        .game-controls .state-badge.final{background:#1e293b;color:#fff}
+        .game-controls .down-dist{display:flex;gap:4px;align-items:center;flex-wrap:wrap;font-size:.7rem;font-weight:600}
+        .game-controls .down-dist select,.game-controls .down-dist input{
+            background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 3px;font-size:.7rem;color:inherit;min-height:22px;width:auto;
+        }
+        .game-controls .possession{display:flex;gap:2px}
+        .game-controls .possession button{
+            padding:2px 8px;border-radius:12px;font-size:.6rem;font-weight:700;border:1px solid var(--border);background:transparent;color:inherit;cursor:pointer;min-height:24px;
+        }
+        .game-controls .possession button.active{background:var(--accent);color:#000;border-color:var(--accent)}
+        .game-controls .quick-scores,.game-controls .quick-penalties,.game-controls .game-actions{
+            display:flex;gap:2px;flex-wrap:wrap;
+        }
+        .game-controls .quick-scores button,.game-controls .quick-penalties button,.game-controls .game-actions button{
+            padding:2px 8px;border-radius:12px;font-size:.6rem;font-weight:700;border:1px solid var(--border);background:var(--surface);color:inherit;cursor:pointer;min-height:24px;
+        }
+        .game-controls .quick-scores button:hover,.game-controls .quick-penalties button:hover,.game-controls .game-actions button:hover{
+            background:var(--btn);color:#000;
+        }
+        .game-controls .quick-scores button.td{background:#dc2626;color:#fff;border-color:#dc2626}
+        .game-controls .quick-scores button.fg{background:#2563eb;color:#fff;border-color:#2563eb}
+        .game-controls .quick-scores button.pat{background:#16a34a;color:#fff;border-color:#16a34a}
+        .game-controls .quick-scores button.safety{background:#f59e0b;color:#000;border-color:#f59e0b}
+        .game-log{
+            background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:4px 8px;max-height:80px;overflow-y:auto;flex-shrink:0;
+            font-size:.65rem;font-family:monospace;display:flex;flex-direction:column;gap:1px;
+        }
+        .game-log .log-entry{display:flex;gap:8px;padding:1px 0;border-bottom:1px solid var(--border);}
+        .game-log .log-entry .log-time{color:var(--accent);font-weight:700;min-width:40px}
+        .game-log .log-entry .log-team{font-weight:700;min-width:40px}
+        .game-log .log-entry .log-desc{flex:1}
+        .team-cards{display:flex;gap:4px;flex:1;min-height:0}
         .team-card{flex:1;min-width:0;background:var(--surface);border-radius:6px;border:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--card-shadow)}
         .card-head{
             padding:3px 6px;display:flex;align-items:center;gap:4px;flex-shrink:0;
@@ -143,14 +209,13 @@
             font-family:var(--card-team-label-font);font-weight:var(--card-team-label-weight);
             min-height:32px;
         }
-        /* ★★★ FIX 2: DROPDOWN VISIBLE ★★★ */
         .card-head select{
             font-size:.65rem;
             padding:3px 6px;
             border-radius:4px;
             background:#ffffff !important;
-            color:#000000 !important;          /* ← BLACK TEXT */
-            border:2px solid #d4af37 !important; /* ← GOLD BORDER */
+            color:#000000 !important;
+            border:2px solid #d4af37 !important;
             flex:1;
             min-width:0;
             min-height:26px;
@@ -165,7 +230,7 @@
         .unit-tab.active{background:var(--btn);color:#000;opacity:1}
         .search-bar{display:flex;align-items:center;gap:2px;padding:2px 6px;border-bottom:1px solid var(--border)}
         .search-bar input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:2px 4px;font-size:.6rem;color:inherit}
-        .player-list-header,.player-row{display:grid;grid-template-columns:22px 30px 1fr 70px 42px 28px 22px;gap:2px;align-items:center;padding:2px 6px}
+        .player-list-header,.player-row{display:grid;grid-template-columns:22px 30px 1fr 70px 42px 28px 28px 22px;gap:2px;align-items:center;padding:2px 6px}
         .player-list-header{font-size:.5rem;font-weight:700;text-transform:uppercase;opacity:.6;border-bottom:1px solid var(--border);min-height:20px}
         .player-list-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
         .player-row{border-bottom:1px solid var(--border);min-height:30px;font-size:.7rem;cursor:pointer}
@@ -178,6 +243,8 @@
         .st-toggle{background:none;border:2px solid var(--starter-bg);border-radius:50%;width:20px;height:20px;font-size:.6rem;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--starter-bg)}
         .st-toggle.off{border-color:var(--border);color:inherit;opacity:.4}
         .st-toggle:not(.off){background:var(--starter-bg);color:#000;}
+        .pin-btn{background:none;border:1px solid var(--border);border-radius:4px;font-size:.6rem;cursor:pointer;padding:1px 3px;min-height:20px;min-width:20px;display:flex;align-items:center;justify-content:center}
+        .pin-btn.active{background:var(--accent);color:#000;border-color:var(--accent)}
         .add-row{display:flex;gap:2px;padding:2px 6px;border-top:1px solid var(--border);flex-shrink:0}
         .add-row input,.add-row select{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:2px 4px;font-size:.6rem;color:inherit;min-height:24px}
         footer{background:#0f172a;padding:2px 8px;display:flex;align-items:center;justify-content:space-between;gap:4px;flex-wrap:wrap;border-top:1px solid var(--accent);color:#fff;font-size:.5rem;font-weight:700;flex-shrink:0;min-height:20px}
@@ -200,7 +267,7 @@
         .team-item{padding:6px 8px;border-radius:4px;margin-bottom:2px;cursor:pointer;font-weight:600;font-size:.65rem;min-height:30px;display:flex;align-items:center;color:inherit}
         .team-item.active{background:var(--btn);color:#000}
         .roster-workspace{background:var(--surface);border-radius:6px;padding:6px;overflow-y:auto;border:1px solid var(--border)}
-        .player-edit-row{display:grid;grid-template-columns:30px 1fr 50px 40px 1fr 36px 22px;gap:2px;margin-bottom:2px;align-items:center}
+        .player-edit-row{display:grid;grid-template-columns:30px 1fr 50px 40px 1fr 36px 22px 28px;gap:2px;margin-bottom:2px;align-items:center}
         .player-edit-row input,.player-edit-row select{font-size:.6rem;padding:2px 4px;border-radius:3px;border:1px solid var(--border);background:var(--surface);color:inherit;min-height:24px}
         .player-edit-row .rph{font-size:0;width:100%;height:24px;cursor:pointer}
         .player-edit-row .rph::file-selector-button{font-size:.5rem;padding:1px 4px}
@@ -216,8 +283,11 @@
         .hdr-r .theme-btn{font-size:.55rem;padding:2px 6px}
         .hdr-r .btn-sm{font-size:.55rem;padding:2px 6px;min-height:24px;min-width:24px}
         #logoutBtn{font-size:.55rem;padding:2px 6px;min-height:24px;min-width:24px;background:#666;color:#fff;white-space:nowrap}
+        .clock-warning{animation:pulse-red 0.8s infinite;color:#ff0000!important;}
+        .clock-expired{animation:pulse-red 0.4s infinite;color:#ff0000!important;}
+        @keyframes pulse-red{0%{opacity:1}50%{opacity:.3}100%{opacity:1}}
         @media(max-width:1100px){.hdr-c{flex-wrap:wrap;gap:4px}.scorebug{padding:2px 4px}}
-        @media(max-width:900px){.game-grid{flex-direction:column}.roster-layout{grid-template-columns:1fr}.hdr-c{order:2;width:100%;justify-content:center}.hdr-b{flex-wrap:wrap;justify-content:center;padding:2px 6px}}
+        @media(max-width:900px){.team-cards{flex-direction:column}.roster-layout{grid-template-columns:1fr}.hdr-c{order:2;width:100%;justify-content:center}.hdr-b{flex-wrap:wrap;justify-content:center;padding:2px 6px}}
         @media(max-width:768px){
             header{flex-wrap:wrap;min-height:auto;padding:2px 4px;gap:2px}
             .hdr-b{flex-wrap:wrap;justify-content:center;padding:2px 6px}
@@ -235,7 +305,9 @@
             #logoutBtn{font-size:.5rem;padding:1px 4px;min-height:20px;min-width:20px}
             .hdr-r .theme-btn{font-size:.5rem;padding:1px 4px}
             .hdr-r .btn-sm{font-size:.5rem;padding:1px 4px;min-height:20px;min-width:20px}
-            .player-list-header,.player-row{grid-template-columns:18px 24px 1fr 50px 36px 22px 18px;gap:1px;padding:1px 4px;font-size:.6rem}
+            .player-list-header,.player-row{grid-template-columns:18px 24px 1fr 50px 36px 22px 22px 18px;gap:1px;padding:1px 4px;font-size:.6rem}
+            .game-controls{flex-direction:column;align-items:stretch}
+            .game-controls .down-dist,.game-controls .possession,.game-controls .quick-scores,.game-controls .quick-penalties,.game-controls .game-actions{justify-content:center}
         }
         @media(max-width:480px){
             .brand-logo{height:24px}
@@ -248,7 +320,7 @@
             .wall-clock{font-size:.65rem;min-width:40px;padding:1px 4px}
             .weather-pill-header{font-size:.5rem;padding:1px 4px}
             .card-head .team-logo{height:18px;width:18px}
-            .player-list-header,.player-row{grid-template-columns:14px 18px 1fr 36px 28px 16px 14px;font-size:.5rem;gap:1px}
+            .player-list-header,.player-row{grid-template-columns:14px 18px 1fr 36px 28px 16px 16px 14px;font-size:.5rem;gap:1px}
         }
     </style>
 </head>
@@ -299,21 +371,36 @@
 <footer>
     <div class="ft-left"><img src="FNL2.png" class="footer-logo" alt="FNL" onerror="this.style.display='none'"></div>
    <div class="ft-center"><span style="display:inline-block;text-align:center;width:100%;">© 2026 Clayton E. Greenberg | <a href="https://voiceofdfw.com">VoiceofDFW.com</a> | 🏈 Digital Pressbox Command Center 🏈</span></div>
-    <div class="ft-right"><span id="ftTicker">v20.2</span> · <span id="ftSaved">Never saved</span></div>
+    <div class="ft-right"><span id="ftTicker">v20.3</span> · <span id="ftSaved">Never saved</span></div>
 </footer>
 
 <script>
 // ═══════════════════════════════════════════════
-// FRIDAY NIGHT LIVE v20.2 – Full Cloud Sync + Sidebar
+// FRIDAY NIGHT LIVE v20.3 – Full Football Console
 // ═══════════════════════════════════════════════
 const CLOUD="https://lineup-api.claytongreenberg.workers.dev/api/lineup";
-const FNL_NS = "fnl_";   // unique namespace to avoid collisions with other apps
+const FNL_NS = "fnl_";
 
 const TACKLE={off:['QB','RB','FB','WR','TE','OL','C','G','T'],def:['DL','DE','DT','LB','OLB','ILB','CB','S','SS','FS','DB'],st:['K','P','LS','KR','PR']};
 const D7=['QB','Center','WR','WR','WR','DB','DB'];
-function dummy(){return{h:{id:"h",name:"Texas Hawks",color:"#1e3a5f",c2:"#fff",logo:"",mascot:"Hawks",pl:[{id:"h1",n:"7",na:"Marcus Johnson",po:"QB",st:!0,nt:"6'2\" Sr",ph:""},{id:"h2",n:"55",na:"Chris Williams",po:"Center",st:!0,nt:"6'0\" Jr",ph:""},{id:"h3",n:"11",na:"Jalen Smith",po:"WR",st:!0,nt:"5'11\" Sr",ph:""},{id:"h4",n:"88",na:"Ty Washington",po:"WR",st:!0,nt:"6'1\" So",ph:""},{id:"h5",n:"15",na:"Jordan Davis",po:"WR",st:!0,nt:"5'10\" Jr",ph:""},{id:"h6",n:"21",na:"Noah Brown",po:"DB",st:!0,nt:"6'0\" Sr",ph:""},{id:"h7",n:"33",na:"Elijah Jones",po:"DB",st:!0,nt:"5'9\" Jr",ph:""},{id:"h8",n:"44",na:"Isaiah Taylor",po:"LB",st:!1,nt:"6'0\" So",ph:""}]},s:{id:"s",name:"Dallas Stars",color:"#7f1d1d",c2:"#fff",logo:"",mascot:"Stars",pl:[{id:"s1",n:"12",na:"Caleb White",po:"QB",st:!0,nt:"6'3\" Sr",ph:""},{id:"s2",n:"72",na:"Mason Lee",po:"Center",st:!0,nt:"6'1\" Jr",ph:""},{id:"s3",n:"1",na:"Adrian Flores",po:"WR",st:!0,nt:"5'10\" Sr",ph:""},{id:"s4",n:"5",na:"Xavier Reed",po:"WR",st:!0,nt:"6'0\" Jr",ph:""},{id:"s5",n:"18",na:"Karter Hill",po:"WR",st:!0,nt:"6'2\" So",ph:""},{id:"s6",n:"23",na:"Malik Green",po:"DB",st:!0,nt:"5'11\" Sr",ph:""},{id:"s7",n:"27",na:"Tyler Wright",po:"DB",st:!0,nt:"6'0\" Jr",ph:""},{id:"s8",n:"9",na:"Brayden Scott",po:"LB",st:!1,nt:"5'9\" Fr",ph:""}]}}}
-function defGS(){return{aid:'h',hid:'s',as:0,hs:0,q:1,md:'tackle',p7:[...D7],poss:'home',tms:[dummy().h,dummy().s],cid:'h',sc:'',gc:{rem:1500,run:!1},us:[],rs:[],sb:!0}}
-let S={v:'sport',at:'branding',md:'light',ua:'all',uh:'all',br:{t:'FRIDAY NIGHT LIVE',st:'PA CONSOLE',cl:'',cn:'',wlat:'',wlon:'',wgps:!0},fn:"'Inter',sans-serif",cf:'12h',cs:!0,sp:{fb:defGS()},cp:{},wd:null,lw:0,ap:'',im:!0};
+function dummy(){return{h:{id:"h",name:"Texas Hawks",color:"#1e3a5f",c2:"#fff",logo:"",mascot:"Hawks",coach:"",pl:[{id:"h1",n:"7",na:"Marcus Johnson",po:"QB",st:!0,nt:"6'2\" Sr",ph:"",pron:"",pinned:!1},{id:"h2",n:"55",na:"Chris Williams",po:"Center",st:!0,nt:"6'0\" Jr",ph:"",pron:"",pinned:!1},{id:"h3",n:"11",na:"Jalen Smith",po:"WR",st:!0,nt:"5'11\" Sr",ph:"",pron:"",pinned:!1},{id:"h4",n:"88",na:"Ty Washington",po:"WR",st:!0,nt:"6'1\" So",ph:"",pron:"",pinned:!1},{id:"h5",n:"15",na:"Jordan Davis",po:"WR",st:!0,nt:"5'10\" Jr",ph:"",pron:"",pinned:!1},{id:"h6",n:"21",na:"Noah Brown",po:"DB",st:!0,nt:"6'0\" Sr",ph:"",pron:"",pinned:!1},{id:"h7",n:"33",na:"Elijah Jones",po:"DB",st:!0,nt:"5'9\" Jr",ph:"",pron:"",pinned:!1},{id:"h8",n:"44",na:"Isaiah Taylor",po:"LB",st:!1,nt:"6'0\" So",ph:"",pron:"",pinned:!1}]},s:{id:"s",name:"Dallas Stars",color:"#7f1d1d",c2:"#fff",logo:"",mascot:"Stars",coach:"",pl:[{id:"s1",n:"12",na:"Caleb White",po:"QB",st:!0,nt:"6'3\" Sr",ph:"",pron:"",pinned:!1},{id:"s2",n:"72",na:"Mason Lee",po:"Center",st:!0,nt:"6'1\" Jr",ph:"",pron:"",pinned:!1},{id:"s3",n:"1",na:"Adrian Flores",po:"WR",st:!0,nt:"5'10\" Sr",ph:"",pron:"",pinned:!1},{id:"s4",n:"5",na:"Xavier Reed",po:"WR",st:!0,nt:"6'0\" Jr",ph:"",pron:"",pinned:!1},{id:"s5",n:"18",na:"Karter Hill",po:"WR",st:!0,nt:"6'2\" So",ph:"",pron:"",pinned:!1},{id:"s6",n:"23",na:"Malik Green",po:"DB",st:!0,nt:"5'11\" Sr",ph:"",pron:"",pinned:!1},{id:"s7",n:"27",na:"Tyler Wright",po:"DB",st:!0,nt:"6'0\" Jr",ph:"",pron:"",pinned:!1},{id:"s8",n:"9",na:"Brayden Scott",po:"LB",st:!1,nt:"5'9\" Fr",ph:"",pron:"",pinned:!1}]}}}
+function defGS(){
+    return {
+        aid:'h', hid:'s', as:0, hs:0, q:1, md:'tackle',
+        gameState: 'PREGAME',
+        down: 1,
+        dist: 10,
+        yardline: 50,
+        poss: 'home',
+        scoringLog: [],
+        penaltyLog: [],
+        playerStats: {},
+        tms:[dummy().h, dummy().s],
+        cid:'h', sc:'', gc:{rem:1500, run:!1},
+        us:[], rs:[], sb:!0
+    };
+}
+let S={v:'sport', at:'branding', md:'light', ua:'all', uh:'all', br:{t:'FRIDAY NIGHT LIVE', st:'PA CONSOLE', cl:'', cn:'', wlat:'', wlon:'', wgps:!0}, fn:"'Inter',sans-serif", cf:'12h', cs:!0, sp:{fb:defGS()}, cp:{}, wd:null, lw:0, ap:'', im:!0};
 function g(){return S.sp.fb}
 const K='fnl_v20';
 function t(m){const x=document.getElementById('toast');x.textContent=m;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),1800)}
@@ -321,10 +408,11 @@ function e(s){if(!s)return'';return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;
 function id(){return Date.now().toString(36)+Math.random().toString(36).substring(2)}
 
 // THEME
-function ut(){document.body.classList.remove('dark-mode','seven-mode');if(S.md==='dark')document.body.classList.add('dark-mode');if(g().md==='7v7')document.body.classList.add('seven-mode');document.getElementById('themeBtn').innerHTML=S.md==='dark'?'🌙 Dark':'☀️ Light';updateClientLogo();applyAdminStyles();sv()}
+function ut(){document.body.classList.remove('dark-mode','seven-mode','outdoor-mode');if(S.md==='dark')document.body.classList.add('dark-mode');if(g().md==='7v7')document.body.classList.add('seven-mode');if(S.outdoor)document.body.classList.add('outdoor-mode');document.getElementById('themeBtn').innerHTML=S.md==='dark'?'🌙 Dark':'☀️ Light';updateClientLogo();applyAdminStyles();sv()}
 function light(){S.md='light';ut();t('Light mode')}
 function dark(){S.md='dark';ut();t('Dark mode')}
 function toggleTheme(){S.md==='dark'?light():dark()}
+function toggleOutdoor(){S.outdoor=!S.outdoor;ut();t(S.outdoor?'Outdoor mode ON':'Outdoor mode OFF')}
 function applyAdminStyles(){
     const r=document.documentElement.style;
     r.setProperty('--bug-team-name-font',S.bugTeamNameFont||"'Inter',sans-serif");
@@ -349,93 +437,58 @@ function toggleScorebugDisplay(){
     }
 }
 
-// CLIENT LOGO - CENTRALIZED HANDLING with Name Display
+// CLIENT LOGO
 function updateClientLogo() {
     const img = document.getElementById('clientLogoImg');
     const container = document.getElementById('clientLogoContainer');
     const nameDisplay = document.getElementById('clientNameDisplay');
-    
     if (S.br.cl && S.br.cl !== '') {
         img.src = S.br.cl;
         img.style.display = 'block';
         container.style.display = 'flex';
         container.style.background = 'rgba(0,0,0,0.4)';
-        
         img.onload = function() {};
-        img.onerror = function() {
-            img.style.display = 'none';
-            console.warn('Client logo failed to load:', S.br.cl);
-        };
+        img.onerror = function() { img.style.display = 'none'; console.warn('Client logo failed to load:', S.br.cl); };
     } else {
         img.style.display = 'none';
         container.style.display = 'none';
         container.style.background = 'rgba(0,0,0,0.4)';
     }
-    
     if (S.br.cn && S.br.cn !== '') {
         nameDisplay.textContent = S.br.cn;
         nameDisplay.style.display = 'block';
         container.style.display = 'flex';
     } else {
         nameDisplay.style.display = 'none';
-        if (!S.br.cl || S.br.cl === '') {
-            container.style.display = 'none';
-        }
+        if (!S.br.cl || S.br.cl === '') { container.style.display = 'none'; }
     }
 }
-
 function uploadClientLogo(input) {
     const file = input.files[0];
     if (!file) { t('No file selected'); return; }
     if (!file.type.startsWith('image/')) { t('Please select an image file'); return; }
     if (file.size > 2 * 1024 * 1024) { t('Image too large. Max 2MB'); return; }
     const reader = new FileReader();
-    reader.onload = function(ev) {
-        S.br.cl = ev.target.result;
-        updateClientLogo();
-        sv();
-        t('✅ Client logo uploaded!');
-    };
+    reader.onload = function(ev) { S.br.cl = ev.target.result; updateClientLogo(); sv(); t('✅ Client logo uploaded!'); };
     reader.onerror = function() { t('❌ Upload failed'); };
     reader.readAsDataURL(file);
 }
-
 function setClientLogoFromURL(url) {
     if (!url || url.trim() === '') { t('Please enter a URL'); return; }
-    S.br.cl = url.trim();
-    updateClientLogo();
-    sv();
-    t('✅ Client logo set from URL');
+    S.br.cl = url.trim(); updateClientLogo(); sv(); t('✅ Client logo set from URL');
 }
-
-function clearClientLogo() {
-    S.br.cl = '';
-    updateClientLogo();
-    sv();
-    t('Client logo cleared');
-}
-
+function clearClientLogo() { S.br.cl = ''; updateClientLogo(); sv(); t('Client logo cleared'); }
 function showAllPINs() {
     const clients = S.cp || {};
     const keys = Object.keys(clients);
     if (keys.length === 0) { t('No clients found'); return; }
     let msg = '📋 Client PINs:\n\n';
-    keys.forEach(p => {
-        const client = clients[p];
-        const hasLogo = client.l && client.l !== '' ? '✅' : '❌';
-        msg += `🔑 ${p} → ${client.n} ${hasLogo}\n`;
-    });
+    keys.forEach(p => { const client = clients[p]; const hasLogo = client.l && client.l !== '' ? '✅' : '❌'; msg += `🔑 ${p} → ${client.n} ${hasLogo}\n`; });
     msg += `\nTotal: ${keys.length} clients`;
     alert(msg);
 }
-
 function logoutAndShowPIN() {
-    S.ap = '';
-    S.br.cl = '';
-    S.br.cn = '';
-    updateClientLogo();
-    showPINEntry();
-    t('Logged out. Enter a client PIN to see their branding.');
+    S.ap = ''; S.br.cl = ''; S.br.cn = ''; updateClientLogo(); showPINEntry(); t('Logged out. Enter a client PIN to see their branding.');
 }
 
 // CLOCK
@@ -445,8 +498,28 @@ function sGC(){const m=parseInt(prompt('Minutes:','25'));if(isNaN(m)||m<1)return
 function stGC(){g().gc.run=!0;sv()}
 function pGC(){g().gc.run=!1;sv()}
 function rGC(){g().gc.run=!1;g().gc.rem=0;ugc();sv()}
-function ugc(){const r=g().gc.rem||0;const m=Math.floor(r/60),s=r%60;document.getElementById('gameClockDisplay').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')}
-setInterval(()=>{const gc=g().gc;if(gc.run&&gc.rem>0){gc.rem--;ugc();if(gc.rem===0){gc.run=!1;t('Clock expired')}}},1000);
+let clockSaveTimer=null;
+function ugc(){
+    const r=g().gc.rem||0;
+    const m=Math.floor(r/60), s=r%60;
+    const display=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    const el=document.getElementById('gameClockDisplay');
+    if(el) el.textContent=display;
+    // Warning states
+    if(r<=120 && r>0){ el.classList.add('clock-warning'); el.classList.remove('clock-expired'); }
+    else if(r===0){ el.classList.remove('clock-warning'); el.classList.add('clock-expired'); }
+    else { el.classList.remove('clock-warning','clock-expired'); }
+}
+setInterval(()=>{
+    const gc=g().gc;
+    if(gc.run && gc.rem>0){
+        gc.rem--;
+        ugc();
+        if(gc.rem===0){ gc.run=!1; t('Clock expired'); }
+        // Auto-save every 5 seconds
+        if(gc.rem % 5 === 0){ sv(); }
+    }
+},1000);
 
 // WEATHER
 function getWeatherEmoji(code){if(code<=0)return'☀️';if(code<=3)return'⛅';if(code<=48)return'🌫️';if(code<=57)return'🌧️';if(code<=67)return'🌨️';if(code<=77)return'❄️';if(code<=82)return'🌧️';if(code<=86)return'🌨️';return'🌩️'}
@@ -476,10 +549,7 @@ function uwd(){
         if(locDisplay.length>20)locDisplay=locDisplay.substring(0,18)+'…';
         elH.innerHTML=`${icon} ${temp}°F | ${wind}mph | ${hum}%`;
         elH.title=`Temperature: ${temp}°F\nFeels Like: ${feels}°F\nWind: ${wind} mph\nHumidity: ${hum}%\nLocation: ${S.wd.location||'Unknown'}${S.wd.fallback?' (fallback)':''}`;
-    }else{
-        elH.innerHTML='--°F';
-        elH.title='Weather data unavailable';
-    }
+    }else{elH.innerHTML='--°F';elH.title='Weather data unavailable';}
 }
 async function gW(){
     if(S.br.wlat&&S.br.wlon){await fW(S.br.wlat,S.br.wlon,'Custom Location',false);return}
@@ -491,7 +561,7 @@ async function gW(){
 }
 setInterval(()=>{if(!S.wd||Date.now()-S.lw>900000)gW()},900000);
 
-// PIN - WITH CANCEL BUTTON
+// PIN - WITH CANCEL
 function showPINEntry(){
   const o = document.createElement('div');
   o.className = 'pin-overlay';
@@ -502,126 +572,571 @@ function showPINEntry(){
       <button class="btn" id="pc" style="background:#666;color:#fff;">Cancel</button>
     </div>`;
   document.body.appendChild(o);
-
-  const doCancel = () => {
-    if (o.parentNode) o.remove();
-    S.im = true;
-    ra();
-    t('Returned to admin');
-  };
-
+  const doCancel = () => { if (o.parentNode) o.remove(); S.im = true; ra(); t('Returned to admin'); };
   document.getElementById('pc').onclick = doCancel;
   o.addEventListener('click', (e) => { if (e.target === o) doCancel(); });
   document.addEventListener('keydown', function escHandler(e) {
     if (e.key === 'Escape') { doCancel(); document.removeEventListener('keydown', escHandler); }
   });
-
   document.getElementById('ps').onclick = () => {
     const p = document.getElementById('pi').value.trim().toUpperCase();
-    if (S.cp[p]) {
-      ap(S.cp[p], p);
-      doCancel();
-      t('Welcome!');
-    } else {
-      t('Invalid PIN');
-    }
+    if (S.cp[p]) { ap(S.cp[p], p); doCancel(); t('Welcome!'); }
+    else { t('Invalid PIN'); }
   };
 }
-
-function ap(pr,p){
-    S.ap=p;
-    S.im=!1;
-    S.br.cl=pr.l||'';
-    S.br.cn=pr.n||'';
-    S.br.t=pr.n||'Friday Night Live';
-    if(pr.wlat&&pr.wlon){
-        S.br.wlat=pr.wlat;
-        S.br.wlon=pr.wlon;
-        fW(pr.wlat,pr.wlon,pr.n||'Client',false);
-    }
-    updateClientLogo();
-    sv();
-    ra();
-}
+function ap(pr,p){ S.ap=p; S.im=!1; S.br.cl=pr.l||''; S.br.cn=pr.n||''; S.br.t=pr.n||'Friday Night Live'; if(pr.wlat&&pr.wlon){ S.br.wlat=pr.wlat; S.br.wlon=pr.wlon; fW(pr.wlat,pr.wlon,pr.n||'Client',false); } updateClientLogo(); sv(); ra(); }
 
 // SAVE/LOAD LOCAL
-async function sv(){try{localStorage.setItem(K,JSON.stringify(S));document.getElementById('ftSaved').textContent='Saved '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}catch(e){}}async function ld(){try{const r=localStorage.getItem(K);if(r){const p=JSON.parse(r);S={...S,...p};if(p.sp?.fb){const sp=S.sp.fb;const d=defGS();for(const k of Object.keys(d)){if(sp[k]===undefined)sp[k]=d[k]}sp.tms.forEach(t=>{t.pl.forEach(p=>{if(!p.id)p.id=id()})});if(!sp.p7)sp.p7=[...D7];if(!sp.gc)sp.gc={rem:1500,run:!1};if(sp.sb===undefined)sp.sb=!0}if(p.md)S.md=p.md;if(!S.cp)S.cp={};if(!S.ap)S.ap='';if(S.im===undefined)S.im=!0;if(!S.br.wlat)S.br.wlat='';if(!S.br.wlon)S.br.wlon='';if(!S.br.cn)S.br.cn=''}updateClientLogo()}catch(e){}ut();applyAdminStyles();try{ra()}catch(e){document.getElementById('main').innerHTML='<div class="panel"><h3>Error</h3><p>Clear site data and reload.</p></div>'}}
+async function sv(){try{localStorage.setItem(K,JSON.stringify(S));document.getElementById('ftSaved').textContent='Saved '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}catch(e){}}
+async function ld(){
+    try{
+        const r=localStorage.getItem(K);
+        if(r){
+            const p=JSON.parse(r);
+            S={...S,...p};
+            if(p.sp?.fb){
+                const sp=S.sp.fb;
+                const d=defGS();
+                for(const k of Object.keys(d)){
+                    if(sp[k]===undefined) sp[k]=d[k];
+                }
+                // Ensure playerStats exists for all players
+                sp.tms.forEach(t=>{
+                    t.pl.forEach(p=>{
+                        if(!sp.playerStats) sp.playerStats={};
+                        if(!sp.playerStats[p.id]) sp.playerStats[p.id]={};
+                        // ensure fields for new props
+                        if(p.pinned===undefined) p.pinned=false;
+                        if(p.pron===undefined) p.pron='';
+                    });
+                });
+                if(!sp.p7) sp.p7=[...D7];
+                if(!sp.gc) sp.gc={rem:1500,run:!1};
+                if(sp.sb===undefined) sp.sb=!0;
+                if(!sp.scoringLog) sp.scoringLog=[];
+                if(!sp.penaltyLog) sp.penaltyLog=[];
+                if(!sp.gameState) sp.gameState='PREGAME';
+                if(sp.down===undefined) sp.down=1;
+                if(sp.dist===undefined) sp.dist=10;
+                if(sp.yardline===undefined) sp.yardline=50;
+            }
+            if(!S.cp) S.cp={};
+            if(!S.ap) S.ap='';
+            if(S.im===undefined) S.im=!0;
+            if(!S.br.wlat) S.br.wlat='';
+            if(!S.br.wlon) S.br.wlon='';
+            if(!S.br.cn) S.br.cn='';
+        }
+        updateClientLogo();
+    }catch(e){}
+    ut();applyAdminStyles();
+    try{ra();}catch(e){document.getElementById('main').innerHTML='<div class="panel"><h3>Error</h3><p>Clear site data and reload.</p></div>'}
+}
 
 // NAV
 function rn(){let tabs='';tabs+='<button class="nav-link '+(S.v==='sport'?'active':'')+'" data-view="sport">🏈 GAME</button>';tabs+='<button class="nav-link '+(S.v==='roster'?'active':'')+'" data-view="roster">📋 ROSTERS</button>';tabs+='<button class="nav-link '+(S.v==='script'?'active':'')+'" data-view="script">🎙️ SCRIPT</button>';tabs+='<button class="nav-link '+(S.v==='admin'?'active':'')+'" data-view="admin">⚙️ ADMIN</button>';if(S.im)tabs+='<button class="nav-link '+(S.v==='clients'?'active':'')+'" data-view="clients">👥 CLIENTS</button>';document.getElementById('mainNav').innerHTML=tabs;document.getElementById('mainNav').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.v=b.dataset.view;rn();rm()}}
 function rm(){if(S.v==='roster')rR();else if(S.v==='script')rSC();else if(S.v==='admin')rA();else if(S.v==='clients')rC();else rG()}
-function ra(){
-    if (!S.v || S.v === '') S.v = 'sport';
-    rn();
-    rm();
-    usb();
-    ugc();
-    gW();
-    updateClientLogo(); 
-    const sb = document.getElementById('scorebug');
-    if (sb && g().sb === false) {
-        sb.classList.add('hidden');
-    } else if (sb) {
-        sb.classList.remove('hidden');
-    }
-}
+function ra(){ if (!S.v || S.v === '') S.v = 'sport'; rn(); rm(); usb(); ugc(); gW(); updateClientLogo(); const sb=document.getElementById('scorebug'); if(sb && g().sb===false){ sb.classList.add('hidden'); } else if(sb){ sb.classList.remove('hidden'); } }
 
 // SCORE
 function chS(s,d){const sp=g();if(s==='away')sp.as=Math.max(0,sp.as+d);else sp.hs=Math.max(0,sp.hs+d);usb();fl(s);sv()}
 function fl(s){const el=document.getElementById(s==='away'?'sbAwayScore':'sbHomeScore');if(el){el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),250)}}
 function chQ(d){const sp=g();const m=sp.md==='7v7'?2:6;sp.q=Math.min(m,Math.max(1,sp.q+d));usb();sv()}
-function usb(){const sp=g();const at=sp.tms.find(t=>t.id===sp.aid),ht=sp.tms.find(t=>t.id===sp.hid);document.getElementById('sbAwayAbbr').innerHTML=(at?.logo?'<img class="sb-logo-sm" src="'+e(at.logo)+'"> ':'')+(at?at.name.substring(0,4).toUpperCase():'AWAY');document.getElementById('sbHomeAbbr').innerHTML=(ht?.logo?'<img class="sb-logo-sm" src="'+e(ht.logo)+'"> ':'')+(ht?ht.name.substring(0,4).toUpperCase():'HOME');document.getElementById('sbAwayScore').textContent=sp.as||0;document.getElementById('sbHomeScore').textContent=sp.hs||0;const ls=sp.md==='7v7'?['1st Half','2nd Half']:['Q1','Q2','Q3','Q4'];document.getElementById('sbQuarter').textContent=ls[sp.q-1]||'Q1';document.getElementById('sbQLabel').textContent=sp.md==='7v7'?'HALF':'QTR';document.getElementById('ftTicker').textContent='v20.2 • '+(at?at.name:'')+' vs. '+(ht?ht.name:'')}
+function usb(){const sp=g();const at=sp.tms.find(t=>t.id===sp.aid),ht=sp.tms.find(t=>t.id===sp.hid);document.getElementById('sbAwayAbbr').innerHTML=(at?.logo?'<img class="sb-logo-sm" src="'+e(at.logo)+'"> ':'')+(at?at.name.substring(0,4).toUpperCase():'AWAY');document.getElementById('sbHomeAbbr').innerHTML=(ht?.logo?'<img class="sb-logo-sm" src="'+e(ht.logo)+'"> ':'')+(ht?ht.name.substring(0,4).toUpperCase():'HOME');document.getElementById('sbAwayScore').textContent=sp.as||0;document.getElementById('sbHomeScore').textContent=sp.hs||0;const ls=sp.md==='7v7'?['1st Half','2nd Half']:['Q1','Q2','Q3','Q4'];document.getElementById('sbQuarter').textContent=ls[sp.q-1]||'Q1';document.getElementById('sbQLabel').textContent=sp.md==='7v7'?'HALF':'QTR';document.getElementById('ftTicker').textContent='v20.3 • '+(at?at.name:'')+' vs. '+(ht?ht.name:'')}
 
 // HELPERS
 function tB(s){return g().tms.find(t=>t.id===(s==='away'?g().aid:g().hid))||null}
 function gP(){return g().md==='7v7'?(g().p7||D7):[...TACKLE.off,...TACKLE.def,...TACKLE.st]}
 function gL(s,u){const t=tB(s);if(!t?.pl)return[];const pl=gP();let l=u==='all'?[...t.pl]:t.pl.filter(p=>pl.includes(p.po));l.sort((a,b)=>(parseInt(a.n)||999)-(parseInt(b.n)||999));return l}
 
-// GAME VIEW
-function rG(){const sp=g();let h='<div class="game-grid">';const i7=sp.md==='7v7';const po=gP();['away','home'].forEach(s=>{const t=tB(s);const au=S['u'+s[0]]||'all';const tc=t?t.color:(s==='away'?'#1e3a5f':'#7f1d1d');h+='<div class="team-card '+s+'"><div class="card-head" style="background:'+tc+';"><span>'+s.toUpperCase()+'</span>'+(t?.logo?'<img class="team-logo" src="'+e(t.logo)+'" onerror="this.style.display=\'none\'">':'')+'<select onchange="swT(\''+s+'\',this.value)" style="flex:1;">'+sp.tms.map(x=>'<option value="'+e(x.id)+'" '+(x.id===(s==='away'?sp.aid:sp.hid)?'selected':'')+'>'+e(x.name)+'</option>').join('')+'</select><button class="btn-sm" onclick="tP(\''+s+'\')" style="background:'+(sp.poss===s?'var(--accent)':'transparent')+';color:'+(sp.poss===s?'#000':'inherit')+';">🏈</button></div><div class="unit-tabs"><button class="unit-tab '+(au==='all'?'active':'')+'" onclick="sU(\''+s+'\',\'all\')">ALL</button><button class="unit-tab '+(au==='offense'?'active':'')+'" onclick="sU(\''+s+'\',\'offense\')">OFF</button><button class="unit-tab '+(au==='defense'?'active':'')+'" onclick="sU(\''+s+'\',\'defense\')">DEF</button>'+(i7?'':'<button class="unit-tab '+(au==='special'?'active':'')+'" onclick="sU(\''+s+'\',\'special\')">ST</button>')+'</div><div class="search-bar"><input placeholder="Search #" id="sch-'+s+'" oninput="searchPlayers(\''+s+'\',this.value)"><button id="clr-'+s+'" style="display:none" onclick="document.getElementById(\'sch-'+s+'\').value=\'\';searchPlayers(\''+s+'\',\'\')">✕</button></div><div class="player-list-header"><span></span><span>#</span><span>PLAYER</span><span>NOTES</span><span>POS</span><span></span><span></span></div><div class="player-list-body">';gL(s,au).forEach(p=>{h+='<div class="player-row'+(p.st?' starter':'')+'" data-side="'+s+'" data-pid="'+p.id+'" data-num="'+e(p.n||'')+'">'+(p.ph?'<img class="plyr-photo" src="'+e(p.ph)+'" onerror="this.style.display=\'none\'">':'<span></span>')+'<span class="plyr-num"><input value="'+e(p.n||'')+'" onchange="uF(\''+s+'\',\''+p.id+'\',\'n\',this.value)" placeholder="#"></span><span class="plyr-name"><input value="'+e(p.na||'')+'" onchange="uF(\''+s+'\',\''+p.id+'\',\'na\',this.value)" placeholder="Name"></span><span class="plyr-notes-inline"><input value="'+e(p.nt||'')+'" onchange="uF(\''+s+'\',\''+p.id+'\',\'nt\',this.value)" placeholder="Notes"></span><span class="plyr-pos"><select onchange="uF(\''+s+'\',\''+p.id+'\',\'po\',this.value)">'+po.map(o=>'<option '+(p.po===o?'selected':'')+'>'+o+'</option>').join('')+'</select></span><button class="st-toggle '+(p.st?'':'off')+'" onclick="event.stopPropagation();tS(\''+s+'\',\''+p.id+'\')">⭐</button><button onclick="event.stopPropagation();dP(\''+s+'\',\''+p.id+'\')" style="background:none;border:none;color:#666;cursor:pointer;font-size:.7rem;">✕</button></div>'});h+='</div><div class="add-row"><input id="an-'+s+'" placeholder="#" style="width:34px;"><input id="ana-'+s+'" placeholder="Name" style="flex:1;"><select id="ap-'+s+'">'+po.map(p=>'<option>'+p+'</option>').join('')+'</select><input id="ant-'+s+'" placeholder="Notes" style="flex:1;"><button class="btn-sm" onclick="aP(\''+s+'\')">+</button></div></div>'});h+='</div>';document.getElementById('main').innerHTML=h;usb()}
+// ===================== NEW GAME FUNCTIONS =====================
+
+// Save snapshot for undo (full state)
+function pushUndo(){
+    const sp=g();
+    if(!sp.us) sp.us=[];
+    sp.us.push(JSON.parse(JSON.stringify(sp)));
+    if(sp.us.length>50) sp.us.shift();
+    if(sp.rs) sp.rs=[]; // clear redo on new action
+}
+
+function undoGame(){
+    const sp=g();
+    if(!sp.us?.length){ t('Nothing to undo'); return; }
+    const snapshot = sp.us.pop();
+    sp.rs.push(JSON.parse(JSON.stringify(sp)));
+    Object.assign(sp, snapshot);
+    sv(); ra(); t('Undo');
+}
+function redoGame(){
+    const sp=g();
+    if(!sp.rs?.length){ t('Nothing to redo'); return; }
+    const snapshot = sp.rs.pop();
+    sp.us.push(JSON.parse(JSON.stringify(sp)));
+    Object.assign(sp, snapshot);
+    sv(); ra(); t('Redo');
+}
+
+// Game state management
+function setGameState(state){
+    const sp=g();
+    sp.gameState=state;
+    pushUndo();
+    sv(); rG();
+}
+function startGame(){
+    const sp=g();
+    if(sp.gameState!=='PREGAME' && !confirm('Game already started. Reset?')) return;
+    sp.gameState='FIRST_HALF';
+    sp.gc.rem=1440; // 24min
+    sp.gc.run=true;
+    sp.q=1;
+    sp.as=0; sp.hs=0;
+    sp.down=1; sp.dist=10; sp.yardline=50;
+    sp.scoringLog=[]; sp.penaltyLog=[];
+    sp.playerStats={};
+    sp.tms.forEach(t=>t.pl.forEach(p=>{sp.playerStats[p.id]={}}));
+    pushUndo();
+    sv(); ra(); t('Game started!');
+}
+function startSecondHalf(){
+    const sp=g();
+    if(sp.gameState!=='HALFTIME' && !confirm('Switch to second half?')) return;
+    sp.gameState='SECOND_HALF';
+    sp.gc.rem=1440;
+    sp.gc.run=true;
+    sp.q=3;
+    pushUndo();
+    sv(); ra(); t('Second half started');
+}
+function endGame(){
+    if(!confirm('End game? Final score will be locked.')) return;
+    const sp=g();
+    sp.gameState='FINAL';
+    sp.gc.run=false;
+    pushUndo();
+    sv(); ra(); t('Game ended');
+}
+
+// Possession
+function setPossession(side){
+    const sp=g();
+    if(sp.poss===side) return;
+    sp.poss=side;
+    pushUndo();
+    sv(); rG();
+}
+
+// Quick Score
+function quickScore(type){
+    const sp=g();
+    if(sp.gameState==='FINAL'){ t('Game is final'); return; }
+    const scoringTeam = sp.poss === 'home' ? 'home' : 'away';
+    const team = tB(scoringTeam);
+    if(!team){ t('No team'); return; }
+    const playerName = prompt(`Enter player name for ${type.toUpperCase()}:`);
+    if(!playerName) return;
+    let points=0;
+    if(type==='td') points=6;
+    else if(type==='fg') points=3;
+    else if(type==='pat') points=1;
+    else if(type==='safety') points=2;
+    // Update score
+    if(scoringTeam==='home') sp.hs += points;
+    else sp.as += points;
+    // Log
+    sp.scoringLog.push({
+        type, team:scoringTeam, player:playerName, points,
+        time: sp.gc.rem, quarter: sp.q, timestamp: Date.now()
+    });
+    // Update player stats
+    const player = team.pl.find(p => p.na.toLowerCase() === playerName.toLowerCase());
+    if(player){
+        if(!sp.playerStats[player.id]) sp.playerStats[player.id]={};
+        const st=sp.playerStats[player.id];
+        if(type==='td') st.tds = (st.tds||0)+1;
+        else if(type==='fg') st.fgs = (st.fgs||0)+1;
+        else if(type==='pat') st.pats = (st.pats||0)+1;
+        else if(type==='safety') st.safeties = (st.safeties||0)+1;
+    }
+    pushUndo();
+    sv(); rG(); usb();
+}
+// Quick Penalty
+function quickPenalty(type){
+    const sp=g();
+    if(sp.gameState==='FINAL'){ t('Game is final'); return; }
+    const team = tB(sp.poss);
+    if(!team){ t('No team'); return; }
+    const playerName = prompt(`Enter player name for ${type.replace('_',' ')} penalty:`);
+    if(!playerName) return;
+    const yardage = parseInt(prompt('Yardage (0 if none):')||'0');
+    sp.penaltyLog.push({
+        type, team:sp.poss, player:playerName, yardage: yardage||0,
+        time: sp.gc.rem, quarter: sp.q, timestamp: Date.now()
+    });
+    // Update player stats
+    const player = team.pl.find(p => p.na.toLowerCase() === playerName.toLowerCase());
+    if(player){
+        if(!sp.playerStats[player.id]) sp.playerStats[player.id]={};
+        const st=sp.playerStats[player.id];
+        st.penalties = (st.penalties||0)+1;
+    }
+    pushUndo();
+    sv(); rG();
+}
+
+// Clock presets
+function applyClockPreset(seconds){
+    const sp=g();
+    sp.gc.rem=seconds;
+    sp.gc.run=false;
+    pushUndo();
+    sv(); ugc(); rG(); t(`Clock set to ${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`);
+}
+
+// Toggle pin
+function togglePin(side, pid){
+    const team = tB(side);
+    if(!team) return;
+    const p = team.pl.find(x=>x.id===pid);
+    if(!p) return;
+    if(!p.pinned){
+        const pinnedCount = team.pl.filter(x=>x.pinned).length;
+        if(pinnedCount >= 6){ t('Maximum 6 pinned players'); return; }
+    }
+    p.pinned = !p.pinned;
+    // Sort: pinned first, then number
+    team.pl.sort((a,b) => {
+        if(a.pinned && !b.pinned) return -1;
+        if(!a.pinned && b.pinned) return 1;
+        return (parseInt(a.n)||999) - (parseInt(b.n)||999);
+    });
+    pushUndo();
+    sv(); rG();
+}
+
+// Box Score Export
+function exportBoxScore(){
+    const sp=g();
+    let csv = 'Friday Night Live Box Score\n';
+    const away = tB('away'), home=tB('home');
+    csv += `Away,${away?away.name:'Away'}\n`;
+    csv += `Home,${home?home.name:'Home'}\n`;
+    csv += `Score,${sp.as}-${sp.hs}\n`;
+    csv += `Quarter,${sp.q}\n`;
+    csv += `Game State,${sp.gameState}\n\n`;
+    csv += 'Team,Number,Name,Position,Starter,Notes,Pronunciation,Pinned,Carries,Yards,Catches,Tackles,TDs,FGs,PATs,Safeties,Penalties\n';
+    ['away','home'].forEach(side=>{
+        const team = tB(side);
+        if(!team) return;
+        team.pl.forEach(p=>{
+            const st = sp.playerStats[p.id] || {};
+            csv += `${side},${p.n},"${p.na}",${p.po},${p.st?'Yes':'No'},"${(p.nt||'').replace(/"/g,'""')}",${p.pron||''},${p.pinned?'Yes':'No'},${st.carries||0},${st.yards||0},${st.catches||0},${st.tackles||0},${st.tds||0},${st.fgs||0},${st.pats||0},${st.safeties||0},${st.penalties||0}\n`;
+        });
+    });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
+    a.download = `boxscore_${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+    t('📊 Box score exported');
+}
+
+// Player stat tooltip – generate tooltip for player row
+function playerStatTooltip(side,pid){
+    const sp=g();
+    const team = tB(side);
+    if(!team) return '';
+    const p = team.pl.find(x=>x.id===pid);
+    if(!p) return '';
+    const st = sp.playerStats[p.id] || {};
+    const parts = [];
+    if(st.carries) parts.push(`Carries: ${st.carries}`);
+    if(st.yards) parts.push(`Yards: ${st.yards}`);
+    if(st.catches) parts.push(`Catches: ${st.catches}`);
+    if(st.tackles) parts.push(`Tackles: ${st.tackles}`);
+    if(st.tds) parts.push(`TDs: ${st.tds}`);
+    if(st.fgs) parts.push(`FGs: ${st.fgs}`);
+    if(st.pats) parts.push(`PATs: ${st.pats}`);
+    if(st.safeties) parts.push(`Safeties: ${st.safeties}`);
+    if(st.penalties) parts.push(`Penalties: ${st.penalties}`);
+    return parts.length ? parts.join(' | ') : 'No stats';
+}
+
+// ===================== GAME VIEW =====================
+
+function rG(){
+    const sp=g();
+    let h='<div class="game-grid">';
+    // Game controls bar
+    h+=`<div class="game-controls">
+        <div class="state-badge ${sp.gameState.toLowerCase()}">${sp.gameState}</div>
+        <div class="down-dist">
+            Down: <select id="downSelect" onchange="setDown(this.value)">${[1,2,3,4].map(d=>`<option ${d==sp.down?'selected':''}>${d}</option>`).join('')}</select>
+            Yards: <input type="number" id="distInput" value="${sp.dist}" min="1" max="99" style="width:50px;" onchange="setDist(this.value)">
+            Yardline: <input type="number" id="yardlineInput" value="${sp.yardline}" min="1" max="99" style="width:50px;" onchange="setYardline(this.value)">
+        </div>
+        <div class="possession">
+            <button class="${sp.poss==='home'?'active':''}" onclick="setPossession('home')">🏠 HOME</button>
+            <button class="${sp.poss==='away'?'active':''}" onclick="setPossession('away')">✈️ AWAY</button>
+        </div>
+        <div class="quick-scores">
+            <button class="td" onclick="quickScore('td')">TD +6</button>
+            <button class="fg" onclick="quickScore('fg')">FG +3</button>
+            <button class="pat" onclick="quickScore('pat')">PAT +1</button>
+            <button class="safety" onclick="quickScore('safety')">Safety +2</button>
+        </div>
+        <div class="quick-penalties">
+            <button onclick="quickPenalty('holding')">Holding</button>
+            <button onclick="quickPenalty('false_start')">False Start</button>
+            <button onclick="quickPenalty('pi')">PI</button>
+        </div>
+        <div class="game-actions">
+            <button onclick="startGame()">▶ Start</button>
+            <button onclick="startSecondHalf()">⏭ 2nd Half</button>
+            <button onclick="endGame()">🏁 Final</button>
+            <button onclick="undoGame()">↩ Undo</button>
+            <button onclick="redoGame()">↪ Redo</button>
+            <button onclick="exportBoxScore()">📊 Box</button>
+        </div>
+        <div class="clock-presets">
+            <button onclick="applyClockPreset(720)">1Q</button>
+            <button onclick="applyClockPreset(720)">2Q</button>
+            <button onclick="applyClockPreset(720)">3Q</button>
+            <button onclick="applyClockPreset(720)">4Q</button>
+            <button onclick="applyClockPreset(120)">2min</button>
+            <button onclick="applyClockPreset(600)">Half</button>
+            <button onclick="applyClockPreset(600)">OT</button>
+            <button onclick="customClock()">⏱️</button>
+        </div>
+    </div>`;
+    // Game log
+    const allEvents = [...sp.scoringLog.map(e=>({...e, type:'score'})), ...sp.penaltyLog.map(e=>({...e, type:'penalty'}))];
+    allEvents.sort((a,b)=>b.timestamp - a.timestamp);
+    const recent = allEvents.slice(0,15);
+    h+=`<div class="game-log">`;
+    if(recent.length){
+        recent.forEach(ev=>{
+            const timeStr = ev.time!==undefined ? `${Math.floor(ev.time/60)}:${String(ev.time%60).padStart(2,'0')}` : '';
+            const teamLabel = ev.team==='home'?'🏠':'✈️';
+            let desc = '';
+            if(ev.type==='score') desc = `${ev.team.toUpperCase()} ${ev.player} ${ev.type.toUpperCase()} +${ev.points}`;
+            else desc = `${ev.team.toUpperCase()} ${ev.player} ${ev.type.replace('_',' ')} penalty${ev.yardage?` -${ev.yardage}yd`:''}`;
+            h+=`<div class="log-entry"><span class="log-time">${timeStr}</span><span class="log-team">${teamLabel}</span><span class="log-desc">${desc}</span></div>`;
+        });
+    } else {
+        h+=`<div style="opacity:.5;text-align:center;">No events yet</div>`;
+    }
+    h+=`</div>`;
+    // Team cards
+    h+=`<div class="team-cards">`;
+    const i7=sp.md==='7v7';
+    const po=gP();
+    ['away','home'].forEach(s=>{
+        const t=tB(s);
+        const au=S['u'+s[0]]||'all';
+        const tc=t?t.color:(s==='away'?'#1e3a5f':'#7f1d1d');
+        h+='<div class="team-card '+s+'"><div class="card-head" style="background:'+tc+';"><span>'+s.toUpperCase()+'</span>'+(t?.logo?'<img class="team-logo" src="'+e(t.logo)+'" onerror="this.style.display=\'none\'">':'')+'<select onchange="swT(\''+s+'\',this.value)" style="flex:1;">'+sp.tms.map(x=>'<option value="'+e(x.id)+'" '+(x.id===(s==='away'?sp.aid:sp.hid)?'selected':'')+'>'+e(x.name)+'</option>').join('')+'</select><button class="btn-sm" onclick="tP(\''+s+'\')" style="background:'+(sp.poss===s?'var(--accent)':'transparent')+';color:'+(sp.poss===s?'#000':'inherit')+';">🏈</button></div><div class="unit-tabs"><button class="unit-tab '+(au==='all'?'active':'')+'" onclick="sU(\''+s+'\',\'all\')">ALL</button><button class="unit-tab '+(au==='offense'?'active':'')+'" onclick="sU(\''+s+'\',\'offense\')">OFF</button><button class="unit-tab '+(au==='defense'?'active':'')+'" onclick="sU(\''+s+'\',\'defense\')">DEF</button>'+(i7?'':'<button class="unit-tab '+(au==='special'?'active':'')+'" onclick="sU(\''+s+'\',\'special\')">ST</button>')+'</div><div class="search-bar"><input placeholder="Search #" id="sch-'+s+'" oninput="searchPlayers(\''+s+'\',this.value)"><button id="clr-'+s+'" style="display:none" onclick="document.getElementById(\'sch-'+s+'\').value=\'\';searchPlayers(\''+s+'\',\'\')">✕</button></div><div class="player-list-header"><span></span><span>#</span><span>PLAYER</span><span>NOTES</span><span>POS</span><span></span><span></span><span></span></div><div class="player-list-body">';
+        gL(s,au).forEach(p=>{
+            const stats = sp.playerStats[p.id] || {};
+            const statStr = playerStatTooltip(s,p.id);
+            h+='<div class="player-row'+(p.st?' starter':'')+'" data-side="'+s+'" data-pid="'+p.id+'" data-num="'+e(p.n||'')+'">'+(p.ph?'<img class="plyr-photo" src="'+e(p.ph)+'" onerror="this.style.display=\'none\'">':'<span></span>')+'<span class="plyr-num"><input value="'+e(p.n||'')+'" onchange="uF(\''+s+'\',\''+p.id+'\',\'n\',this.value)" placeholder="#"></span><span class="plyr-name"><input value="'+e(p.na||'')+'" onchange="uF(\''+s+'\',\''+p.id+'\',\'na\',this.value)" placeholder="Name" title="'+e(statStr)+'"></span><span class="plyr-notes-inline"><input value="'+e(p.nt||'')+'" onchange="uF(\''+s+'\',\''+p.id+'\',\'nt\',this.value)" placeholder="Notes"></span><span class="plyr-pos"><select onchange="uF(\''+s+'\',\''+p.id+'\',\'po\',this.value)">'+po.map(o=>'<option '+(p.po===o?'selected':'')+'>'+o+'</option>').join('')+'</select></span><button class="st-toggle '+(p.st?'':'off')+'" onclick="event.stopPropagation();tS(\''+s+'\',\''+p.id+'\')">⭐</button><button class="pin-btn '+(p.pinned?'active':'')+'" onclick="event.stopPropagation();togglePin(\''+s+'\',\''+p.id+'\')">📌</button><button onclick="event.stopPropagation();dP(\''+s+'\',\''+p.id+'\')" style="background:none;border:none;color:#666;cursor:pointer;font-size:.7rem;">✕</button></div>';
+        });
+        h+='</div><div class="add-row"><input id="an-'+s+'" placeholder="#" style="width:34px;"><input id="ana-'+s+'" placeholder="Name" style="flex:1;"><select id="ap-'+s+'">'+po.map(p=>'<option>'+p+'</option>').join('')+'</select><input id="ant-'+s+'" placeholder="Notes" style="flex:1;"><button class="btn-sm" onclick="aP(\''+s+'\')">+</button></div></div>';
+    });
+    h+='</div></div>';
+    document.getElementById('main').innerHTML=h;
+    usb();
+}
+function setDown(v){ const sp=g(); sp.down=parseInt(v); pushUndo(); sv(); rG(); }
+function setDist(v){ const sp=g(); sp.dist=parseInt(v)||0; pushUndo(); sv(); rG(); }
+function setYardline(v){ const sp=g(); sp.yardline=parseInt(v)||0; pushUndo(); sv(); rG(); }
+function customClock(){ const mins=parseInt(prompt('Minutes:')); if(!isNaN(mins)&&mins>0){ applyClockPreset(mins*60); } }
 function sU(s,u){S['u'+s[0]]=u;rG()}
 function swT(s,i){if(!i)return;if(s==='away')g().aid=i;else g().hid=i;sv();rG()}
-function aP(s){const nE=document.getElementById('an-'+s),nmE=document.getElementById('ana-'+s),pE=document.getElementById('ap-'+s),ntE=document.getElementById('ant-'+s);if(!nmE.value.trim()){t('Enter name');return}const team=tB(s);if(!team)return;pu(team);team.pl.push({id:id(),n:nE.value.trim(),na:nmE.value.trim(),po:pE.value,st:!1,nt:ntE?ntE.value.trim():'',ph:''});nE.value='';nmE.value='';pE.value='';if(ntE)ntE.value='';nmE.focus();sv();rG();t(nmE.value.trim()+' added')}
-function tS(s,pid){const team=tB(s);if(!team)return;const p=team.pl.find(x=>x.id===pid);if(!p)return;pu(team);p.st=!p.st;sv();rG()}
-function dP(s,pid){const team=tB(s);if(!team)return;const p=team.pl.find(x=>x.id===pid);if(!p)return;if(!confirm('Delete '+p.na+'?'))return;pu(team);team.pl=team.pl.filter(x=>x.id!==pid);sv();rG()}
+function aP(s){const nE=document.getElementById('an-'+s),nmE=document.getElementById('ana-'+s),pE=document.getElementById('ap-'+s),ntE=document.getElementById('ant-'+s);if(!nmE.value.trim()){t('Enter name');return}const team=tB(s);if(!team)return;pushUndo();team.pl.push({id:id(),n:nE.value.trim(),na:nmE.value.trim(),po:pE.value,st:!1,nt:ntE?ntE.value.trim():'',ph:'',pron:'',pinned:!1});nE.value='';nmE.value='';pE.value='';if(ntE)ntE.value='';nmE.focus();sv();rG();t(nmE.value.trim()+' added')}
+function tS(s,pid){const team=tB(s);if(!team)return;const p=team.pl.find(x=>x.id===pid);if(!p)return;pushUndo();p.st=!p.st;sv();rG()}
+function dP(s,pid){const team=tB(s);if(!team)return;const p=team.pl.find(x=>x.id===pid);if(!p)return;if(!confirm('Delete '+p.na+'?'))return;pushUndo();team.pl=team.pl.filter(x=>x.id!==pid);sv();rG()}
 function tP(s){g().poss=s;rG()}
-function uF(s,pid,f,v){const team=tB(s);if(!team)return;const p=team.pl.find(x=>x.id===pid);if(!p)return;pu(team);p[f]=v;sv()}
+function uF(s,pid,f,v){const team=tB(s);if(!team)return;const p=team.pl.find(x=>x.id===pid);if(!p)return;pushUndo();p[f]=v;sv()}
 function searchPlayers(s,q){const rows=document.querySelectorAll('.player-row[data-side="'+s+'"]');const clr=document.getElementById('clr-'+s);rows.forEach(r=>r.classList.remove('highlight'));if(!q.trim()){if(clr)clr.style.display='none';return}if(clr)clr.style.display='inline';for(const row of rows){if(row.dataset.num===q.trim()){row.classList.add('highlight');row.scrollIntoView({behavior:'smooth',block:'center'});break}}}
 
-// ROSTER
-function pu(t){const sp=g();if(!sp.us)sp.us=[];sp.us.push({tid:t.id,sn:JSON.parse(JSON.stringify(t.pl))});if(sp.rs)sp.rs=[];else sp.rs=[];if(sp.us.length>50)sp.us.shift()}
-function uR(){const sp=g();if(!sp.us?.length){t('Nothing');return}const a=sp.us.pop();const team=sp.tms.find(x=>x.id===a.tid);if(team){sp.rs.push({tid:team.id,sn:JSON.parse(JSON.stringify(team.pl))});team.pl=a.sn}sv();rR();t('Undo')}
-function reR(){const sp=g();if(!sp.rs?.length){t('Nothing');return}const a=sp.rs.pop();const team=sp.tms.find(x=>x.id===a.tid);if(team){sp.us.push({tid:team.id,sn:JSON.parse(JSON.stringify(team.pl))});team.pl=a.sn}sv();rR();t('Redo')}
-function eC(tid){const team=g().tms.find(t=>t.id===tid);if(!team)return;let csv='Number,Name,Position,Starter,Notes\n';team.pl.forEach(p=>{csv+='"'+p.n+'","'+p.na+'","'+p.po+'","'+(p.st?'Yes':'No')+'","'+(p.nt||'').replace(/"/g,'""')+'"\n'});const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download=(team.name||'roster').replace(/\s/g,'_')+'.csv';a.click();t('CSV')}
-function rR(){const sp=g();const ct=sp.tms.find(t=>t.id===sp.cid)||sp.tms[0];const pl=ct?ct.pl:[];let sb='<h3>TEAMS</h3>';sp.tms.forEach(t=>{sb+='<div class="team-item'+(t.id===sp.cid?' active':'')+'" onclick="sT(\''+t.id+'\')">'+e(t.name)+' ('+t.pl.length+')</div>'});sb+='<button class="btn-sm" style="margin-top:4px;width:100%" onclick="nT()">+ New</button>';
-// ── Add cloud sync buttons to sidebar ──
-sb+=`<div style="margin-top:8px;padding-top:8px;border-top:2px solid var(--accent);">
-    <p style="font-size:.65rem;margin-bottom:4px;"><strong>☁️ Cloud Sync</strong></p>
-    <button class="btn-sm" style="background:#e6a817;color:#0a1c3a;font-weight:800;width:100%;margin-bottom:4px;" onclick="window.fnlCloudSaveAll()">💾 Save All Teams</button>
-    <button class="btn-sm" style="background:#2e7d32;color:#fff;font-weight:800;width:100%;margin-bottom:4px;" onclick="window.fnlCloudLoadAll()">📥 Load All Teams</button>
-    <button class="btn-sm" style="width:100%;margin-bottom:4px;" onclick="window.cLT()">📥 Load Team</button>
-    <button class="btn-sm" style="background:#dc2626;color:#fff;font-weight:800;width:100%;" onclick="window.restoreAllTeams()">🔄 Restore All Teams</button>
-</div>`;
-let pr='';const po=gP();pl.forEach(p=>{pr+='<div class="player-edit-row"><input value="'+e(p.n||'')+'" placeholder="#" class="rn"><input value="'+e(p.na||'')+'" placeholder="Name" class="rna"><select class="rp">'+po.map(x=>'<option '+(p.po===x?'selected':'')+'>'+x+'</option>').join('')+'</select><select class="rs"><option value="0" '+(!p.st?'selected':'')+'>Bench</option><option value="1" '+(p.st?'selected':'')+'>Starter</option></select><input class="rnt" value="'+e(p.nt||'')+'" placeholder="Notes"><input type="file" class="rph" accept="image/*" onchange="uploadPlayerPhoto(this,\''+p.id+'\')"><button onclick="this.parentElement.remove()">✖</button></div>'});document.getElementById('main').innerHTML='<div class="panel"><div class="roster-layout"><div class="team-sidebar">'+sb+'</div><div class="roster-workspace"><div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;margin-bottom:3px;"><input id="etn" value="'+e(ct?ct.name:'')+'" placeholder="Team Name" style="flex:1;min-width:100px;"><button class="btn-sm" id="svB">💾</button><button class="btn-sm" onclick="eC(\''+(ct?ct.id:'')+'\')">📊</button><button class="btn-sm btn-red" id="delB">🗑️</button></div><div style="display:flex;gap:3px;margin-bottom:3px;"><button class="btn-sm" onclick="uR()">↩</button><button class="btn-sm" onclick="reR()">↪</button></div><div style="border-top:1px solid var(--border);padding-top:4px;margin-bottom:4px;"><h4>Branding</h4><div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;"><input type="color" id="tc" value="'+(ct?ct.color:'#1e3a5f')+'"><input id="tm" value="'+e(ct?ct.mascot:'')+'" placeholder="Mascot"><img id="tlp" src="'+(ct?ct.logo:'')+'" style="width:26px;height:26px;'+(ct&&ct.logo?'':'display:none')+'"><input type="file" id="tlf" accept="image/*"></div></div><div style="display:grid;grid-template-columns:42px 1fr 72px 56px 1fr 50px 28px;gap:4px;font-size:.55rem;font-weight:600;margin:8px 0 3px;opacity:.6;"><span>#</span><span>Name</span><span>Pos</span><span>Role</span><span>Notes</span><span>Photo</span><span></span></div><div id="rpg">'+pr+'</div><button class="btn-sm" id="addB" style="margin-top:4px;">➕ Add</button><div style="display:flex;gap:4px;margin-top:6px;flex-wrap:wrap;"><textarea class="parse-area" id="pt" placeholder="Paste roster..."></textarea><div style="display:flex;flex-direction:column;gap:3px;"><label for="rf" class="btn-sm" style="cursor:pointer;">📁</label><input type="file" id="rf" accept=".txt,.csv" style="display:none;"><button class="btn-sm" id="pB">📝</button></div></div><div style="margin-top:8px;border-top:1px solid var(--border);padding-top:5px;"><h4>Zorts Import</h4><textarea id="zp" class="parse-area" placeholder="Paste Zorts CSV..."></textarea><div style="margin-top:3px;display:flex;gap:4px;"><button class="btn-sm" onclick="pZR()">📥</button><button class="btn-sm btn-red" onclick="document.getElementById(\'zp\').value=\'\'">Clear</button></div></div></div></div></div>';
-document.getElementById('svB').onclick=()=>{const t=sp.tms.find(t=>t.id===sp.cid);if(!t)return;const old=JSON.parse(JSON.stringify(t.pl));t.name=document.getElementById('etn').value.trim();if(!t.name){t('Name required');return}t.pl=cRP();t.color=document.getElementById('tc').value;t.mascot=document.getElementById('tm').value.trim();if(JSON.stringify(old)!==JSON.stringify(t.pl))pu(t);sv();rR();rn();t('Saved')};
-document.getElementById('delB').onclick=()=>{const t=sp.tms.find(t=>t.id===sp.cid);if(!t||!confirm('Delete?'))return;sp.tms=sp.tms.filter(x=>x.id!==sp.cid);sp.cid=sp.tms.length?sp.tms[0].id:null;if(sp.aid===t.id)sp.aid='';if(sp.hid===t.id)sp.hid='';sv();rR();rn();rG();t('Deleted')};
-document.getElementById('addB').onclick=()=>{const t=sp.tms.find(t=>t.id===sp.cid);if(!t)return;pu(t);t.pl.push({id:id(),n:'',na:'',po:'',st:!1,nt:'',ph:''});sv();rR()};
-document.getElementById('pB').onclick=()=>pRT(document.getElementById('pt').value);
-document.getElementById('rf').addEventListener('change',function(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{document.getElementById('pt').value=ev.target.result;pRT(ev.target.result)};r.readAsText(f)});
-document.getElementById('tlf').addEventListener('change',function(e){const f=e.target.files[0];if(!f?.type.startsWith('image/'))return;const r=new FileReader();r.onload=ev=>{const t=sp.tms.find(t=>t.id===sp.cid);if(t){t.logo=ev.target.result;document.getElementById('tlp').src=ev.target.result;document.getElementById('tlp').style.display='inline-block';sv();t('Logo updated')}};r.readAsDataURL(f)});
+// ROSTER VIEW (extended with coach, pron, pin)
+function rR(){
+    const sp=g();
+    const ct=sp.tms.find(t=>t.id===sp.cid)||sp.tms[0];
+    const pl=ct?ct.pl:[];
+    let sb='<h3>TEAMS</h3>';
+    sp.tms.forEach(t=>{sb+='<div class="team-item'+(t.id===sp.cid?' active':'')+'" onclick="sT(\''+t.id+'\')">'+e(t.name)+' ('+t.pl.length+')</div>'});
+    sb+='<button class="btn-sm" style="margin-top:4px;width:100%" onclick="nT()">+ New</button>';
+    sb+=`<div style="margin-top:8px;padding-top:8px;border-top:2px solid var(--accent);">
+        <p style="font-size:.65rem;margin-bottom:4px;"><strong>☁️ Cloud Sync</strong></p>
+        <button class="btn-sm" style="background:#e6a817;color:#0a1c3a;font-weight:800;width:100%;margin-bottom:4px;" onclick="window.fnlCloudSaveAll()">💾 Save All Teams</button>
+        <button class="btn-sm" style="background:#2e7d32;color:#fff;font-weight:800;width:100%;margin-bottom:4px;" onclick="window.fnlCloudLoadAll()">📥 Load All Teams</button>
+        <button class="btn-sm" style="width:100%;margin-bottom:4px;" onclick="window.cLT()">📥 Load Team</button>
+        <button class="btn-sm" style="background:#dc2626;color:#fff;font-weight:800;width:100%;" onclick="window.restoreAllTeams()">🔄 Restore All Teams</button>
+        <button class="btn-sm" style="width:100%;margin-top:4px;" onclick="toggleOutdoor()">${S.outdoor?'🌤 Outdoor ON':'🌥 Outdoor OFF'}</button>
+    </div>`;
+    let pr='';
+    const po=gP();
+    pl.forEach(p=>{
+        pr+='<div class="player-edit-row"><input value="'+e(p.n||'')+'" placeholder="#" class="rn"><input value="'+e(p.na||'')+'" placeholder="Name" class="rna"><select class="rp">'+po.map(x=>'<option '+(p.po===x?'selected':'')+'>'+x+'</option>').join('')+'</select><select class="rs"><option value="0" '+(!p.st?'selected':'')+'>Bench</option><option value="1" '+(p.st?'selected':'')+'>Starter</option></select><input class="rnt" value="'+e(p.nt||'')+'" placeholder="Notes"><input class="rpron" value="'+e(p.pron||'')+'" placeholder="Pron"><input type="file" class="rph" accept="image/*" onchange="uploadPlayerPhoto(this,\''+p.id+'\')"><button class="pin-btn '+(p.pinned?'active':'')+'" onclick="togglePinRoster(\''+p.id+'\')">📌</button><button onclick="this.parentElement.remove()">✖</button></div>';
+    });
+    document.getElementById('main').innerHTML='<div class="panel"><div class="roster-layout"><div class="team-sidebar">'+sb+'</div><div class="roster-workspace"><div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;margin-bottom:3px;"><input id="etn" value="'+e(ct?ct.name:'')+'" placeholder="Team Name" style="flex:1;min-width:100px;"><input id="ecoach" value="'+e(ct?ct.coach:'')+'" placeholder="Coach Name" style="flex:1;min-width:100px;"><button class="btn-sm" id="svB">💾</button><button class="btn-sm" onclick="eC(\''+(ct?ct.id:'')+'\')">📊</button><button class="btn-sm btn-red" id="delB">🗑️</button></div><div style="display:flex;gap:3px;margin-bottom:3px;"><button class="btn-sm" onclick="uR()">↩</button><button class="btn-sm" onclick="reR()">↪</button></div><div style="border-top:1px solid var(--border);padding-top:4px;margin-bottom:4px;"><h4>Branding</h4><div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;"><input type="color" id="tc" value="'+(ct?ct.color:'#1e3a5f')+'"><input id="tm" value="'+e(ct?ct.mascot:'')+'" placeholder="Mascot"><img id="tlp" src="'+(ct?ct.logo:'')+'" style="width:26px;height:26px;'+(ct&&ct.logo?'':'display:none')+'"><input type="file" id="tlf" accept="image/*"></div></div><div style="display:grid;grid-template-columns:42px 1fr 72px 56px 1fr 60px 50px 28px;gap:4px;font-size:.55rem;font-weight:600;margin:8px 0 3px;opacity:.6;"><span>#</span><span>Name</span><span>Pos</span><span>Role</span><span>Notes</span><span>Pron</span><span>Photo</span><span></span></div><div id="rpg">'+pr+'</div><button class="btn-sm" id="addB" style="margin-top:4px;">➕ Add</button><div style="display:flex;gap:4px;margin-top:6px;flex-wrap:wrap;"><textarea class="parse-area" id="pt" placeholder="Paste roster..."></textarea><div style="display:flex;flex-direction:column;gap:3px;"><label for="rf" class="btn-sm" style="cursor:pointer;">📁</label><input type="file" id="rf" accept=".txt,.csv" style="display:none;"><button class="btn-sm" id="pB">📝</button></div></div><div style="margin-top:8px;border-top:1px solid var(--border);padding-top:5px;"><h4>Zorts Import</h4><textarea id="zp" class="parse-area" placeholder="Paste Zorts CSV..."></textarea><div style="margin-top:3px;display:flex;gap:4px;"><button class="btn-sm" onclick="pZR()">📥</button><button class="btn-sm btn-red" onclick="document.getElementById(\'zp\').value=\'\'">Clear</button></div></div></div></div></div>';
+    document.getElementById('svB').onclick=()=>{
+        const t=sp.tms.find(t=>t.id===sp.cid);
+        if(!t)return;
+        const old=JSON.parse(JSON.stringify(t.pl));
+        t.name=document.getElementById('etn').value.trim();
+        t.coach=document.getElementById('ecoach').value.trim();
+        if(!t.name){t('Name required');return}
+        t.pl=cRP();
+        t.color=document.getElementById('tc').value;
+        t.mascot=document.getElementById('tm').value.trim();
+        if(JSON.stringify(old)!==JSON.stringify(t.pl))pushUndo();
+        sv();rR();rn();t('Saved');
+    };
+    document.getElementById('delB').onclick=()=>{
+        const t=sp.tms.find(t=>t.id===sp.cid);
+        if(!t||!confirm('Delete?'))return;
+        sp.tms=sp.tms.filter(x=>x.id!==sp.cid);
+        sp.cid=sp.tms.length?sp.tms[0].id:null;
+        if(sp.aid===t.id)sp.aid='';
+        if(sp.hid===t.id)sp.hid='';
+        sv();rR();rn();rG();t('Deleted');
+    };
+    document.getElementById('addB').onclick=()=>{
+        const t=sp.tms.find(t=>t.id===sp.cid);
+        if(!t)return;
+        pushUndo();
+        t.pl.push({id:id(),n:'',na:'',po:'',st:!1,nt:'',ph:'',pron:'',pinned:!1});
+        sv();rR();
+    };
+    document.getElementById('pB').onclick=()=>pRT(document.getElementById('pt').value);
+    document.getElementById('rf').addEventListener('change',function(e){
+        const f=e.target.files[0];
+        if(!f)return;
+        const r=new FileReader();
+        r.onload=ev=>{document.getElementById('pt').value=ev.target.result;pRT(ev.target.result)};
+        r.readAsText(f);
+    });
+    document.getElementById('tlf').addEventListener('change',function(e){
+        const f=e.target.files[0];
+        if(!f?.type.startsWith('image/'))return;
+        const r=new FileReader();
+        r.onload=ev=>{
+            const t=sp.tms.find(t=>t.id===sp.cid);
+            if(t){t.logo=ev.target.result;document.getElementById('tlp').src=ev.target.result;document.getElementById('tlp').style.display='inline-block';sv();t('Logo updated')}
+        };r.readAsDataURL(f);
+    });
 }
 window.uploadPlayerPhoto = function(input,pid){
-const f=input.files[0];if(!f||!f.type.startsWith('image/'))return;
-const r=new FileReader();r.onload=ev=>{
-const team = g().tms.find(t=>t.id===g().cid);
-if(team){ const p=team.pl.find(x=>x.id===pid); if(p){ p.ph=ev.target.result; sv(); t('Photo saved'); } }
-};r.readAsDataURL(f);
+    const f=input.files[0];if(!f||!f.type.startsWith('image/'))return;
+    const r=new FileReader();r.onload=ev=>{
+        const team = g().tms.find(t=>t.id===g().cid);
+        if(team){ const p=team.pl.find(x=>x.id===pid); if(p){ p.ph=ev.target.result; sv(); t('Photo saved'); } }
+    };r.readAsDataURL(f);
 };
-function pRT(tx){const t=g().tms.find(t=>t.id===g().cid);if(!t)return;if(!tx.trim()){t('Empty');return}pu(t);const pl=gP();const ls=tx.split(/\r?\n/);const ar=[];ls.forEach(l=>{if(!l.trim())return;let n='',r=l.trim();const m=r.match(/^(\d{1,3})\s+/);if(m){n=m[1];r=r.slice(m[0].length).trim()}let po='',na=r;const w=r.split(/\s+/);if(w.length&&pl.includes(w[w.length-1].toUpperCase())){po=w.pop().toUpperCase();na=w.join(' ')}if(na)ar.push({id:id(),n,na,po,st:!1,nt:'',ph:''})});if(!ar.length){t('No players');return}t.pl=ar;sv();rR();t(ar.length+' parsed')}
-function cRP(){const g=document.getElementById('rpg');if(!g)return[];const rs=g.querySelectorAll('.player-edit-row');const a=[];rs.forEach(r=>{a.push({id:'',n:r.querySelector('.rn')?.value||'',na:r.querySelector('.rna')?.value||'',po:r.querySelector('.rp')?.value||'',st:r.querySelector('.rs')?.value==='1',nt:r.querySelector('.rnt')?.value||'',ph:''})});return a}
+function togglePinRoster(pid){
+    const team = g().tms.find(t=>t.id===g().cid);
+    if(!team) return;
+    const p=team.pl.find(x=>x.id===pid);
+    if(!p) return;
+    if(!p.pinned){
+        const pinnedCount = team.pl.filter(x=>x.pinned).length;
+        if(pinnedCount >= 6){ t('Maximum 6 pinned players'); return; }
+    }
+    p.pinned = !p.pinned;
+    pushUndo();
+    sv(); rR();
+}
+function pRT(tx){
+    const t=g().tms.find(t=>t.id===g().cid);
+    if(!t)return;
+    if(!tx.trim()){t('Empty');return}
+    pushUndo();
+    const pl=gP();
+    const ls=tx.split(/\r?\n/);
+    const ar=[];
+    ls.forEach(l=>{
+        if(!l.trim())return;
+        let n='',r=l.trim();
+        const m=r.match(/^(\d{1,3})\s+/);
+        if(m){n=m[1];r=r.slice(m[0].length).trim()}
+        let po='',na=r;
+        const w=r.split(/\s+/);
+        if(w.length&&pl.includes(w[w.length-1].toUpperCase())){po=w.pop().toUpperCase();na=w.join(' ')}
+        if(na)ar.push({id:id(),n,na,po,st:!1,nt:'',ph:'',pron:'',pinned:!1});
+    });
+    if(!ar.length){t('No players');return}
+    t.pl=ar;
+    sv();rR();t(ar.length+' parsed');
+}
+function cRP(){
+    const g=document.getElementById('rpg');
+    if(!g)return[];
+    const rs=g.querySelectorAll('.player-edit-row');
+    const a=[];
+    rs.forEach(r=>{
+        a.push({
+            id:'',n:r.querySelector('.rn')?.value||'',na:r.querySelector('.rna')?.value||'',
+            po:r.querySelector('.rp')?.value||'',st:r.querySelector('.rs')?.value==='1',
+            nt:r.querySelector('.rnt')?.value||'',pron:r.querySelector('.rpron')?.value||'',
+            ph:'',pinned:false
+        });
+    });
+    return a;
+}
 function sT(tid){g().cid=tid;rR()}
-function nT(){let n=prompt('Team name:');while(!n?.trim()){n=prompt('Name:');if(n===null)return}const sp=g();sp.tms.push({id:Date.now().toString(36),name:n.trim(),pl:[],color:'#1e3a5f',c2:'#fff',logo:'',mascot:''});sp.cid=sp.tms[sp.tms.length-1].id;sv();rR();rn()}
-function pZR(){const raw=document.getElementById('zp').value.trim();if(!raw){t('Paste data');return}const nm=prompt('Team name:');if(!nm?.trim()){t('Name required');return}const ls=raw.split('\n').map(l=>l.trim()).filter(l=>l);if(!ls.length){t('No data');return}const hdr=ls[0].split(/[\t,|]+/).map(s=>s.trim().toLowerCase());const cm=['number','jersey','#','first name','last name','name','position','pos'];const iH=hdr.some(x=>cm.includes(x));const pl=gP();const nt={id:Date.now().toString(36),name:nm.trim(),pl:[],color:'#1e3a5f',c2:'#fff',logo:'',mascot:''};if(iH){const mp={};hdr.forEach((x,i)=>{if(/^(number|jersey|#)$/.test(x))mp.nu=i;else if(x==='first name')mp.fn=i;else if(x==='last name')mp.ln=i;else if(x==='name')mp.na=i;else if(/^(position|pos)$/.test(x))mp.po=i});for(let i=1;i<ls.length;i++){const p=ls[i].split(/[\t,|]+/).map(s=>s.trim());if(!p.length||p.every(s=>!s))continue;let n='',na='',po='';if(mp.nu!==undefined)n=p[mp.nu]||'';if(mp.fn!==undefined&&mp.ln!==undefined)na=(p[mp.fn]||'')+' '+(p[mp.ln]||'');else if(mp.na!==undefined)na=p[mp.na]||'';if(mp.po!==undefined)po=p[mp.po]||'';nt.pl.push({id:id(),n,na:na||'Player',po:pl.includes(po.toUpperCase())?po.toUpperCase():po,st:!1,nt:'',ph:''})}}else{ls.forEach(l=>{let cl=l.replace(/\t/g,' ').replace(/,/g,' ').trim();if(!cl)return;cl=cl.replace(/(\w+),\s*(\w+)/g,'$2 $1');const pts=cl.split(/\s+/);let n='',na='',po='';for(let j=0;j<pts.length;j++){if(/^\d{1,3}$/.test(pts[j])){n=pts[j];pts.splice(j,1);break}}if(pts.length){const lst=pts[pts.length-1].toUpperCase();if(pl.includes(lst)){po=lst;pts.pop()}na=pts.join(' ')}if(!na)na=cl;if(!po)po=pl[0]||'QB';nt.pl.push({id:id(),n,na,po,st:!1,nt:'',ph:''})})}if(nt.pl.length){g().tms.push(nt);document.getElementById('zp').value='';sv();rR();rn();t(nt.pl.length+' players')}else{t('No players')}}
+function nT(){
+    let n=prompt('Team name:');
+    while(!n?.trim()){n=prompt('Name:');if(n===null)return}
+    const sp=g();
+    sp.tms.push({id:Date.now().toString(36),name:n.trim(),pl:[],color:'#1e3a5f',c2:'#fff',logo:'',mascot:'',coach:''});
+    sp.cid=sp.tms[sp.tms.length-1].id;
+    sv();rR();rn();
+}
+function pZR(){
+    const raw=document.getElementById('zp').value.trim();
+    if(!raw){t('Paste data');return}
+    const nm=prompt('Team name:');
+    if(!nm?.trim()){t('Name required');return}
+    const ls=raw.split('\n').map(l=>l.trim()).filter(l=>l);
+    if(!ls.length){t('No data');return}
+    const hdr=ls[0].split(/[\t,|]+/).map(s=>s.trim().toLowerCase());
+    const cm=['number','jersey','#','first name','last name','name','position','pos'];
+    const iH=hdr.some(x=>cm.includes(x));
+    const pl=gP();
+    const nt={id:Date.now().toString(36),name:nm.trim(),pl:[],color:'#1e3a5f',c2:'#fff',logo:'',mascot:'',coach:''};
+    if(iH){
+        const mp={};
+        hdr.forEach((x,i)=>{if(/^(number|jersey|#)$/.test(x))mp.nu=i;else if(x==='first name')mp.fn=i;else if(x==='last name')mp.ln=i;else if(x==='name')mp.na=i;else if(/^(position|pos)$/.test(x))mp.po=i});
+        for(let i=1;i<ls.length;i++){
+            const p=ls[i].split(/[\t,|]+/).map(s=>s.trim());
+            if(!p.length||p.every(s=>!s))continue;
+            let n='',na='',po='';
+            if(mp.nu!==undefined)n=p[mp.nu]||'';
+            if(mp.fn!==undefined&&mp.ln!==undefined)na=(p[mp.fn]||'')+' '+(p[mp.ln]||'');
+            else if(mp.na!==undefined)na=p[mp.na]||'';
+            if(mp.po!==undefined)po=p[mp.po]||'';
+            nt.pl.push({id:id(),n,na:na||'Player',po:pl.includes(po.toUpperCase())?po.toUpperCase():po,st:!1,nt:'',ph:'',pron:'',pinned:!1});
+        }
+    }else{
+        ls.forEach(l=>{
+            let cl=l.replace(/\t/g,' ').replace(/,/g,' ').trim();
+            if(!cl)return;
+            cl=cl.replace(/(\w+),\s*(\w+)/g,'$2 $1');
+            const pts=cl.split(/\s+/);
+            let n='',na='',po='';
+            for(let j=0;j<pts.length;j++){if(/^\d{1,3}$/.test(pts[j])){n=pts[j];pts.splice(j,1);break}}
+            if(pts.length){const lst=pts[pts.length-1].toUpperCase();if(pl.includes(lst)){po=lst;pts.pop()}na=pts.join(' ')}
+            if(!na)na=cl;
+            if(!po)po=pl[0]||'QB';
+            nt.pl.push({id:id(),n,na,po,st:!1,nt:'',ph:'',pron:'',pinned:!1});
+        });
+    }
+    if(nt.pl.length){g().tms.push(nt);document.getElementById('zp').value='';sv();rR();rn();t(nt.pl.length+' players')}else{t('No players')}
+}
 window.pZR=pZR;
 
 function iM(tx){const ed=document.getElementById('se');if(!ed)return;ed.focus();const sel=window.getSelection();if(sel.rangeCount){const r=sel.getRangeAt(0);r.deleteContents();r.insertNode(document.createTextNode(tx));sel.removeAllRanges();sel.addRange(r)}else{ed.textContent+=tx}}
@@ -630,55 +1145,21 @@ function rSC(){const sp=g();document.getElementById('main').innerHTML='<div clas
 
 // CLIENTS SECTION
 function rC(){
-    if(!S.im){
-        S.v='sport';
-        ra();
-        return;
-    }
-    
-    let h = `
-        <div class="panel">
-            <h3>👥 CLIENT PROFILES</h3>
-            <p style="font-size:.7rem;opacity:.6;margin-bottom:12px;">Manage client PINs, logos, and branding. All client data is stored here.</p>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0;">
-                <button class="btn" onclick="addClient()">+ Add Client</button>
-                <button class="btn btn-sm" onclick="showAllPINs()" style="background:#666;color:#fff;">🔑 Show All PINs</button>
-            </div>
-            <div style="margin-top:12px;">
-    `;
+    if(!S.im){ S.v='sport'; ra(); return; }
+    let h = `<div class="panel"><h3>👥 CLIENT PROFILES</h3><p style="font-size:.7rem;opacity:.6;margin-bottom:12px;">Manage client PINs, logos, and branding. All client data is stored here.</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0;"><button class="btn" onclick="addClient()">+ Add Client</button><button class="btn btn-sm" onclick="showAllPINs()" style="background:#666;color:#fff;">🔑 Show All PINs</button></div><div style="margin-top:12px;">`;
     const ps = S.cp || {};
     const clientKeys = Object.keys(ps);
-    
-    if (clientKeys.length === 0) {
-        h += '<p style="opacity:.5;padding:20px;text-align:center;">No clients yet. Add your first client above.</p>';
-    } else {
+    if (clientKeys.length === 0) { h += '<p style="opacity:.5;padding:20px;text-align:center;">No clients yet. Add your first client above.</p>'; }
+    else {
         clientKeys.forEach(p => {
             const x = ps[p];
             const hasLogo = x.l && x.l !== '';
-            h += `
-                <div style="display:flex;gap:8px;align-items:center;padding:10px;border:1px solid var(--border);border-radius:8px;margin-bottom:6px;flex-wrap:wrap;">
-                    <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:150px;">
-                        <span style="font-weight:700;min-width:50px;background:var(--accent);color:#000;padding:2px 8px;border-radius:4px;font-size:.7rem;">${e(p)}</span>
-                        <span style="flex:1;font-weight:600;">${e(x.n || 'Unnamed')}</span>
-                    </div>
-                    <div style="display:flex;align-items:center;gap:6px;">
-                        ${hasLogo ? '<span style="font-size:.7rem;color:var(--accent);">✅ Logo</span>' : '<span style="font-size:.7rem;opacity:.4;">No logo</span>'}
-                        <button class="btn-sm" onclick="editClient('${p}')">✏️ Edit</button>
-                        <button class="btn-sm btn-red" onclick="deleteClient('${p}')">🗑️</button>
-                    </div>
-                </div>
-            `;
+            h += `<div style="display:flex;gap:8px;align-items:center;padding:10px;border:1px solid var(--border);border-radius:8px;margin-bottom:6px;flex-wrap:wrap;"><div style="display:flex;align-items:center;gap:8px;flex:1;min-width:150px;"><span style="font-weight:700;min-width:50px;background:var(--accent);color:#000;padding:2px 8px;border-radius:4px;font-size:.7rem;">${e(p)}</span><span style="flex:1;font-weight:600;">${e(x.n || 'Unnamed')}</span></div><div style="display:flex;align-items:center;gap:6px;">${hasLogo ? '<span style="font-size:.7rem;color:var(--accent);">✅ Logo</span>' : '<span style="font-size:.7rem;opacity:.4;">No logo</span>'}<button class="btn-sm" onclick="editClient('${p}')">✏️ Edit</button><button class="btn-sm btn-red" onclick="deleteClient('${p}')">🗑️</button></div></div>`;
         });
     }
-    
-    h += `
-            </div>
-        </div>
-    `;
-    
+    h += `</div></div>`;
     document.getElementById('main').innerHTML = h;
 }
-
 function addClient() {
     const pin = prompt('Enter a PIN for this client (e.g., ABC123):');
     if (!pin || pin.trim() === '') { t('PIN required'); return; }
@@ -687,72 +1168,34 @@ function addClient() {
     const name = prompt('Enter client name:');
     if (!name || name.trim() === '') { t('Name required'); return; }
     S.cp[upperPin] = { n: name.trim(), l: '', c: '#d4af37', wlat: '', wlon: '' };
-    sv();
-    rC();
-    t('✅ Client added: ' + name.trim());
+    sv(); rC(); t('✅ Client added: ' + name.trim());
 }
-
 function editClient(pin) {
     const client = S.cp[pin];
     if (!client) { t('Client not found'); return; }
-    const editHTML = `
-        <div class="panel" style="max-width:600px;margin:20px auto;">
-            <h3>✏️ Edit Client: ${e(pin)}</h3>
-            <label>Client Name</label>
-            <input type="text" id="editClientName" value="${e(client.n)}">
-            <label>Client Logo</label>
-            <div style="margin:8px 0;">
-                <div class="client-logo-upload-area" onclick="document.getElementById('editClientLogoFile').click()">
-                    ${client.l && client.l !== '' ? `<img src="${client.l}" class="client-logo-preview" alt="Client logo">` : '<p style="color:var(--text);opacity:.5;">Click to upload or drag & drop a logo image (PNG, JPG)</p>'}
-                    <input type="file" id="editClientLogoFile" accept="image/*" style="display:none;" onchange="handleClientLogoUpload(this, '${pin}')">
-                </div>
-                <div style="display:flex;gap:8px;margin-top:4px;">
-                    <input type="text" id="editClientLogoUrl" placeholder="Or enter image URL" style="flex:1;" value="${e(client.l || '')}">
-                    <button class="btn-sm" onclick="setClientLogoFromEdit('${pin}')">Set URL</button>
-                    <button class="btn-sm btn-red" onclick="clearClientLogoFromEdit('${pin}')">Clear</button>
-                </div>
-                ${client.l && client.l !== '' ? `<div style="margin-top:4px;font-size:.65rem;opacity:.5;word-break:break-all;">Current: ${client.l.substring(0,50)}${client.l.length > 50 ? '...' : ''}</div>` : ''}
-            </div>
-            <label>Weather Location (optional)</label>
-            <div style="display:flex;gap:8px;">
-                <input type="text" id="editClientWlat" placeholder="Latitude" value="${e(client.wlat || '')}" style="flex:1;">
-                <input type="text" id="editClientWlon" placeholder="Longitude" value="${e(client.wlon || '')}" style="flex:1;">
-            </div>
-            <div style="display:flex;gap:8px;margin-top:12px;">
-                <button class="btn" onclick="saveClientEdit('${pin}')">💾 Save</button>
-                <button class="btn btn-sm" onclick="rC()">Cancel</button>
-            </div>
-        </div>
-    `;
+    const editHTML = `<div class="panel" style="max-width:600px;margin:20px auto;"><h3>✏️ Edit Client: ${e(pin)}</h3><label>Client Name</label><input type="text" id="editClientName" value="${e(client.n)}"><label>Client Logo</label><div style="margin:8px 0;"><div class="client-logo-upload-area" onclick="document.getElementById('editClientLogoFile').click()">${client.l && client.l !== '' ? `<img src="${client.l}" class="client-logo-preview" alt="Client logo">` : '<p style="color:var(--text);opacity:.5;">Click to upload or drag & drop a logo image (PNG, JPG)</p>'}<input type="file" id="editClientLogoFile" accept="image/*" style="display:none;" onchange="handleClientLogoUpload(this, '${pin}')"></div><div style="display:flex;gap:8px;margin-top:4px;"><input type="text" id="editClientLogoUrl" placeholder="Or enter image URL" style="flex:1;" value="${e(client.l || '')}"><button class="btn-sm" onclick="setClientLogoFromEdit('${pin}')">Set URL</button><button class="btn-sm btn-red" onclick="clearClientLogoFromEdit('${pin}')">Clear</button></div>${client.l && client.l !== '' ? `<div style="margin-top:4px;font-size:.65rem;opacity:.5;word-break:break-all;">Current: ${client.l.substring(0,50)}${client.l.length > 50 ? '...' : ''}</div>` : ''}</div><label>Weather Location (optional)</label><div style="display:flex;gap:8px;"><input type="text" id="editClientWlat" placeholder="Latitude" value="${e(client.wlat || '')}" style="flex:1;"><input type="text" id="editClientWlon" placeholder="Longitude" value="${e(client.wlon || '')}" style="flex:1;"></div><div style="display:flex;gap:8px;margin-top:12px;"><button class="btn" onclick="saveClientEdit('${pin}')">💾 Save</button><button class="btn btn-sm" onclick="rC()">Cancel</button></div></div>`;
     document.getElementById('main').innerHTML = editHTML;
 }
-
 function handleClientLogoUpload(input, pin) {
     const file = input.files[0];
     if (!file) return;
     if (!file.type.startsWith('image/')) { t('Please select an image file'); return; }
     if (file.size > 2 * 1024 * 1024) { t('Image too large. Max 2MB'); return; }
     const reader = new FileReader();
-    reader.onload = function(ev) {
-        const client = S.cp[pin];
-        if (client) { client.l = ev.target.result; sv(); editClient(pin); t('✅ Logo uploaded for ' + client.n); }
-    };
+    reader.onload = function(ev) { const client = S.cp[pin]; if (client) { client.l = ev.target.result; sv(); editClient(pin); t('✅ Logo uploaded for ' + client.n); } };
     reader.onerror = function() { t('❌ Upload failed'); };
     reader.readAsDataURL(file);
 }
-
 function setClientLogoFromEdit(pin) {
     const urlInput = document.getElementById('editClientLogoUrl');
     if (!urlInput || !urlInput.value.trim()) { t('Please enter a URL'); return; }
     const client = S.cp[pin];
     if (client) { client.l = urlInput.value.trim(); sv(); editClient(pin); t('✅ Logo URL set'); }
 }
-
 function clearClientLogoFromEdit(pin) {
     const client = S.cp[pin];
     if (client) { client.l = ''; sv(); editClient(pin); t('Logo cleared'); }
 }
-
 function saveClientEdit(pin) {
     const client = S.cp[pin];
     if (!client) { t('Client not found'); return; }
@@ -762,40 +1205,30 @@ function saveClientEdit(pin) {
     if (nameInput && nameInput.value.trim()) { client.n = nameInput.value.trim(); }
     if (wlatInput) client.wlat = wlatInput.value.trim();
     if (wlonInput) client.wlon = wlonInput.value.trim();
-    sv();
-    rC();
-    t('✅ Client saved: ' + client.n);
+    sv(); rC(); t('✅ Client saved: ' + client.n);
 }
-
 function deleteClient(pin) {
     const client = S.cp[pin];
     if (!client) { t('Client not found'); return; }
-    if (!confirm('Delete client "' + client.n + '" (PIN: ' + pin + ')?')) { return; }
+    if (!confirm('Delete client "' + client.n + '" (PIN: ' + pin + ')?')) return;
     delete S.cp[pin];
     if (S.ap === pin) { S.ap = ''; S.br.cl = ''; S.br.cn = ''; updateClientLogo(); }
-    sv();
-    rC();
-    t('🗑️ Client deleted');
+    sv(); rC(); t('🗑️ Client deleted');
 }
 
-// ===================== CLOUD SYNC FUNCTIONS (FULL STATE) =====================
+// CLOUD SYNC
 async function fnlCloudSaveAll(){
     if(!confirm('Save the ENTIRE game (teams, scores, clients, settings) to the cloud?')) return;
     try{
         const snapshot = JSON.parse(JSON.stringify(S));
-        delete snapshot.wd;  // weather data is transient
+        delete snapshot.wd;
         const resp = await fetch(CLOUD+'?id='+FNL_NS+'full_sync',{
-            method:'POST',
-            headers:{'Content-Type':'application/json'},
-            body: JSON.stringify(snapshot)
+            method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(snapshot)
         });
         if(!resp.ok) throw new Error('HTTP '+resp.status);
         t('✅ Full game saved to cloud!');
-    }catch(e){
-        t('❌ Cloud save failed: '+e.message);
-    }
+    }catch(e){ t('❌ Cloud save failed: '+e.message); }
 }
-
 async function fnlCloudLoadAll(){
     if(!confirm('Load the ENTIRE game from the cloud? This will replace your current data.')) return;
     try{
@@ -805,28 +1238,24 @@ async function fnlCloudLoadAll(){
         if(snapshot.sp?.fb){
             const def = defGS();
             const sp = snapshot.sp.fb;
-            for(const k of Object.keys(def)){
-                if(sp[k]===undefined) sp[k]=def[k];
-            }
-            sp.tms.forEach(t=>{ t.pl.forEach(p=>{if(!p.id)p.id=id();}) });
-            if(!sp.p7) sp.p7 = [...D7];
-            if(!sp.gc) sp.gc = {rem:1500, run:false};
+            for(const k of Object.keys(def)){ if(sp[k]===undefined) sp[k]=def[k]; }
+            sp.tms.forEach(t=>{ t.pl.forEach(p=>{ if(!p.id)p.id=id(); if(p.pinned===undefined)p.pinned=false; if(p.pron===undefined)p.pron=''; }); });
+            if(!sp.p7) sp.p7=[...D7];
+            if(!sp.gc) sp.gc={rem:1500,run:!1};
             if(sp.sb===undefined) sp.sb=true;
+            if(!sp.scoringLog) sp.scoringLog=[];
+            if(!sp.penaltyLog) sp.penaltyLog=[];
+            if(!sp.gameState) sp.gameState='PREGAME';
+            if(sp.down===undefined) sp.down=1;
+            if(sp.dist===undefined) sp.dist=10;
+            if(sp.yardline===undefined) sp.yardline=50;
         }
         S = snapshot;
-        S.wd = null;   // will be re-fetched
-        sv();
-        ut();
-        applyAdminStyles();
-        updateClientLogo();
-        ra();
+        S.wd = null;
+        sv(); ut(); applyAdminStyles(); updateClientLogo(); ra();
         t('✅ Full game loaded from cloud!');
-    }catch(e){
-        t('❌ Cloud load failed: '+e.message);
-    }
+    }catch(e){ t('❌ Cloud load failed: '+e.message); }
 }
-
-// Restore all individually saved teams (scans fnl_team_*)
 async function restoreAllTeams(){
     if(!confirm('Restore all individually saved teams from the cloud?')) return;
     try{
@@ -843,7 +1272,7 @@ async function restoreAllTeams(){
             if(typeof team.color!=='string') team.color='#1e3a5f';
             team.id = team.id.replace(FNL_NS+'team_','');
             if(!g().tms.find(t=>t.id===team.id)){
-                team.pl.forEach(p=>{if(!p.id)p.id=id();});
+                team.pl.forEach(p=>{if(!p.id)p.id=id(); if(p.pinned===undefined)p.pinned=false; if(p.pron===undefined)p.pron='';});
                 g().tms.push(team);
                 count++;
             }
@@ -852,23 +1281,7 @@ async function restoreAllTeams(){
         t('✅ Restored '+count+' teams');
     }catch(e){ t('❌ Error: '+e.message); }
 }
-
-// Individual team save/load (backup)
-async function cSA(){
-    if(!confirm('Save all teams individually?')) return;
-    try{
-        let c=0;
-        for(const t of g().tms){
-            try{
-                await fetch(CLOUD+'?id='+FNL_NS+'team_'+encodeURIComponent(t.id),{
-                    method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(t)
-                });
-                c++;
-            }catch(e){}
-        }
-        t(c+' teams saved');
-    }catch(e){ t('Failed') }
-}
+async function cSA(){ if(!confirm('Save all teams individually?')) return; try{ let c=0; for(const t of g().tms){ try{ await fetch(CLOUD+'?id='+FNL_NS+'team_'+encodeURIComponent(t.id),{ method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(t) }); c++; }catch(e){} } t(c+' teams saved'); }catch(e){ t('Failed') } }
 async function cLT(){
     try{
         const r=await fetch(CLOUD+'?list=true');
@@ -882,18 +1295,18 @@ async function cLT(){
         if(!x.id||!x.name) throw new Error('Invalid');
         const sp=g(); const ex=sp.tms.find(t=>t.id===x.id);
         if(ex&&!confirm('Overwrite?')) return;
-        if(x.pl) x.pl.forEach(p=>{if(!p.id)p.id=id()});
-        if(ex){ ex.name=x.name; ex.pl=x.pl||[] }
-        else{ x.id=x.id.replace(FNL_NS+'team_',''); sp.tms.push(x) }
+        if(x.pl) x.pl.forEach(p=>{if(!p.id)p.id=id(); if(p.pinned===undefined)p.pinned=false; if(p.pron===undefined)p.pron='';});
+        if(ex){ ex.name=x.name; ex.pl=x.pl||[]; ex.coach=x.coach||''; }
+        else{ x.id=x.id.replace(FNL_NS+'team_',''); sp.tms.push(x); }
         sp.cid=x.id;
-        sv(); rR(); rn(); t('Loaded')
-    }catch(e){ t('Failed') }
+        sv(); rR(); rn(); t('Loaded');
+    }catch(e){ t('Failed'); }
 }
 
 // ADMIN PANEL
 function rA(){
-    const ts=['theme','fonts','clock','7v7','teams','backup','cloud'];
-    const ls={theme:'Theme',fonts:'Fonts',clock:'Clock','7v7':'7v7',teams:'Teams',backup:'Backup',cloud:'Cloud'};
+    const ts=['theme','fonts','clock','7v7','teams','backup','cloud','outdoor'];
+    const ls={theme:'Theme',fonts:'Fonts',clock:'Clock','7v7':'7v7',teams:'Teams',backup:'Backup',cloud:'Cloud',outdoor:'Outdoor'};
     let h='<div class="panel"><h3>⚙️ ADMIN</h3><p style="font-size:.7rem;opacity:.6;margin-bottom:12px;">Note: Client logos and branding are managed in the <strong>👥 CLIENTS</strong> tab.</p><div class="admin-tabs">';
     ts.forEach(x=>h+='<button class="admin-tab '+(S.at===x?'active':'')+'" data-at="'+x+'">'+ls[x]+'</button>');
     h+='</div><div id="ac"></div></div>';
@@ -901,7 +1314,6 @@ function rA(){
     document.querySelectorAll('[data-at]').forEach(b=>b.onclick=()=>{S.at=b.dataset.at;rA()});
     rAC();
 }
-
 function rAC(){
     const c = document.getElementById('ac');
     if(!c) return;
@@ -924,41 +1336,44 @@ function rAC(){
     } else if(S.at === 'backup'){
         c.innerHTML = '<h4>Backup</h4><button class="btn" onclick="xA()">📤 Export</button><button class="btn" onclick="document.getElementById(\'impf\').click()">📥 Import</button><input type="file" id="impf" hidden accept=".json" onchange="iA(this)"><button class="btn-red btn" onclick="if(confirm(\'Clear?\')){localStorage.clear();location.reload()}">🧹 Clear</button>';
     } else if(S.at === 'cloud'){
-        c.innerHTML = '<h4>Cloud Sync</h4>'+
-            '<p style="font-size:.7rem;margin-bottom:8px;">Full state sync saves/loads <strong>everything</strong>: teams, scores, clients, settings.</p>'+
-            '<button class="btn btn-save-sync" onclick="fnlCloudSaveAll()" style="margin-right:6px;">💾 Save Entire Game</button>'+
-            '<button class="btn btn-load-sync" onclick="fnlCloudLoadAll()">📥 Load Entire Game</button>'+
-            '<hr style="margin:10px 0;">'+
-            '<p style="font-size:.7rem;">Individual team backup:</p>'+
-            '<button class="btn-sm" onclick="cSA()" style="margin-right:4px;">Save Teams Individually</button>'+
-            '<button class="btn-sm" onclick="cLT()">Load Single Team</button>';
+        c.innerHTML = '<h4>Cloud Sync</h4><p style="font-size:.7rem;margin-bottom:8px;">Full state sync saves/loads <strong>everything</strong>: teams, scores, clients, settings.</p><button class="btn btn-save-sync" onclick="fnlCloudSaveAll()" style="margin-right:6px;">💾 Save Entire Game</button><button class="btn btn-load-sync" onclick="fnlCloudLoadAll()">📥 Load Entire Game</button><hr style="margin:10px 0;"><p style="font-size:.7rem;">Individual team backup:</p><button class="btn-sm" onclick="cSA()" style="margin-right:4px;">Save Teams Individually</button><button class="btn-sm" onclick="cLT()">Load Single Team</button>';
+    } else if(S.at === 'outdoor'){
+        c.innerHTML = '<h4>Outdoor Mode</h4><p>High contrast for sunlight readability</p><button class="btn" onclick="toggleOutdoor()">'+(S.outdoor?'Disable Outdoor Mode':'Enable Outdoor Mode')+'</button>';
     }
 }
-
 function xA(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,2)]));a.download='fnl_backup.json';a.click()}
 function iA(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);S=d;sv();ut();applyAdminStyles();updateClientLogo();ra();t('Restored')}catch(e){t('Invalid')}};r.readAsText(f)}
 function pL(){const sp=g();const at=sp.tms.find(t=>t.id===sp.aid),ht=sp.tms.find(t=>t.id===sp.hid);if(!at||!ht)return;let h='<html><head><title>Lineup</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse;margin-bottom:20px}th,td{border:1px solid #000;padding:4px 6px}th{background:#ddd}</style></head><body>';[at,ht].forEach(t=>{h+='<h2>'+e(t.name)+'</h2><table><tr><th>#</th><th>Name</th><th>Pos</th><th>Notes</th></tr>';t.pl.filter(p=>p.st).forEach(p=>{h+='<tr><td>'+e(p.n)+'</td><td>'+e(p.na)+'</td><td>'+e(p.po)+'</td><td>'+e(p.nt||'')+'</td></tr>'});h+='</table>'});h+='</body></html>';const w=window.open();w.document.write(h);w.print()}
-function printLU(){pL()}
 function gR(){if(confirm('Reset scores, quarter, and starters?')){const sp=g();sp.as=0;sp.hs=0;sp.q=1;sp.tms.forEach(t=>t.pl.forEach(p=>p.st=!1));sv();ra();t('Game reset')}}
 
-document.addEventListener('keydown',e=>{if(e.key==='s'&&(e.ctrlKey||e.metaKey)){e.preventDefault();sv();t('Saved')}});
+// Keyboard shortcuts
+document.addEventListener('keydown',e=>{
+    if(e.key==='s' && (e.ctrlKey||e.metaKey)){ e.preventDefault(); sv(); t('Saved'); }
+    if(e.key==='r' && (e.ctrlKey||e.metaKey)){ e.preventDefault(); gR(); }
+    if(e.key==='Escape'){ const m=document.querySelector('.pin-overlay'); if(m)m.remove(); }
+    if(e.key===' ' && !e.target.closest('input,textarea,select')){ e.preventDefault(); const sp=g(); if(sp.gc.run){pGC()}else{stGC()} }
+});
 document.getElementById('resetBtn').onclick=gR;
 
-// Global functions
+// Expose globals
 window.chScore=chS; window.chQuarter=chQ; window.tP=tP; window.sU=sU; window.swT=swT; window.aP=aP;
 window.tS=tS; window.dP=dP; window.uF=uF; window.searchPlayers=searchPlayers;
 window.setGC=sGC; window.startGC=stGC; window.pauseGC=pGC; window.resetGC=rGC;
 window.iM=iM; window.pS=pS; window.eC=eC; window.pZR=pZR; window.sT=sT; window.nT=nT;
-window.uR=uR; window.reR=reR; window.light=light; window.dark=dark; window.toggleTheme=toggleTheme;
+window.uR=undoGame; window.reR=redoGame; window.light=light; window.dark=dark; window.toggleTheme=toggleTheme;
 window.xA=xA; window.iA=iA; window.pL=pL; window.uploadPlayerPhoto=uploadPlayerPhoto;
 window.updateClientLogo=updateClientLogo; window.uploadClientLogo=uploadClientLogo;
 window.setClientLogoFromURL=setClientLogoFromURL; window.clearClientLogo=clearClientLogo;
 window.addClient=addClient; window.editClient=editClient; window.deleteClient=deleteClient;
-window.showAllPINs=showAllPINs;
-window.handleClientLogoUpload=handleClientLogoUpload; window.setClientLogoFromEdit=setClientLogoFromEdit;
-window.clearClientLogoFromEdit=clearClientLogoFromEdit; window.saveClientEdit=saveClientEdit;
-window.fnlCloudSaveAll=fnlCloudSaveAll; window.fnlCloudLoadAll=fnlCloudLoadAll;
+window.showAllPINs=showAllPINs; window.handleClientLogoUpload=handleClientLogoUpload;
+window.setClientLogoFromEdit=setClientLogoFromEdit; window.clearClientLogoFromEdit=clearClientLogoFromEdit;
+window.saveClientEdit=saveClientEdit; window.fnlCloudSaveAll=fnlCloudSaveAll; window.fnlCloudLoadAll=fnlCloudLoadAll;
 window.cSA=cSA; window.cLT=cLT; window.restoreAllTeams=restoreAllTeams;
+window.setPossession=setPossession; window.quickScore=quickScore; window.quickPenalty=quickPenalty;
+window.startGame=startGame; window.startSecondHalf=startSecondHalf; window.endGame=endGame;
+window.applyClockPreset=applyClockPreset; window.customClock=customClock; window.togglePin=togglePin;
+window.togglePinRoster=togglePinRoster; window.exportBoxScore=exportBoxScore; window.toggleOutdoor=toggleOutdoor;
+window.undoGame=undoGame; window.redoGame=redoGame;
 
 // Initialize
 ld();
@@ -969,23 +1384,14 @@ setTimeout(() => {
         S.br.cl = client.l || '';
         S.br.cn = client.n || '';
         S.br.t = client.n || 'Friday Night Live';
-        if (client.wlat && client.wlon) {
-            S.br.wlat = client.wlat;
-            S.br.wlon = client.wlon;
-            fW(client.wlat, client.wlon, client.n || 'Client', false);
-        }
-        updateClientLogo();
-        S.im = false;
-        ra();
-        t('Welcome back, ' + (client.n || 'Client') + '!');
-    } else if (Object.keys(S.cp || {}).length > 0) {
-        showPINEntry();
-    } else {
-        S.im = true;
-        ra();
-    }
+        if (client.wlat && client.wlon) { S.br.wlat = client.wlat; S.br.wlon = client.wlon; fW(client.wlat, client.wlon, client.n || 'Client', false); }
+        updateClientLogo(); S.im = false; ra(); t('Welcome back, ' + (client.n || 'Client') + '!');
+    } else if (Object.keys(S.cp || {}).length > 0) { showPINEntry(); }
+    else { S.im = true; ra(); }
 }, 500);
 setInterval(gW,1800000);
 </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"f39674ce5a5d4963a6033a5fb03cf801","r":1}' crossorigin="anonymous"></script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a2b32819eaee6bba',t:'MTc4Njc0NDAzMg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
