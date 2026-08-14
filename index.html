@@ -166,9 +166,16 @@
             font-family:var(--card-team-label-font);font-weight:var(--card-team-label-weight);
             min-height:36px;
         }
-        .card-head select{font-size:.7rem;padding:4px 8px;border-radius:4px;background:#fff;color:#000;border:1px solid var(--border);flex:1;min-width:0}
-        .card-head .team-logo{height:32px;width:32px;object-fit:contain;border-radius:4px;background:rgba(255,255,255,0.8);padding:2px;flex-shrink:0}
-        
+     .card-head select {
+    font-size:.7rem;
+    padding:4px 8px;
+    border-radius:4px;
+    background:#fff;
+    color:#000 !important;   /* ← ADD THIS - makes text black */
+    border:2px solid #d4af37 !important;  /* ← ADD THIS - gold border so you see it */
+    flex:1;
+    min-width:0;
+}
         /* ── COACH ROW (NEW) ── */
         .coach-row{
             display:flex !important;
