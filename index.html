@@ -3,96 +3,37 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
     <title>Friday Night Live – Football PA Console</title>
     <style>
-        /* ── RESET & ROOT ── */
+        /* ── RESET ── */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        :root {
-            --accent: #d4af37;
-            --bg: #f0f2f5;
-            --surface: #ffffff;
-            --text: #0a2540;
-            --border: #cbd5e1;
-            --header-bg: #1a3a2a;
-            --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-            --radius: 6px;
-            --font-size: 13px;
-            --touch: 28px;
-        }
-        body.dark {
-            --bg: #0a0c10;
-            --surface: #1a1f2e;
-            --text: #e2e8f0;
-            --border: #374151;
-            --header-bg: #0f172a;
-        }
-        body.navy {
-            --bg: #0f172a;
-            --surface: #1e293b;
-            --text: #f1f5f9;
-            --border: #334155;
-            --header-bg: #0a1628;
-        }
-        body.outdoor {
-            --font-size: 16px;
-            --touch: 40px;
-        }
-        body.outdoor .btn,
-        body.outdoor .btn-sm {
-            font-size: 14px !important;
-            padding: 6px 14px !important;
-            min-height: 40px !important;
-        }
-        body.outdoor select,
-        body.outdoor input {
-            font-size: 14px !important;
-            min-height: 36px !important;
-        }
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg);
-            color: var(--text);
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #f0f2f5;
+            color: #0a2540;
             height: 100vh;
-            height: 100dvh;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            font-size: var(--font-size);
-            transition: background 0.2s, color 0.2s;
-        }
-
-        /* ── SCROLLBAR ── */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--border);
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--accent);
-            border-radius: 3px;
+            font-size: 13px;
         }
 
         /* ── HEADER ── */
         header {
-            background: var(--header-bg);
-            padding: 3px 8px;
+            background: #1a3a2a;
+            padding: 4px 8px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 4px;
-            border-bottom: 3px solid var(--accent);
+            border-bottom: 3px solid #d4af37;
             flex-shrink: 0;
             min-height: 42px;
             flex-wrap: wrap;
-            transition: background 0.2s;
         }
         .hdr-left {
             display: flex;
@@ -122,19 +63,18 @@
         }
         .brand span {
             font-size: 8px;
-            color: var(--accent);
+            color: #d4af37;
             font-weight: 700;
         }
         .clock {
             font-size: 12px;
             font-weight: 700;
-            color: var(--accent);
+            color: #d4af37;
             background: rgba(0, 0, 0, 0.4);
             padding: 2px 10px;
             border-radius: 6px;
             min-width: 60px;
             text-align: center;
-            white-space: nowrap;
         }
         .weather {
             font-size: 10px;
@@ -160,7 +100,6 @@
             cursor: pointer;
             min-height: 26px;
             min-width: 26px;
-            transition: background 0.15s;
         }
         .hdr-right button:hover {
             background: rgba(255, 255, 255, 0.25);
@@ -170,15 +109,9 @@
             color: #000 !important;
             font-weight: 700;
         }
-        .hdr-right .gold:hover {
-            background: #f0b820 !important;
-        }
         .hdr-right .red {
             background: #dc2626 !important;
             color: #fff !important;
-        }
-        .hdr-right .red:hover {
-            background: #ef4444 !important;
         }
 
         /* ── NAV ── */
@@ -201,14 +134,10 @@
             cursor: pointer;
             border-bottom: 2px solid transparent;
             white-space: nowrap;
-            transition: color 0.2s, border-color 0.2s;
-        }
-        .nav-link:hover {
-            color: rgba(255, 255, 255, 0.8);
         }
         .nav-link.active {
             color: #fff;
-            border-bottom-color: var(--accent);
+            border-bottom-color: #d4af37;
         }
 
         /* ── SCOREBUG ── */
@@ -218,12 +147,11 @@
             align-items: center;
             gap: 4px;
             background: linear-gradient(135deg, #0a0a1a, #1a1a2e);
-            border-radius: var(--radius);
+            border-radius: 6px;
             padding: 2px 8px;
             margin: 0 0 2px 0;
-            border: 2px solid var(--accent);
+            border: 2px solid #d4af37;
             min-height: 38px;
-            transition: all 0.3s;
         }
         #scorebug-wrap.hidden {
             display: none;
@@ -262,17 +190,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.15s;
-        }
-        .sb-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
         }
         .sb-btn.plus {
             background: rgba(34, 197, 94, 0.2);
             border-color: rgba(34, 197, 94, 0.3);
-        }
-        .sb-btn.plus:hover {
-            background: rgba(34, 197, 94, 0.35);
         }
         .sb-center {
             display: flex;
@@ -299,28 +220,21 @@
             font-size: 8px;
             cursor: pointer;
             height: 20px;
-            transition: background 0.15s;
-        }
-        .sb-cbtn:hover {
-            background: rgba(255, 255, 255, 0.15);
         }
         .sb-cbtn.red {
             background: rgba(220, 38, 38, 0.25);
             border-color: rgba(220, 38, 38, 0.3);
         }
-        .sb-cbtn.red:hover {
-            background: rgba(220, 38, 38, 0.4);
-        }
         .sb-qtr {
             font-size: 10px;
             font-weight: 700;
-            color: var(--accent);
+            color: #d4af37;
             min-width: 18px;
             text-align: center;
         }
         #eyeToggle {
             background: rgba(0, 0, 0, 0.4);
-            border: 1px solid var(--accent);
+            border: 1px solid #d4af37;
             color: #fff;
             border-radius: 50%;
             width: 26px;
@@ -331,7 +245,6 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            transition: background 0.2s;
             margin-left: 2px;
         }
         #eyeToggle:hover {
@@ -353,24 +266,23 @@
             gap: 4px;
             width: 100%;
             height: 100%;
-            background: var(--border);
-            border-radius: var(--radius);
+            background: #cbd5e1;
+            border-radius: 6px;
             padding: 3px;
             overflow: hidden;
         }
         .team-card {
             flex: 1;
             min-width: 0;
-            background: var(--surface);
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
+            background: #fff;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            transition: background 0.2s, border-color 0.2s;
         }
 
-        /* ── CARD HEAD (DROPDOWN FIXED) ── */
+        /* ── CARD HEAD ── */
         .card-head {
             padding: 2px 6px;
             display: flex;
@@ -379,7 +291,7 @@
             color: #fff;
             min-height: 30px;
             flex-wrap: wrap;
-            border-bottom: 2px solid var(--accent);
+            border-bottom: 2px solid #d4af37;
         }
         .card-head .side-label {
             font-size: 9px;
@@ -387,28 +299,33 @@
             text-transform: uppercase;
             opacity: 0.8;
         }
+        /* ★★★ DROPDOWN VISIBILITY FIX ★★★ */
         .card-head select {
             flex: 1;
             min-width: 70px;
             padding: 2px 6px;
             border-radius: 4px;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            background: #fff;
-            color: #000 !important;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: #ffffff !important;
+            color: #000000 !important;
             font-weight: 700;
             font-size: 11px;
             min-height: 24px;
             cursor: pointer;
+            appearance: auto;
+            -webkit-appearance: auto;
         }
         .card-head select option {
-            background: #fff;
-            color: #000 !important;
+            background: #ffffff !important;
+            color: #000000 !important;
             padding: 4px;
         }
         .card-head select:focus {
-            outline: 2px solid var(--accent);
+            outline: 2px solid #d4af37;
             outline-offset: 1px;
         }
+        /* ──────────────── */
+
         .card-head .coach-input {
             background: rgba(255, 255, 255, 0.12);
             border: 1px solid rgba(255, 255, 255, 0.15);
@@ -431,15 +348,11 @@
             font-size: 10px;
             cursor: pointer;
             min-height: 22px;
-            transition: background 0.15s;
-        }
-        .card-head .poss-btn:hover {
-            background: rgba(255, 255, 255, 0.25);
         }
         .card-head .poss-btn.active {
-            background: var(--accent);
+            background: #d4af37;
             color: #000;
-            border-color: var(--accent);
+            border-color: #d4af37;
         }
 
         /* ── UNIT TABS ── */
@@ -447,7 +360,7 @@
             display: flex;
             gap: 2px;
             padding: 1px 4px;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid #cbd5e1;
             flex-shrink: 0;
         }
         .unit-tab {
@@ -459,13 +372,9 @@
             color: inherit;
             cursor: pointer;
             border-radius: 3px;
-            transition: background 0.15s, color 0.15s;
-        }
-        .unit-tab:hover {
-            background: rgba(0, 0, 0, 0.08);
         }
         .unit-tab.active {
-            background: var(--accent);
+            background: #d4af37;
             color: #000;
         }
 
@@ -473,22 +382,15 @@
         .search-bar {
             display: flex;
             padding: 1px 4px;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid #cbd5e1;
         }
         .search-bar input {
             flex: 1;
-            border: 1px solid var(--border);
+            border: 1px solid #cbd5e1;
             border-radius: 3px;
             padding: 0 4px;
             font-size: 9px;
             min-height: 20px;
-            background: var(--surface);
-            color: var(--text);
-            transition: border-color 0.2s;
-        }
-        .search-bar input:focus {
-            outline: none;
-            border-color: var(--accent);
         }
 
         /* ── PLAYER LIST ── */
@@ -506,7 +408,7 @@
             font-weight: 700;
             text-transform: uppercase;
             opacity: 0.35;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid #cbd5e1;
             min-height: 16px;
         }
         .player-list-body {
@@ -517,17 +419,13 @@
         .player-row {
             border-bottom: 1px solid rgba(0, 0, 0, 0.04);
             min-height: 22px;
-            transition: background 0.15s;
         }
         .player-row.starter {
             background: rgba(212, 175, 55, 0.07);
         }
         .player-row.pinned {
             background: rgba(255, 215, 0, 0.05);
-            border-left: 2px solid var(--accent);
-        }
-        .player-row:hover {
-            background: rgba(0, 0, 0, 0.02);
+            border-left: 2px solid #d4af37;
         }
         .plyr-num {
             font-weight: 700;
@@ -546,11 +444,6 @@
         .plyr-name input {
             font-weight: 600;
         }
-        .plyr-name input:focus,
-        .plyr-pron input:focus {
-            outline: 1px solid var(--accent);
-            border-radius: 2px;
-        }
         .plyr-pron input {
             font-style: italic;
             font-size: 9px;
@@ -566,12 +459,12 @@
             color: inherit;
         }
         .plyr-pos select option {
-            background: var(--surface);
-            color: var(--text);
+            background: #fff;
+            color: #000;
         }
         .st-toggle {
             background: none;
-            border: 2px solid var(--accent);
+            border: 2px solid #d4af37;
             border-radius: 50%;
             width: 16px;
             height: 16px;
@@ -580,8 +473,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--accent);
-            transition: all 0.15s;
+            color: #d4af37;
         }
         .st-toggle.off {
             border-color: #999;
@@ -589,11 +481,8 @@
             opacity: 0.4;
         }
         .st-toggle:not(.off) {
-            background: var(--accent);
+            background: #d4af37;
             color: #000;
-        }
-        .st-toggle:hover {
-            transform: scale(1.1);
         }
         .pin-toggle {
             background: none;
@@ -606,14 +495,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.15s;
-        }
-        .pin-toggle:hover {
-            transform: scale(1.1);
         }
         .pin-toggle.active {
-            background: var(--accent);
-            border-color: var(--accent);
+            background: #d4af37;
+            border-color: #d4af37;
             color: #000;
         }
         .del-btn {
@@ -622,7 +507,6 @@
             color: #999;
             cursor: pointer;
             font-size: 10px;
-            transition: color 0.15s;
         }
         .del-btn:hover {
             color: #dc2626;
@@ -633,27 +517,25 @@
             display: flex;
             gap: 2px;
             padding: 1px 4px;
-            border-top: 1px solid var(--border);
+            border-top: 1px solid #cbd5e1;
             flex-shrink: 0;
             flex-wrap: wrap;
-            background: var(--surface);
+            background: #fff;
         }
         .add-row input,
         .add-row select {
             font-size: 9px;
             padding: 0 4px;
-            border: 1px solid var(--border);
+            border: 1px solid #cbd5e1;
             border-radius: 3px;
             min-height: 20px;
-            background: var(--surface);
-            color: var(--text);
         }
         .add-row input {
             flex: 1;
             min-width: 28px;
         }
         .add-row button {
-            background: var(--accent);
+            background: #d4af37;
             border: none;
             border-radius: 3px;
             padding: 0 8px;
@@ -661,10 +543,6 @@
             font-size: 11px;
             cursor: pointer;
             min-height: 20px;
-            transition: background 0.15s;
-        }
-        .add-row button:hover {
-            background: #e6c040;
         }
 
         /* ── GAME CONTROLS ── */
@@ -674,9 +552,9 @@
             padding: 1px 4px;
             flex-wrap: wrap;
             align-items: center;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
+            background: #fff;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
             margin-bottom: 1px;
             flex-shrink: 0;
         }
@@ -689,87 +567,51 @@
             border: none;
             cursor: pointer;
             font-weight: 600;
-            transition: transform 0.1s, background 0.15s;
-        }
-        .game-controls .btn-sm:active {
-            transform: scale(0.94);
         }
         .game-controls .btn-sm.green {
             background: #22c55e;
             color: #000;
         }
-        .game-controls .btn-sm.green:hover {
-            background: #16a34a;
-        }
         .game-controls .btn-sm.red {
             background: #dc2626;
             color: #fff;
-        }
-        .game-controls .btn-sm.red:hover {
-            background: #b91c1c;
         }
         .game-controls .btn-sm.gray {
             background: #666;
             color: #fff;
         }
-        .game-controls .btn-sm.gray:hover {
-            background: #555;
-        }
         .game-controls .btn-sm.gold {
             background: #f59e0b;
             color: #000;
-        }
-        .game-controls .btn-sm.gold:hover {
-            background: #d97706;
-        }
-        .game-controls .btn-sm.blue {
-            background: #3b82f6;
-            color: #fff;
-        }
-        .game-controls .btn-sm.blue:hover {
-            background: #2563eb;
         }
         .game-controls input {
             width: 24px;
             padding: 0 2px;
             font-size: 9px;
-            border: 1px solid var(--border);
+            border: 1px solid #cbd5e1;
             border-radius: 3px;
             text-align: center;
             min-height: 18px;
-            background: var(--surface);
-            color: var(--text);
         }
         .game-controls span {
             font-size: 9px;
             font-weight: 600;
         }
-        .game-controls .sep {
-            color: var(--border);
-            margin: 0 1px;
-        }
 
-        /* ── PANELS (Rosters, Admin, Script) ── */
+        /* ── PANELS ── */
         .panel {
-            background: var(--surface);
-            border-radius: var(--radius);
+            background: #fff;
+            border-radius: 6px;
             padding: 8px;
             overflow-y: auto;
             width: 100%;
             height: 100%;
-            border: 1px solid var(--border);
+            border: 1px solid #cbd5e1;
         }
         .panel h3 {
             font-size: 14px;
             margin-bottom: 6px;
-            color: var(--text);
         }
-        .panel h4 {
-            font-size: 12px;
-            margin: 6px 0 4px;
-            color: var(--text);
-        }
-
         .roster-layout {
             display: grid;
             grid-template-columns: 150px 1fr;
@@ -777,11 +619,11 @@
             height: 100%;
         }
         .team-sidebar {
-            background: var(--surface);
-            border-radius: var(--radius);
+            background: #fff;
+            border-radius: 6px;
             padding: 6px;
             overflow-y: auto;
-            border: 1px solid var(--border);
+            border: 1px solid #cbd5e1;
         }
         .team-item {
             padding: 3px 8px;
@@ -790,23 +632,18 @@
             cursor: pointer;
             font-size: 11px;
             font-weight: 600;
-            transition: background 0.15s;
-        }
-        .team-item:hover {
-            background: rgba(0, 0, 0, 0.04);
         }
         .team-item.active {
-            background: var(--accent);
+            background: #d4af37;
             color: #000;
         }
         .roster-workspace {
-            background: var(--surface);
-            border-radius: var(--radius);
+            background: #fff;
+            border-radius: 6px;
             padding: 6px;
             overflow-y: auto;
-            border: 1px solid var(--border);
+            border: 1px solid #cbd5e1;
         }
-
         .player-edit-row {
             display: grid;
             grid-template-columns: 28px 1fr 44px 36px 1fr 36px 24px;
@@ -818,11 +655,9 @@
         .player-edit-row select {
             font-size: 10px;
             padding: 0 4px;
-            border: 1px solid var(--border);
+            border: 1px solid #cbd5e1;
             border-radius: 3px;
             min-height: 20px;
-            background: var(--surface);
-            color: var(--text);
         }
         .player-edit-row button {
             background: #dc2626;
@@ -833,24 +668,17 @@
             font-size: 10px;
             min-height: 20px;
         }
-        .player-edit-row button:hover {
-            background: #b91c1c;
-        }
-
         .bulk-area {
             width: 100%;
             min-height: 50px;
             font-family: monospace;
             font-size: 10px;
             padding: 4px;
-            border: 1px solid var(--border);
+            border: 1px solid #cbd5e1;
             border-radius: 4px;
-            background: var(--surface);
-            color: var(--text);
             resize: vertical;
             margin-top: 4px;
         }
-
         .script-area {
             width: 100%;
             height: calc(100% - 60px);
@@ -858,11 +686,9 @@
             font-family: monospace;
             font-size: 13px;
             padding: 8px;
-            border: 1px solid var(--border);
+            border: 1px solid #cbd5e1;
             border-radius: 4px;
             resize: none;
-            background: var(--surface);
-            color: var(--text);
         }
 
         /* ── GAME LOG TAB ── */
@@ -878,18 +704,16 @@
             gap: 8px;
             flex-wrap: wrap;
             padding-bottom: 6px;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid #cbd5e1;
         }
         .log-header input {
             flex: 1;
             min-width: 150px;
             padding: 4px 8px;
-            border: 1px solid var(--border);
+            border: 1px solid #cbd5e1;
             border-radius: 4px;
             font-size: 13px;
             font-weight: 700;
-            background: var(--surface);
-            color: var(--text);
         }
         .log-header .log-actions {
             display: flex;
@@ -903,36 +727,26 @@
             font-weight: 600;
             font-size: 10px;
             cursor: pointer;
-            transition: background 0.15s;
         }
         .log-header .log-actions .save {
             background: #e6a817;
             color: #000;
         }
-        .log-header .log-actions .save:hover {
-            background: #f0b820;
-        }
         .log-header .log-actions .print {
             background: #3b82f6;
             color: #fff;
-        }
-        .log-header .log-actions .print:hover {
-            background: #2563eb;
         }
         .log-header .log-actions .export {
             background: #2e7d32;
             color: #fff;
         }
-        .log-header .log-actions .export:hover {
-            background: #1e6b22;
-        }
         .log-body {
             flex: 1;
             overflow-y: auto;
-            border: 1px solid var(--border);
+            border: 1px solid #cbd5e1;
             border-radius: 4px;
             padding: 4px 8px;
-            background: var(--surface);
+            background: #fff;
             font-size: 12px;
             font-family: 'Courier New', monospace;
             line-height: 1.6;
@@ -942,21 +756,9 @@
             border-bottom: 1px solid rgba(0, 0, 0, 0.04);
         }
         .log-body .entry .time {
-            color: var(--accent);
+            color: #d4af37;
             font-weight: 700;
             margin-right: 8px;
-        }
-        .log-body .entry .td {
-            color: #22c55e;
-            font-weight: 700;
-        }
-        .log-body .entry .penalty {
-            color: #dc2626;
-            font-weight: 700;
-        }
-        .log-body .entry .quarter-change {
-            color: #f59e0b;
-            font-weight: 700;
         }
         .log-body .empty {
             opacity: 0.4;
@@ -971,7 +773,7 @@
             padding: 6px 8px;
             background: rgba(0, 0, 0, 0.03);
             border-radius: 4px;
-            border: 1px solid var(--border);
+            border: 1px solid #cbd5e1;
             font-size: 11px;
         }
         .log-summary .stat {
@@ -994,10 +796,10 @@
             gap: 8px;
         }
         .admin-card {
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
             padding: 8px;
-            background: var(--surface);
+            background: #fff;
         }
         .admin-card h4 {
             font-size: 11px;
@@ -1006,39 +808,14 @@
         .admin-card button {
             padding: 2px 10px;
             border-radius: 4px;
-            border: 1px solid var(--border);
-            background: var(--surface);
+            border: 1px solid #cbd5e1;
+            background: #fff;
             cursor: pointer;
             font-size: 10px;
             min-height: 24px;
-            transition: background 0.15s;
         }
         .admin-card button:hover {
             background: rgba(0, 0, 0, 0.04);
-        }
-        .admin-card .btn-primary {
-            background: var(--accent);
-            border-color: var(--accent);
-            font-weight: 700;
-        }
-        .admin-card .btn-primary:hover {
-            background: #e6c040;
-        }
-        .admin-card .btn-danger {
-            background: #dc2626;
-            border-color: #dc2626;
-            color: #fff;
-        }
-        .admin-card .btn-danger:hover {
-            background: #b91c1c;
-        }
-        .admin-card .btn-success {
-            background: #2e7d32;
-            border-color: #2e7d32;
-            color: #fff;
-        }
-        .admin-card .btn-success:hover {
-            background: #1e6b22;
         }
         .admin-card .btn-gold {
             background: #e6a817;
@@ -1046,8 +823,15 @@
             color: #000;
             font-weight: 700;
         }
-        .admin-card .btn-gold:hover {
-            background: #f0b820;
+        .admin-card .btn-success {
+            background: #2e7d32;
+            border-color: #2e7d32;
+            color: #fff;
+        }
+        .admin-card .btn-danger {
+            background: #dc2626;
+            border-color: #dc2626;
+            color: #fff;
         }
         .admin-card .theme-btns {
             display: flex;
@@ -1070,7 +854,6 @@
             transition: opacity 0.25s;
             z-index: 999;
             pointer-events: none;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
         .toast.show {
             opacity: 1;
@@ -1083,14 +866,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top: 2px solid var(--accent);
+            border-top: 2px solid #d4af37;
             color: #94a3b8;
             font-size: 8px;
             flex-shrink: 0;
             min-height: 20px;
         }
         footer .saved {
-            color: var(--accent);
+            color: #d4af37;
         }
 
         /* ── RESPONSIVE ── */
@@ -1136,13 +919,6 @@
                 grid-template-columns: 12px 18px 1fr 32px 28px 18px 18px 16px;
                 font-size: 9px;
                 padding: 0 3px;
-            }
-            .plyr-name input,
-            .plyr-pron input {
-                font-size: 9px;
-            }
-            .plyr-pos select {
-                font-size: 8px;
             }
             .card-head select {
                 font-size: 9px;
@@ -1199,23 +975,6 @@
             }
             .log-body {
                 font-size: 10px;
-            }
-        }
-        @media (max-width: 400px) {
-            .player-list-header,
-            .player-row {
-                grid-template-columns: 10px 14px 1fr 26px 22px 14px 14px 14px;
-                font-size: 8px;
-                gap: 0;
-            }
-            .card-head select {
-                font-size: 8px;
-                min-width: 40px;
-                min-height: 18px;
-            }
-            .card-head .coach-input {
-                width: 36px;
-                font-size: 7px;
             }
         }
     </style>
@@ -1290,69 +1049,65 @@
 
     <script>
         // ═══════════════════════════════════════════════════════════════
-        // FRIDAY NIGHT LIVE – COMPLETE APP
+        // FRIDAY NIGHT LIVE – DEBUGGED WORKING VERSION
         // ═══════════════════════════════════════════════════════════════
 
         // ─── CONFIG ────────────────────────────────────────────────────
         const CLOUD_URL = "https://lineup-api.claytongreenberg.workers.dev/api/lineup";
-        const SYNC_URL = "https://lineup-api.claytongreenberg.workers.dev/api/sync";
         const NAMESPACE = "fnl_";
 
-        // ─── DEFAULT TEAMS ────────────────────────────────────────────
-        const DEFAULT_TEAMS = [{
-            id: "cowboys",
-            name: "Dallas Cowboys",
-            color: "#0033A0",
-            coach: "Mike McCarthy",
-            players: [
-                { id: "p1", num: "4", name: "Dak Prescott", pos: "QB", starter: true, pinned: true,
-                pron: "Dak PRESS-kott" },
-                { id: "p2", num: "88", name: "CeeDee Lamb", pos: "WR", starter: true, pinned: true,
-                pron: "SEE-dee LAMB" },
-                { id: "p3", num: "21", name: "Ezekiel Elliott", pos: "RB", starter: true, pinned: false,
-                    pron: "eh-ZEEK-ee-ul" },
-                { id: "p4", num: "11", name: "Micah Parsons", pos: "LB", starter: true, pinned: false,
-                    pron: "MY-kuh PAR-sons" },
-                { id: "p5", num: "70", name: "Zack Martin", pos: "G", starter: true, pinned: false, pron: "ZAK MAR-tin" }
-            ]
-        }, {
-            id: "49ers",
-            name: "San Francisco 49ers",
-            color: "#AA0000",
-            coach: "Kyle Shanahan",
-            players: [
-                { id: "p6", num: "13", name: "Brock Purdy", pos: "QB", starter: true, pinned: true,
-                pron: "BRAHK PUR-dee" },
-                { id: "p7", num: "23", name: "Christian McCaffrey", pos: "RB", starter: true, pinned: true,
-                    pron: "KRIS-chun muh-KAF-ree" },
-                { id: "p8", num: "19", name: "Deebo Samuel", pos: "WR", starter: true, pinned: false,
-                    pron: "DEE-bo SAM-yoo-el" },
-                { id: "p9", num: "11", name: "Brandon Aiyuk", pos: "WR", starter: true, pinned: false,
-                    pron: "BRAN-dun EYE-yuk" }
-            ]
-        }, {
-            id: "chiefs",
-            name: "Kansas City Chiefs",
-            color: "#E31837",
-            coach: "Andy Reid",
-            players: [
-                { id: "p10", num: "15", name: "Patrick Mahomes", pos: "QB", starter: true, pinned: true,
-                    pron: "PAT-rik muh-HOMEZ" },
-                { id: "p11", num: "87", name: "Travis Kelce", pos: "TE", starter: true, pinned: true,
-                    pron: "TRAV-is KEL-see" }
-            ]
-        }, {
-            id: "eagles",
-            name: "Philadelphia Eagles",
-            color: "#004C54",
-            coach: "Nick Sirianni",
-            players: [
-                { id: "p12", num: "1", name: "Jalen Hurts", pos: "QB", starter: true, pinned: true,
-                pron: "JAY-len HERTS" },
-                { id: "p13", num: "11", name: "AJ Brown", pos: "WR", starter: true, pinned: false,
-                pron: "AY-JAY BROWN" }
-            ]
-        }];
+        // ─── DEFAULT TEAMS (always available) ──────────────────────
+        function getDefaultTeams() {
+            return [{
+                id: "cowboys",
+                name: "Dallas Cowboys",
+                color: "#0033A0",
+                coach: "Mike McCarthy",
+                players: [
+                    { id: "p1", num: "4", name: "Dak Prescott", pos: "QB", starter: true, pinned: true,
+                        pron: "Dak PRESS-kott" },
+                    { id: "p2", num: "88", name: "CeeDee Lamb", pos: "WR", starter: true, pinned: true,
+                        pron: "SEE-dee LAMB" },
+                    { id: "p3", num: "21", name: "Ezekiel Elliott", pos: "RB", starter: true, pinned: false,
+                        pron: "eh-ZEEK-ee-ul" },
+                    { id: "p4", num: "11", name: "Micah Parsons", pos: "LB", starter: true, pinned: false,
+                        pron: "MY-kuh PAR-sons" }
+                ]
+            }, {
+                id: "49ers",
+                name: "San Francisco 49ers",
+                color: "#AA0000",
+                coach: "Kyle Shanahan",
+                players: [
+                    { id: "p5", num: "13", name: "Brock Purdy", pos: "QB", starter: true, pinned: true,
+                        pron: "BRAHK PUR-dee" },
+                    { id: "p6", num: "23", name: "Christian McCaffrey", pos: "RB", starter: true, pinned: true,
+                        pron: "KRIS-chun muh-KAF-ree" },
+                    { id: "p7", num: "19", name: "Deebo Samuel", pos: "WR", starter: true, pinned: false,
+                        pron: "DEE-bo SAM-yoo-el" }
+                ]
+            }, {
+                id: "chiefs",
+                name: "Kansas City Chiefs",
+                color: "#E31837",
+                coach: "Andy Reid",
+                players: [
+                    { id: "p8", num: "15", name: "Patrick Mahomes", pos: "QB", starter: true, pinned: true,
+                        pron: "PAT-rik muh-HOMEZ" },
+                    { id: "p9", num: "87", name: "Travis Kelce", pos: "TE", starter: true, pinned: true,
+                        pron: "TRAV-is KEL-see" }
+                ]
+            }, {
+                id: "eagles",
+                name: "Philadelphia Eagles",
+                color: "#004C54",
+                coach: "Nick Sirianni",
+                players: [
+                    { id: "p10", num: "1", name: "Jalen Hurts", pos: "QB", starter: true, pinned: true,
+                        pron: "JAY-len HERTS" }
+                ]
+            }];
+        }
 
         // ─── STATE ────────────────────────────────────────────────────
         let state = {
@@ -1379,34 +1134,16 @@
             scorebugVisible: true
         };
 
-        let teams = JSON.parse(JSON.stringify(DEFAULT_TEAMS));
-        let currentTeamId = teams[0]?.id || "";
+        let teams = [];
+        let currentTeamId = "";
         let currentView = "game";
         let themeIndex = 0;
         const THEMES = ["light", "dark", "navy"];
-        let saveTimeout = null;
 
         // ─── HELPERS ──────────────────────────────────────────────────
         function getTeam(id) { return teams.find(t => t.id === id); }
 
         function getTeamBySide(side) { return getTeam(side === "away" ? state.awayId : state.homeId); }
-
-        function getPlayers(side, filter) {
-            const team = getTeamBySide(side);
-            if (!team) return [];
-            let players = [...team.players];
-            if (filter === "offense") players = players.filter(p =>
-                ["QB", "RB", "FB", "WR", "TE", "OL", "C", "G", "T"].includes(p.pos));
-            else if (filter === "defense") players = players.filter(p =>
-                ["DL", "DE", "DT", "LB", "OLB", "ILB", "CB", "S", "SS", "FS", "DB"].includes(p.pos));
-            else if (filter === "special") players = players.filter(p => ["K", "P", "LS", "KR", "PR"].includes(p.pos));
-            players.sort((a, b) => {
-                if (a.pinned && !b.pinned) return -1;
-                if (!a.pinned && b.pinned) return 1;
-                return (parseInt(a.num) || 999) - (parseInt(b.num) || 999);
-            });
-            return players;
-        }
 
         function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 5); }
 
@@ -1436,13 +1173,34 @@
                 if (raw) {
                     const data = JSON.parse(raw);
                     state = { ...state, ...data.state };
-                    teams = data.teams || teams;
+                    teams = data.teams || [];
                 }
             } catch (e) { console.warn("Load error:", e); }
-            // Ensure all teams have players array
-            teams.forEach(t => { if (!t.players) t.players = [];
-                t.players.forEach(p => { if (p.pinned === undefined) p.pinned = false; if (p.pron === undefined) p.pron =
-                    ''; }); if (!t.coach) t.coach = ''; });
+
+            // If teams are empty, load defaults
+            if (!teams || teams.length === 0) {
+                teams = getDefaultTeams();
+                state.awayId = teams[0]?.id || "";
+                state.homeId = teams[1]?.id || "";
+                currentTeamId = teams[0]?.id || "";
+            }
+
+            // Ensure all teams have players and required fields
+            teams.forEach(t => {
+                if (!t.players) t.players = [];
+                t.players.forEach(p => {
+                    if (p.pinned === undefined) p.pinned = false;
+                    if (p.pron === undefined) p.pron = '';
+                    if (p.starter === undefined) p.starter = false;
+                });
+                if (!t.coach) t.coach = '';
+                if (!t.color) t.color = '#1e3a5f';
+            });
+
+            // Ensure state has valid team IDs
+            if (!getTeam(state.awayId)) state.awayId = teams[0]?.id || "";
+            if (!getTeam(state.homeId)) state.homeId = teams[1]?.id || teams[0]?.id || "";
+
             if (!state.gameLogs) state.gameLogs = [];
             if (!state.gameLogName) state.gameLogName = generateLogName();
             if (state.gameLogAutoName === undefined) state.gameLogAutoName = true;
@@ -1456,12 +1214,6 @@
             const date = String(d.getMonth() + 1).padStart(2, "0") + "/" + String(d.getDate()).padStart(2, "0") + "/" + d
                 .getFullYear();
             return date + "_" + (away ? away.name : "Away") + " vs " + (home ? home.name : "Home");
-        }
-
-        function updateLogName() {
-            if (state.gameLogAutoName) {
-                state.gameLogName = generateLogName();
-            }
         }
 
         // ─── CLOUD SYNC ──────────────────────────────────────────────
@@ -1498,71 +1250,6 @@
                 toast("✅ Loaded from cloud!");
             } catch (e) {
                 toast("❌ Cloud load failed: " + e.message);
-                console.error(e);
-            }
-        }
-
-        // ─── SAVE GAME LOG TO CLOUD ────────────────────────────────
-        async function saveLogToCloud() {
-            if (!state.gameLogName.trim()) { toast("Please enter a game name"); return; }
-            toast("☁️ Saving game log...");
-            try {
-                const logData = {
-                    name: state.gameLogName,
-                    entries: state.gameLogs,
-                    away: getTeam(state.awayId)?.name || "Away",
-                    home: getTeam(state.homeId)?.name || "Home",
-                    awayScore: state.awayScore,
-                    homeScore: state.homeScore,
-                    quarter: state.quarter,
-                    timestamp: new Date().toISOString()
-                };
-                const id = NAMESPACE + "log_" + encodeURIComponent(state.gameLogName);
-                const resp = await fetch(CLOUD_URL + "?id=" + id, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(logData)
-                });
-                if (!resp.ok) throw new Error("HTTP " + resp.status);
-                toast("✅ Game log saved to cloud!");
-            } catch (e) {
-                toast("❌ Log save failed: " + e.message);
-                console.error(e);
-            }
-        }
-
-        async function loadLogFromCloud() {
-            const name = prompt("Enter the game log name to load:", state.gameLogName || "");
-            if (!name) return;
-            toast("☁️ Loading game log...");
-            try {
-                const id = NAMESPACE + "log_" + encodeURIComponent(name);
-                const resp = await fetch(CLOUD_URL + "?id=" + id);
-                if (!resp.ok) throw new Error("Not found");
-                const data = await resp.json();
-                state.gameLogName = data.name || name;
-                state.gameLogs = data.entries || [];
-                state.gameLogAutoName = false;
-                saveLocal();
-                renderLogTab();
-                toast("✅ Game log loaded!");
-            } catch (e) {
-                toast("❌ Log load failed: " + e.message);
-                console.error(e);
-            }
-        }
-
-        async function listLogs() {
-            try {
-                const resp = await fetch(CLOUD_URL + "?list=true");
-                if (!resp.ok) throw new Error("Failed to list");
-                const data = await resp.json();
-                const keys = (data.keys || []).filter(k => k.startsWith(NAMESPACE + "log_"));
-                if (!keys.length) { toast("No saved game logs found"); return; }
-                const names = keys.map(k => decodeURIComponent(k.replace(NAMESPACE + "log_", "")));
-                alert("📋 Saved Game Logs:\n\n" + names.join("\n"));
-            } catch (e) {
-                toast("❌ Failed to list logs: " + e.message);
                 console.error(e);
             }
         }
@@ -1606,7 +1293,7 @@
 
         function setClockPreset() {
             const input = prompt(
-                "Enter minutes (or preset: 1=Q1, 2=Q2, 3=Half, 4=OT, 5=2min):");
+            "Enter minutes (or preset: 1=Q1, 2=Q2, 3=Half, 4=OT, 5=2min):");
             if (!input) return;
             const num = parseInt(input);
             if (!isNaN(num) && num > 0) { state.clockSeconds = num * 60;
@@ -1669,7 +1356,6 @@
             document.getElementById("sbHomeScore").textContent = state.homeScore;
             document.getElementById("sbQuarter").textContent = "Q" + state.quarter;
             displayClock();
-            // Update log name if auto
             if (state.gameLogAutoName) {
                 state.gameLogName = generateLogName();
             }
@@ -1685,17 +1371,10 @@
         // ─── GAME LOG ──────────────────────────────────────────────────
         function addLogEntry(text) {
             const time = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-            const entry = {
-                id: genId(),
-                time: time,
-                text: text,
-                quarter: state.quarter,
-                timestamp: Date.now()
-            };
-            state.gameLogs.push(entry);
+            state.gameLogs.push({ id: genId(), time: time, text: text, quarter: state.quarter, timestamp: Date
+                    .now() });
             if (state.gameLogs.length > 500) state.gameLogs.shift();
             saveLocal();
-            // If log tab is visible, re-render it
             if (currentView === "log") renderLogTab();
         }
 
@@ -1742,6 +1421,70 @@
             a.download = (state.gameLogName || "game_log") + ".csv";
             a.click();
             toast("📊 Log exported");
+        }
+
+        async function saveLogToCloud() {
+            if (!state.gameLogName.trim()) { toast("Please enter a game name"); return; }
+            toast("☁️ Saving game log...");
+            try {
+                const logData = {
+                    name: state.gameLogName,
+                    entries: state.gameLogs,
+                    away: getTeam(state.awayId)?.name || "Away",
+                    home: getTeam(state.homeId)?.name || "Home",
+                    awayScore: state.awayScore,
+                    homeScore: state.homeScore,
+                    quarter: state.quarter,
+                    timestamp: new Date().toISOString()
+                };
+                const id = NAMESPACE + "log_" + encodeURIComponent(state.gameLogName);
+                const resp = await fetch(CLOUD_URL + "?id=" + id, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(logData)
+                });
+                if (!resp.ok) throw new Error("HTTP " + resp.status);
+                toast("✅ Game log saved to cloud!");
+            } catch (e) {
+                toast("❌ Log save failed: " + e.message);
+                console.error(e);
+            }
+        }
+
+        async function loadLogFromCloud() {
+            const name = prompt("Enter the game log name to load:", state.gameLogName || "");
+            if (!name) return;
+            toast("☁️ Loading game log...");
+            try {
+                const id = NAMESPACE + "log_" + encodeURIComponent(name);
+                const resp = await fetch(CLOUD_URL + "?id=" + id);
+                if (!resp.ok) throw new Error("Not found");
+                const data = await resp.json();
+                state.gameLogName = data.name || name;
+                state.gameLogs = data.entries || [];
+                state.gameLogAutoName = false;
+                saveLocal();
+                renderLogTab();
+                toast("✅ Game log loaded!");
+            } catch (e) {
+                toast("❌ Log load failed: " + e.message);
+                console.error(e);
+            }
+        }
+
+        async function listLogs() {
+            try {
+                const resp = await fetch(CLOUD_URL + "?list=true");
+                if (!resp.ok) throw new Error("Failed to list");
+                const data = await resp.json();
+                const keys = (data.keys || []).filter(k => k.startsWith(NAMESPACE + "log_"));
+                if (!keys.length) { toast("No saved game logs found"); return; }
+                const names = keys.map(k => decodeURIComponent(k.replace(NAMESPACE + "log_", "")));
+                alert("📋 Saved Game Logs:\n\n" + names.join("\n"));
+            } catch (e) {
+                toast("❌ Failed to list logs: " + e.message);
+                console.error(e);
+            }
         }
 
         // ─── QUICK ACTIONS ──────────────────────────────────────────
@@ -1974,7 +1717,21 @@
             ["away", "home"].forEach(side => {
                 const team = getTeamBySide(side);
                 const filter = side === "away" ? state.awayFilter : state.homeFilter;
-                const players = getPlayers(side, filter);
+                let players = [];
+                if (team) {
+                    players = [...team.players];
+                    if (filter === "offense") players = players.filter(p =>
+                        ["QB", "RB", "FB", "WR", "TE", "OL", "C", "G", "T"].includes(p.pos));
+                    else if (filter === "defense") players = players.filter(p =>
+                        ["DL", "DE", "DT", "LB", "OLB", "ILB", "CB", "S", "SS", "FS", "DB"].includes(p.pos));
+                    else if (filter === "special") players = players.filter(p => ["K", "P", "LS", "KR", "PR"].includes(
+                    p.pos));
+                    players.sort((a, b) => {
+                        if (a.pinned && !b.pinned) return -1;
+                        if (!a.pinned && b.pinned) return 1;
+                        return (parseInt(a.num) || 999) - (parseInt(b.num) || 999);
+                    });
+                }
                 const color = team ? team.color : (side === "away" ? "#1e3a5f" : "#7f1d1d");
                 const coach = team ? team.coach : "";
 
@@ -2074,7 +1831,7 @@
                 `<button onclick="addTeam()" style="margin-top:4px;padding:2px 8px;border-radius:4px;border:1px solid var(--border);cursor:pointer;font-size:11px;width:100%;">+ New Team</button>`;
             sidebar +=
                 `<button onclick="deleteTeam('${ct?.id||''}')" style="margin-top:2px;padding:2px 8px;border-radius:4px;border:1px solid #dc2626;color:#dc2626;cursor:pointer;font-size:11px;width:100%;">🗑️ Delete Team</button>`;
-            sidebar += `<div style="margin-top:8px;padding-top:8px;border-top:2px solid var(--accent);">
+            sidebar += `<div style="margin-top:8px;padding-top:8px;border-top:2px solid #d4af37;">
                 <button onclick="saveToCloud()" style="background:#e6a817;color:#000;font-weight:700;padding:2px 8px;border-radius:4px;border:none;cursor:pointer;font-size:10px;width:100%;margin-bottom:2px;">💾 Save All to Cloud</button>
                 <button onclick="loadFromCloud()" style="background:#2e7d32;color:#fff;font-weight:700;padding:2px 8px;border-radius:4px;border:none;cursor:pointer;font-size:10px;width:100%;">📥 Load All from Cloud</button>
             </div>`;
@@ -2105,15 +1862,15 @@
                                 <input id="teamName" value="${esc(ct?.name||'')}" placeholder="Team Name" style="flex:1;min-width:80px;">
                                 <input id="teamCoach" value="${esc(ct?.coach||'')}" placeholder="Coach" style="width:80px;">
                                 <input type="color" id="teamColor" value="${ct?.color||'#1e3a5f'}" style="width:30px;height:26px;">
-                                <button onclick="saveRosterTeam()" style="padding:2px 12px;border-radius:4px;border:1px solid var(--accent);background:var(--accent);font-weight:700;cursor:pointer;">💾 Save</button>
+                                <button onclick="saveRosterTeam()" style="padding:2px 12px;border-radius:4px;border:1px solid #d4af37;background:#d4af37;font-weight:700;cursor:pointer;">💾 Save</button>
                             </div>
                             <div style="display:grid;grid-template-columns:28px 1fr 44px 36px 1fr 36px 24px;gap:2px;font-size:8px;font-weight:600;opacity:.4;margin-bottom:2px;">
                                 <span>#</span><span>Name</span><span>Pos</span><span>Role</span><span>Pron</span><span>Notes</span><span></span>
                             </div>
                             <div id="rosterGrid">${playersHtml}</div>
-                            <button onclick="addRosterRow()" style="margin-top:4px;padding:2px 10px;border-radius:4px;border:1px solid var(--border);cursor:pointer;font-size:10px;">➕ Add Player</button>
+                            <button onclick="addRosterRow()" style="margin-top:4px;padding:2px 10px;border-radius:4px;border:1px solid #cbd5e1;cursor:pointer;font-size:10px;">➕ Add Player</button>
                             <textarea id="bulkImport" class="bulk-area" placeholder="Paste roster (one per line: # Name Position)"></textarea>
-                            <button onclick="bulkImport()" style="margin-top:2px;padding:2px 10px;border-radius:4px;border:1px solid var(--border);cursor:pointer;font-size:10px;">📝 Import</button>
+                            <button onclick="bulkImport()" style="margin-top:2px;padding:2px 10px;border-radius:4px;border:1px solid #cbd5e1;cursor:pointer;font-size:10px;">📝 Import</button>
                             <button onclick="exportRosterCSV()" style="margin-top:2px;padding:2px 10px;border-radius:4px;border:1px solid #2e7d32;background:#2e7d32;color:#fff;cursor:pointer;font-size:10px;">📊 Export CSV</button>
                         </div>
                     </div>
@@ -2247,17 +2004,17 @@
                 <div class="panel" style="display:flex;flex-direction:column;height:100%;">
                     <h3>🎙️ PA SCRIPT</h3>
                     <div style="display:flex;gap:4px;margin:4px 0;flex-wrap:wrap;">
-                        <button onclick="insertScript('Welcome to Friday Night Live!')" style="padding:2px 10px;border-radius:4px;border:1px solid var(--border);cursor:pointer;font-size:10px;">Welcome</button>
-                        <button onclick="insertScript('First down!')" style="padding:2px 10px;border-radius:4px;border:1px solid var(--border);cursor:pointer;font-size:10px;">1st Down</button>
-                        <button onclick="insertScript('Touchdown!')" style="padding:2px 10px;border-radius:4px;border:1px solid var(--border);cursor:pointer;font-size:10px;">TD</button>
-                        <button onclick="insertScript('Penalty on the play!')" style="padding:2px 10px;border-radius:4px;border:1px solid var(--border);cursor:pointer;font-size:10px;">Penalty</button>
-                        <button onclick="insertScript('Halftime!')" style="padding:2px 10px;border-radius:4px;border:1px solid var(--border);cursor:pointer;font-size:10px;">Halftime</button>
+                        <button onclick="insertScript('Welcome to Friday Night Live!')" style="padding:2px 10px;border-radius:4px;border:1px solid #cbd5e1;cursor:pointer;font-size:10px;">Welcome</button>
+                        <button onclick="insertScript('First down!')" style="padding:2px 10px;border-radius:4px;border:1px solid #cbd5e1;cursor:pointer;font-size:10px;">1st Down</button>
+                        <button onclick="insertScript('Touchdown!')" style="padding:2px 10px;border-radius:4px;border:1px solid #cbd5e1;cursor:pointer;font-size:10px;">TD</button>
+                        <button onclick="insertScript('Penalty on the play!')" style="padding:2px 10px;border-radius:4px;border:1px solid #cbd5e1;cursor:pointer;font-size:10px;">Penalty</button>
+                        <button onclick="insertScript('Halftime!')" style="padding:2px 10px;border-radius:4px;border:1px solid #cbd5e1;cursor:pointer;font-size:10px;">Halftime</button>
                         <button onclick="clearScript()" style="padding:2px 10px;border-radius:4px;border:1px solid #dc2626;color:#dc2626;cursor:pointer;font-size:10px;">Clear</button>
                     </div>
                     <textarea id="scriptArea" class="script-area">${esc(state.script||'')}</textarea>
                     <div style="margin-top:4px;display:flex;gap:4px;flex-wrap:wrap;">
-                        <button onclick="saveScript()" style="padding:2px 12px;border-radius:4px;border:1px solid var(--accent);background:var(--accent);font-weight:700;cursor:pointer;">💾 Save</button>
-                        <button onclick="printScript()" style="padding:2px 12px;border-radius:4px;border:1px solid var(--border);cursor:pointer;">🖨️ Print</button>
+                        <button onclick="saveScript()" style="padding:2px 12px;border-radius:4px;border:1px solid #d4af37;background:#d4af37;font-weight:700;cursor:pointer;">💾 Save</button>
+                        <button onclick="printScript()" style="padding:2px 12px;border-radius:4px;border:1px solid #cbd5e1;cursor:pointer;">🖨️ Print</button>
                     </div>
                 </div>
             `;
@@ -2305,7 +2062,6 @@
                 });
             }
 
-            // Summary stats
             const tds = state.gameLogs.filter(e => e.text.includes("TD")).length;
             const fgs = state.gameLogs.filter(e => e.text.includes("FG")).length;
             const penalties = state.gameLogs.filter(e => e.text.includes("Penalty")).length;
@@ -2353,9 +2109,9 @@
                         <div class="admin-card">
                             <h4>🎨 Theme</h4>
                             <div class="theme-btns">
-                                <button onclick="applyTheme('light')" style="${state.theme==='light'?'background:var(--accent);':''}">☀️ Light</button>
-                                <button onclick="applyTheme('dark')" style="${state.theme==='dark'?'background:var(--accent);':''}">🌙 Dark</button>
-                                <button onclick="applyTheme('navy')" style="${state.theme==='navy'?'background:var(--accent);':''}">⚓ Navy</button>
+                                <button onclick="applyTheme('light')" style="${state.theme==='light'?'background:#d4af37;':''}">☀️ Light</button>
+                                <button onclick="applyTheme('dark')" style="${state.theme==='dark'?'background:#d4af37;':''}">🌙 Dark</button>
+                                <button onclick="applyTheme('navy')" style="${state.theme==='navy'?'background:#d4af37;':''}">⚓ Navy</button>
                             </div>
                             <div style="margin-top:4px;">
                                 <button onclick="toggleOutdoor()" style="${state.outdoor?'background:#22c55e;color:#000;':''}">☀️ Outdoor ${state.outdoor?'ON':'OFF'}</button>
@@ -2375,13 +2131,25 @@
                             <h4>🔄 Data</h4>
                             <button class="btn-danger" onclick="resetGame()" style="width:100%;margin-bottom:2px;">↺ Reset Game</button>
                             <button class="btn-danger" onclick="if(confirm('Clear ALL data?')){localStorage.clear();location.reload();}" style="width:100%;">🗑️ Clear All Data</button>
+                            <button onclick="resetDefaultTeams()" style="width:100%;margin-top:2px;background:#f59e0b;border-color:#f59e0b;">🔄 Reset Default Teams</button>
                         </div>
                     </div>
-                    <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:10px;opacity:0.5;">
+                    <div style="margin-top:8px;padding-top:8px;border-top:1px solid #cbd5e1;font-size:10px;opacity:0.5;">
                         <span>Teams: ${teams.length} | Players: ${teams.reduce((sum,t) => sum + t.players.length, 0)} | Log entries: ${state.gameLogs.length}</span>
                     </div>
                 </div>
             `;
+        }
+
+        function resetDefaultTeams() {
+            if (!confirm("Reset teams to default (Cowboys, 49ers, Chiefs, Eagles)? This will replace all current teams.")) return;
+            teams = getDefaultTeams();
+            state.awayId = teams[0]?.id || "";
+            state.homeId = teams[1]?.id || "";
+            currentTeamId = teams[0]?.id || "";
+            saveLocal();
+            renderAll();
+            toast("Default teams restored");
         }
 
         // ─── EXPORT BOX SCORE ──────────────────────────────────────
@@ -2402,7 +2170,6 @@
                     csv += `${side},${p.num},${p.name},${p.pos},${p.starter?'Yes':'No'}\n`;
                 });
             });
-            // Add scoring summary
             const scores = state.gameLogs.filter(e => e.text.includes("TD") || e.text.includes("FG"));
             if (scores.length) {
                 csv += "\nScoring Summary\n";
@@ -2558,14 +2325,7 @@
         window.printScript = printScript;
         window.switchView = switchView;
         window.renderAll = renderAll;
-        window.renderGame = renderGame;
-        window.renderRosters = renderRosters;
-        window.renderScript = renderScript;
-        window.renderLogTab = renderLogTab;
-        window.renderAdmin = renderAdmin;
-        window.generateLogName = generateLogName;
-        window.addLogEntry = addLogEntry;
+        window.resetDefaultTeams = resetDefaultTeams;
     </script>
-
 </body>
 </html>
