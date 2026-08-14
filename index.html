@@ -1,137 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="Friday Night Live">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Friday Night Live – Football PA Console</title>
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="https://fridaynightlive.voiceofdfw.com/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="https://fridaynightlive.voiceofdfw.com/favicon.svg" />
-    <link rel="shortcut icon" href="https://fridaynightlive.voiceofdfw.com/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="https://fridaynightlive.voiceofdfw.com/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="FNL" />
-    <link rel="manifest" href="https://fridaynightlive.voiceofdfw.com/site.webmanifest" />
-
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
         :root {
             --accent:#d4af37;
             --bg:#ffffff;--surface:#ffffff;--text:#0f172a;
             --border:#cbd5e1;
-            --away-bg:#f8fafc;--home-bg:#f8fafc;
             --starter-bg:#d4af37;
             --btn:#d4af37;--btn-text:#000;
             --grid-bg:#e2e8f0;
             --card-shadow:0 1px 3px rgba(0,0,0,0.08);
-            --bug-team-name-font:'Inter',sans-serif;
-            --bug-team-name-size:7px;
-            --bug-team-name-color:inherit;
-            --bug-team-name-weight:700;
-            --card-team-label-font:'Inter',sans-serif;
-            --card-team-label-size:0.8rem;
-            --card-team-label-color:inherit;
-            --card-team-label-weight:700;
-            --card-head-visitor-bg:#1e3a5f;
-            --card-head-home-bg:#7f1d1d;
-            --scorebug-bg:var(--surface);
-            --scorebug-text-color:var(--text);
         }
-        body.dark-mode {
-            --bg:#0f172a;--surface:#1e293b;--text:#f1f5f9;
-            --border:#334155;
-            --away-bg:#0f1f3a;--home-bg:#1f1a17;
-            --grid-bg:#080e14;
-            --card-shadow:0 1px 3px rgba(0,0,0,0.3);
-        }
-        body.navy-mode {
-            --bg:#0f172a;--surface:#1e293b;--text:#f1f5f9;
-            --border:#334155;
-            --away-bg:#0f1f3a;--home-bg:#1f1a17;
-            --grid-bg:#080e14;
-            --card-shadow:0 1px 3px rgba(0,0,0,0.3);
-        }
-        body.seven-mode {
-            --bg:#080808;--surface:#0f0f0f;--text:#e8e8e8;
-            --border:#1a1a1a;
-            --away-bg:#080808;--home-bg:#080808;
-            --grid-bg:#050505;
-            --card-shadow:0 1px 3px rgba(0,0,0,0.4);
-        }
-        body.outdoor-mode {
-            --touch-target:44px;
-            font-size:1.1rem;
-        }
-        body.outdoor-mode .btn,
-        body.outdoor-mode .btn-sm {
-            font-size:0.9rem !important;
-            padding:6px 12px !important;
-            min-height:40px !important;
-        }
-        body.outdoor-mode .player-row {
-            font-size:0.95rem !important;
-            min-height:38px !important;
-            padding:4px 10px !important;
-        }
-        body {
-            font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
-            background:var(--bg);color:var(--text);
-            height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden;
-            font-size:14px;
-            padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-            -webkit-user-select:none;user-select:none;
-        }
-        header {
-            position:relative;
-            background:linear-gradient(180deg, #2d6a1e, #1f4d14);
-            padding:4px 10px;
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            gap:6px;
-            border-bottom:2px solid var(--accent);
-            flex-shrink:0;
-            min-height:56px;
-            overflow:hidden;
-            z-index:10;
-            flex-wrap:nowrap;
-        }
+        body.dark-mode{--bg:#0f172a;--surface:#1e293b;--text:#f1f5f9;--border:#334155;--grid-bg:#080e14;}
+        body.navy-mode{--bg:#0f172a;--surface:#1e293b;--text:#f1f5f9;--border:#334155;--grid-bg:#080e14;}
+        body.seven-mode{--bg:#080808;--surface:#0f0f0f;--text:#e8e8e8;--border:#1a1a1a;}
+        body.outdoor-mode{font-size:1.1rem;}
+        body.outdoor-mode .btn,body.outdoor-mode .btn-sm{font-size:0.9rem !important;padding:6px 12px !important;min-height:40px !important;}
+        body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden;font-size:13px;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);-webkit-user-select:none;user-select:none;}
+        header{position:relative;background:linear-gradient(180deg,#2d6a1e,#1f4d14);padding:4px 10px;display:flex;align-items:center;justify-content:space-between;gap:6px;border-bottom:2px solid var(--accent);flex-shrink:0;min-height:56px;overflow:hidden;z-index:10;flex-wrap:nowrap;}
         .turf-overlay{position:absolute;inset:0;pointer-events:none;z-index:0}
         .hdr-l,.hdr-b,.hdr-c,.hdr-r,.hdr-client{display:flex;align-items:center;gap:4px;z-index:1;flex-shrink:0}
         .hdr-l,.hdr-r{background:rgba(0,0,0,0.4);border-radius:8px;padding:3px 10px}
         .hdr-b{background:rgba(0,0,0,0.4);border-radius:8px;padding:3px 12px;border-left:3px solid var(--accent);display:flex;align-items:center;gap:8px;z-index:1;flex-shrink:0;min-height:44px}
         .hdr-client{background:rgba(0,0,0,0.3);border-radius:6px;padding:2px 10px;min-height:34px;gap:6px;flex-shrink:0;max-width:220px;flex-wrap:wrap;align-items:center;border-left:2px solid var(--accent)}
         .client-logo{height:32px;width:32px;object-fit:contain;display:block;border-radius:3px;flex-shrink:0}
-        .client-name{font-family:'Inter','Arial Black',sans-serif;font-size:.7rem;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:0.5px;text-shadow:0 1px 3px rgba(0,0,0,0.5);background:rgba(0,0,0,0.3);padding:2px 8px;border-radius:3px;font-style:italic;max-width:100px;flex-shrink:1}
+        .client-name{font-size:.7rem;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:0.5px;background:rgba(0,0,0,0.3);padding:2px 8px;border-radius:3px;font-style:italic;max-width:100px;flex-shrink:1}
         .back-link{color:#fff;font-size:.65rem;font-weight:600;text-decoration:none;padding:2px 8px;border-radius:4px;white-space:nowrap}
         .brand-logo-wrapper{display:flex;align-items:center;gap:4px}
         .brand-logo{height:36px;width:auto;object-fit:contain;display:block;flex-shrink:0}
         .brand-text{display:flex;align-items:center;gap:4px;white-space:nowrap}
-        .brand-text h1{font-size:.85rem;color:#fff;font-weight:900;white-space:nowrap}
-        .brand-text p{font-size:.5rem;color:var(--accent);font-weight:700;white-space:nowrap}
-        .wall-clock{
-            font-size:1rem;font-weight:700;color:var(--accent);min-width:80px;text-align:center;
-            background:rgba(0,0,0,0.4);border-radius:8px;padding:4px 12px;white-space:nowrap;min-height:32px;display:flex;align-items:center;justify-content:center
-        }
-        .weather-pill-header{
-            font-size:.75rem;color:#fff;display:flex;align-items:center;gap:4px;
-            background:rgba(0,0,0,0.4);border-radius:16px;padding:4px 12px;white-space:nowrap;
-            max-width:200px;overflow:hidden;text-overflow:ellipsis;cursor:help;min-height:32px
-        }
+        .brand-text h1{font-size:.85rem;color:#fff;font-weight:900}
+        .brand-text p{font-size:.5rem;color:var(--accent);font-weight:700}
+        .wall-clock{font-size:1rem;font-weight:700;color:var(--accent);min-width:80px;text-align:center;background:rgba(0,0,0,0.4);border-radius:8px;padding:4px 12px;white-space:nowrap;min-height:32px;display:flex;align-items:center;justify-content:center}
+        .weather-pill-header{font-size:.75rem;color:#fff;display:flex;align-items:center;gap:4px;background:rgba(0,0,0,0.4);border-radius:16px;padding:4px 12px;white-space:nowrap;max-width:200px;overflow:hidden;text-overflow:ellipsis;cursor:help;min-height:32px}
         .scorebug-wrapper{display:flex;align-items:center;gap:4px;background:transparent;padding:0}
-        .scorebug{
-            display:flex;align-items:center;gap:2px;background:var(--scorebug-bg);
-            border:1px solid var(--border);padding:2px 8px;border-radius:8px;box-shadow:var(--card-shadow);
-        }
+        .scorebug{display:flex;align-items:center;gap:2px;background:var(--surface);border:1px solid var(--border);padding:2px 8px;border-radius:8px;box-shadow:var(--card-shadow)}
         .scorebug.hidden .sb-block{display:none}
         .sb-block{display:flex;flex-direction:column;align-items:center;min-width:28px;padding:1px 2px}
         .sb-block:not(:last-child){border-right:1px solid var(--border);padding-right:3px;margin-right:2px}
-        .sb-abbr{font-size:6px;font-weight:700;text-transform:uppercase;opacity:1;display:flex;align-items:center;gap:1px;margin-bottom:0px}
+        .sb-abbr{font-size:6px;font-weight:700;text-transform:uppercase;display:flex;align-items:center;gap:1px;margin-bottom:0px}
         .sb-logo-sm{width:10px;height:10px;object-fit:contain;border-radius:2px}
         .sb-row{display:flex;align-items:center;gap:1px}
-        .sb-val{font-size:16px;font-weight:800;min-width:18px;text-align:center;transition:transform .15s;color:var(--scorebug-text-color)}
+        .sb-val{font-size:16px;font-weight:800;min-width:18px;text-align:center;transition:transform .15s;color:var(--text)}
         .sb-val.flash{transform:scale(1.2);color:var(--accent)}
         .sb-qtr{font-size:11px;font-weight:700;color:var(--accent);min-width:16px;text-align:center}
         .game-clock{font-family:monospace;font-size:12px;font-weight:700;color:var(--accent);min-width:34px;text-align:center}
@@ -154,35 +68,31 @@
         .nav-link.active{background:var(--btn);color:#000}
         main{flex:1;overflow:hidden;padding:3px;display:flex;gap:3px}
         .game-grid{display:flex;gap:4px;width:100%;height:100%;background:var(--grid-bg);border-radius:8px;padding:3px}
-        .team-card{flex:1;min-width:0;background:var(--surface);border-radius:6px;border:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--card-shadow)}
+        .team-card{flex:1;min-width:200px;background:var(--surface);border-radius:6px;border:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--card-shadow)}
 
-        /* ── CARD HEAD – TWO ROWS (FIX) ── */
+        /* ── ORIGINAL CARD HEAD (SINGLE ROW, NO COACH) ── */
         .card-head{
-            display:flex !important;
-            flex-direction:column !important;
-            align-items:stretch !important;
-            gap:2px !important;
-            padding:3px 8px;
-            color:#fff;
-            border-bottom:2px solid var(--accent);
-            background:var(--card-bg, #1e3a5f);
-            min-height:44px;
-        }
-        .card-head .top-row{
             display:flex !important;
             align-items:center !important;
             gap:6px !important;
-            width:100% !important;
+            padding:4px 8px;
+            color:#fff;
+            border-bottom:2px solid var(--accent);
+            background:var(--card-bg, #1e3a5f);
+            min-height:36px;
+            flex-wrap:wrap !important;
         }
-        .card-head .top-row .side-label{
+        .card-head .side-label{
             font-size:.7rem;
             font-weight:700;
             text-transform:uppercase;
-            opacity:0.9;
             flex-shrink:0;
         }
-        .card-head .top-row select{
-            flex: 1 1 auto !important;
+        .card-head .team-logo{
+            height:28px;width:28px;object-fit:contain;border-radius:4px;background:rgba(255,255,255,0.8);padding:2px;flex-shrink:0;
+        }
+        .card-head select{
+            flex: 1 1 100px !important;
             min-width: 100px !important;
             padding:2px 8px;
             border-radius:4px;
@@ -196,125 +106,118 @@
             appearance:auto;
             -webkit-appearance:auto;
         }
-        .card-head .top-row select option{
+        .card-head select option{
             background:#ffffff !important;
             color:#000000 !important;
             padding:4px;
         }
-        .card-head .top-row .team-logo{
-            height:28px;width:28px;object-fit:contain;border-radius:4px;background:rgba(255,255,255,0.8);padding:2px;flex-shrink:0;
-        }
-        .card-head .bottom-row{
-            display:flex !important;
-            align-items:center !important;
-            gap:6px !important;
-            width:100% !important;
-            flex-wrap:wrap !important;
-        }
-        .card-head .bottom-row .coach-input{
+        .card-head .poss-btn{
             background:rgba(255,255,255,0.15);
             border:1px solid rgba(255,255,255,0.2);
             color:#fff;
             border-radius:4px;
             padding:0 8px;
-            font-size:.6rem;
-            width:100px;
-            min-height:24px;
-            flex:0 1 auto;
-        }
-        .card-head .bottom-row .coach-input::placeholder{color:rgba(255,255,255,0.5)}
-        .card-head .bottom-row .poss-btn{
-            background:rgba(255,255,255,0.15);
-            border:1px solid rgba(255,255,255,0.2);
-            color:#fff;
-            border-radius:4px;
-            padding:0 8px;
-            font-size:.65rem;
+            font-size:.7rem;
             cursor:pointer;
-            min-height:24px;
+            min-height:26px;
             flex-shrink:0;
         }
-        .card-head .bottom-row .poss-btn.active{
+        .card-head .poss-btn.active{
             background:var(--accent);
             color:#000;
             border-color:var(--accent);
         }
 
-        .unit-tabs{display:flex;gap:2px;padding:2px 6px;border-bottom:1px solid var(--border);flex-shrink:0}
-        .unit-tab{padding:2px 8px;font-size:.55rem;font-weight:700;background:rgba(0,0,0,.05);border:none;color:inherit;opacity:.6;cursor:pointer;border-radius:8px;min-height:22px;text-transform:uppercase}
-        .unit-tab.active{background:var(--btn);color:#000;opacity:1}
-        .search-bar{display:flex;align-items:center;gap:2px;padding:1px 4px;border-bottom:1px solid var(--border)}
-        .search-bar input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 4px;font-size:.6rem;color:inherit;min-height:22px}
-        .player-list-header,.player-row{display:grid;grid-template-columns:20px 28px 1fr 60px 42px 28px 24px 22px;gap:2px;align-items:center;padding:2px 6px}
-        .player-list-header{font-size:.5rem;font-weight:700;text-transform:uppercase;opacity:.5;border-bottom:1px solid var(--border);min-height:18px}
-        .player-list-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
-        .player-row{border-bottom:1px solid var(--border);min-height:28px;font-size:.7rem;cursor:pointer}
-        .player-row.starter{background:rgba(212,175,55,0.1);}
-        .player-row.pinned{background:rgba(255,215,0,0.06);border-left:2px solid var(--accent);}
-        .player-row .pin-indicator{color:var(--accent);font-size:.5rem;margin-left:2px;}
-        .plyr-photo{width:18px;height:18px;border-radius:50%;object-fit:cover;border:1px solid var(--border);flex-shrink:0}
-        .plyr-num input,.plyr-name input,.plyr-notes-inline input,.plyr-pron-input input{background:transparent;border:1px solid transparent;border-radius:2px;padding:1px 2px;min-height:20px;color:inherit;font-family:inherit;font-size:inherit;width:100%}
-        .plyr-num input{font-weight:700;}
-        .plyr-name input{font-weight:600;}
-        .plyr-pron-input input{font-style:italic;font-size:.65rem;opacity:.7;}
-        .plyr-pos select{font-size:.6rem;font-weight:700;background:transparent;border:1px solid transparent;border-radius:2px;color:inherit;padding:1px 2px;min-height:20px;width:100%}
-        .st-toggle{background:none;border:2px solid var(--starter-bg);border-radius:50%;width:20px;height:20px;font-size:.6rem;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--starter-bg)}
-        .st-toggle.off{border-color:var(--border);color:inherit;opacity:.4}
-        .st-toggle:not(.off){background:var(--starter-bg);color:#000;}
-        .pin-toggle{background:none;border:1px solid var(--border);border-radius:3px;width:18px;height:18px;font-size:.5rem;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text)}
-        .pin-toggle.active{background:var(--accent);color:#000;border-color:var(--accent);}
-        .add-row{display:flex;gap:2px;padding:2px 6px;border-top:1px solid var(--border);flex-shrink:0;flex-wrap:wrap}
-        .add-row input,.add-row select{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 4px;font-size:.6rem;color:inherit;min-height:22px}
-        footer{background:#0f172a;padding:2px 10px;display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap;border-top:1px solid var(--accent);color:#fff;font-size:.55rem;font-weight:700;flex-shrink:0;min-height:24px}
-        body.dark-mode footer,body.seven-mode footer,body.navy-mode footer{background:#080808;}
-        .footer-logo{height:20px;width:auto;object-fit:contain;display:block}
-        .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:white;padding:4px 16px;border-radius:16px;font-size:.7rem;opacity:0;transition:.2s;pointer-events:none;z-index:9999}
-        .toast.show{opacity:1}
-        .panel{background:var(--surface);border-radius:8px;padding:10px;margin:3px;overflow-y:auto;width:100%}
-        .panel label{display:block;font-weight:600;margin:6px 0 3px;font-size:.7rem}
-        .panel input[type="text"],.panel textarea,.panel select{width:100%;padding:4px 8px;border-radius:4px;border:1px solid var(--border);font-size:.75rem;margin-bottom:4px;background:var(--surface);color:inherit;font-family:inherit}
-        .admin-tabs{display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap}
-        .admin-tab{padding:4px 12px;border-radius:14px;font-size:.65rem;font-weight:700;background:none;border:1px solid var(--border);color:inherit;cursor:pointer}
-        .admin-tab.active{background:var(--btn);color:#000;border-color:var(--btn)}
-        .roster-layout{display:grid;grid-template-columns:180px 1fr;gap:8px;height:100%}
-        .team-sidebar{background:var(--surface);border-radius:8px;padding:6px;overflow-y:auto;border:1px solid var(--border)}
-        .team-item{padding:6px 8px;border-radius:4px;margin-bottom:3px;cursor:pointer;font-weight:600;font-size:.7rem;min-height:30px;display:flex;align-items:center;color:inherit}
-        .team-item.active{background:var(--btn);color:#000}
-        .roster-workspace{background:var(--surface);border-radius:8px;padding:6px;overflow-y:auto;border:1px solid var(--border)}
-        .player-edit-row{display:grid;grid-template-columns:30px 1fr 50px 40px 1fr 36px 24px;gap:2px;margin-bottom:2px;align-items:center}
-        .player-edit-row input,.player-edit-row select{font-size:.65rem;padding:2px 4px;border-radius:3px;border:1px solid var(--border);background:var(--surface);color:inherit;min-height:24px}
-        .player-edit-row .rph{font-size:0;width:100%;height:24px;cursor:pointer}
-        .player-edit-row .rph::file-selector-button{font-size:.5rem;padding:1px 4px}
-        .script-container{display:flex;flex-direction:column;height:100%;background:var(--surface);border-radius:8px;overflow:hidden}
-        .script-editor{flex:1;padding:8px;overflow-y:auto;font-size:.8rem;line-height:1.5;outline:none;background:var(--surface);color:inherit}
-        .script-toolbar{display:flex;gap:4px;padding:4px 8px;flex-wrap:wrap;border-bottom:1px solid var(--border);}
-        .pin-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.92);z-index:5000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px}
-        .pin-overlay input{font-size:1.2rem;text-align:center;width:200px;padding:8px;border-radius:6px;border:2px solid var(--accent);background:#111;color:#fff;min-height:40px;}
-        .pin-overlay .btn-group{display:flex;gap:10px;margin-top:4px}
-        .client-logo-upload-area{border:2px dashed var(--border);border-radius:6px;padding:12px;text-align:center;margin:6px 0;cursor:pointer;transition:all .2s}
-        .client-logo-upload-area:hover{border-color:var(--accent);background:rgba(212,175,55,0.05)}
-        .client-logo-preview{max-width:100%;max-height:80px;object-fit:contain;margin:4px 0;border-radius:3px}
-        .hdr-r{display:flex;align-items:center;gap:4px;flex-shrink:0;flex-wrap:nowrap}
-        .hdr-r .theme-btn{font-size:.6rem;padding:3px 8px}
-        .hdr-r .btn-sm{font-size:.6rem;padding:3px 8px;min-height:26px;min-width:26px}
-        #logoutBtn{font-size:.6rem;padding:3px 8px;min-height:26px;min-width:26px;background:#666;color:#fff;white-space:nowrap}
-        .game-status-badge{background:rgba(0,0,0,0.5);color:#fff;padding:2px 10px;border-radius:8px;font-size:.55rem;font-weight:700;text-transform:uppercase;border:2px solid var(--accent)}
-        .game-status-badge.live{border-color:#22c55e;color:#22c55e}
-        .game-status-badge.halftime{border-color:#f59e0b;color:#f59e0b}
-        .game-status-badge.final{border-color:#ef4444;color:#ef4444}
-        .game-controls-row{display:flex;gap:3px;padding:2px 6px;flex-wrap:wrap;align-items:center;background:rgba(0,0,0,.04);border-radius:4px;margin:1px 0}
-        .game-controls-row .btn-sm{font-size:.5rem;padding:2px 6px;min-height:20px;min-width:20px}
-        .game-controls-row input{font-size:.55rem;padding:1px 3px;border-radius:3px;border:1px solid var(--border);background:var(--surface);color:inherit;min-height:20px;width:30px;}
-        .game-controls-row span{font-size:.55rem;font-weight:600;}
-        .scoring-log{max-height:120px;overflow-y:auto;font-size:.65rem;background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:3px}
-        .scoring-log-entry{padding:2px 4px;border-bottom:1px solid var(--border);display:flex;gap:6px;align-items:center}
-        .highlight{background:rgba(212,175,55,0.3)!important;border-left:3px solid var(--accent)}
-        .box-score-export-btn{background:#2e7d32;color:#fff;font-weight:700;}
+        /* ── COACH ROW (NEW) ── */
+        .coach-row{
+            display:flex !important;
+            align-items:center !important;
+            gap:6px !important;
+            padding:2px 8px;
+            background:rgba(0,0,0,0.04);
+            border-bottom:1px solid var(--border);
+            flex-shrink:0;
+        }
+        .coach-row .coach-label{
+            font-size:.6rem;
+            font-weight:600;
+            opacity:.5;
+            text-transform:uppercase;
+        }
+        .coach-row .coach-input{
+            background:transparent;
+            border:none;
+            border-bottom:1px dashed var(--border);
+            color:var(--text);
+            font-size:.7rem;
+            padding:0 4px;
+            min-height:22px;
+            flex:1;
+            min-width:60px;
+        }
+        .coach-row .coach-input:focus{
+            outline:none;
+            border-bottom-color:var(--accent);
+        }
+
+        .unit-tabs{display:flex;gap:2px;padding:1px 4px;border-bottom:1px solid var(--border);flex-shrink:0}
+        .unit-tab{padding:1px 6px;font-size:8px;font-weight:700;background:rgba(0,0,0,0.04);border:none;color:inherit;cursor:pointer;border-radius:3px}
+        .unit-tab.active{background:#d4af37;color:#000}
+        .search-bar{display:flex;padding:1px 4px;border-bottom:1px solid var(--border)}
+        .search-bar input{flex:1;border:1px solid var(--border);border-radius:3px;padding:0 4px;font-size:9px;min-height:20px}
+
+        .player-list-header,.player-row{display:grid;grid-template-columns:16px 24px 1fr 44px 36px 22px 22px 18px;gap:1px;align-items:center;padding:1px 4px;font-size:11px}
+        .player-list-header{font-size:7px;font-weight:700;text-transform:uppercase;opacity:0.35;border-bottom:1px solid var(--border);min-height:16px}
+        .player-list-body{flex:1;overflow-y:auto;padding:1px 0}
+        .player-row{border-bottom:1px solid rgba(0,0,0,0.04);min-height:22px}
+        .player-row.starter{background:rgba(212,175,55,0.07)}
+        .player-row.pinned{background:rgba(255,215,0,0.05);border-left:2px solid #d4af37}
+        .plyr-num{font-weight:700;font-size:12px;text-align:center}
+        .plyr-name input,.plyr-pron input{background:transparent;border:none;padding:0 2px;font-size:11px;width:100%;color:inherit}
+        .plyr-name input{font-weight:600}
+        .plyr-pron input{font-style:italic;font-size:9px;opacity:0.7}
+        .plyr-pos select{background:transparent;border:none;font-size:9px;font-weight:700;width:100%;cursor:pointer;color:inherit}
+        .plyr-pos select option{background:#fff;color:#000}
+        .st-toggle{background:none;border:2px solid #d4af37;border-radius:50%;width:16px;height:16px;font-size:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#d4af37}
+        .st-toggle.off{border-color:#999;color:#999;opacity:0.4}
+        .st-toggle:not(.off){background:#d4af37;color:#000}
+        .pin-toggle{background:none;border:1px solid #999;border-radius:3px;width:16px;height:16px;font-size:7px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+        .pin-toggle.active{background:#d4af37;border-color:#d4af37;color:#000}
+        .del-btn{background:none;border:none;color:#999;cursor:pointer;font-size:10px}
+        .del-btn:hover{color:#dc2626}
+        .add-row{display:flex;gap:2px;padding:1px 4px;border-top:1px solid var(--border);flex-shrink:0;flex-wrap:wrap;background:var(--surface)}
+        .add-row input,.add-row select{font-size:9px;padding:0 4px;border:1px solid var(--border);border-radius:3px;min-height:20px}
+        .add-row input{flex:1;min-width:28px}
+        .add-row button{background:#d4af37;border:none;border-radius:3px;padding:0 8px;font-weight:700;font-size:11px;cursor:pointer;min-height:20px}
+
+        .game-controls{display:flex;gap:2px;padding:1px 4px;flex-wrap:wrap;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:6px;margin-bottom:1px;flex-shrink:0}
+        .game-controls .btn-sm{font-size:8px;padding:0 5px;min-height:18px;min-width:18px;border-radius:3px;border:none;cursor:pointer;font-weight:600}
+        .game-controls .btn-sm.green{background:#22c55e;color:#000}
+        .game-controls .btn-sm.red{background:#dc2626;color:#fff}
+        .game-controls .btn-sm.gray{background:#666;color:#fff}
+        .game-controls .btn-sm.gold{background:#f59e0b;color:#000}
+        .game-controls input{width:24px;padding:0 2px;font-size:9px;border:1px solid var(--border);border-radius:3px;text-align:center;min-height:18px}
+        .game-controls span{font-size:9px;font-weight:600}
+
         .game-log-wrap{flex-shrink:0;background:var(--surface);border:1px solid var(--border);border-radius:4px;margin-bottom:1px;max-height:60px;overflow:hidden;transition:max-height 0.2s}
         .game-log-wrap.collapsed{max-height:0;padding:0;border:0}
         .game-log-header{display:flex;justify-content:space-between;padding:2px 6px;background:rgba(0,0,0,0.04);border-bottom:1px solid var(--border);cursor:pointer;font-size:8px;font-weight:700}
         .game-log-body{max-height:50px;overflow-y:auto;padding:2px 6px;font-size:8px}
         .game-log-body .entry{border-bottom:1px solid var(--border);padding:1px 0}
+
+        .panel{background:var(--surface);border-radius:6px;padding:8px;overflow-y:auto;width:100%;height:100%;border:1px solid var(--border)}
+        .panel h3{font-size:14px;margin-bottom:6px}
+        .roster-layout{display:grid;grid-template-columns:150px 1fr;gap:6px;height:100%}
+        .team-sidebar{background:var(--surface);border-radius:6px;padding:6px;overflow-y:auto;border:1px solid var(--border)}
+        .team-item{padding:3px 8px;border-radius:4px;margin-bottom:2px;cursor:pointer;font-size:11px;font-weight:600}
+        .team-item.active{background:#d4af37;color:#000}
+        .roster-workspace{background:var(--surface);border-radius:6px;padding:6px;overflow-y:auto;border:1px solid var(--border)}
+        .player-edit-row{display:grid;grid-template-columns:28px 1fr 44px 36px 1fr 36px 24px;gap:2px;margin-bottom:2px;align-items:center}
+        .player-edit-row input,.player-edit-row select{font-size:10px;padding:0 4px;border:1px solid var(--border);border-radius:3px;min-height:20px}
+        .player-edit-row button{background:#dc2626;color:#fff;border:none;border-radius:3px;cursor:pointer;font-size:10px;min-height:20px}
+        .bulk-area{width:100%;min-height:50px;font-family:monospace;font-size:10px;padding:4px;border:1px solid var(--border);border-radius:4px;resize:vertical;margin-top:4px}
+        .script-area{width:100%;height:calc(100% - 60px);min-height:150px;font-family:monospace;font-size:13px;padding:8px;border:1px solid var(--border);border-radius:4px;resize:none}
+
         .log-container{display:flex;flex-direction:column;height:100%;gap:6px}
         .log-header{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-bottom:6px;border-bottom:1px solid var(--border)}
         .log-header input{flex:1;min-width:150px;padding:4px 8px;border:1px solid var(--border);border-radius:4px;font-size:13px;font-weight:700;background:var(--surface);color:var(--text)}
@@ -332,6 +235,35 @@
         .log-summary .stat .label{font-weight:600;opacity:0.6}
         .log-summary .stat .value{font-weight:700}
 
+        .admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+        .admin-card{border:1px solid var(--border);border-radius:6px;padding:8px;background:var(--surface)}
+        .admin-card h4{font-size:11px;margin-bottom:4px}
+        .admin-card button{padding:2px 10px;border-radius:4px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:10px;min-height:24px}
+        .admin-card button:hover{background:rgba(0,0,0,0.04)}
+        .admin-card .btn-gold{background:#e6a817;border-color:#e6a817;color:#000;font-weight:700}
+        .admin-card .btn-success{background:#2e7d32;border-color:#2e7d32;color:#fff}
+        .admin-card .btn-danger{background:#dc2626;border-color:#dc2626;color:#fff}
+        .admin-card .theme-btns{display:flex;gap:4px;flex-wrap:wrap}
+
+        .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:4px 16px;border-radius:16px;font-size:12px;opacity:0;transition:opacity 0.25s;z-index:999;pointer-events:none}
+        .toast.show{opacity:1}
+
+        footer{background:#0a0a1a;padding:2px 10px;display:flex;justify-content:space-between;align-items:center;border-top:2px solid var(--accent);color:#94a3b8;font-size:8px;flex-shrink:0;min-height:20px}
+        footer .saved{color:var(--accent)}
+
+        .pin-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.92);z-index:5000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px}
+        .pin-overlay input{font-size:1.2rem;text-align:center;width:200px;padding:8px;border-radius:6px;border:2px solid var(--accent);background:#111;color:#fff;min-height:40px;}
+        .pin-overlay .btn-group{display:flex;gap:10px;margin-top:4px}
+        .client-logo-upload-area{border:2px dashed var(--border);border-radius:6px;padding:12px;text-align:center;margin:6px 0;cursor:pointer;transition:all .2s}
+        .client-logo-upload-area:hover{border-color:var(--accent);background:rgba(212,175,55,0.05)}
+        .client-logo-preview{max-width:100%;max-height:80px;object-fit:contain;margin:4px 0;border-radius:3px}
+        .game-status-badge{background:rgba(0,0,0,0.5);color:#fff;padding:2px 10px;border-radius:8px;font-size:.55rem;font-weight:700;text-transform:uppercase;border:2px solid var(--accent)}
+        .game-status-badge.live{border-color:#22c55e;color:#22c55e}
+        .game-status-badge.halftime{border-color:#f59e0b;color:#f59e0b}
+        .game-status-badge.final{border-color:#ef4444;color:#ef4444}
+        .highlight{background:rgba(212,175,55,0.3)!important;border-left:3px solid var(--accent)}
+        .box-score-export-btn{background:#2e7d32;color:#fff;font-weight:700;}
+
         @media(max-width:1100px){.hdr-c{flex-wrap:wrap;gap:4px}.scorebug{padding:3px 6px}}
         @media(max-width:900px){.game-grid{flex-direction:column}.roster-layout{grid-template-columns:1fr}.hdr-c{order:2;width:100%;justify-content:center}.hdr-b{flex-wrap:wrap;justify-content:center;padding:4px 10px}}
         @media(max-width:768px){
@@ -347,7 +279,7 @@
             .hdr-client{padding:2px 6px;min-height:28px}
             .client-logo{height:28px;width:28px}
             .client-name{font-size:.6rem;max-width:60px}
-            .card-head .top-row select{font-size:.65rem;min-width:80px}
+            .card-head select{font-size:.65rem;min-width:80px}
             .player-list-header,.player-row{grid-template-columns:16px 22px 1fr 44px 34px 22px 20px 18px;gap:1px;padding:1px 4px;font-size:.6rem}
             #logoutBtn{font-size:.5rem;padding:2px 6px;min-height:22px;min-width:22px}
             .hdr-r .theme-btn{font-size:.5rem;padding:2px 6px}
@@ -363,7 +295,7 @@
             .hdr-client{padding:2px 4px;min-height:24px}
             .wall-clock{font-size:.7rem;min-width:50px;padding:2px 6px}
             .weather-pill-header{font-size:.55rem;padding:2px 6px}
-            .card-head .top-row select{font-size:.55rem;min-width:60px;min-height:22px}
+            .card-head select{font-size:.55rem;min-width:60px;min-height:22px}
             .player-list-header,.player-row{grid-template-columns:14px 18px 1fr 36px 28px 18px 16px 16px;font-size:.5rem;padding:1px 2px}
         }
     </style>
@@ -373,13 +305,8 @@
     <div class="turf-overlay" aria-hidden="true"><svg viewBox="0 0 1000 60" preserveAspectRatio="none"><rect width="1000" height="60" fill="url(#tg)"/><defs><linearGradient id="tg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2d6a1e"/><stop offset="100%" stop-color="#1f4d14"/></linearGradient></defs><line x1="100" y1="0" x2="100" y2="60" stroke="white" stroke-width="1.5" opacity=".15"/><line x1="200" y1="0" x2="200" y2="60" stroke="white" stroke-width="1.5" opacity=".15"/><line x1="300" y1="0" x2="300" y2="60" stroke="white" stroke-width="1.5" opacity=".15"/><line x1="400" y1="0" x2="400" y2="60" stroke="white" stroke-width="1.5" opacity=".15"/><line x1="500" y1="0" x2="500" y2="60" stroke="white" stroke-width="1.5" opacity=".15"/><text x="495" y="18" fill="white" font-size="5" opacity=".25" text-anchor="middle">50</text></svg></div>
     <div class="hdr-l"><a href="https://voiceofdfw.com" class="back-link">← VODFW</a></div>
     <div class="hdr-b">
-        <div class="brand-logo-wrapper">
-            <img src="FNL.jpg" alt="FNL" class="brand-logo" onerror="this.style.display='none'">
-        </div>
-        <div class="brand-text">
-            <h1>🏈 FRIDAY NIGHT LIVE</h1>
-            <p>PA CONSOLE</p>
-        </div>
+        <div class="brand-logo-wrapper"><img src="FNL.jpg" alt="FNL" class="brand-logo" onerror="this.style.display='none'"></div>
+        <div class="brand-text"><h1>🏈 FRIDAY NIGHT LIVE</h1><p>PA CONSOLE</p></div>
     </div>
     <div class="hdr-client" id="clientLogoContainer">
         <div class="client-branding">
@@ -408,7 +335,7 @@
         <button class="btn btn-sm" onclick="printLU()">🖨️</button>
         <button class="btn btn-sm box-score-export-btn" onclick="exportBoxScore()" title="Export box score CSV">📊</button>
         <button class="btn btn-red btn-sm" id="resetBtn">RESET</button>
-        <button class="btn btn-sm" id="logoutBtn" onclick="logoutAndShowPIN()" style="background:#666;color:#fff;white-space:nowrap;">🔓 Switch User</button>
+        <button class="btn btn-sm" id="logoutBtn" onclick="logoutAndShowPIN()" style="background:#666;color:#fff;">🔓 Switch User</button>
     </div>
 </header>
 <nav id="mainNav"></nav>
@@ -416,13 +343,13 @@
 <div class="toast" id="toast"></div>
 <footer>
     <div class="ft-left"><img src="FNL2.png" class="footer-logo" alt="FNL" onerror="this.style.display='none'"></div>
-    <div class="ft-center"><span style="display:inline-block;text-align:center;width:100%;">© 2026 Clayton E. Greenberg | <a href="https://voiceofdfw.com">VoiceofDFW.com</a> | 🏈 Digital Pressbox Command Center 🏈</span></div>
-    <div class="ft-right"><span id="ftTicker">v22.2</span> · <span id="ftSaved">Never saved</span></div>
+    <div class="ft-center"><span>© 2026 Clayton E. Greenberg | <a href="https://voiceofdfw.com">VoiceofDFW.com</a> | 🏈 Digital Pressbox Command Center 🏈</span></div>
+    <div class="ft-right"><span id="ftTicker">v22.3</span> · <span id="ftSaved">Never saved</span></div>
 </footer>
 
 <script>
 // ═══════════════════════════════════════════════
-// FRIDAY NIGHT LIVE v22.2 – Fixed Layout + All Features
+// FRIDAY NIGHT LIVE v22.3 – Restored Layout + All Features
 // ═══════════════════════════════════════════════
 const CLOUD="https://lineup-api.claytongreenberg.workers.dev/api/lineup";
 const FNL_NS = "fnl_";
@@ -772,7 +699,7 @@ function ugc(){
     else if(r <= 60) el.classList.add('warning');
 }
 
-// Clock tick with game state awareness
+// Clock tick
 setInterval(()=>{
     const sp=g();
     const gc=sp.gc;
@@ -1040,7 +967,7 @@ function usb(){
     const ls=sp.md==='7v7'?['1st Half','2nd Half']:['Q1','Q2','Q3','Q4','OT1','OT2'];
     document.getElementById('sbQuarter').textContent=ls[sp.q-1]||'Q1';
     document.getElementById('sbQLabel').textContent=sp.md==='7v7'?'HALF':'QTR';
-    document.getElementById('ftTicker').textContent='v22.2 • '+(at?at.name:'')+' vs. '+(ht?ht.name:'');
+    document.getElementById('ftTicker').textContent='v22.3 • '+(at?at.name:'')+' vs. '+(ht?ht.name:'');
     updateGameStatusDisplay();
 }
 
@@ -1276,7 +1203,9 @@ function updateCoach(teamId, coachName){
     if(team){
         team.coach = coachName;
         sv();
-        ra();
+        // No need to re-render the whole page, just update the coach display
+        const coachInputs = document.querySelectorAll(`.coach-input[data-team-id="${teamId}"]`);
+        coachInputs.forEach(el => { el.value = coachName; });
         t('Coach updated');
     }
 }
@@ -1365,7 +1294,7 @@ function gP(){return g().md==='7v7'?(g().p7||D7):[...TACKLE.off,...TACKLE.def,..
 function gL(s,u){const t=tB(s);if(!t?.pl)return[];const pl=gP();let l=u==='all'?[...t.pl]:t.pl.filter(p=>pl.includes(p.po));l.sort((a,b)=>(parseInt(a.n)||999)-(parseInt(b.n)||999));return l}
 
 // ═══════════════════════════════════════════════
-// GAME VIEW (UPDATED WITH FIXED LAYOUT)
+// GAME VIEW (RESTORED LAYOUT)
 // ═══════════════════════════════════════════════
 function rG(){
     const sp=g();
@@ -1375,7 +1304,7 @@ function rG(){
     
     // Game Controls Row
     h+=`<div style="display:flex;flex-direction:column;width:100%;gap:2px;">`;
-    h+=`<div class="game-controls-row" style="display:flex;flex-wrap:wrap;gap:3px;padding:2px 6px;background:var(--surface);border-radius:4px;border:1px solid var(--border);margin-bottom:1px;">`;
+    h+=`<div class="game-controls" style="display:flex;flex-wrap:wrap;gap:3px;padding:2px 6px;background:var(--surface);border-radius:4px;border:1px solid var(--border);margin-bottom:1px;">`;
     
     h+=`<span style="font-weight:700;font-size:.6rem;">🏈</span>`;
     h+=`<button class="btn-sm" onclick="startGame()" style="background:#22c55e;color:#000;font-size:.5rem;padding:2px 6px;min-height:20px;min-width:20px;">Start</button>`;
@@ -1402,7 +1331,7 @@ function rG(){
     h+=`</div>`;
     
     // Quick Scoring
-    h+=`<div class="game-controls-row" style="display:flex;flex-wrap:wrap;gap:2px;padding:1px 4px;background:var(--surface);border-radius:4px;border:1px solid var(--border);margin-bottom:1px;">`;
+    h+=`<div class="game-controls" style="display:flex;flex-wrap:wrap;gap:2px;padding:1px 4px;background:var(--surface);border-radius:4px;border:1px solid var(--border);margin-bottom:1px;">`;
     h+=`<span style="font-weight:700;font-size:.55rem;">⭐</span>`;
     h+=`<button class="btn-sm" onclick="quickScore('home','TD',6)" style="background:#22c55e;color:#000;font-size:.4rem;padding:1px 4px;min-height:18px;min-width:18px;">TD+6</button>`;
     h+=`<button class="btn-sm" onclick="quickScore('away','TD',6)" style="background:#3b82f6;color:#fff;font-size:.4rem;padding:1px 4px;min-height:18px;min-width:18px;">TD+6</button>`;
@@ -1415,7 +1344,7 @@ function rG(){
     h+=`</div>`;
     
     // Quick Penalties
-    h+=`<div class="game-controls-row" style="display:flex;flex-wrap:wrap;gap:2px;padding:1px 4px;background:var(--surface);border-radius:4px;border:1px solid var(--border);margin-bottom:1px;">`;
+    h+=`<div class="game-controls" style="display:flex;flex-wrap:wrap;gap:2px;padding:1px 4px;background:var(--surface);border-radius:4px;border:1px solid var(--border);margin-bottom:1px;">`;
     h+=`<span style="font-weight:700;font-size:.55rem;">⚖️</span>`;
     h+=`<button class="btn-sm" onclick="quickPenalty('home','Holding',10)" style="background:#f59e0b;color:#000;font-size:.4rem;padding:1px 4px;min-height:18px;min-width:18px;">Hold</button>`;
     h+=`<button class="btn-sm" onclick="quickPenalty('away','Holding',10)" style="background:#f59e0b;color:#000;font-size:.4rem;padding:1px 4px;min-height:18px;min-width:18px;">Hold</button>`;
@@ -1445,7 +1374,7 @@ function rG(){
     h += logHtml;
     h += `</div>`;
     
-    // Team Cards
+    // Team Cards (RESTORED LAYOUT)
     ['away','home'].forEach(s=>{
         const t=tB(s);
         const au=S['u'+s[0]]||'all';
@@ -1453,8 +1382,8 @@ function rG(){
         const coachName = t && t.coach ? t.coach : '';
         
         h+='<div class="team-card '+s+'">';
+        // Card head (single row)
         h+='<div class="card-head" style="background:'+tc+';">';
-        h+='<div class="top-row">';
         h+='<span class="side-label">'+s.toUpperCase()+'</span>';
         if(t?.logo) h+='<img class="team-logo" src="'+e(t.logo)+'" onerror="this.style.display=\'none\'">';
         h+='<select onchange="swT(\''+s+'\',this.value)">';
@@ -1463,12 +1392,14 @@ function rG(){
             h+='<option value="'+e(x.id)+'" '+selected+'>'+e(x.name)+'</option>';
         });
         h+='</select>';
-        h+='</div>'; // top-row
-        h+='<div class="bottom-row">';
-        h+='<input class="coach-input" value="'+e(coachName)+'" placeholder="Coach" onchange="updateCoach(\''+(t?t.id:'')+'\',this.value)">';
         h+='<button class="poss-btn '+(sp.poss===s?'active':'')+'" onclick="tP(\''+s+'\')">🏈</button>';
-        h+='</div>'; // bottom-row
         h+='</div>'; // card-head
+        
+        // Coach row (separate)
+        h+='<div class="coach-row">';
+        h+='<span class="coach-label">Coach</span>';
+        h+='<input class="coach-input" data-team-id="'+(t?t.id:'')+'" value="'+e(coachName)+'" placeholder="Coach name" onchange="updateCoach(\''+(t?t.id:'')+'\',this.value)">';
+        h+='</div>'; // coach-row
         
         h+='<div class="unit-tabs">';
         h+='<button class="unit-tab '+(au==='all'?'active':'')+'" onclick="sU(\''+s+'\',\'all\')">ALL</button>';
@@ -1496,7 +1427,7 @@ function rG(){
             h+=(p.ph?'<img class="plyr-photo" src="'+e(p.ph)+'" onerror="this.style.display=\'none\'">':'<span></span>');
             h+='<span class="plyr-num">'+e(p.n||'')+'</span>';
             h+='<span class="plyr-name"><input value="'+e(p.na||'')+'" onchange="uF(\''+s+'\',\''+p.id+'\',\'na\',this.value)" placeholder="Name" title="'+statStr+'">'+(p.pinned?'<span class="pin-indicator">📌</span>':'')+'</span>';
-            h+='<span class="plyr-pron-input"><input value="'+e(p.pron||'')+'" onchange="uF(\''+s+'\',\''+p.id+'\',\'pron\',this.value)" placeholder="Pron" style="font-style:italic;font-size:.65rem;"></span>';
+            h+='<span class="plyr-pron"><input value="'+e(p.pron||'')+'" onchange="uF(\''+s+'\',\''+p.id+'\',\'pron\',this.value)" placeholder="Pron" style="font-style:italic;font-size:.65rem;"></span>';
             h+='<span class="plyr-pos"><select onchange="uF(\''+s+'\',\''+p.id+'\',\'po\',this.value)">'+po.map(o=>'<option '+(p.po===o?'selected':'')+'>'+o+'</option>').join('')+'</select></span>';
             h+='<button class="st-toggle '+(p.st?'':'off')+'" onclick="event.stopPropagation();tS(\''+s+'\',\''+p.id+'\')" title="Starter">⭐</button>';
             h+='<button class="pin-toggle '+(p.pinned?'active':'')+'" onclick="event.stopPropagation();togglePin(\''+s+'\',\''+p.id+'\')" title="Pin/Unpin">📌</button>';
@@ -1621,7 +1552,7 @@ function searchPlayers(s,q){
 }
 
 // ═══════════════════════════════════════════════
-// ROSTER (UPDATED)
+// ROSTER (unchanged from earlier working version)
 // ═══════════════════════════════════════════════
 function pu(t){const sp=g();if(!sp.us)sp.us=[];sp.us.push({tid:t.id,sn:JSON.parse(JSON.stringify(t.pl))});if(sp.rs)sp.rs=[];else sp.rs=[];if(sp.us.length>50)sp.us.shift()}
 function uR(){const sp=g();if(!sp.us?.length){t('Nothing');return}const a=sp.us.pop();const team=sp.tms.find(x=>x.id===a.tid);if(team){sp.rs.push({tid:team.id,sn:JSON.parse(JSON.stringify(team.pl))});team.pl=a.sn}sv();rR();t('Undo')}
