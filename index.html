@@ -5,11 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Friday Night Live – Football PA Console</title>
     <style>
-        /* ── RESET ── */
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:'Inter',-apple-system,sans-serif;background:#f0f2f5;color:#0a2540;height:100vh;display:flex;flex-direction:column;overflow:hidden;font-size:13px}
 
-        /* ── HEADER ── */
         header{background:#1a3a2a;padding:4px 8px;display:flex;align-items:center;justify-content:space-between;gap:4px;border-bottom:3px solid #d4af37;flex-shrink:0;min-height:42px;flex-wrap:wrap}
         .hdr-left{display:flex;align-items:center;gap:6px}
         .hdr-left a{color:#fff;font-size:10px;text-decoration:none;background:rgba(0,0,0,0.4);padding:2px 8px;border-radius:4px}
@@ -24,12 +22,10 @@
         .hdr-right .gold{background:#e6a817!important;color:#000!important;font-weight:700}
         .hdr-right .red{background:#dc2626!important;color:#fff!important}
 
-        /* ── NAV ── */
         nav{background:#1a1a2e;display:flex;padding:0 8px;gap:2px;flex-shrink:0;min-height:28px;overflow-x:auto}
         .nav-link{padding:4px 12px;font-size:10px;font-weight:600;background:none;border:none;color:rgba(255,255,255,0.5);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
         .nav-link.active{color:#fff;border-bottom-color:#d4af37}
 
-        /* ── SCOREBUG ── */
         #scorebug-wrap{flex-shrink:0;display:flex;align-items:center;gap:4px;background:linear-gradient(135deg,#0a0a1a,#1a1a2e);border-radius:6px;padding:2px 8px;margin:0 0 2px 0;border:2px solid #d4af37;min-height:38px}
         #scorebug-wrap.hidden{display:none}
         .sb-side{display:flex;align-items:center;gap:3px;flex:1;justify-content:center}
@@ -45,17 +41,14 @@
         #eyeToggle{background:rgba(0,0,0,0.4);border:1px solid #d4af37;color:#fff;border-radius:50%;width:26px;height:26px;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-left:2px}
         #eyeToggle:hover{background:rgba(212,175,55,0.3)}
 
-        /* ── MAIN ── */
         main{flex:1;overflow:hidden;padding:3px;display:flex;gap:3px}
-
-        /* ── GAME GRID ── */
         .game-grid{display:flex;gap:4px;width:100%;height:100%;background:#cbd5e1;border-radius:6px;padding:3px;overflow:hidden}
         .team-card{flex:1;min-width:0;background:#fff;border-radius:6px;border:1px solid #cbd5e1;display:flex;flex-direction:column;overflow:visible}
 
-        /* ── CARD HEAD ── */
+        /* ── CARD HEAD - GRID LAYOUT ── */
         .card-head{
-            display:flex !important;
-            flex-wrap:wrap !important;
+            display:grid !important;
+            grid-template-columns: auto 1fr auto auto !important;  /* side-label | select | coach | poss-btn */
             align-items:center !important;
             gap:4px !important;
             width:100% !important;
@@ -68,20 +61,19 @@
         }
         .card-head .side-label{font-size:9px;font-weight:700;text-transform:uppercase;opacity:0.8}
 
-        /* ★★★ DROPDOWN VISIBILITY FIX - RED BORDER FOR DEBUG ★★★ */
+        /* ★★★ DROPDOWN - NOW TAKES THE SPACE ★★★ */
         .card-head select {
-            flex: 1 0 100px !important;
-            min-width: 100px !important;
-            width: auto !important;
+            width: 100% !important;
+            min-width: 80px !important;
             display: block !important;
             visibility: visible !important;
             opacity: 1 !important;
-            background: #ffffff !important;
+            background: #ffff00 !important;    /* Yellow background to see it */
             color: #000000 !important;
             height: auto !important;
             min-height: 28px !important;
             padding: 2px 6px !important;
-            border: 3px solid red !important;    /* ← RED BORDER to make it visible */
+            border: 3px solid red !important;
             border-radius: 4px !important;
             font-weight: 700 !important;
             font-size: 11px !important;
@@ -108,16 +100,13 @@
         .card-head .poss-btn{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.15);color:#fff;border-radius:4px;padding:0 6px;font-size:10px;cursor:pointer;min-height:22px;flex-shrink:0}
         .card-head .poss-btn.active{background:#d4af37;color:#000;border-color:#d4af37}
 
-        /* ── UNIT TABS ── */
         .unit-tabs{display:flex;gap:2px;padding:1px 4px;border-bottom:1px solid #cbd5e1;flex-shrink:0}
         .unit-tab{padding:1px 6px;font-size:8px;font-weight:700;background:rgba(0,0,0,0.04);border:none;color:inherit;cursor:pointer;border-radius:3px}
         .unit-tab.active{background:#d4af37;color:#000}
 
-        /* ── SEARCH ── */
         .search-bar{display:flex;padding:1px 4px;border-bottom:1px solid #cbd5e1}
         .search-bar input{flex:1;border:1px solid #cbd5e1;border-radius:3px;padding:0 4px;font-size:9px;min-height:20px}
 
-        /* ── PLAYER LIST ── */
         .player-list-header,.player-row{display:grid;grid-template-columns:16px 24px 1fr 44px 36px 22px 22px 18px;gap:1px;align-items:center;padding:1px 4px;font-size:11px}
         .player-list-header{font-size:7px;font-weight:700;text-transform:uppercase;opacity:0.35;border-bottom:1px solid #cbd5e1;min-height:16px}
         .player-list-body{flex:1;overflow-y:auto;padding:1px 0}
@@ -138,13 +127,11 @@
         .del-btn{background:none;border:none;color:#999;cursor:pointer;font-size:10px}
         .del-btn:hover{color:#dc2626}
 
-        /* ── ADD ROW ── */
         .add-row{display:flex;gap:2px;padding:1px 4px;border-top:1px solid #cbd5e1;flex-shrink:0;flex-wrap:wrap;background:#fff}
         .add-row input,.add-row select{font-size:9px;padding:0 4px;border:1px solid #cbd5e1;border-radius:3px;min-height:20px}
         .add-row input{flex:1;min-width:28px}
         .add-row button{background:#d4af37;border:none;border-radius:3px;padding:0 8px;font-weight:700;font-size:11px;cursor:pointer;min-height:20px}
 
-        /* ── GAME CONTROLS ── */
         .game-controls{display:flex;gap:2px;padding:1px 4px;flex-wrap:wrap;align-items:center;background:#fff;border:1px solid #cbd5e1;border-radius:6px;margin-bottom:1px;flex-shrink:0}
         .game-controls .btn-sm{font-size:8px;padding:0 5px;min-height:18px;min-width:18px;border-radius:3px;border:none;cursor:pointer;font-weight:600}
         .game-controls .btn-sm.green{background:#22c55e;color:#000}
@@ -154,7 +141,6 @@
         .game-controls input{width:24px;padding:0 2px;font-size:9px;border:1px solid #cbd5e1;border-radius:3px;text-align:center;min-height:18px}
         .game-controls span{font-size:9px;font-weight:600}
 
-        /* ── PANELS ── */
         .panel{background:#fff;border-radius:6px;padding:8px;overflow-y:auto;width:100%;height:100%;border:1px solid #cbd5e1}
         .panel h3{font-size:14px;margin-bottom:6px}
         .roster-layout{display:grid;grid-template-columns:150px 1fr;gap:6px;height:100%}
@@ -168,7 +154,6 @@
         .bulk-area{width:100%;min-height:50px;font-family:monospace;font-size:10px;padding:4px;border:1px solid #cbd5e1;border-radius:4px;resize:vertical;margin-top:4px}
         .script-area{width:100%;height:calc(100% - 60px);min-height:150px;font-family:monospace;font-size:13px;padding:8px;border:1px solid #cbd5e1;border-radius:4px;resize:none}
 
-        /* ── GAME LOG TAB ── */
         .log-container{display:flex;flex-direction:column;height:100%;gap:6px}
         .log-header{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-bottom:6px;border-bottom:1px solid #cbd5e1}
         .log-header input{flex:1;min-width:150px;padding:4px 8px;border:1px solid #cbd5e1;border-radius:4px;font-size:13px;font-weight:700}
@@ -186,7 +171,6 @@
         .log-summary .stat .label{font-weight:600;opacity:0.6}
         .log-summary .stat .value{font-weight:700}
 
-        /* ── ADMIN ── */
         .admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
         .admin-card{border:1px solid #cbd5e1;border-radius:6px;padding:8px;background:#fff}
         .admin-card h4{font-size:11px;margin-bottom:4px}
@@ -197,15 +181,12 @@
         .admin-card .btn-danger{background:#dc2626;border-color:#dc2626;color:#fff}
         .admin-card .theme-btns{display:flex;gap:4px;flex-wrap:wrap}
 
-        /* ── TOAST ── */
         .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:4px 16px;border-radius:16px;font-size:12px;opacity:0;transition:opacity 0.25s;z-index:999;pointer-events:none}
         .toast.show{opacity:1}
 
-        /* ── FOOTER ── */
         footer{background:#0a0a1a;padding:2px 10px;display:flex;justify-content:space-between;align-items:center;border-top:2px solid #d4af37;color:#94a3b8;font-size:8px;flex-shrink:0;min-height:20px}
         footer .saved{color:#d4af37}
 
-        /* ── RESPONSIVE ── */
         @media(max-width:900px){.game-grid{flex-direction:column}.roster-layout{grid-template-columns:1fr}.admin-grid{grid-template-columns:1fr}.log-summary{grid-template-columns:1fr}}
         @media(max-width:600px){header{min-height:36px;padding:2px 4px}.brand h1{font-size:11px}.clock{font-size:10px;min-width:44px;padding:1px 6px}.weather{font-size:8px;padding:1px 6px}.hdr-right button{font-size:8px;min-height:22px;min-width:22px;padding:1px 5px}.player-list-header,.player-row{grid-template-columns:12px 18px 1fr 32px 28px 18px 18px 16px;font-size:9px;padding:0 3px}.card-head select{font-size:9px;min-width:50px;min-height:20px}#scorebug-wrap{padding:1px 4px;min-height:30px}.sb-name{font-size:8px;min-width:24px}.sb-score{font-size:14px;min-width:20px}.sb-clock{font-size:11px;min-width:34px}.sb-btn{width:16px;height:16px;font-size:9px}.sb-cbtn{font-size:7px;height:16px;padding:0 3px}#eyeToggle{width:20px;height:20px;font-size:10px}.game-controls .btn-sm{font-size:7px;padding:0 4px;min-height:16px;min-width:16px}.game-controls input{width:20px;font-size:8px;min-height:16px}.game-controls span{font-size:8px}.log-header input{font-size:11px}.log-body{font-size:10px}}
     </style>
@@ -282,7 +263,6 @@
         const CLOUD_URL = "https://lineup-api.claytongreenberg.workers.dev/api/lineup";
         const NAMESPACE = "fnl_";
 
-        // ─── DEFAULT TEAMS ──────────────────────────────────────────
         function getDefaultTeams() {
             return [{
                 id: "cowboys",
@@ -355,7 +335,6 @@
         let themeIndex = 0;
         const THEMES = ["light", "dark", "navy"];
 
-        // ─── HELPERS ──────────────────────────────────────────────────
         function getTeam(id) { return teams.find(t => t.id === id); }
         function getTeamBySide(side) { return getTeam(side === "away" ? state.awayId : state.homeId); }
         function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 5); }
@@ -538,25 +517,16 @@
             state.gameLogs = [];
             state.gameLogName = generateLogName();
             state.gameLogAutoName = true;
-            teams.forEach(t => t.players.forEach(p => { p.starter = false;
-                p.pinned = false; }));
+            teams.forEach(t => t.players.forEach(p => { p.starter = false; p.pinned = false; }));
             addLogEntry("🔄 Game reset");
             saveLocal();
             renderAll();
             toast("🔄 Reset");
         }
-        function setDown(d) { state.down = d;
-            saveLocal();
-            renderAll(); }
-        function setDistance(d) { state.distance = parseInt(d) || 10;
-            saveLocal();
-            renderAll(); }
-        function setYardline(d) { state.yardline = parseInt(d) || 50;
-            saveLocal();
-            renderAll(); }
-        function setPossession(side) { state.possession = side;
-            saveLocal();
-            renderAll(); }
+        function setDown(d) { state.down = d; saveLocal(); renderAll(); }
+        function setDistance(d) { state.distance = parseInt(d) || 10; saveLocal(); renderAll(); }
+        function setYardline(d) { state.yardline = parseInt(d) || 50; saveLocal(); renderAll(); }
+        function setPossession(side) { state.possession = side; saveLocal(); renderAll(); }
 
         // ─── PLAYER FUNCTIONS ──────────────────────────────────────
         function togglePin(side, pid) {
@@ -567,8 +537,7 @@
             const pinnedCount = team.players.filter(x => x.pinned).length;
             if (!p.pinned && pinnedCount >= 6) { toast("Max 6 pinned"); return; }
             p.pinned = !p.pinned;
-            saveLocal();
-            renderGame();
+            saveLocal(); renderGame();
         }
         function toggleStarter(side, pid) {
             const team = getTeamBySide(side);
@@ -576,16 +545,14 @@
             const p = team.players.find(x => x.id === pid);
             if (!p) return;
             p.starter = !p.starter;
-            saveLocal();
-            renderGame();
+            saveLocal(); renderGame();
         }
         function deletePlayer(side, pid) {
             if (!confirm("Delete this player?")) return;
             const team = getTeamBySide(side);
             if (!team) return;
             team.players = team.players.filter(x => x.id !== pid);
-            saveLocal();
-            renderGame();
+            saveLocal(); renderGame();
         }
         function addPlayer(side) {
             const team = getTeamBySide(side);
@@ -597,9 +564,7 @@
             team.players.push({ id: genId(), num: num, name: name, pos: pos, starter: false, pinned: false, pron: "" });
             document.getElementById("an-" + side).value = "";
             document.getElementById("ana-" + side).value = "";
-            saveLocal();
-            renderGame();
-            toast(name + " added");
+            saveLocal(); renderGame(); toast(name + " added");
         }
         function updatePlayer(side, pid, field, value) {
             const team = getTeamBySide(side);
@@ -617,11 +582,9 @@
             rows.forEach(r => { if (r.dataset.num === num) r.style.background = "rgba(212,175,55,0.2)"; });
         }
 
-        // ─── SWITCH TEAM ────────────────────────────────────────────
         function switchTeam(side, tid) { if (side === "away") state.awayId = tid; else state.homeId = tid; if (state.gameLogAutoName) { state.gameLogName = generateLogName(); } saveLocal(); renderAll(); }
         function setFilter(side, filter) { if (side === "away") state.awayFilter = filter; else state.homeFilter = filter; renderGame(); }
-        function updateCoach(side, name) { const team = getTeamBySide(side); if (team) { team.coach = name;
-                saveLocal(); } }
+        function updateCoach(side, name) { const team = getTeamBySide(side); if (team) { team.coach = name; saveLocal(); } }
 
         // ─── RENDER: GAME ──────────────────────────────────────────
         function renderGame() {
@@ -733,30 +696,23 @@
             `;
         }
 
-        function selectTeam(tid) { currentTeamId = tid;
-            renderRosters(); }
-
+        function selectTeam(tid) { currentTeamId = tid; renderRosters(); }
         function addTeam() {
             const name = prompt("Team name:");
             if (!name) return;
             const newTeam = { id: genId(), name: name, color: "#1e3a5f", coach: "", players: [] };
             teams.push(newTeam);
             currentTeamId = newTeam.id;
-            saveLocal();
-            renderRosters();
-            toast("Team added");
+            saveLocal(); renderRosters(); toast("Team added");
         }
-
         function deleteTeam(tid) {
             if (!tid || !confirm("Delete this team?")) return;
             teams = teams.filter(t => t.id !== tid);
             if (state.awayId === tid) state.awayId = teams[0]?.id || "";
             if (state.homeId === tid) state.homeId = teams[0]?.id || "";
             currentTeamId = teams[0]?.id || "";
-            saveLocal();
-            renderRosters();
+            saveLocal(); renderRosters();
         }
-
         function saveRosterTeam() {
             const ct = teams.find(t => t.id === currentTeamId);
             if (!ct) return;
@@ -772,22 +728,17 @@
                     ct.players.push({ id: row.dataset.pid || genId(), num: inputs[0]?.value || "", name: inputs[1]?.value || "", pos: inputs[2]?.value || "QB", starter: inputs[3]?.value === "1", pron: inputs[4]?.value || "", notes: inputs[5]?.value || "", pinned: false });
                 });
             }
-            saveLocal();
-            renderRosters();
-            toast("Team saved");
+            saveLocal(); renderRosters(); toast("Team saved");
         }
-
         function addRosterRow() {
             const grid = document.getElementById("rosterGrid");
             if (!grid) return;
             const row = document.createElement("div");
             row.className = "player-edit-row";
             row.dataset.pid = genId();
-            row.innerHTML =
-                `<input placeholder="#"><input placeholder="Name"><select><option>QB</option><option>RB</option><option>WR</option><option>TE</option><option>OL</option><option>DL</option><option>LB</option><option>DB</option><option>K</option><option>P</option></select><select><option value="0">Bench</option><option value="1">Starter</option></select><input placeholder="Pron"><input placeholder="Notes"><button onclick="this.parentElement.remove()">✖</button>`;
+            row.innerHTML = `<input placeholder="#"><input placeholder="Name"><select><option>QB</option><option>RB</option><option>WR</option><option>TE</option><option>OL</option><option>DL</option><option>LB</option><option>DB</option><option>K</option><option>P</option></select><select><option value="0">Bench</option><option value="1">Starter</option></select><input placeholder="Pron"><input placeholder="Notes"><button onclick="this.parentElement.remove()">✖</button>`;
             grid.appendChild(row);
         }
-
         function bulkImport() {
             const text = document.getElementById("bulkImport").value.trim();
             if (!text) { toast("Paste players first"); return; }
@@ -796,23 +747,16 @@
             const lines = text.split("\n").filter(l => l.trim());
             lines.forEach(line => {
                 const parts = line.trim().split(/\s+/);
-                let num = "",
-                    name = "",
-                    pos = "QB";
+                let num = "", name = "", pos = "QB";
                 if (parts.length >= 2 && /^\d+$/.test(parts[0])) {
                     num = parts[0];
                     const possiblePos = parts[parts.length - 1].toUpperCase();
-                    if (["QB", "RB", "WR", "TE", "OL", "DL", "LB", "DB", "K", "P"].includes(possiblePos)) { pos = possiblePos;
-                        name = parts.slice(1, -1).join(" "); } else { name = parts.slice(1).join(" "); }
+                    if (["QB", "RB", "WR", "TE", "OL", "DL", "LB", "DB", "K", "P"].includes(possiblePos)) { pos = possiblePos; name = parts.slice(1, -1).join(" "); } else { name = parts.slice(1).join(" "); }
                 } else { name = parts.join(" "); }
-                if (name) { ct.players.push({ id: genId(), num: num, name: name, pos: pos, starter: false, pinned: false, pron: "",
-                        notes: "" }); }
+                if (name) { ct.players.push({ id: genId(), num: num, name: name, pos: pos, starter: false, pinned: false, pron: "", notes: "" }); }
             });
-            saveLocal();
-            renderRosters();
-            toast("Imported " + lines.length + " players");
+            saveLocal(); renderRosters(); toast("Imported " + lines.length + " players");
         }
-
         function exportRosterCSV() {
             const ct = teams.find(t => t.id === currentTeamId);
             if (!ct) return;
@@ -821,8 +765,7 @@
             const a = document.createElement("a");
             a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
             a.download = (ct.name || "roster") + ".csv";
-            a.click();
-            toast("📊 Roster exported");
+            a.click(); toast("📊 Roster exported");
         }
 
         // ─── RENDER: SCRIPT ─────────────────────────────────────────
@@ -846,19 +789,10 @@
                 </div>
             `;
         }
-
         function insertScript(text) { const area = document.getElementById("scriptArea"); if (area) area.value += (area.value ? "\n" : "") + text; }
-
-        function saveScript() { const area = document.getElementById("scriptArea"); if (area) { state.script = area.value;
-                saveLocal();
-                toast("Script saved"); } }
-
-        function clearScript() { if (confirm("Clear script?")) { document.getElementById("scriptArea").value = "";
-                state.script = "";
-                saveLocal(); } }
-
-        function printScript() { const w = window.open("", "_blank"); w.document.write("<pre>" + esc(state.script || "") + "</pre>");
-            w.print(); }
+        function saveScript() { const area = document.getElementById("scriptArea"); if (area) { state.script = area.value; saveLocal(); toast("Script saved"); } }
+        function clearScript() { if (confirm("Clear script?")) { document.getElementById("scriptArea").value = ""; state.script = ""; saveLocal(); } }
+        function printScript() { const w = window.open("", "_blank"); w.document.write("<pre>" + esc(state.script || "") + "</pre>"); w.print(); }
 
         // ─── RENDER: GAME LOG ──────────────────────────────────────
         function renderLogTab() {
@@ -903,10 +837,7 @@
                 </div>
             `;
         }
-
-        function updateLogNameManually(value) { state.gameLogName = value.trim() || generateLogName();
-            state.gameLogAutoName = false;
-            saveLocal(); }
+        function updateLogNameManually(value) { state.gameLogName = value.trim() || generateLogName(); state.gameLogAutoName = false; saveLocal(); }
 
         // ─── RENDER: ADMIN ──────────────────────────────────────────
         function renderAdmin() {
@@ -948,16 +879,13 @@
                 </div>
             `;
         }
-
         function resetDefaultTeams() {
             if (!confirm("Reset teams to default (Cowboys, 49ers, Chiefs, Eagles)? This will replace all current teams.")) return;
             teams = getDefaultTeams();
             state.awayId = teams[0]?.id || "";
             state.homeId = teams[1]?.id || "";
             currentTeamId = teams[0]?.id || "";
-            saveLocal();
-            renderAll();
-            toast("Default teams restored");
+            saveLocal(); renderAll(); toast("Default teams restored");
         }
 
         // ─── EXPORT BOX SCORE ──────────────────────────────────────
@@ -977,13 +905,11 @@
                 team.players.forEach(p => { csv += `${side},${p.num},${p.name},${p.pos},${p.starter?'Yes':'No'}\n`; });
             });
             const scores = state.gameLogs.filter(e => e.text.includes("TD") || e.text.includes("FG"));
-            if (scores.length) { csv += "\nScoring Summary\n";
-                scores.forEach(e => { csv += `Q${e.quarter},${e.time},${e.text}\n`; }); }
+            if (scores.length) { csv += "\nScoring Summary\n"; scores.forEach(e => { csv += `Q${e.quarter},${e.time},${e.text}\n`; }); }
             const a = document.createElement("a");
             a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
             a.download = `boxscore_${new Date().toISOString().slice(0,10)}.csv`;
-            a.click();
-            toast("📊 Box score exported");
+            a.click(); toast("📊 Box score exported");
         }
 
         // ─── PRINT LINEUP ──────────────────────────────────────────
@@ -1000,35 +926,23 @@
             });
             html += "</body></html>";
             const w = window.open("", "_blank");
-            w.document.write(html);
-            w.document.close();
+            w.document.write(html); w.document.close();
             setTimeout(() => w.print(), 500);
         }
 
-        // ─── NAVIGATION ─────────────────────────────────────────────
         function switchView(view) {
             currentView = view;
             document.querySelectorAll(".nav-link").forEach(b => { b.classList.toggle("active", b.dataset.view === view); });
             renderAll();
         }
 
-        // ─── RENDER ALL ─────────────────────────────────────────────
         function renderAll() {
             switch (currentView) {
-                case "rosters":
-                    renderRosters();
-                    break;
-                case "script":
-                    renderScript();
-                    break;
-                case "log":
-                    renderLogTab();
-                    break;
-                case "admin":
-                    renderAdmin();
-                    break;
-                default:
-                    renderGame();
+                case "rosters": renderRosters(); break;
+                case "script": renderScript(); break;
+                case "log": renderLogTab(); break;
+                case "admin": renderAdmin(); break;
+                default: renderGame();
             }
             updateScorebug();
         }
@@ -1053,14 +967,13 @@
                         'display:block!important;' +
                         'visibility:visible!important;' +
                         'opacity:1!important;' +
-                        'background:#ffffff!important;' +
+                        'background:#ffff00!important;' +
                         'color:#000000!important;' +
                         'min-height:28px!important;' +
                         'height:auto!important;' +
-                        'width:auto!important;' +
-                        'flex:1 0 100px!important;' +
-                        'min-width:100px!important;' +
-                        'border:3px solid red!important;' +   // Red border for visibility
+                        'width:100%!important;' +
+                        'min-width:80px!important;' +
+                        'border:3px solid red!important;' +
                         'border-radius:4px!important;' +
                         'padding:2px 6px!important;' +
                         'font-weight:700!important;' +
@@ -1073,8 +986,8 @@
                         'z-index:10!important;';
                 });
                 document.querySelectorAll('.card-head').forEach(function(el) {
-                    el.style.display = 'flex';
-                    el.style.flexWrap = 'wrap';
+                    el.style.display = 'grid';
+                    el.style.gridTemplateColumns = 'auto 1fr auto auto';
                     el.style.alignItems = 'center';
                     el.style.gap = '4px';
                     el.style.width = '100%';
@@ -1085,7 +998,6 @@
                 });
                 document.body.offsetHeight;
             }
-            
             showDropdowns();
             if (document.readyState === 'complete') {
                 setTimeout(showDropdowns, 50);
