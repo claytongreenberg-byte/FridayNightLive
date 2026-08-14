@@ -676,6 +676,20 @@ setInterval(()=>{
     }
 },1000);
 
+// Clock interval – fixed to update display immediately on reset
+setInterval(()=>{
+    const gc=g().gc; 
+    if(gc.run && gc.rem>0){ 
+        gc.rem--; 
+        updateGameClockDisplay(); 
+        if(gc.rem===0){ 
+            gc.run=false; 
+            toast('Clock expired!'); 
+        } 
+        if(gc.rem%5===0) saveState(); 
+    }
+},1000);
+
 // ─── WEATHER ───
 function getWeatherEmoji(c){ if(c<=0)return'☀️'; if(c<=3)return'⛅'; if(c<=48)return'🌫️'; if(c<=57)return'🌧️'; if(c<=67)return'🌨️'; if(c<=77)return'❄️'; if(c<=82)return'🌧️'; if(c<=86)return'🌨️'; return'🌩️'; }
 async function fetchWeather(lat,lon,loc,fallback){
