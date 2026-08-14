@@ -18,22 +18,24 @@
             --accent:#d4af37;
             --bg:#ffffff;--surface:#ffffff;--text:#0f172a;
             --border:#cbd5e1;
-            --starter-bg:#d4af37;
+            --starter-bg:#fbbf24;
+            --starter-dark:#f59e0b;
             --btn:#d4af37;--btn-text:#000;
             --grid-bg:#e2e8f0;
             --card-shadow:0 1px 3px rgba(0,0,0,0.08);
             --bug-team-name-font:'Inter',sans-serif;
-            --bug-team-name-size:7px;
+            --bug-team-name-size:10px;
             --bug-team-name-color:inherit;
-            --bug-team-name-weight:700;
+            --bug-team-name-weight:800;
             --card-team-label-font:'Inter',sans-serif;
-            --card-team-label-size:0.8rem;
+            --card-team-label-size:0.9rem;
             --card-team-label-color:inherit;
             --card-team-label-weight:700;
             --card-head-visitor-bg:#1e3a5f;
             --card-head-home-bg:#7f1d1d;
             --scorebug-bg:var(--surface);
             --scorebug-text-color:var(--text);
+            --scorebug-font-size:1.2rem;
         }
         body.dark-mode {
             --bg:#0f172a;--surface:#1e293b;--text:#f1f5f9;
@@ -88,114 +90,273 @@
         .brand-text p{font-size:.5rem;color:var(--accent);font-weight:700;letter-spacing:0.5px;white-space:nowrap}
         .wall-clock{font-size:1rem;font-weight:700;color:var(--accent);min-width:70px;text-align:center;background:rgba(0,0,0,0.5);border-radius:8px;padding:4px 10px;white-space:nowrap;height:100%;min-height:32px;display:flex;align-items:center;justify-content:center}
         .weather-pill-header{font-size:.75rem;color:#fff;display:flex;align-items:center;gap:4px;background:rgba(0,0,0,0.4);border-radius:16px;padding:4px 12px;white-space:nowrap;max-width:200px;overflow:hidden;text-overflow:ellipsis;cursor:help;height:100%;min-height:32px}
-        .scorebug-wrapper{display:flex;align-items:center;gap:4px;background:transparent;padding:0}
-        .scorebug{display:flex;align-items:center;gap:2px;background:var(--scorebug-bg);border:1px solid var(--border);padding:2px 6px;border-radius:8px;box-shadow:var(--card-shadow)}
+        
+        /* ===== ESPN-STYLE SCOREBUG ===== */
+        .scorebug-wrapper{display:flex;align-items:center;gap:6px;background:transparent;padding:0}
+        .scorebug{
+            display:flex;align-items:center;gap:6px;background:var(--scorebug-bg);
+            border:2px solid var(--border);padding:4px 12px;border-radius:12px;box-shadow:var(--card-shadow);
+            min-height:48px;
+        }
         .scorebug.hidden .sb-block{display:none}
-        .scorebug.hidden{border-color:transparent;background:transparent;box-shadow:none;padding:2px 4px}
-        .sb-block{display:flex;flex-direction:column;align-items:center;min-width:26px;padding:1px 2px}
-        .sb-block:not(:last-child){border-right:1px solid var(--border);padding-right:3px;margin-right:2px}
-        .sb-abbr{font-size:var(--bug-team-name-size);font-weight:var(--bug-team-name-weight);font-family:var(--bug-team-name-font);color:var(--bug-team-name-color);text-transform:uppercase;opacity:1;display:flex;align-items:center;gap:1px;margin-bottom:0px}
-        .sb-logo-sm{width:10px;height:10px;object-fit:contain;border-radius:2px}
-        .sb-row{display:flex;align-items:center;gap:1px}
-        .sb-val{font-size:16px;font-weight:800;min-width:18px;text-align:center;transition:transform .15s;color:var(--scorebug-text-color)}
-        .sb-val.flash{transform:scale(1.2);color:var(--accent)}
-        .sb-qtr{font-size:11px;font-weight:700;color:var(--accent);min-width:16px;text-align:center}
-        .game-clock{font-family:monospace;font-size:12px;font-weight:700;color:var(--accent);min-width:34px;text-align:center}
-        .scorebug button{background:var(--surface);border:1px solid var(--border);color:inherit;width:20px;height:20px;border-radius:50%;font-size:9px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;margin:0 1px}
-        .sb-toggle-btn{background:rgba(0,0,0,0.3);border:1px solid var(--accent);color:#fff;width:28px;height:28px;border-radius:50%;font-size:12px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .2s}
+        .scorebug.hidden{border-color:transparent;background:transparent;box-shadow:none;padding:4px 8px}
+        .sb-block{display:flex;flex-direction:column;align-items:center;padding:2px 6px;min-width:40px}
+        .sb-block:not(:last-child){border-right:2px solid var(--border);padding-right:10px;margin-right:4px}
+        .sb-abbr{
+            font-size:var(--bug-team-name-size);font-weight:var(--bug-team-name-weight);
+            font-family:var(--bug-team-name-font);color:var(--bug-team-name-color);
+            text-transform:uppercase;opacity:0.8;display:flex;align-items:center;gap:4px;margin-bottom:0px;
+            letter-spacing:0.5px;
+        }
+        .sb-logo-sm{width:14px;height:14px;object-fit:contain;border-radius:2px}
+        .sb-row{display:flex;align-items:center;gap:4px}
+        .sb-val{
+            font-size:var(--scorebug-font-size);
+            font-weight:900;
+            min-width:28px;
+            text-align:center;
+            transition:transform .15s;
+            color:var(--scorebug-text-color);
+            letter-spacing:-0.5px;
+        }
+        .sb-val.flash{transform:scale(1.3);color:var(--accent)}
+        .sb-qtr{
+            font-size:14px;font-weight:800;color:var(--accent);min-width:30px;text-align:center;
+            letter-spacing:0.5px;
+        }
+        .game-clock{
+            font-family:'Inter',monospace;font-size:16px;font-weight:800;color:var(--accent);
+            min-width:50px;text-align:center;letter-spacing:1px;
+        }
+        .scorebug button{
+            background:var(--surface);border:1px solid var(--border);color:inherit;
+            width:26px;height:26px;border-radius:50%;font-size:11px;font-weight:800;
+            display:inline-flex;align-items:center;justify-content:center;cursor:pointer;margin:0 2px;
+            transition:all .15s;
+        }
+        .scorebug button:hover{background:var(--accent);color:#000;border-color:var(--accent)}
+        .sb-toggle-btn{
+            background:rgba(0,0,0,0.3);border:1px solid var(--accent);color:#fff;
+            width:34px;height:34px;border-radius:50%;font-size:14px;
+            display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
+            flex-shrink:0;transition:all .2s;
+        }
         .sb-toggle-btn:hover{background:rgba(212,175,55,0.3);transform:scale(1.05)}
+        .sb-clock-controls{display:flex;gap:2px;align-items:center}
+        .sb-clock-controls button{width:22px;height:22px;font-size:9px}
+        
         .btn,.btn-sm{border-radius:60px;font-weight:600;border:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:transform .1s;font-family:inherit;white-space:nowrap}
         .btn:active,.btn-sm:active{transform:scale(.94)}
-        .btn{background:var(--btn);color:var(--btn-text);font-size:.65rem;padding:6px 10px;min-height:30px;min-width:30px}
-        .btn-sm{background:var(--btn);color:var(--btn-text);font-size:.55rem;padding:3px 8px;min-height:26px;min-width:26px}
+        .btn{background:var(--btn);color:var(--btn-text);font-size:.7rem;padding:6px 12px;min-height:34px;min-width:34px}
+        .btn-sm{background:var(--btn);color:var(--btn-text);font-size:.6rem;padding:4px 10px;min-height:28px;min-width:28px}
         .btn-red{background:#dc2626!important;color:white!important}
         .btn-save-sync{background:#e6a817;color:#0a1c3a;font-weight:800;border:2px solid var(--accent)}
         .btn-load-sync{background:#2e7d32;color:#fff;font-weight:800;border:2px solid #4caf50}
         .theme-btn{background:#222;border:1px solid var(--border);color:#fff;font-size:.55rem;cursor:pointer;padding:2px 8px;border-radius:12px;display:flex;align-items:center;gap:2px;font-weight:600;white-space:nowrap}
         nav{background:#1a1a1a;display:flex;padding:0 6px;gap:2px;overflow-x:auto;flex-shrink:0}
-        .nav-link{padding:6px 12px;font-size:.6rem;font-weight:600;background:none;border:none;color:rgba(255,255,255,.7);cursor:pointer;border-radius:6px 6px 0 0;white-space:nowrap;min-height:30px}
+        .nav-link{padding:6px 12px;font-size:.65rem;font-weight:600;background:none;border:none;color:rgba(255,255,255,.7);cursor:pointer;border-radius:6px 6px 0 0;white-space:nowrap;min-height:32px}
         .nav-link.active{background:var(--btn);color:#000}
-        main{flex:1;overflow:hidden;padding:3px;display:flex;gap:3px}
-        .game-grid{display:flex;gap:4px;width:100%;height:100%;background:var(--grid-bg);border-radius:8px;padding:3px;flex-direction:column;overflow:hidden}
-        .game-controls{background:var(--surface);border-radius:6px;border:1px solid var(--border);padding:4px 8px;display:flex;flex-wrap:wrap;gap:4px;align-items:center;flex-shrink:0}
-        .game-controls .state-badge{padding:2px 10px;border-radius:20px;font-weight:700;font-size:.7rem;white-space:nowrap}
+        main{flex:1;overflow:hidden;padding:4px;display:flex;gap:3px}
+        .game-grid{display:flex;gap:4px;width:100%;height:100%;background:var(--grid-bg);border-radius:8px;padding:4px;flex-direction:column;overflow:hidden}
+        
+        /* ===== GAME CONTROLS – LARGER ===== */
+        .game-controls{
+            background:var(--surface);border-radius:8px;border:1px solid var(--border);
+            padding:6px 12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;flex-shrink:0;
+            font-size:.85rem;
+        }
+        .game-controls .state-badge{
+            padding:4px 14px;border-radius:24px;font-weight:800;font-size:.85rem;white-space:nowrap;
+        }
         .game-controls .state-badge.pregame{background:#94a3b8;color:#fff}
         .game-controls .state-badge.first_half{background:#22c55e;color:#000}
         .game-controls .state-badge.halftime{background:#f59e0b;color:#000}
         .game-controls .state-badge.second_half{background:#3b82f6;color:#fff}
         .game-controls .state-badge.overtime{background:#ef4444;color:#fff}
         .game-controls .state-badge.final{background:#1e293b;color:#fff}
-        .game-controls .down-dist{display:flex;gap:4px;align-items:center;flex-wrap:wrap;font-size:.7rem;font-weight:600}
-        .game-controls .down-dist select,.game-controls .down-dist input{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 3px;font-size:.7rem;color:inherit;min-height:22px;width:auto}
-        .game-controls .possession{display:flex;gap:2px}
-        .game-controls .possession button{padding:2px 8px;border-radius:12px;font-size:.6rem;font-weight:700;border:1px solid var(--border);background:transparent;color:inherit;cursor:pointer;min-height:24px}
+        .game-controls .down-dist{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:.8rem;font-weight:600}
+        .game-controls .down-dist select,.game-controls .down-dist input{
+            background:var(--surface);border:1px solid var(--border);border-radius:4px;
+            padding:2px 6px;font-size:.8rem;color:inherit;min-height:28px;width:auto;
+        }
+        .game-controls .possession{display:flex;gap:3px}
+        .game-controls .possession button{
+            padding:4px 12px;border-radius:16px;font-size:.7rem;font-weight:700;
+            border:1px solid var(--border);background:transparent;color:inherit;cursor:pointer;min-height:30px;
+        }
         .game-controls .possession button.active{background:var(--accent);color:#000;border-color:var(--accent)}
-        .game-controls .quick-scores,.game-controls .quick-penalties,.game-controls .game-actions,.game-controls .clock-presets{display:flex;gap:2px;flex-wrap:wrap}
-        .game-controls button{padding:2px 8px;border-radius:12px;font-size:.6rem;font-weight:700;border:1px solid var(--border);background:var(--surface);color:inherit;cursor:pointer;min-height:24px}
-        .game-controls button:hover{background:var(--btn);color:#000}
+        .game-controls .quick-scores,.game-controls .quick-penalties,.game-controls .game-actions,.game-controls .clock-presets{
+            display:flex;gap:3px;flex-wrap:wrap;
+        }
+        .game-controls button{
+            padding:4px 12px;border-radius:16px;font-size:.7rem;font-weight:700;
+            border:1px solid var(--border);background:var(--surface);color:inherit;cursor:pointer;min-height:30px;
+            transition:all .15s;
+        }
+        .game-controls button:hover{background:var(--btn);color:#000;border-color:var(--btn)}
         .game-controls .quick-scores button.td{background:#dc2626;color:#fff;border-color:#dc2626}
+        .game-controls .quick-scores button.td:hover{background:#b91c1c}
         .game-controls .quick-scores button.fg{background:#2563eb;color:#fff;border-color:#2563eb}
+        .game-controls .quick-scores button.fg:hover{background:#1d4ed8}
         .game-controls .quick-scores button.pat{background:#16a34a;color:#fff;border-color:#16a34a}
+        .game-controls .quick-scores button.pat:hover{background:#15803d}
         .game-controls .quick-scores button.safety{background:#f59e0b;color:#000;border-color:#f59e0b}
-        .game-log{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:4px 8px;max-height:80px;overflow-y:auto;flex-shrink:0;font-size:.65rem;font-family:monospace;display:flex;flex-direction:column;gap:1px}
-        .game-log .log-entry{display:flex;gap:8px;padding:1px 0;border-bottom:1px solid var(--border)}
-        .game-log .log-entry .log-time{color:var(--accent);font-weight:700;min-width:40px}
-        .game-log .log-entry .log-team{font-weight:700;min-width:40px}
-        .game-log .log-entry .log-desc{flex:1}
+        .game-controls .quick-scores button.safety:hover{background:#d97706}
+        .game-controls .clock-presets button{background:var(--surface);font-size:.65rem;padding:2px 10px;min-height:26px}
+        
+        /* ===== GAME LOG – LARGER ===== */
+        .game-log{
+            background:var(--surface);border:1px solid var(--border);border-radius:8px;
+            padding:6px 12px;max-height:90px;overflow-y:auto;flex-shrink:0;
+            font-size:.75rem;font-family:monospace;display:flex;flex-direction:column;gap:2px;
+        }
+        .game-log .log-entry{display:flex;gap:10px;padding:2px 0;border-bottom:1px solid var(--border);align-items:center}
+        .game-log .log-entry .log-time{color:var(--accent);font-weight:700;min-width:50px;font-size:.75rem}
+        .game-log .log-entry .log-team{font-weight:700;min-width:50px;font-size:.75rem}
+        .game-log .log-entry .log-desc{flex:1;font-size:.75rem}
+        
+        /* ===== TEAM CARDS – LARGER FONT ===== */
         .team-cards{display:flex;gap:4px;flex:1;min-height:0}
-        .team-card{flex:1;min-width:0;background:var(--surface);border-radius:6px;border:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--card-shadow)}
-        .card-head{padding:3px 6px;display:flex;align-items:center;gap:4px;flex-shrink:0;border-bottom:1px solid var(--border);color:#fff;font-size:var(--card-team-label-size);font-family:var(--card-team-label-font);font-weight:var(--card-team-label-weight);min-height:32px}
-        .card-head select{font-size:.65rem;padding:3px 6px;border-radius:4px;background:#fff!important;color:#000!important;border:2px solid #d4af37!important;flex:1;min-width:0;min-height:26px}
+        .team-card{flex:1;min-width:0;background:var(--surface);border-radius:8px;border:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--card-shadow)}
+        .card-head{
+            padding:6px 10px;display:flex;align-items:center;gap:6px;flex-shrink:0;
+            border-bottom:1px solid var(--border);color:#fff;font-size:var(--card-team-label-size);
+            font-family:var(--card-team-label-font);font-weight:var(--card-team-label-weight);
+            min-height:40px;
+        }
+        .card-head select{
+            font-size:.75rem;
+            padding:4px 8px;
+            border-radius:4px;
+            background:#fff!important;
+            color:#000!important;
+            border:2px solid #d4af37!important;
+            flex:1;
+            min-width:0;
+            min-height:30px;
+        }
         .card-head select option{background:#fff!important;color:#000!important}
-        .card-head .team-logo{height:28px;width:28px;object-fit:contain;border-radius:4px;background:rgba(255,255,255,0.8);padding:2px;flex-shrink:0}
-        .unit-tabs{display:flex;gap:2px;padding:2px 6px;border-bottom:1px solid var(--border);flex-shrink:0}
-        .unit-tab{padding:3px 8px;font-size:.55rem;font-weight:700;background:rgba(0,0,0,.05);border:none;color:inherit;opacity:.7;cursor:pointer;border-radius:8px;min-height:22px;text-transform:uppercase}
+        .card-head .team-logo{height:32px;width:32px;object-fit:contain;border-radius:4px;background:rgba(255,255,255,0.8);padding:2px;flex-shrink:0}
+        .unit-tabs{display:flex;gap:3px;padding:3px 8px;border-bottom:1px solid var(--border);flex-shrink:0}
+        .unit-tab{padding:4px 10px;font-size:.6rem;font-weight:700;background:rgba(0,0,0,.05);border:none;color:inherit;opacity:.7;cursor:pointer;border-radius:8px;min-height:26px;text-transform:uppercase}
         .unit-tab.active{background:var(--btn);color:#000;opacity:1}
-        .search-bar{display:flex;align-items:center;gap:2px;padding:2px 6px;border-bottom:1px solid var(--border)}
-        .search-bar input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:2px 4px;font-size:.6rem;color:inherit}
-        .player-list-header,.player-row{display:grid;grid-template-columns:22px 30px 1fr 70px 42px 28px 28px 22px;gap:2px;align-items:center;padding:2px 6px}
-        .player-list-header{font-size:.5rem;font-weight:700;text-transform:uppercase;opacity:.6;border-bottom:1px solid var(--border);min-height:20px}
+        .search-bar{display:flex;align-items:center;gap:3px;padding:3px 8px;border-bottom:1px solid var(--border)}
+        .search-bar input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:4px 6px;font-size:.7rem;color:inherit;min-height:28px}
+        
+        /* ===== PLAYER ROWS – LARGER ===== */
+        .player-list-header,.player-row{
+            display:grid;
+            grid-template-columns:26px 36px 1fr 80px 50px 32px 32px 28px;
+            gap:3px;
+            align-items:center;
+            padding:4px 8px;
+        }
+        .player-list-header{
+            font-size:.6rem;
+            font-weight:700;
+            text-transform:uppercase;
+            opacity:.6;
+            border-bottom:1px solid var(--border);
+            min-height:24px;
+        }
         .player-list-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
-        .player-row{border-bottom:1px solid var(--border);min-height:30px;font-size:.7rem;cursor:pointer}
-        .player-row.starter{background:rgba(212,175,55,0.12)}
-        .plyr-photo{width:18px;height:18px;border-radius:50%;object-fit:cover;border:1px solid var(--border);flex-shrink:0}
-        .plyr-num input,.plyr-name input,.plyr-notes-inline input{background:transparent;border:1px solid transparent;border-radius:2px;padding:1px 2px;min-height:20px;color:inherit;font-family:inherit;font-size:inherit;width:100%}
-        .plyr-num input{font-weight:700}
+        .player-row{
+            border-bottom:1px solid var(--border);
+            min-height:36px;
+            font-size:.8rem;
+            cursor:pointer;
+        }
+        .player-row.starter{
+            background:rgba(251,191,36,0.35);
+            border-left:4px solid var(--starter-dark);
+        }
+        .player-row.starter .plyr-name input{font-weight:800;color:#000}
+        .plyr-photo{width:22px;height:22px;border-radius:50%;object-fit:cover;border:1px solid var(--border);flex-shrink:0}
+        .plyr-num input,.plyr-name input,.plyr-notes-inline input{
+            background:transparent;border:1px solid transparent;border-radius:3px;
+            padding:2px 4px;min-height:24px;color:inherit;font-family:inherit;font-size:inherit;width:100%;
+        }
+        .plyr-num input{font-weight:800;width:36px}
         .plyr-name input{font-weight:600}
-        .plyr-pos select{font-size:.55rem;font-weight:700;background:transparent;border:1px solid transparent;border-radius:2px;color:inherit;padding:1px 2px;min-height:20px;width:100%}
-        .st-toggle{background:none;border:2px solid var(--starter-bg);border-radius:50%;width:20px;height:20px;font-size:.6rem;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--starter-bg)}
+        .plyr-pron-inline{
+            font-size:.65rem;
+            font-style:italic;
+            color:#000;
+            opacity:.6;
+            margin-left:4px;
+            white-space:nowrap;
+        }
+        .plyr-pos select{
+            font-size:.65rem;font-weight:700;background:transparent;border:1px solid transparent;border-radius:3px;
+            color:inherit;padding:2px 4px;min-height:24px;width:100%;
+        }
+        .st-toggle{
+            background:none;border:2px solid var(--starter-bg);border-radius:50%;
+            width:24px;height:24px;font-size:.7rem;
+            display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
+            color:var(--starter-bg);
+        }
         .st-toggle.off{border-color:var(--border);color:inherit;opacity:.4}
         .st-toggle:not(.off){background:var(--starter-bg);color:#000}
-        .pin-btn{background:none;border:1px solid var(--border);border-radius:4px;font-size:.6rem;cursor:pointer;padding:1px 3px;min-height:20px;min-width:20px;display:flex;align-items:center;justify-content:center}
+        .st-toggle:hover{transform:scale(1.1)}
+        .pin-btn{
+            background:none;border:1px solid var(--border);border-radius:4px;
+            font-size:.7rem;cursor:pointer;padding:2px 4px;min-height:24px;min-width:24px;
+            display:flex;align-items:center;justify-content:center;
+            transition:all .15s;
+        }
         .pin-btn.active{background:var(--accent);color:#000;border-color:var(--accent)}
-        .add-row{display:flex;gap:2px;padding:2px 6px;border-top:1px solid var(--border);flex-shrink:0}
-        .add-row input,.add-row select{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:2px 4px;font-size:.6rem;color:inherit;min-height:24px}
-        footer{background:#0f172a;padding:2px 8px;display:flex;align-items:center;justify-content:space-between;gap:4px;flex-wrap:wrap;border-top:1px solid var(--accent);color:#fff;font-size:.5rem;font-weight:700;flex-shrink:0;min-height:20px}
+        .pin-btn:hover{transform:scale(1.1)}
+        .add-row{
+            display:flex;gap:3px;padding:4px 8px;border-top:1px solid var(--border);flex-shrink:0;
+            flex-wrap:wrap;
+        }
+        .add-row input,.add-row select{
+            background:var(--surface);border:1px solid var(--border);border-radius:4px;
+            padding:4px 6px;font-size:.7rem;color:inherit;min-height:28px;
+        }
+        .add-row input[placeholder="#"]{width:40px}
+        .add-row input[placeholder="Name"]{flex:2;min-width:80px}
+        .add-row input[placeholder="Notes"]{flex:1;min-width:60px}
+        
+        footer{background:#0f172a;padding:2px 8px;display:flex;align-items:center;justify-content:space-between;gap:4px;flex-wrap:wrap;border-top:1px solid var(--accent);color:#fff;font-size:.55rem;font-weight:700;flex-shrink:0;min-height:24px}
         body.dark-mode footer,body.seven-mode footer{background:#080808}
         .footer-logo{height:20px;width:auto;object-fit:contain;display:block}
         .ft-left,.ft-center,.ft-right{display:flex;align-items:center;gap:4px}
         .ft-center{flex:1;justify-content:center;text-align:center}
         .ft-center a{color:#ef4444;text-decoration:underline;font-weight:800}
-        .ft-right{font-family:monospace;color:var(--accent);font-size:.5rem}
-        .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:white;padding:4px 16px;border-radius:16px;font-size:.7rem;opacity:0;transition:.2s;pointer-events:none;z-index:9999}
+        .ft-right{font-family:monospace;color:var(--accent);font-size:.55rem}
+        .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:white;padding:6px 20px;border-radius:20px;font-size:.8rem;opacity:0;transition:.2s;pointer-events:none;z-index:9999}
         .toast.show{opacity:1}
-        .panel{background:var(--surface);border-radius:8px;padding:10px;margin:3px;overflow-y:auto;width:100%}
-        .panel label{display:block;font-weight:600;margin:6px 0 3px;font-size:.65rem}
-        .panel input[type="text"],.panel textarea,.panel select{width:100%;padding:4px 8px;border-radius:4px;border:1px solid var(--border);font-size:.7rem;margin-bottom:4px;background:var(--surface);color:inherit;font-family:inherit}
+        .panel{background:var(--surface);border-radius:8px;padding:12px;margin:3px;overflow-y:auto;width:100%}
+        .panel label{display:block;font-weight:600;margin:6px 0 3px;font-size:.7rem}
+        .panel input[type="text"],.panel textarea,.panel select{width:100%;padding:6px 10px;border-radius:4px;border:1px solid var(--border);font-size:.75rem;margin-bottom:4px;background:var(--surface);color:inherit;font-family:inherit;min-height:32px}
         .admin-tabs{display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap}
-        .admin-tab{padding:4px 10px;border-radius:12px;font-size:.6rem;font-weight:700;background:none;border:1px solid var(--border);color:inherit;cursor:pointer}
+        .admin-tab{padding:5px 12px;border-radius:12px;font-size:.65rem;font-weight:700;background:none;border:1px solid var(--border);color:inherit;cursor:pointer}
         .admin-tab.active{background:var(--btn);color:#000;border-color:var(--btn)}
         .roster-layout{display:grid;grid-template-columns:180px 1fr;gap:6px;height:100%}
         .team-sidebar{background:var(--surface);border-radius:6px;padding:6px;overflow-y:auto;border:1px solid var(--border)}
-        .team-item{padding:6px 8px;border-radius:4px;margin-bottom:2px;cursor:pointer;font-weight:600;font-size:.65rem;min-height:30px;display:flex;align-items:center;color:inherit}
+        .team-item{padding:6px 8px;border-radius:4px;margin-bottom:2px;cursor:pointer;font-weight:600;font-size:.7rem;min-height:32px;display:flex;align-items:center;color:inherit}
         .team-item.active{background:var(--btn);color:#000}
         .roster-workspace{background:var(--surface);border-radius:6px;padding:6px;overflow-y:auto;border:1px solid var(--border)}
-        .player-edit-row{display:grid;grid-template-columns:30px 1fr 50px 40px 1fr 60px 50px 28px 28px;gap:2px;margin-bottom:2px;align-items:center}
-        .player-edit-row input,.player-edit-row select{font-size:.6rem;padding:2px 4px;border-radius:3px;border:1px solid var(--border);background:var(--surface);color:inherit;min-height:24px}
-        .player-edit-row .rph{font-size:0;width:100%;height:24px;cursor:pointer}
-        .player-edit-row .rph::file-selector-button{font-size:.5rem;padding:1px 4px}
+        
+        /* ===== ROSTER EDIT – LARGER ===== */
+        .player-edit-row{
+            display:grid;
+            grid-template-columns:36px 1fr 60px 50px 1fr 70px 60px 50px 32px;
+            gap:3px;
+            margin-bottom:3px;
+            align-items:center;
+        }
+        .player-edit-row input,.player-edit-row select{
+            font-size:.7rem;padding:3px 6px;border-radius:4px;border:1px solid var(--border);
+            background:var(--surface);color:inherit;min-height:28px;
+        }
+        .player-edit-row .rph{font-size:0;width:100%;height:28px;cursor:pointer}
+        .player-edit-row .rph::file-selector-button{font-size:.55rem;padding:2px 6px}
+        
         .script-container{display:flex;flex-direction:column;height:100%;background:var(--surface);border-radius:8px;overflow:hidden}
-        .script-editor{flex:1;padding:8px;overflow-y:auto;font-size:.8rem;line-height:1.5;outline:none;background:var(--surface);color:inherit}
+        .script-editor{flex:1;padding:8px;overflow-y:auto;font-size:.85rem;line-height:1.6;outline:none;background:var(--surface);color:inherit}
         .pin-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.92);z-index:5000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px}
         .pin-overlay input{font-size:1.2rem;text-align:center;width:200px;padding:8px;border-radius:6px;border:2px solid var(--accent);background:#111;color:#fff}
         .pin-overlay .btn-group{display:flex;gap:10px;margin-top:4px}
@@ -209,7 +370,19 @@
         .clock-warning{animation:pulse-red 0.8s infinite;color:#ff0000!important}
         .clock-expired{animation:pulse-red 0.4s infinite;color:#ff0000!important}
         @keyframes pulse-red{0%{opacity:1}50%{opacity:.3}100%{opacity:1}}
-        @media(max-width:1100px){.hdr-c{flex-wrap:wrap;gap:4px}.scorebug{padding:2px 4px}}
+        
+        /* Tooltip helper */
+        [data-tooltip]{position:relative;cursor:help}
+        [data-tooltip]:before{
+            content:attr(data-tooltip);
+            position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);
+            background:#1e293b;color:#fff;padding:4px 10px;border-radius:6px;
+            font-size:.6rem;font-weight:500;white-space:nowrap;
+            opacity:0;pointer-events:none;transition:opacity .2s;z-index:100;
+        }
+        [data-tooltip]:hover:before{opacity:1}
+        
+        @media(max-width:1100px){.hdr-c{flex-wrap:wrap;gap:4px}.scorebug{padding:4px 8px}}
         @media(max-width:900px){.team-cards{flex-direction:column}.roster-layout{grid-template-columns:1fr}.hdr-c{order:2;width:100%;justify-content:center}.hdr-b{flex-wrap:wrap;justify-content:center;padding:2px 6px}}
         @media(max-width:768px){
             header{flex-wrap:wrap;min-height:auto;padding:2px 4px;gap:2px}
@@ -220,7 +393,8 @@
             .brand-logo{height:28px}
             .wall-clock{font-size:.75rem;min-width:50px;padding:2px 6px}
             .weather-pill-header{font-size:.6rem;padding:2px 6px}
-            .scorebug{padding:2px 4px;flex-wrap:wrap}
+            .scorebug{padding:4px 6px;flex-wrap:wrap;gap:4px}
+            .scorebug .sb-block{border-right:none!important;padding:2px 4px!important}
             .hdr-client{padding:2px 4px;max-height:40px;min-height:28px}
             .client-logo{height:28px;width:28px}
             .client-name{font-size:.6rem;max-width:60px;padding:1px 6px}
@@ -228,9 +402,19 @@
             #logoutBtn{font-size:.5rem;padding:1px 4px;min-height:20px;min-width:20px}
             .hdr-r .theme-btn{font-size:.5rem;padding:1px 4px}
             .hdr-r .btn-sm{font-size:.5rem;padding:1px 4px;min-height:20px;min-width:20px}
-            .player-list-header,.player-row{grid-template-columns:18px 24px 1fr 50px 36px 22px 22px 18px;gap:1px;padding:1px 4px;font-size:.6rem}
-            .game-controls{flex-direction:column;align-items:stretch}
-            .game-controls .down-dist,.game-controls .possession,.game-controls .quick-scores,.game-controls .quick-penalties,.game-controls .game-actions,.game-controls .clock-presets{justify-content:center}
+            .player-list-header,.player-row{
+                grid-template-columns:20px 28px 1fr 60px 40px 26px 26px 24px;
+                gap:2px;padding:3px 4px;font-size:.7rem;
+            }
+            .game-controls{flex-direction:column;align-items:stretch;gap:4px}
+            .game-controls .down-dist,.game-controls .possession,.game-controls .quick-scores,
+            .game-controls .quick-penalties,.game-controls .game-actions,.game-controls .clock-presets{
+                justify-content:center;flex-wrap:wrap;
+            }
+            .player-edit-row{
+                grid-template-columns:30px 1fr 50px 40px 1fr 50px 40px 30px 26px;
+                gap:2px;
+            }
         }
         @media(max-width:480px){
             .brand-logo{height:24px}
@@ -243,7 +427,11 @@
             .wall-clock{font-size:.65rem;min-width:40px;padding:1px 4px}
             .weather-pill-header{font-size:.5rem;padding:1px 4px}
             .card-head .team-logo{height:18px;width:18px}
-            .player-list-header,.player-row{grid-template-columns:14px 18px 1fr 36px 28px 16px 16px 14px;font-size:.5rem;gap:1px}
+            .player-list-header,.player-row{
+                grid-template-columns:16px 22px 1fr 44px 32px 22px 22px 20px;
+                font-size:.6rem;gap:1px;padding:2px 3px;
+            }
+            .player-edit-row{grid-template-columns:26px 1fr 44px 36px 1fr 44px 36px 26px 22px;gap:1px;font-size:.6rem}
         }
     </style>
 </head>
@@ -263,10 +451,10 @@
         <div class="weather-pill-header" id="weatherHeader" title="Weather information">--°F</div>
         <div class="scorebug-wrapper">
             <div class="scorebug" id="scorebug">
-                <div class="sb-block"><span class="sb-abbr" id="sbAwayAbbr">AWAY</span><div class="sb-row"><button onclick="chScore('away',-1)">−</button><span class="sb-val" id="sbAwayScore">0</span><button onclick="chScore('away',1)">+</button></div></div>
-                <div class="sb-block"><span class="sb-abbr" id="sbHomeAbbr">HOME</span><div class="sb-row"><button onclick="chScore('home',-1)">−</button><span class="sb-val" id="sbHomeScore">0</span><button onclick="chScore('home',1)">+</button></div></div>
-                <div class="sb-block"><span class="sb-abbr" id="sbQLabel">QTR</span><span class="sb-qtr" id="sbQuarter">Q1</span><div class="sb-row"><button onclick="chQuarter(-1)">◀</button><button onclick="chQuarter(1)">▶</button></div></div>
-                <div class="sb-block"><span class="sb-abbr">GAME</span><span class="game-clock" id="gameClockDisplay">--:--</span><div class="sb-row"><button onclick="setGC()">⏳</button><button onclick="startGC()">▶</button><button onclick="pauseGC()">⏸</button><button onclick="resetGC()">↺</button></div></div>
+                <div class="sb-block"><span class="sb-abbr" id="sbAwayAbbr">AWAY</span><div class="sb-row"><button onclick="chScore('away',-1)" data-tooltip="Subtract point">−</button><span class="sb-val" id="sbAwayScore">0</span><button onclick="chScore('away',1)" data-tooltip="Add point">+</button></div></div>
+                <div class="sb-block"><span class="sb-abbr" id="sbHomeAbbr">HOME</span><div class="sb-row"><button onclick="chScore('home',-1)" data-tooltip="Subtract point">−</button><span class="sb-val" id="sbHomeScore">0</span><button onclick="chScore('home',1)" data-tooltip="Add point">+</button></div></div>
+                <div class="sb-block"><span class="sb-abbr" id="sbQLabel">QTR</span><span class="sb-qtr" id="sbQuarter">Q1</span><div class="sb-row"><button onclick="chQuarter(-1)" data-tooltip="Previous quarter">◀</button><button onclick="chQuarter(1)" data-tooltip="Next quarter">▶</button></div></div>
+                <div class="sb-block"><span class="sb-abbr">GAME</span><span class="game-clock" id="gameClockDisplay">--:--</span><div class="sb-clock-controls"><button onclick="setGC()" data-tooltip="Set minutes">⏳</button><button onclick="startGC()" data-tooltip="Start clock">▶</button><button onclick="pauseGC()" data-tooltip="Pause clock">⏸</button><button onclick="resetGC()" data-tooltip="Reset clock">↺</button></div></div>
             </div>
             <button class="sb-toggle-btn" onclick="toggleScorebugDisplay()" title="Toggle scoreboard visibility">👁️</button>
         </div>
@@ -275,9 +463,9 @@
         <button class="btn-sm btn-save-sync" onclick="fnlCloudSaveAll()" title="Save entire game to cloud">💾 SAVE ALL</button>
         <button class="btn-sm btn-load-sync" onclick="fnlCloudLoadAll()" title="Load entire game from cloud">📥 LOAD ALL</button>
         <button id="themeBtn" class="theme-btn" onclick="toggleTheme()">☀️ Light</button>
-        <button class="btn btn-sm" onclick="printLU()">🖨️</button>
-        <button class="btn btn-red btn-sm" id="resetBtn">RESET</button>
-        <button class="btn btn-sm" id="logoutBtn" onclick="logoutAndShowPIN()" style="background:#666;color:#fff;white-space:nowrap;">🔓 Switch User</button>
+        <button class="btn btn-sm" onclick="printLU()" title="Print lineup cards">🖨️</button>
+        <button class="btn btn-red btn-sm" id="resetBtn" title="Reset game scores and quarters">RESET</button>
+        <button class="btn btn-sm" id="logoutBtn" onclick="logoutAndShowPIN()" style="background:#666;color:#fff;white-space:nowrap;" title="Switch user">🔓 Switch User</button>
     </div>
 </header>
 <nav id="mainNav"></nav>
@@ -286,12 +474,12 @@
 <footer>
     <div class="ft-left"><img src="FNL2.png" class="footer-logo" alt="FNL" onerror="this.style.display='none'"></div>
     <div class="ft-center"><span style="display:inline-block;text-align:center;width:100%;">© 2026 Clayton E. Greenberg | <a href="https://voiceofdfw.com">VoiceofDFW.com</a> | 🏈 Digital Pressbox Command Center 🏈</span></div>
-    <div class="ft-right"><span id="ftTicker">v20.3</span> · <span id="ftSaved">Never saved</span></div>
+    <div class="ft-right"><span id="ftTicker">v21.0</span> · <span id="ftSaved">Never saved</span></div>
 </footer>
 
 <script>
 // ═══════════════════════════════════════════════
-// FRIDAY NIGHT LIVE v20.3 – Fixed & Complete
+// FRIDAY NIGHT LIVE v21.0 – Full Football Console
 // ═══════════════════════════════════════════════
 "use strict";
 const CLOUD="https://lineup-api.claytongreenberg.workers.dev/api/lineup";
@@ -336,14 +524,14 @@ function defGS(){
         gameState:'PREGAME', down:1, dist:10, yardline:50, poss:'home',
         scoringLog:[], penaltyLog:[], playerStats:{},
         tms:teams, cid:'h', sc:'', gc:{rem:1500,run:false},
-        us:[], rs:[], sb:true
+        us:[], rs:[], sb:true, gameHistory:[]
     };
 }
 let S={v:'sport',at:'branding',md:'light',ua:'all',uh:'all',br:{t:'FRIDAY NIGHT LIVE',st:'PA CONSOLE',cl:'',cn:'',wlat:'',wlon:'',wgps:true},fn:"'Inter',sans-serif",cf:'12h',cs:true,sp:{fb:defGS()},cp:{},wd:null,lw:0,ap:'',im:true,outdoor:false};
 function g(){return S.sp.fb}
-const K='fnl_v20';
+const K='fnl_v21';
 
-function toast(m){const x=document.getElementById('toast');x.textContent=m;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),1800)}
+function toast(m){const x=document.getElementById('toast');x.textContent=m;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),2000)}
 function esc(s){if(!s)return'';return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m])}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).substring(2,6)}
 
@@ -363,17 +551,18 @@ function toggleOutdoor(){ S.outdoor=!S.outdoor; applyTheme(); toast(S.outdoor?'O
 function applyAdminStyles(){
     const r=document.documentElement.style;
     r.setProperty('--bug-team-name-font',S.bugTeamNameFont||"'Inter',sans-serif");
-    r.setProperty('--bug-team-name-size',S.bugTeamNameSize||'7px');
+    r.setProperty('--bug-team-name-size',S.bugTeamNameSize||'10px');
     r.setProperty('--bug-team-name-color',S.bugTeamNameColor||'inherit');
-    r.setProperty('--bug-team-name-weight',S.bugTeamNameWeight||'700');
+    r.setProperty('--bug-team-name-weight',S.bugTeamNameWeight||'800');
     r.setProperty('--card-team-label-font',S.cardTeamLabelFont||"'Inter',sans-serif");
-    r.setProperty('--card-team-label-size',S.cardTeamLabelSize||'0.8rem');
+    r.setProperty('--card-team-label-size',S.cardTeamLabelSize||'0.9rem');
     r.setProperty('--card-team-label-color',S.cardTeamLabelColor||'inherit');
     r.setProperty('--card-team-label-weight',S.cardTeamLabelWeight||'700');
     r.setProperty('--card-head-visitor-bg',S.cardHeadVisitorBg||'#1e3a5f');
     r.setProperty('--card-head-home-bg',S.cardHeadHomeBg||'#7f1d1d');
     r.setProperty('--scorebug-bg',S.scorebugBg||'var(--surface)');
     r.setProperty('--scorebug-text-color',S.scorebugTextColor||'var(--text)');
+    r.setProperty('--scorebug-font-size',S.scorebugFontSize||'1.2rem');
 }
 function toggleScorebugDisplay(){
     const sb=document.getElementById('scorebug');
@@ -504,6 +693,7 @@ async function loadState(){
                 if(sp.down===undefined) sp.down=1;
                 if(sp.dist===undefined) sp.dist=10;
                 if(sp.yardline===undefined) sp.yardline=50;
+                if(!sp.gameHistory) sp.gameHistory=[];
             }
             if(!S.cp) S.cp={};
             if(!S.ap) S.ap='';
@@ -517,7 +707,7 @@ async function loadState(){
     }catch(e){ console.warn('Load error:',e); }
     applyTheme();
     applyAdminStyles();
-    try{ renderAll(); }catch(e){ console.error('Render error:',e); document.getElementById('main').innerHTML='<div class="panel"><h3>Error</h3><p>Check console (F12) for details. Try clearing site data.</p></div>'; }
+    try{ renderAll(); }catch(e){ console.error('Render error:',e); document.getElementById('main').innerHTML='<div class="panel"><h3>Error</h3><p>Check console (F12). Try clearing site data.</p></div>'; }
 }
 
 // ─── NAVIGATION ───
@@ -567,7 +757,7 @@ function updateScorebug(){
     const ls=sp.md==='7v7'?['1st Half','2nd Half']:['Q1','Q2','Q3','Q4'];
     document.getElementById('sbQuarter').textContent=ls[(sp.q||1)-1]||'Q1';
     document.getElementById('sbQLabel').textContent=sp.md==='7v7'?'HALF':'QTR';
-    document.getElementById('ftTicker').textContent='v20.3 • '+(at?at.name:'')+' vs. '+(ht?ht.name:'');
+    document.getElementById('ftTicker').textContent='v21.0 • '+(at?at.name:'')+' vs. '+(ht?ht.name:'');
 }
 
 // ─── HELPERS ───
@@ -605,6 +795,28 @@ function redoGame(){
 }
 
 // ─── GAME STATE ───
+function setHalftime(){
+    const sp=g();
+    if(sp.gameState==='FINAL'){ toast('Game is final'); return; }
+    sp.gameState='HALFTIME';
+    sp.gc.run=false;
+    pushUndo();
+    saveState();
+    renderAll();
+    toast('⏸️ Halftime – clock paused');
+}
+function setOvertime(){
+    const sp=g();
+    if(sp.gameState==='FINAL'){ toast('Game is final'); return; }
+    if(!confirm('Enter OVERTIME? Clock will reset to 6:00.')) return;
+    sp.gameState='OVERTIME';
+    sp.gc.rem=360; // 6 min
+    sp.gc.run=true;
+    pushUndo();
+    saveState();
+    renderAll();
+    toast('⏱️ Overtime started');
+}
 function startGame(){
     const sp=g();
     if(sp.gameState!=='PREGAME' && !confirm('Game already started. Reset?')) return;
@@ -614,20 +826,33 @@ function startGame(){
     sp.down=1; sp.dist=10; sp.yardline=50;
     sp.scoringLog=[]; sp.penaltyLog=[]; sp.playerStats={};
     sp.tms.forEach(t=>t.pl.forEach(p=>{ sp.playerStats[p.id]={}; }));
-    pushUndo(); saveState(); renderAll(); toast('Game started!');
+    // Archive previous game
+    if(sp.gameHistory===undefined) sp.gameHistory=[];
+    pushUndo(); saveState(); renderAll(); toast('🏈 Game started!');
 }
 function startSecondHalf(){
     const sp=g();
-    if(sp.gameState!=='HALFTIME' && !confirm('Switch to second half?')) return;
+    if(sp.gameState==='FINAL'){ toast('Game is final'); return; }
+    if(sp.gameState!=='HALFTIME' && !confirm('Switch to second half? (Halftime recommended)')) return;
     sp.gameState='SECOND_HALF';
     sp.gc.rem=1440; sp.gc.run=true;
     sp.q=3;
-    pushUndo(); saveState(); renderAll(); toast('2nd Half started');
+    pushUndo(); saveState(); renderAll(); toast('⏭️ 2nd Half started');
 }
 function endGame(){
     if(!confirm('End game? Final score locked.')) return;
     const sp=g(); sp.gameState='FINAL'; sp.gc.run=false;
-    pushUndo(); saveState(); renderAll(); toast('Game ended');
+    // Archive to history
+    if(!sp.gameHistory) sp.gameHistory=[];
+    sp.gameHistory.push({
+        date: new Date().toISOString(),
+        away: sp.tms.find(t=>t.id===sp.aid)?.name||'Away',
+        home: sp.tms.find(t=>t.id===sp.hid)?.name||'Home',
+        awayScore: sp.as,
+        homeScore: sp.hs,
+        log: [...sp.scoringLog, ...sp.penaltyLog]
+    });
+    pushUndo(); saveState(); renderAll(); toast('🏁 Game ended – archived');
 }
 function setPossession(side){
     const sp=g(); if(sp.poss===side) return;
@@ -639,24 +864,28 @@ function setYardline(v){ const sp=g(); sp.yardline=parseInt(v)||1; pushUndo(); s
 function applyClockPreset(sec){ const sp=g(); sp.gc.rem=sec; sp.gc.run=false; pushUndo(); saveState(); updateGameClockDisplay(); renderAll(); toast(`Clock: ${Math.floor(sec/60)}:${String(sec%60).padStart(2,'0')}`); }
 function customClock(){ const m=parseInt(prompt('Minutes:')); if(!isNaN(m)&&m>0) applyClockPreset(m*60); }
 
-// ─── QUICK SCORE ───
+// ─── QUICK SCORE (player optional) ───
 function quickScore(type){
     const sp=g();
     if(sp.gameState==='FINAL'){ toast('Game is final'); return; }
     const side=sp.poss; const team=getTeam(side);
     if(!team){ toast('No team'); return; }
-    const name=prompt(`Enter player name for ${type.toUpperCase()}:`);
-    if(!name) return;
     let pts=0; if(type==='td') pts=6; else if(type==='fg') pts=3; else if(type==='pat') pts=1; else if(type==='safety') pts=2;
+    // Player name is optional – if skipped, just use "Team"
+    const name=prompt(`Enter player name for ${type.toUpperCase()} (or leave blank for team score):`);
+    const playerName = name && name.trim() ? name.trim() : team.name;
     if(side==='home') sp.hs+=pts; else sp.as+=pts;
-    sp.scoringLog.push({type,team:side,player:name,points:pts,time:sp.gc.rem,quarter:sp.q,timestamp:Date.now()});
-    const player=team.pl.find(p=>p.na.toLowerCase()===name.toLowerCase());
-    if(player){ if(!sp.playerStats[player.id]) sp.playerStats[player.id]={};
-        const st=sp.playerStats[player.id];
-        if(type==='td') st.tds=(st.tds||0)+1;
-        else if(type==='fg') st.fgs=(st.fgs||0)+1;
-        else if(type==='pat') st.pats=(st.pats||0)+1;
-        else if(type==='safety') st.safeties=(st.safeties||0)+1;
+    sp.scoringLog.push({type,team:side,player:playerName,points:pts,time:sp.gc.rem,quarter:sp.q,timestamp:Date.now()});
+    // If a player name was entered, try to match stats
+    if(name && name.trim()){
+        const player=team.pl.find(p=>p.na.toLowerCase()===name.trim().toLowerCase());
+        if(player){ if(!sp.playerStats[player.id]) sp.playerStats[player.id]={};
+            const st=sp.playerStats[player.id];
+            if(type==='td') st.tds=(st.tds||0)+1;
+            else if(type==='fg') st.fgs=(st.fgs||0)+1;
+            else if(type==='pat') st.pats=(st.pats||0)+1;
+            else if(type==='safety') st.safeties=(st.safeties||0)+1;
+        }
     }
     pushUndo(); saveState(); renderAll(); updateScorebug();
 }
@@ -665,13 +894,15 @@ function quickPenalty(type){
     if(sp.gameState==='FINAL'){ toast('Game is final'); return; }
     const team=getTeam(sp.poss);
     if(!team){ toast('No team'); return; }
-    const name=prompt(`Enter player name for ${type.replace('_',' ')} penalty:`);
-    if(!name) return;
+    const name=prompt(`Enter player name for ${type.replace('_',' ')} penalty (or leave blank):`);
+    const playerName = name && name.trim() ? name.trim() : team.name;
     const yd=parseInt(prompt('Yardage (0 if none):')||'0');
-    sp.penaltyLog.push({type,team:sp.poss,player:name,yardage:yd||0,time:sp.gc.rem,quarter:sp.q,timestamp:Date.now()});
-    const player=team.pl.find(p=>p.na.toLowerCase()===name.toLowerCase());
-    if(player){ if(!sp.playerStats[player.id]) sp.playerStats[player.id]={};
-        sp.playerStats[player.id].penalties=(sp.playerStats[player.id].penalties||0)+1;
+    sp.penaltyLog.push({type,team:sp.poss,player:playerName,yardage:yd||0,time:sp.gc.rem,quarter:sp.q,timestamp:Date.now()});
+    if(name && name.trim()){
+        const player=team.pl.find(p=>p.na.toLowerCase()===name.trim().toLowerCase());
+        if(player){ if(!sp.playerStats[player.id]) sp.playerStats[player.id]={};
+            sp.playerStats[player.id].penalties=(sp.playerStats[player.id].penalties||0)+1;
+        }
     }
     pushUndo(); saveState(); renderAll();
 }
@@ -710,47 +941,49 @@ function renderGame(){
         <div class="state-badge ${stateClass}">${esc(sp.gameState||'PREGAME')}</div>
         <div class="down-dist">
             Down: <select id="downSelect" onchange="setDown(this.value)">${[1,2,3,4].map(d=>`<option ${d==sp.down?'selected':''}>${d}</option>`).join('')}</select>
-            Yards: <input type="number" id="distInput" value="${sp.dist||10}" min="1" max="99" style="width:50px;" onchange="setDist(this.value)">
-            Yardline: <input type="number" id="yardlineInput" value="${sp.yardline||50}" min="1" max="99" style="width:50px;" onchange="setYardline(this.value)">
+            Yards: <input type="number" id="distInput" value="${sp.dist||10}" min="1" max="99" style="width:55px;" onchange="setDist(this.value)">
+            Yardline: <input type="number" id="yardlineInput" value="${sp.yardline||50}" min="1" max="99" style="width:55px;" onchange="setYardline(this.value)">
         </div>
         <div class="possession">
             <button class="${sp.poss==='home'?'active':''}" onclick="setPossession('home')">🏠 HOME</button>
             <button class="${sp.poss==='away'?'active':''}" onclick="setPossession('away')">✈️ AWAY</button>
         </div>
         <div class="quick-scores">
-            <button class="td" onclick="quickScore('td')">TD +6</button>
-            <button class="fg" onclick="quickScore('fg')">FG +3</button>
-            <button class="pat" onclick="quickScore('pat')">PAT +1</button>
-            <button class="safety" onclick="quickScore('safety')">Safety +2</button>
+            <button class="td" onclick="quickScore('td')" data-tooltip="Touchdown +6">TD +6</button>
+            <button class="fg" onclick="quickScore('fg')" data-tooltip="Field Goal +3">FG +3</button>
+            <button class="pat" onclick="quickScore('pat')" data-tooltip="Extra Point +1">PAT +1</button>
+            <button class="safety" onclick="quickScore('safety')" data-tooltip="Safety +2">Safety +2</button>
         </div>
         <div class="quick-penalties">
-            <button onclick="quickPenalty('holding')">Holding</button>
-            <button onclick="quickPenalty('false_start')">False Start</button>
-            <button onclick="quickPenalty('pi')">PI</button>
+            <button onclick="quickPenalty('holding')" data-tooltip="Holding penalty">Holding</button>
+            <button onclick="quickPenalty('false_start')" data-tooltip="False start">False Start</button>
+            <button onclick="quickPenalty('pi')" data-tooltip="Pass Interference">PI</button>
         </div>
         <div class="game-actions">
-            <button onclick="startGame()">▶ Start</button>
-            <button onclick="startSecondHalf()">⏭ 2nd Half</button>
-            <button onclick="endGame()">🏁 Final</button>
-            <button onclick="undoGame()">↩ Undo</button>
-            <button onclick="redoGame()">↪ Redo</button>
-            <button onclick="exportBoxScore()">📊 Box</button>
+            <button onclick="startGame()" data-tooltip="Start new game">▶ Start</button>
+            <button onclick="setHalftime()" data-tooltip="Pause for halftime">⏸️ Half</button>
+            <button onclick="startSecondHalf()" data-tooltip="Start 2nd half">⏭ 2nd</button>
+            <button onclick="setOvertime()" data-tooltip="Enter overtime">⏱️ OT</button>
+            <button onclick="endGame()" data-tooltip="End game">🏁 Final</button>
+            <button onclick="undoGame()" data-tooltip="Undo last action">↩</button>
+            <button onclick="redoGame()" data-tooltip="Redo last action">↪</button>
+            <button onclick="exportBoxScore()" data-tooltip="Export box score CSV">📊</button>
         </div>
         <div class="clock-presets">
-            <button onclick="applyClockPreset(720)">1Q</button>
-            <button onclick="applyClockPreset(720)">2Q</button>
-            <button onclick="applyClockPreset(720)">3Q</button>
-            <button onclick="applyClockPreset(720)">4Q</button>
-            <button onclick="applyClockPreset(120)">2min</button>
-            <button onclick="applyClockPreset(600)">Half</button>
-            <button onclick="applyClockPreset(600)">OT</button>
-            <button onclick="customClock()">⏱️</button>
+            <button onclick="applyClockPreset(720)" data-tooltip="12:00">1Q</button>
+            <button onclick="applyClockPreset(720)" data-tooltip="12:00">2Q</button>
+            <button onclick="applyClockPreset(720)" data-tooltip="12:00">3Q</button>
+            <button onclick="applyClockPreset(720)" data-tooltip="12:00">4Q</button>
+            <button onclick="applyClockPreset(120)" data-tooltip="2:00">2min</button>
+            <button onclick="applyClockPreset(600)" data-tooltip="10:00">Half</button>
+            <button onclick="applyClockPreset(600)" data-tooltip="10:00">OT</button>
+            <button onclick="customClock()" data-tooltip="Custom minutes">⏱️</button>
         </div>
     </div>`;
     // Log
     const events=[...sp.scoringLog.map(e=>({...e,type:'score'})),...sp.penaltyLog.map(e=>({...e,type:'penalty'}))];
     events.sort((a,b)=>b.timestamp-a.timestamp);
-    const recent=events.slice(0,15);
+    const recent=events.slice(0,20);
     html+=`<div class="game-log">`;
     if(recent.length){
         recent.forEach(ev=>{
@@ -773,7 +1006,7 @@ function renderGame(){
         html+=`<div class="team-card ${side}"><div class="card-head" style="background:${color};">
             <span>${side.toUpperCase()}</span>${team?.logo?'<img class="team-logo" src="'+esc(team.logo)+'" onerror="this.style.display=\'none\'">':''}
             <select onchange="switchTeam(\'${side}\',this.value)" style="flex:1;">${sp.tms.map(x=>'<option value="'+esc(x.id)+'" '+(x.id===(side==='away'?sp.aid:sp.hid)?'selected':'')+'>'+esc(x.name)+'</option>').join('')}</select>
-            <button class="btn-sm" onclick="setPossession(\'${side}\')" style="background:${sp.poss===side?'var(--accent)':'transparent'};color:${sp.poss===side?'#000':'inherit'};">🏈</button>
+            <button class="btn-sm" onclick="setPossession(\'${side}\')" style="background:${sp.poss===side?'var(--accent)':'transparent'};color:${sp.poss===side?'#000':'inherit'};" data-tooltip="Set possession">🏈</button>
         </div>
         <div class="unit-tabs">
             <button class="unit-tab ${filter==='all'?'active':''}" onclick="setFilter(\'${side}\',\'all\')">ALL</button>
@@ -787,22 +1020,23 @@ function renderGame(){
         getPlayers(side,filter).forEach(p=>{
             const stats=sp.playerStats[p.id]||{};
             const statStr=playerStatTooltip(side,p.id);
+            const pronDisplay=p.pron ? `<span class="plyr-pron-inline">(${esc(p.pron)})</span>` : '';
             html+=`<div class="player-row${p.st?' starter':''}" data-side="${side}" data-pid="${p.id}" data-num="${esc(p.n||'')}">
                 ${p.ph?'<img class="plyr-photo" src="'+esc(p.ph)+'" onerror="this.style.display=\'none\'">':'<span></span>'}
                 <span class="plyr-num"><input value="${esc(p.n||'')}" onchange="updatePlayerField(\'${side}\',\'${p.id}\',\'n\',this.value)" placeholder="#"></span>
-                <span class="plyr-name"><input value="${esc(p.na||'')}" onchange="updatePlayerField(\'${side}\',\'${p.id}\',\'na\',this.value)" placeholder="Name" title="${esc(statStr)}"></span>
+                <span class="plyr-name"><input value="${esc(p.na||'')}" onchange="updatePlayerField(\'${side}\',\'${p.id}\',\'na\',this.value)" placeholder="Name" title="${esc(statStr)}">${pronDisplay}</span>
                 <span class="plyr-notes-inline"><input value="${esc(p.nt||'')}" onchange="updatePlayerField(\'${side}\',\'${p.id}\',\'nt\',this.value)" placeholder="Notes"></span>
                 <span class="plyr-pos"><select onchange="updatePlayerField(\'${side}\',\'${p.id}\',\'po\',this.value)">${positions.map(o=>'<option '+(p.po===o?'selected':'')+'>'+o+'</option>').join('')}</select></span>
-                <button class="st-toggle ${p.st?'':'off'}" onclick="event.stopPropagation();toggleStarter(\'${side}\',\'${p.id}\')">⭐</button>
-                <button class="pin-btn ${p.pinned?'active':''}" onclick="event.stopPropagation();togglePin(\'${side}\',\'${p.id}\')">📌</button>
-                <button onclick="event.stopPropagation();deletePlayer(\'${side}\',\'${p.id}\')" style="background:none;border:none;color:#666;cursor:pointer;font-size:.7rem;">✕</button>
+                <button class="st-toggle ${p.st?'':'off'}" onclick="event.stopPropagation();toggleStarter(\'${side}\',\'${p.id}\')" data-tooltip="Toggle starter">⭐</button>
+                <button class="pin-btn ${p.pinned?'active':''}" onclick="event.stopPropagation();togglePin(\'${side}\',\'${p.id}\')" data-tooltip="Pin/unpin player">📌</button>
+                <button onclick="event.stopPropagation();deletePlayer(\'${side}\',\'${p.id}\')" style="background:none;border:none;color:#666;cursor:pointer;font-size:.8rem;" data-tooltip="Delete player">✕</button>
             </div>`;
         });
         html+=`</div><div class="add-row">
-            <input id="an-${side}" placeholder="#" style="width:34px;">
-            <input id="ana-${side}" placeholder="Name" style="flex:1;">
+            <input id="an-${side}" placeholder="#" style="width:40px;">
+            <input id="ana-${side}" placeholder="Name" style="flex:2;min-width:80px;">
             <select id="ap-${side}">${positions.map(o=>'<option>'+o+'</option>').join('')}</select>
-            <input id="ant-${side}" placeholder="Notes" style="flex:1;">
+            <input id="ant-${side}" placeholder="Notes" style="flex:1;min-width:60px;">
             <button class="btn-sm" onclick="addPlayer(\'${side}\')">+</button>
         </div></div>`;
     });
@@ -890,40 +1124,40 @@ function renderRoster(){
             <select class="rp">${positions.map(o=>'<option '+(p.po===o?'selected':'')+'>'+o+'</option>').join('')}</select>
             <select class="rs"><option value="0" ${!p.st?'selected':''}>Bench</option><option value="1" ${p.st?'selected':''}>Starter</option></select>
             <input class="rnt" value="${esc(p.nt||'')}" placeholder="Notes">
-            <input class="rpron" value="${esc(p.pron||'')}" placeholder="Pron">
+            <input class="rpron" value="${esc(p.pron||'')}" placeholder="Pronunciation">
             <input type="file" class="rph" accept="image/*" onchange="uploadPlayerPhotoRoster(this,'${p.id}')">
-            <button class="pin-btn ${p.pinned?'active':''}" onclick="togglePinRoster('${p.id}')">📌</button>
-            <button onclick="this.parentElement.remove()">✖</button>
+            <button class="pin-btn ${p.pinned?'active':''}" onclick="togglePinRoster('${p.id}')" data-tooltip="Pin/unpin">📌</button>
+            <button onclick="this.parentElement.remove()" data-tooltip="Delete player">✕</button>
         </div>`;
     });
     const html=`<div class="panel"><div class="roster-layout"><div class="team-sidebar">${sidebar}</div><div class="roster-workspace">
         <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;margin-bottom:3px;">
             <input id="etn" value="${esc(ct?ct.name:'')}" placeholder="Team Name" style="flex:1;min-width:100px;">
             <input id="ecoach" value="${esc(ct?ct.coach:'')}" placeholder="Coach Name" style="flex:1;min-width:100px;">
-            <button class="btn-sm" id="svB">💾</button>
-            <button class="btn-sm" onclick="exportTeamCSV('${ct?ct.id:''}')">📊</button>
-            <button class="btn-sm btn-red" id="delB">🗑️</button>
+            <button class="btn-sm" id="svB" data-tooltip="Save team">💾</button>
+            <button class="btn-sm" onclick="exportTeamCSV('${ct?ct.id:''}')" data-tooltip="Export CSV">📊</button>
+            <button class="btn-sm btn-red" id="delB" data-tooltip="Delete team">🗑️</button>
         </div>
         <div style="display:flex;gap:3px;margin-bottom:3px;">
-            <button class="btn-sm" onclick="undoGame()">↩</button>
-            <button class="btn-sm" onclick="redoGame()">↪</button>
+            <button class="btn-sm" onclick="undoGame()" data-tooltip="Undo">↩</button>
+            <button class="btn-sm" onclick="redoGame()" data-tooltip="Redo">↪</button>
         </div>
         <div style="border-top:1px solid var(--border);padding-top:4px;margin-bottom:4px;">
             <h4>Branding</h4>
             <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;">
                 <input type="color" id="tc" value="${ct?ct.color:'#1e3a5f'}">
-                <input id="tm" value="${esc(ct?ct.mascot:'')}" placeholder="Mascot">
-                <img id="tlp" src="${ct?ct.logo:''}" style="width:26px;height:26px;${ct&&ct.logo?'':'display:none'}">
+                <input id="tm" value="${esc(ct?ct.mascot:'')}" placeholder="Mascot" style="min-width:80px;">
+                <img id="tlp" src="${ct?ct.logo:''}" style="width:28px;height:28px;${ct&&ct.logo?'':'display:none'}">
                 <input type="file" id="tlf" accept="image/*">
             </div>
         </div>
-        <div style="display:grid;grid-template-columns:42px 1fr 72px 56px 1fr 60px 50px 28px 28px;gap:4px;font-size:.55rem;font-weight:600;margin:8px 0 3px;opacity:.6;">
+        <div style="display:grid;grid-template-columns:36px 1fr 60px 50px 1fr 70px 50px 32px 32px;gap:3px;font-size:.6rem;font-weight:600;margin:6px 0 3px;opacity:.6;">
             <span>#</span><span>Name</span><span>Pos</span><span>Role</span><span>Notes</span><span>Pron</span><span>Photo</span><span></span><span></span>
         </div>
         <div id="rpg">${players}</div>
         <button class="btn-sm" id="addB" style="margin-top:4px;">➕ Add</button>
         <div style="display:flex;gap:4px;margin-top:6px;flex-wrap:wrap;">
-            <textarea class="parse-area" id="pt" placeholder="Paste roster..."></textarea>
+            <textarea class="parse-area" id="pt" placeholder="Paste roster..." style="flex:2;min-width:200px;height:60px;"></textarea>
             <div style="display:flex;flex-direction:column;gap:3px;">
                 <label for="rf" class="btn-sm" style="cursor:pointer;">📁</label>
                 <input type="file" id="rf" accept=".txt,.csv" style="display:none;">
@@ -932,7 +1166,7 @@ function renderRoster(){
         </div>
         <div style="margin-top:8px;border-top:1px solid var(--border);padding-top:5px;">
             <h4>Zorts Import</h4>
-            <textarea id="zp" class="parse-area" placeholder="Paste Zorts CSV..."></textarea>
+            <textarea id="zp" class="parse-area" placeholder="Paste Zorts CSV..." style="height:50px;"></textarea>
             <div style="margin-top:3px;display:flex;gap:4px;">
                 <button class="btn-sm" onclick="parseZorts()">📥</button>
                 <button class="btn-sm btn-red" onclick="document.getElementById('zp').value=''">Clear</button>
@@ -1115,8 +1349,8 @@ function renderScript(){
             </div>
         </details></div>
         <div style="display:flex;gap:3px;padding:4px 6px;">
-            <button class="btn btn-sm" id="svSc">Save</button>
-            <button class="btn btn-sm" id="prSc">Print</button>
+            <button class="btn btn-sm" id="svSc" data-tooltip="Save script">Save</button>
+            <button class="btn btn-sm" id="prSc" data-tooltip="Print script">Print</button>
         </div>
     </div>`;
     document.getElementById('main').innerHTML=html;
@@ -1291,6 +1525,7 @@ async function fnlCloudLoadAll(){
             if(sp.down===undefined) sp.down=1;
             if(sp.dist===undefined) sp.dist=10;
             if(sp.yardline===undefined) sp.yardline=50;
+            if(!sp.gameHistory) sp.gameHistory=[];
         }
         S=snap; S.wd=null;
         saveState(); applyTheme(); applyAdminStyles(); updateClientLogo(); renderAll();
@@ -1378,7 +1613,7 @@ document.getElementById('resetBtn').onclick=resetGame;
 
 // ─── EXPOSE GLOBALS ───
 window.chScore=chScore; window.chQuarter=chQuarter; window.setGC=setGameClockMinutes; window.startGC=startGameClock; window.pauseGC=pauseGameClock; window.resetGC=resetGameClock;
-window.startGame=startGame; window.startSecondHalf=startSecondHalf; window.endGame=endGame;
+window.startGame=startGame; window.startSecondHalf=startSecondHalf; window.endGame=endGame; window.setHalftime=setHalftime; window.setOvertime=setOvertime;
 window.setPossession=setPossession; window.setDown=setDown; window.setDist=setDist; window.setYardline=setYardline;
 window.quickScore=quickScore; window.quickPenalty=quickPenalty; window.applyClockPreset=applyClockPreset; window.customClock=customClock;
 window.togglePin=togglePin; window.exportBoxScore=exportBoxScore; window.toggleOutdoor=toggleOutdoor;
