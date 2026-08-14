@@ -576,7 +576,7 @@ function applyAdminStyles(){
     const r=document.documentElement.style;
     r.setProperty('--bug-team-name-font',S.bugTeamNameFont||"'Inter',sans-serif");
     r.setProperty('--bug-team-name-size',S.bugTeamNameSize||'10px');
-    r.setProperty('--bug-team-name-color',S.bugTeamNameColor||'inherit');
+    r.setProperty('--bug-team-name-color',S.bugTeamNameColor||'#94a3b8');
     r.setProperty('--bug-team-name-weight',S.bugTeamNameWeight||'800');
     r.setProperty('--card-team-label-font',S.cardTeamLabelFont||"'Inter',sans-serif");
     r.setProperty('--card-team-label-size',S.cardTeamLabelSize||'0.9rem');
@@ -584,9 +584,9 @@ function applyAdminStyles(){
     r.setProperty('--card-team-label-weight',S.cardTeamLabelWeight||'700');
     r.setProperty('--card-head-visitor-bg',S.cardHeadVisitorBg||'#1e3a5f');
     r.setProperty('--card-head-home-bg',S.cardHeadHomeBg||'#7f1d1d');
-    r.setProperty('--scorebug-bg',S.scorebugBg||'var(--surface)');
-    r.setProperty('--scorebug-text-color',S.scorebugTextColor||'var(--text)');
-    r.setProperty('--scorebug-font-size',S.scorebugFontSize||'1.2rem');
+    r.setProperty('--scorebug-bg',S.scorebugBg||'#0f172a');        /* FIXED: dark navy default */
+    r.setProperty('--scorebug-text-color',S.scorebugTextColor||'#ffffff');  /* FIXED: white default */
+    r.setProperty('--scorebug-font-size',S.scorebugFontSize||'1.4rem');
 }
 function toggleScorebugDisplay(){
     const sb=document.getElementById('scorebug');
