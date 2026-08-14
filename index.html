@@ -9,7 +9,7 @@
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:'Inter',-apple-system,sans-serif;background:#f0f2f5;color:#0a2540;height:100vh;display:flex;flex-direction:column;overflow:hidden;font-size:13px}
 
-        /* ── HEADER ── */
+        /* ── HEADER (unchanged) ── */
         header{background:#1a3a2a;padding:4px 8px;display:flex;align-items:center;justify-content:space-between;gap:4px;border-bottom:3px solid #d4af37;flex-shrink:0;min-height:42px;flex-wrap:wrap}
         .hdr-left{display:flex;align-items:center;gap:6px}
         .hdr-left a{color:#fff;font-size:10px;text-decoration:none;background:rgba(0,0,0,0.4);padding:2px 8px;border-radius:4px}
@@ -50,7 +50,16 @@
 
         /* ── GAME GRID ── */
         .game-grid{display:flex;gap:4px;width:100%;height:100%;background:#cbd5e1;border-radius:6px;padding:3px;overflow:hidden}
-        .team-card{flex:1;min-width:0;background:#fff;border-radius:6px;border:1px solid #cbd5e1;display:flex;flex-direction:column;overflow:visible}
+        .team-card{
+            flex:1;
+            min-width:200px;   /* ← prevents card from shrinking too much */
+            background:#fff;
+            border-radius:6px;
+            border:1px solid #cbd5e1;
+            display:flex;
+            flex-direction:column;
+            overflow:visible;
+        }
 
         /* ── CARD HEAD ── TWO ROWS ── */
         .card-head{
@@ -63,12 +72,14 @@
             color:#fff;
             border-bottom:2px solid #d4af37;
             background:var(--card-bg, #1e3a5f);
+            overflow:visible !important;
         }
         .card-head .top-row{
             display:flex !important;
             align-items:center !important;
             gap:6px !important;
             width:100% !important;
+            overflow:visible !important;
         }
         .card-head .top-row .side-label{
             font-size:10px;
@@ -78,10 +89,11 @@
             flex-shrink:0;
         }
 
-        /* ★★★ DROPDOWN – FULL WIDTH ★★★ */
+        /* ★★★ DROPDOWN – TAKES ALL REMAINING SPACE ★★★ */
         .card-head .top-row select {
-            flex: 1 !important;
+            flex: 1 1 120px !important;  /* grow, shrink, base 120px */
             min-width: 120px !important;
+            max-width: 100% !important;
             width: auto !important;
             display: block !important;
             visibility: visible !important;
@@ -116,6 +128,7 @@
             gap:6px !important;
             width:100% !important;
             flex-wrap:wrap !important;
+            overflow:visible !important;
         }
         .card-head .bottom-row .coach-input{
             background:rgba(255,255,255,0.15);
@@ -1059,7 +1072,7 @@
                         'min-height:30px!important;' +
                         'height:auto!important;' +
                         'width:auto!important;' +
-                        'flex:1!important;' +
+                        'flex:1 1 120px!important;' +
                         'min-width:120px!important;' +
                         'border:2px solid #d4af37!important;' +
                         'border-radius:4px!important;' +
@@ -1084,6 +1097,7 @@
                     el.style.alignItems = 'center';
                     el.style.gap = '6px';
                     el.style.width = '100%';
+                    el.style.overflow = 'visible';
                 });
                 document.querySelectorAll('.card-head .bottom-row').forEach(function(el) {
                     el.style.display = 'flex';
@@ -1091,9 +1105,11 @@
                     el.style.gap = '6px';
                     el.style.width = '100%';
                     el.style.flexWrap = 'wrap';
+                    el.style.overflow = 'visible';
                 });
                 document.querySelectorAll('.team-card').forEach(function(el) {
                     el.style.overflow = 'visible';
+                    el.style.minWidth = '200px';
                 });
                 document.body.offsetHeight;
             }
