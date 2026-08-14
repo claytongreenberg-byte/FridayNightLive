@@ -50,7 +50,7 @@
 
         /* ── GAME GRID ── */
         .game-grid{display:flex;gap:4px;width:100%;height:100%;background:#cbd5e1;border-radius:6px;padding:3px;overflow:hidden}
-        .team-card{flex:1;min-width:0;background:#fff;border-radius:6px;border:1px solid #cbd5e1;display:flex;flex-direction:column;overflow:visible}  /* ← overflow visible */
+        .team-card{flex:1;min-width:0;background:#fff;border-radius:6px;border:1px solid #cbd5e1;display:flex;flex-direction:column;overflow:visible}
 
         /* ── CARD HEAD ── */
         .card-head{
@@ -64,13 +64,13 @@
             min-height:30px;
             border-bottom:2px solid #d4af37;
             background:var(--card-bg, #1e3a5f);
-            overflow:visible !important;  /* ← ensure select not clipped */
+            overflow:visible !important;
         }
         .card-head .side-label{font-size:9px;font-weight:700;text-transform:uppercase;opacity:0.8}
 
-        /* ★★★ DROPDOWN VISIBILITY FIX - NO SHRINK ★★★ */
+        /* ★★★ DROPDOWN VISIBILITY FIX - RED BORDER FOR DEBUG ★★★ */
         .card-head select {
-            flex: 1 0 100px !important;   /* grow, don't shrink, minimum 100px */
+            flex: 1 0 100px !important;
             min-width: 100px !important;
             width: auto !important;
             display: block !important;
@@ -81,7 +81,7 @@
             height: auto !important;
             min-height: 28px !important;
             padding: 2px 6px !important;
-            border: 1px solid rgba(255,255,255,0.3) !important;
+            border: 3px solid red !important;    /* ← RED BORDER to make it visible */
             border-radius: 4px !important;
             font-weight: 700 !important;
             font-size: 11px !important;
@@ -89,6 +89,8 @@
             appearance: auto !important;
             -webkit-appearance: auto !important;
             box-sizing: border-box !important;
+            position: relative !important;
+            z-index: 10 !important;
         }
         .card-head select option {
             background: #ffffff !important;
@@ -1043,7 +1045,7 @@
         renderAll();
         toast("🏈 Friday Night Live ready!");
 
-        // ─── RENDERING FIX: FORCE DROPDOWNS TO SHOW ──────────────
+        // ─── RENDERING FIX ──────────────────────────────────────────
         (function forceDropdownVisibility() {
             function showDropdowns() {
                 document.querySelectorAll('.card-head select').forEach(function(el) {
@@ -1058,7 +1060,7 @@
                         'width:auto!important;' +
                         'flex:1 0 100px!important;' +
                         'min-width:100px!important;' +
-                        'border:1px solid rgba(255,255,255,0.3)!important;' +
+                        'border:3px solid red!important;' +   // Red border for visibility
                         'border-radius:4px!important;' +
                         'padding:2px 6px!important;' +
                         'font-weight:700!important;' +
@@ -1066,7 +1068,9 @@
                         'cursor:pointer!important;' +
                         'appearance:auto!important;' +
                         '-webkit-appearance:auto!important;' +
-                        'box-sizing:border-box!important;';
+                        'box-sizing:border-box!important;' +
+                        'position:relative!important;' +
+                        'z-index:10!important;';
                 });
                 document.querySelectorAll('.card-head').forEach(function(el) {
                     el.style.display = 'flex';
@@ -1079,7 +1083,6 @@
                 document.querySelectorAll('.team-card').forEach(function(el) {
                     el.style.overflow = 'visible';
                 });
-                // Force reflow
                 document.body.offsetHeight;
             }
             
