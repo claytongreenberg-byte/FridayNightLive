@@ -425,8 +425,7 @@ const tooltipEl = document.getElementById('tooltip');
 document.addEventListener('mouseover', e => {
     const target = e.target.closest('[data-tooltip]');
     if (target) {
-        const text = target.getAttribute('data-tooltip');
-        tooltipEl.textContent = text;
+        tooltipEl.textContent = target.getAttribute('data-tooltip');
         tooltipEl.style.display = 'block';
         positionTooltip(e.clientX, e.clientY);
     }
@@ -440,8 +439,7 @@ document.addEventListener('mouseout', e => {
 document.addEventListener('click', e => {
     const target = e.target.closest('[data-tooltip]');
     if (target) {
-        const text = target.getAttribute('data-tooltip');
-        tooltipEl.textContent = text;
+        tooltipEl.textContent = target.getAttribute('data-tooltip');
         tooltipEl.style.display = 'block';
         positionTooltip(e.clientX, e.clientY);
         setTimeout(() => tooltipEl.style.display = 'none', 2000);
@@ -452,7 +450,6 @@ document.addEventListener('click', e => {
 function positionTooltip(x, y) {
     tooltipEl.style.left = (x + 15) + 'px';
     tooltipEl.style.top = (y + 15) + 'px';
-    // keep inside viewport
     const rect = tooltipEl.getBoundingClientRect();
     if (rect.right > window.innerWidth) tooltipEl.style.left = (x - rect.width - 15) + 'px';
     if (rect.bottom > window.innerHeight) tooltipEl.style.top = (y - rect.height - 15) + 'px';
@@ -478,8 +475,11 @@ function applyAdminStyles() {
         r.setProperty('--scorebug-bg', S.colors.scorebugBg || '#0f172a');
         r.setProperty('--scorebug-text-color', S.colors.scorebugText || '#ffffff');
         r.setProperty('--team-card-bg', S.colors.teamCardBgAway || '#1e293b');
-        r.setProperty('--card-head-visitor-bg', g().tms.find(t=>t.id===g().aid)?.color || S.colors.teamCardBgAway);
-        r.setProperty('--card-head-home-bg', g().tms.find(t=>t.id===g().hid)?.color || S.colors.teamCardBgHome);
+        const awayTeam = g().tms.find(t => t.id === g().aid);
+        const homeTeam = g().tms.find(t => t.id === g().hid);
+        r.setProperty('--card-head-visitor-bg', awayTeam ? awayTeam.color : S.colors.teamCardBgAway);
+        r.setProperty('--card-head-home-bg', homeTeam ? homeTeam.color : S.colors.teamCardBgHome);
+        r.setProperty('--card-team-label-color', S.colors.teamNameColorAway || '#ffffff');
     }
     r.setProperty('--bug-team-name-font', S.bugTeamNameFont || "'Inter',sans-serif");
     r.setProperty('--bug-team-name-size', S.bugTeamNameSize || '18px');
@@ -487,7 +487,6 @@ function applyAdminStyles() {
     r.setProperty('--bug-team-name-weight', S.bugTeamNameWeight || '800');
     r.setProperty('--card-team-label-font', S.cardTeamLabelFont || "'Inter',sans-serif");
     r.setProperty('--card-team-label-size', S.cardTeamLabelSize || '1.1rem');
-    r.setProperty('--card-team-label-color', S.cardTeamLabelColor || 'inherit');
     r.setProperty('--card-team-label-weight', S.cardTeamLabelWeight || '700');
 }
 function toggleScorebugDisplay() {
@@ -748,7 +747,6 @@ function endGame(){
         log:[...sp.scoringLog,...sp.penaltyLog].sort((a,b)=>a.timestamp-b.timestamp)
     });
     pushUndo(); saveState(); updateScorebug(); updateGameClockDisplay(); toast('🏁 Game ended – archived');
-    // Save to cloud automatically
     fnlCloudSaveAll(true);
 }
 
@@ -1073,7 +1071,7 @@ function uploadScriptFile(input){
     }
 }
 
-// ─── ROSTER VIEW (same as before) ───
+// ─── ROSTER VIEW (full) ───
 function renderRoster(){
     const sp=g();
     const ct=sp.tms.find(t=>t.id===sp.cid)||sp.tms[0];
@@ -1148,7 +1146,7 @@ function renderRoster(){
         </div>
     </div></div></div>`;
     document.getElementById('main').innerHTML=html;
-    // attach event listeners (same as before)
+    // attach event listeners
     document.getElementById('svB').onclick=()=>{
         const t=sp.tms.find(t=>t.id===sp.cid); if(!t)return;
         t.name=document.getElementById('etn').value.trim();
@@ -1162,6 +1160,8 @@ function renderRoster(){
         const t=sp.tms.find(t=>t.id===sp.cid); if(!t||!confirm('Delete?'))return;
         sp.tms=sp.tms.filter(x=>x.id!==sp.cid);
         sp.cid=sp.tms.length?sp.tms[0].id:null;
+        if(sp.aid===t.id)sp.aid='';
+        if(sp.hid===t.id)sp.hid='';
         saveState(); renderRoster(); renderNav(); renderAll(); toast('Deleted');
     };
     document.getElementById('addB').onclick=()=>{
@@ -1186,12 +1186,195 @@ function renderRoster(){
         }; r.readAsDataURL(f);
     });
 }
-// ... (remaining roster functions same as before but omitted for brevity, include all from previous code)
+function selectTeam(id){ g().cid=id; renderRoster(); }
+function newTeam(){
+    let n=prompt('Team name:'); while(!n?.trim()){ n=prompt('Name:'); if(n===null)return; }
+    const sp=g();
+    sp.tms.push({id:uid(),name:n.trim(),pl:[],color:'#1e3a5f',c2:'#fff',logo:'',mascot:'',coach:''});
+    sp.cid=sp.tms[sp.tms.length-1].id;
+    saveState(); renderRoster(); renderNav();
+}
+function collectRosterPlayers(){
+    const container=document.getElementById('rpg'); if(!container)return[];
+    const rows=container.querySelectorAll('.player-edit-row');
+    const out=[];
+    rows.forEach(r=>{
+        out.push({id:'',n:r.querySelector('.rn')?.value||'',na:r.querySelector('.rna')?.value||'',po:r.querySelector('.rp')?.value||'',st:r.querySelector('.rs')?.value==='1',nt:r.querySelector('.rnt')?.value||'',pron:r.querySelector('.rpron')?.value||'',ph:'',pinned:false});
+    });
+    return out;
+}
+function togglePinRoster(pid){
+    const team=g().tms.find(t=>t.id===g().cid); if(!team)return;
+    const p=team.pl.find(x=>x.id===pid); if(!p)return;
+    if(!p.pinned){ const cnt=team.pl.filter(x=>x.pinned).length; if(cnt>=6){toast('Max 6 pinned');return;} }
+    p.pinned=!p.pinned; pushUndo(); saveState(); renderRoster();
+}
+function uploadPlayerPhotoRoster(input,pid){
+    const f=input.files[0]; if(!f||!f.type.startsWith('image/'))return;
+    const r=new FileReader(); r.onload=ev=>{
+        const team=g().tms.find(t=>t.id===g().cid);
+        if(team){ const p=team.pl.find(x=>x.id===pid); if(p){ p.ph=ev.target.result; saveState(); toast('Photo saved'); } }
+    }; r.readAsDataURL(f);
+}
+function exportTeamCSV(tid){
+    const team=g().tms.find(t=>t.id===tid); if(!team)return;
+    let csv='Number,Name,Position,Starter,Notes,Pronunciation\n';
+    team.pl.forEach(p=>{ csv+=`"${p.n}","${p.na}","${p.po}","${p.st?'Yes':'No'}","${(p.nt||'').replace(/"/g,'""')}","${p.pron||''}"\n`; });
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+    a.download=(team.name||'roster').replace(/\s/g,'_')+'.csv';
+    a.click(); toast('CSV exported');
+}
+function parseRosterText(tx){
+    const team=g().tms.find(t=>t.id===g().cid); if(!team)return;
+    if(!tx.trim()){toast('Empty');return;}
+    pushUndo();
+    const positions=getPositions();
+    const lines=tx.split(/\r?\n/);
+    const out=[];
+    lines.forEach(l=>{
+        if(!l.trim())return;
+        let n='',rest=l.trim();
+        const m=rest.match(/^(\d{1,3})\s+/);
+        if(m){ n=m[1]; rest=rest.slice(m[0].length).trim(); }
+        let po='',name=rest;
+        const words=rest.split(/\s+/);
+        if(words.length&&positions.includes(words[words.length-1].toUpperCase())){
+            po=words.pop().toUpperCase();
+            name=words.join(' ');
+        }
+        if(name)out.push({id:uid(),n,na:name,po:po||'QB',st:false,nt:'',ph:'',pron:'',pinned:false});
+    });
+    if(!out.length){toast('No players');return;}
+    team.pl=out; saveState(); renderRoster(); toast(out.length+' parsed');
+}
+function parseZorts(){
+    const raw=document.getElementById('zp').value.trim(); if(!raw){toast('Paste data');return;}
+    const name=prompt('Team name:'); if(!name?.trim()){toast('Name required');return;}
+    const lines=raw.split('\n').map(l=>l.trim()).filter(l=>l);
+    if(!lines.length){toast('No data');return;}
+    const hdr=lines[0].split(/[\t,|]+/).map(s=>s.trim().toLowerCase());
+    const positions=getPositions();
+    const team={id:uid(),name:name.trim(),pl:[],color:'#1e3a5f',c2:'#fff',logo:'',mascot:'',coach:''};
+    const isHeader=hdr.some(x=>['number','jersey','#','first name','last name','name','position','pos'].includes(x));
+    if(isHeader){
+        const map={}; hdr.forEach((x,i)=>{ if(/^(number|jersey|#)$/.test(x))map.nu=i; else if(x==='first name')map.fn=i; else if(x==='last name')map.ln=i; else if(x==='name')map.na=i; else if(/^(position|pos)$/.test(x))map.po=i; });
+        for(let i=1;i<lines.length;i++){
+            const parts=lines[i].split(/[\t,|]+/).map(s=>s.trim());
+            if(!parts.length||parts.every(s=>!s))continue;
+            let n='',na='',po='';
+            if(map.nu!==undefined)n=parts[map.nu]||'';
+            if(map.fn!==undefined&&map.ln!==undefined)na=(parts[map.fn]||'')+' '+(parts[map.ln]||'');
+            else if(map.na!==undefined)na=parts[map.na]||'';
+            if(map.po!==undefined)po=parts[map.po]||'';
+            if(na)team.pl.push({id:uid(),n,na:na||'Player',po:positions.includes(po.toUpperCase())?po.toUpperCase():po,st:false,nt:'',ph:'',pron:'',pinned:false});
+        }
+    } else {
+        lines.forEach(l=>{
+            let cl=l.replace(/\t/g,' ').replace(/,/g,' ').trim(); if(!cl)return;
+            cl=cl.replace(/(\w+),\s*(\w+)/g,'$2 $1');
+            const pts=cl.split(/\s+/); let n='',na='',po='';
+            for(let j=0;j<pts.length;j++){ if(/^\d{1,3}$/.test(pts[j])){ n=pts[j]; pts.splice(j,1); break; } }
+            if(pts.length){ const last=pts[pts.length-1].toUpperCase(); if(positions.includes(last)){ po=last; pts.pop(); } na=pts.join(' '); }
+            if(!na)na=cl;
+            if(!po)po=positions[0]||'QB';
+            team.pl.push({id:uid(),n,na,po,st:false,nt:'',ph:'',pron:'',pinned:false});
+        });
+    }
+    if(team.pl.length){ g().tms.push(team); document.getElementById('zp').value=''; saveState(); renderRoster(); renderNav(); toast(team.pl.length+' players'); }
+    else toast('No players');
+}
 
-// We must include all remaining functions: selectTeam, newTeam, collectRosterPlayers, togglePinRoster, uploadPlayerPhotoRoster, exportTeamCSV, parseRosterText, parseZorts, etc.
-// For brevity, they are included in final file.
+// ─── CLIENTS VIEW ───
+function renderClients(){
+    if(!S.im){ S.v='sport'; renderAll(); return; }
+    let html=`<div class="panel"><h3>👥 CLIENT PROFILES</h3><p style="font-size:.7rem;opacity:.6;margin-bottom:12px;">Manage client PINs, logos, and branding.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0;">
+            <button class="btn" onclick="addClient()">+ Add Client</button>
+            <button class="btn btn-sm" onclick="showAllPINs()" style="background:#666;color:#fff;">🔑 Show All PINs</button>
+        </div><div style="margin-top:12px;">`;
+    const keys=Object.keys(S.cp||{});
+    if(!keys.length){ html+='<p style="opacity:.5;padding:20px;text-align:center;">No clients yet.</p>'; }
+    else{
+        keys.forEach(p=>{
+            const c=S.cp[p];
+            html+=`<div style="display:flex;gap:8px;align-items:center;padding:10px;border:1px solid var(--border);border-radius:8px;margin-bottom:6px;flex-wrap:wrap;">
+                <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:150px;">
+                    <span style="font-weight:700;min-width:50px;background:var(--accent);color:#000;padding:2px 8px;border-radius:4px;font-size:.7rem;">${esc(p)}</span>
+                    <span style="flex:1;font-weight:600;">${esc(c.n||'Unnamed')}</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;">
+                    ${c.l?'<span style="font-size:.7rem;color:var(--accent);">✅ Logo</span>':'<span style="font-size:.7rem;opacity:.4;">No logo</span>'}
+                    <button class="btn-sm" onclick="editClient('${p}')">✏️ Edit</button>
+                    <button class="btn-sm btn-red" onclick="deleteClient('${p}')">🗑️</button>
+                </div>
+            </div>`;
+        });
+    }
+    html+=`</div></div>`;
+    document.getElementById('main').innerHTML=html;
+}
+function addClient(){
+    const pin=prompt('Enter PIN (e.g. ABC123):'); if(!pin||!pin.trim()){toast('PIN required');return;}
+    const up=pin.trim().toUpperCase(); if(S.cp[up]){toast('PIN exists');return;}
+    const name=prompt('Client name:'); if(!name||!name.trim()){toast('Name required');return;}
+    S.cp[up]={n:name.trim(),l:'',c:'#d4af37',wlat:'',wlon:''};
+    saveState(); renderClients(); toast('✅ Client added');
+}
+function editClient(pin){
+    const c=S.cp[pin]; if(!c){toast('Not found');return;}
+    const html=`<div class="panel" style="max-width:600px;margin:20px auto;"><h3>✏️ Edit Client: ${esc(pin)}</h3>
+        <label>Client Name</label><input type="text" id="editClientName" value="${esc(c.n)}">
+        <label>Logo</label>
+        <div style="margin:8px 0;">
+            <div class="client-logo-upload-area" onclick="document.getElementById('editClientLogoFile').click()">
+                ${c.l?'<img src="'+esc(c.l)+'" class="client-logo-preview">':'<p style="color:var(--text);opacity:.5;">Click to upload</p>'}
+                <input type="file" id="editClientLogoFile" accept="image/*" style="display:none;" onchange="handleClientLogoUploadEdit(this,'${pin}')">
+            </div>
+            <div style="display:flex;gap:8px;margin-top:4px;">
+                <input type="text" id="editClientLogoUrl" placeholder="Image URL" style="flex:1;" value="${esc(c.l||'')}">
+                <button class="btn-sm" onclick="setClientLogoFromEdit('${pin}')">Set URL</button>
+                <button class="btn-sm btn-red" onclick="clearClientLogoFromEdit('${pin}')">Clear</button>
+            </div>
+        </div>
+        <label>Weather Location</label>
+        <div style="display:flex;gap:8px;">
+            <input type="text" id="editClientWlat" placeholder="Latitude" value="${esc(c.wlat||'')}" style="flex:1;">
+            <input type="text" id="editClientWlon" placeholder="Longitude" value="${esc(c.wlon||'')}" style="flex:1;">
+        </div>
+        <div style="display:flex;gap:8px;margin-top:12px;">
+            <button class="btn" onclick="saveClientEdit('${pin}')">💾 Save</button>
+            <button class="btn btn-sm" onclick="renderClients()">Cancel</button>
+        </div>
+    </div>`;
+    document.getElementById('main').innerHTML=html;
+}
+function handleClientLogoUploadEdit(input,pin){
+    const f=input.files[0]; if(!f||!f.type.startsWith('image/'))return;
+    if(f.size>2*1024*1024){toast('Max 2MB');return;}
+    const r=new FileReader(); r.onload=ev=>{ const c=S.cp[pin]; if(c){ c.l=ev.target.result; saveState(); editClient(pin); toast('Logo uploaded'); } }; r.readAsDataURL(f);
+}
+function setClientLogoFromEdit(pin){
+    const url=document.getElementById('editClientLogoUrl')?.value.trim(); if(!url){toast('Enter URL');return;}
+    const c=S.cp[pin]; if(c){ c.l=url; saveState(); editClient(pin); toast('Logo set'); }
+}
+function clearClientLogoFromEdit(pin){ const c=S.cp[pin]; if(c){ c.l=''; saveState(); editClient(pin); toast('Logo cleared'); } }
+function saveClientEdit(pin){
+    const c=S.cp[pin]; if(!c)return;
+    const name=document.getElementById('editClientName'); if(name?.value.trim())c.n=name.value.trim();
+    const lat=document.getElementById('editClientWlat'); if(lat)c.wlat=lat.value.trim();
+    const lon=document.getElementById('editClientWlon'); if(lon)c.wlon=lon.value.trim();
+    saveState(); renderClients(); toast('✅ Saved');
+}
+function deleteClient(pin){
+    const c=S.cp[pin]; if(!c)return;
+    if(!confirm('Delete "'+c.n+'"?'))return;
+    delete S.cp[pin];
+    if(S.ap===pin){ S.ap=''; S.br.cl=''; S.br.cn=''; updateClientLogo(); }
+    saveState(); renderClients(); toast('Deleted');
+}
 
-// ─── ADMIN VIEW (including color customization) ───
+// ─── ADMIN VIEW ───
 function renderAdmin(){
     const tabs=['theme','fonts','clock','7v7','colors','teams','backup','cloud','outdoor','help'];
     const labels={theme:'Theme',fonts:'Fonts',clock:'Clock','7v7':'7v7',colors:'Colors',teams:'Teams',backup:'Backup',cloud:'Cloud',outdoor:'Outdoor',help:'Help'};
@@ -1308,10 +1491,55 @@ async function saveAllTeamsIndividually(){
     try{ let c=0; for(const t of g().tms){ try{ await fetch(CLOUD+'?id='+FNL_NS+'team_'+encodeURIComponent(t.id),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(t)}); c++; }catch(e){} } toast(c+' teams saved'); }catch(e){ toast('Failed'); }
 }
 async function loadSingleTeam(){
-    // simplified, not shown full
+    try{
+        const r=await fetch(CLOUD+'?list=true');
+        const d=await r.json();
+        const keys=(d.keys||[]).filter(k=>k.startsWith(FNL_NS+'team_'));
+        if(!keys.length){toast('No teams');return;}
+        const k=prompt('Team ID:\n'+keys.map(k=>k.replace(FNL_NS+'team_','')).join(', '));
+        if(!k)return;
+        const r2=await fetch(CLOUD+'?id='+encodeURIComponent(k.startsWith(FNL_NS+'team_')?k:FNL_NS+'team_'+k));
+        const team=await r2.json();
+        if(!team.id||!team.name)throw new Error('Invalid');
+        const sp=g(); const exist=sp.tms.find(t=>t.id===team.id);
+        if(exist&&!confirm('Overwrite?'))return;
+        if(team.pl)team.pl.forEach(p=>{ if(!p.id)p.id=uid(); if(p.pinned===undefined)p.pinned=false; if(p.pron===undefined)p.pron=''; });
+        if(exist){ exist.name=team.name; exist.pl=team.pl||[]; exist.coach=team.coach||''; }
+        else{ team.id=team.id.replace(FNL_NS+'team_',''); sp.tms.push(team); }
+        sp.cid=team.id;
+        saveState(); renderRoster(); renderNav(); toast('Loaded');
+    }catch(e){ toast('Failed'); }
 }
 
-// ... Include all remaining functions from previous code (printRoster, parseZorts, etc.)
+// ─── PRINT LU ───
+function printLU(){
+    const sp=g(); const away=getTeam('away'), home=getTeam('home');
+    if(!away||!home)return;
+    let html='<html><head><title>Lineup</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse;margin-bottom:20px}th,td{border:1px solid #000;padding:4px 6px}th{background:#ddd}</style></head><body>';
+    [away,home].forEach(t=>{
+        html+='<h2>'+esc(t.name)+'</h2><table><tr><th>#</th><th>Name</th><th>Pos</th><th>Notes</th></tr>';
+        t.pl.filter(p=>p.st).forEach(p=>{ html+='<tr><td>'+esc(p.n)+'</td><td>'+esc(p.na)+'</td><td>'+esc(p.po)+'</td><td>'+esc(p.nt||'')+'</td></tr>'; });
+        html+='</table>';
+    });
+    html+='</body></html>';
+    const w=window.open(); w.document.write(html); w.print();
+}
+function resetGame(){
+    if(confirm('Reset scores, quarter, and starters?')){
+        const sp=g(); sp.as=0; sp.hs=0; sp.q=1;
+        sp.tms.forEach(t=>t.pl.forEach(p=>p.st=false));
+        saveState(); renderAll(); toast('Game reset');
+    }
+}
+
+// ─── KEYBOARD SHORTCUTS ───
+document.addEventListener('keydown', e=>{
+    if(e.key==='s'&&(e.ctrlKey||e.metaKey)){ e.preventDefault(); saveState(); toast('Saved'); }
+    if(e.key==='r'&&(e.ctrlKey||e.metaKey)){ e.preventDefault(); resetGame(); }
+    if(e.key==='Escape'){ const m=document.querySelector('.pin-overlay'); if(m)m.remove(); }
+    if(e.key===' '&&!e.target.closest('input,textarea,select')){ e.preventDefault(); const sp=g(); if(sp.gc.run){ pauseGameClock(); } else { startGameClock(); } }
+});
+document.getElementById('resetBtn').onclick=resetGame;
 
 // ─── EXPOSE GLOBALS ───
 window.chScore=chScore; window.chQuarter=chQuarter; window.setGC=setGameClockMinutes; window.startGC=startGameClock; window.pauseGC=pauseGameClock; window.resetGC=resetGameClock;
@@ -1322,6 +1550,7 @@ window.togglePin=togglePin; window.exportBoxScore=exportBoxScore; window.toggleO
 window.undoGame=undoGame; window.redoGame=redoGame;
 window.toggleTheme=toggleTheme; window.toggleScorebugDisplay=toggleScorebugDisplay;
 window.addClient=addClient; window.editClient=editClient; window.deleteClient=deleteClient; window.showAllPINs=showAllPINs;
+window.handleClientLogoUploadEdit=handleClientLogoUploadEdit; window.setClientLogoFromEdit=setClientLogoFromEdit; window.clearClientLogoFromEdit=clearClientLogoFromEdit; window.saveClientEdit=saveClientEdit;
 window.fnlCloudSaveAll=fnlCloudSaveAll; window.fnlCloudLoadAll=fnlCloudLoadAll; window.restoreAllTeams=restoreAllTeams; window.saveAllTeamsIndividually=saveAllTeamsIndividually; window.loadSingleTeam=loadSingleTeam;
 window.exportBackup=exportBackup; window.importBackup=importBackup; window.printLU=printLU; window.resetGame=resetGame;
 window.insertScriptText=insertScriptText; window.playSound=playSound;
