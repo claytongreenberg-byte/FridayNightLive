@@ -14,7 +14,7 @@
             --border: #94a3b8;
             --footer-bg: #1a1a1a;
             --footer-text: #f1f5f9;
-            --scorebug-bg: #1a1a2e;
+            --scorebug-bg: #0d0d1a;
             --scorebug-text: #ffffff;
             --team-card-away: #e2e8f0;
             --team-card-home: #e2e8f0;
@@ -76,23 +76,23 @@
             margin-top: 6px;
         }
 
-        /* ===== MASSIVE ESPN-style scorebug ===== */
+        /* ===== HUGE ESPN-style scorebug ===== */
         .scorebug-wrap { width: 100%; display: flex; flex-direction: column; gap: 4px; }
         .scorebug {
             position: relative;
             display: flex;
-            align-items: center;
+            align-items: stretch;
             justify-content: center;
             gap: 0;
-            background: #1a1a2e !important; /* DARK GRAY - NOT NAVY */
+            background: #0d0d1a !important; /* DARK CHARCOAL - NOT NAVY */
             border: 3px solid var(--accent);
             border-radius: 12px;
-            padding: 18px 28px 16px;
+            padding: 16px 20px 14px;
             flex-wrap: nowrap;
             width: 100%;
             box-shadow: 0 4px 14px rgba(0,0,0,0.45);
             --sb-text: #ffffff;
-            min-height: 160px;
+            min-height: 170px;
         }
         .sb-network-tag {
             position: absolute; top: -12px; left: 16px;
@@ -103,39 +103,45 @@
         }
         .live-pill {
             position: absolute; top: -12px; right: 16px;
-            background: #dc2626; color: #fff; font-weight: 800; font-size: 0.6rem;
+            background: #dc2626; color: #fff; font-weight: 800; font-size: 0.65rem;
             padding: 3px 14px; border-radius: 10px; display: none; align-items: center; gap: 4px;
             letter-spacing: 1px; box-shadow: 0 2px 4px rgba(0,0,0,0.4);
         }
         .live-pill.show { display: inline-flex; }
         .live-pill.final { background: #334155; }
+        .live-pill.halftime { background: #f59e0b; }
         .live-pill .dot { width: 8px; height: 8px; border-radius: 50%; background: #fff; animation: sbpulse 1.2s infinite; }
-        .live-pill.final .dot { animation: none; }
+        .live-pill.final .dot, .live-pill.halftime .dot { animation: none; }
         @keyframes sbpulse { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
         .sb-block {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 0 24px;
-            border-right: 1px solid rgba(255,255,255,0.12);
+            justify-content: center;
+            padding: 0 16px;
+            border-right: 1px solid rgba(255,255,255,0.1);
             flex: 1 1 0;
-            min-width: 100px;
+            min-width: 80px;
         }
         .sb-block:last-child { border-right: none; }
+        .sb-block.score-block { flex: 1.3; }
+        .sb-block.clock-block { flex: 1.2; }
+        .sb-block.game-block { flex: 1.8; }
+        
         .sb-team-chip {
-            width: 56px; height: 56px; border-radius: 50%; overflow: hidden;
+            width: 52px; height: 52px; border-radius: 50%; overflow: hidden;
             display: flex; align-items: center; justify-content: center;
-            font-weight: 900; font-size: 1.5rem; color: #fff; margin-bottom: 4px;
+            font-weight: 900; font-size: 1.4rem; color: #fff; margin-bottom: 2px;
             border: 2px solid rgba(255,255,255,0.4); flex-shrink: 0;
         }
         .sb-team-chip img { width: 100%; height: 100%; object-fit: cover; }
-        .sb-name-col { display: flex; flex-direction: column; align-items: center; margin-bottom: 4px; }
+        .sb-name-col { display: flex; flex-direction: column; align-items: center; }
         .sb-abbr {
-            font-size: 28px; font-weight: 900; color: var(--sb-text); letter-spacing: 1px;
-            display: flex; align-items: center; gap: 8px;
+            font-size: 22px; font-weight: 900; color: var(--sb-text); letter-spacing: 1px;
+            display: flex; align-items: center; gap: 6px;
         }
         .sb-poss {
-            font-size: 22px;
+            font-size: 20px;
             animation: sbbounce 0.8s infinite;
             display: inline-block;
         }
@@ -144,54 +150,67 @@
             50% { transform: translateY(-4px) scale(1.2); }
         }
         .sb-fullname {
-            font-size: 0.85rem; color: var(--sb-text); font-weight: 700;
-            text-transform: uppercase; letter-spacing: 1.5px;
-            max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-            text-shadow: 0 0 20px rgba(255,255,255,0.2), 0 0 40px rgba(255,255,255,0.1);
-            background: rgba(0,0,0,0.3); padding: 4px 16px; border-radius: 14px;
-            margin-top: 3px;
-            border: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.7rem; color: var(--sb-text); font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.5px;
+            max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            background: rgba(0,0,0,0.25); padding: 2px 12px; border-radius: 10px;
+            margin-top: 1px;
+            opacity: 0.8;
         }
         .sb-logo-sm { width: 22px; height: 22px; object-fit: contain; }
-        .sb-row { display: flex; align-items: center; gap: 10px; }
+        .sb-row { display: flex; align-items: center; gap: 8px; }
         .sb-val { 
-            font-size: 3.8rem; 
+            font-size: 3.6rem; 
             font-weight: 900; 
             color: var(--sb-text); 
-            min-width: 65px; 
+            min-width: 55px; 
             text-align: center;
-            text-shadow: 0 0 30px rgba(255,255,255,0.1);
+            text-shadow: 0 0 30px rgba(255,255,255,0.08);
+            line-height: 1;
         }
-        .sb-qtr { font-size: 2rem; font-weight: 800; color: var(--accent); }
+        .sb-qtr { 
+            font-size: 1.6rem; 
+            font-weight: 800; 
+            color: var(--accent);
+            text-shadow: 0 0 20px rgba(250,204,21,0.2);
+        }
         .game-clock { 
             font-family: 'Courier New', monospace; 
-            font-size: 2.6rem; 
-            font-weight: 800; 
-            color: var(--sb-text);
-            text-shadow: 0 0 20px rgba(255,255,255,0.1);
+            font-size: 3rem; 
+            font-weight: 900; 
+            color: #00ff88;
+            text-shadow: 0 0 30px rgba(0,255,136,0.3), 0 0 60px rgba(0,255,136,0.1);
+            letter-spacing: 2px;
+        }
+        .game-clock.paused { color: var(--sb-text); opacity: 0.6; }
+        .game-clock.clock-warning { color: #ff6b6b; animation: clockPulse 1s infinite; }
+        @keyframes clockPulse {
+            0%,100% { opacity: 1; }
+            50% { opacity: 0.4; }
         }
         .sb-btn {
             background: #334155; border: 1px solid #475569; color: #fff;
-            width: 42px; height: 42px; border-radius: 50%; font-size: 18px;
+            width: 38px; height: 38px; border-radius: 50%; font-size: 16px;
             cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
             transition: all 0.2s;
         }
-        .sb-btn:hover { background: var(--accent); color: #000; transform: scale(1.05); }
+        .sb-btn:hover { background: var(--accent); color: #000; transform: scale(1.08); }
+        .sb-btn:active { transform: scale(0.92); }
         .sb-game-btns { 
             display: flex; 
-            gap: 8px; 
+            gap: 6px; 
             flex-wrap: wrap; 
             justify-content: center; 
         }
         .sb-game-btns button {
             background: #334155; border: 1px solid #475569; color: #fff;
-            border-radius: 18px; 
-            padding: 10px 18px; 
-            font-size: 0.85rem; 
+            border-radius: 16px; 
+            padding: 8px 14px; 
+            font-size: 0.75rem; 
             font-weight: 700;
             cursor: pointer;
-            min-height: 40px;
-            min-width: 55px;
+            min-height: 34px;
+            min-width: 48px;
             transition: all 0.2s;
         }
         .sb-game-btns button:hover { 
@@ -200,13 +219,15 @@
             transform: scale(1.05);
         }
         .sb-game-btns button:active { transform: scale(0.95); }
+        .sb-game-btns button.half-active { background: #f59e0b; color: #000; }
+        .sb-game-btns button.final-active { background: #dc2626; color: #fff; }
         .sb-toggle-btn {
             background: #334155; border: 1px solid #475569; color: #fff;
-            width: 42px; height: 42px; border-radius: 50%; font-size: 18px;
+            width: 38px; height: 38px; border-radius: 50%; font-size: 16px;
             cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
         .dd-ticker {
-            padding: 10px 20px; border-radius: 8px; font-weight: 800; font-size: 1rem;
+            padding: 8px 16px; border-radius: 6px; font-weight: 800; font-size: 0.85rem;
             text-align: center; color: #fff; letter-spacing: 0.5px; text-shadow: 0 1px 2px rgba(0,0,0,0.75);
             background: #334155;
         }
@@ -264,8 +285,10 @@
         .player-list-body { flex: 1; overflow-y: auto; padding: 5px; }
         .player-row {
             display: grid; grid-template-columns: 30px 1fr 56px 26px 26px 24px;
-            gap: 4px; align-items: center; padding: 4px; border-bottom: 1px solid var(--border);
+            gap: 4px; align-items: center; padding: 4px; 
+            border-bottom: 2px solid #333; /* DARK LINE separating players */
         }
+        .player-row:last-child { border-bottom: none; }
         .player-row input, .player-row select {
             background: transparent; border: 1px solid var(--border); color: var(--text);
             padding: 3px 2px; width: 100%; font-size: 0.7rem; border-radius: 3px;
@@ -355,26 +378,26 @@
         }
 
         @media (max-width: 1024px) {
-            .scorebug { padding: 12px 16px; min-height: 130px; flex-wrap: wrap; }
-            .sb-block { padding: 0 14px; min-width: 70px; }
-            .sb-val { font-size: 2.8rem; min-width: 50px; }
-            .sb-abbr { font-size: 22px; }
-            .game-clock { font-size: 2.2rem; }
-            .sb-team-chip { width: 48px; height: 48px; font-size: 1.3rem; }
-            .sb-fullname { font-size: 0.75rem; max-width: 150px; }
-            .sb-btn { width: 38px; height: 38px; font-size: 16px; }
-            .sb-game-btns button { font-size: 0.75rem; padding: 8px 14px; min-height: 36px; }
+            .scorebug { padding: 12px 14px; min-height: 140px; flex-wrap: wrap; }
+            .sb-block { padding: 0 10px; min-width: 60px; }
+            .sb-val { font-size: 2.8rem; min-width: 45px; }
+            .sb-abbr { font-size: 18px; }
+            .game-clock { font-size: 2.4rem; }
+            .sb-team-chip { width: 44px; height: 44px; font-size: 1.2rem; }
+            .sb-fullname { font-size: 0.65rem; max-width: 120px; }
+            .sb-btn { width: 34px; height: 34px; font-size: 14px; }
+            .sb-game-btns button { font-size: 0.65rem; padding: 6px 10px; min-height: 30px; }
         }
         @media (max-width: 768px) {
-            .scorebug { padding: 8px 10px; min-height: 100px; flex-wrap: wrap; }
-            .sb-block { padding: 0 8px; min-width: 50px; }
-            .sb-val { font-size: 2rem; min-width: 35px; }
-            .sb-abbr { font-size: 16px; }
-            .game-clock { font-size: 1.6rem; }
+            .scorebug { padding: 8px 8px; min-height: 100px; flex-wrap: wrap; }
+            .sb-block { padding: 0 6px; min-width: 40px; }
+            .sb-val { font-size: 2rem; min-width: 30px; }
+            .sb-abbr { font-size: 14px; }
+            .game-clock { font-size: 1.8rem; }
             .sb-team-chip { width: 36px; height: 36px; font-size: 1rem; }
-            .sb-fullname { font-size: 0.6rem; max-width: 100px; }
-            .sb-btn { width: 32px; height: 32px; font-size: 14px; }
-            .sb-game-btns button { font-size: 0.6rem; padding: 4px 10px; min-height: 28px; }
+            .sb-fullname { font-size: 0.55rem; max-width: 80px; }
+            .sb-btn { width: 30px; height: 30px; font-size: 12px; }
+            .sb-game-btns button { font-size: 0.55rem; padding: 4px 8px; min-height: 26px; }
             .team-cards { flex-direction: column; height: auto; }
             .roster-layout { flex-direction: column; }
             .team-sidebar { width: 100%; max-height: 200px; }
@@ -411,42 +434,46 @@
             <div class="scorebug" id="scorebug">
                 <span class="sb-network-tag">Voice of DFW Live</span>
                 <span class="live-pill" id="livePill"><span class="dot"></span><span id="livePillText">LIVE</span></span>
-                <div class="sb-block">
+                <!-- AWAY BLOCK -->
+                <div class="sb-block score-block">
                     <div class="sb-name-col">
                         <div class="sb-team-chip" id="sbAwayChip" style="background:#334155;"></div>
+                        <span class="sb-abbr" id="sbAwayAbbr">AWY</span>
+                        <span class="sb-fullname" id="sbAwayFull">Away Team</span>
                     </div>
-                    <span class="sb-abbr" id="sbAwayAbbr">AWY</span>
-                    <span class="sb-fullname" id="sbAwayFull">Away Team</span>
                     <div class="sb-row">
                         <button class="sb-btn" onclick="chScore('away',-1)" data-tooltip="Subtract point">−</button>
                         <span class="sb-val" id="sbAwayScore">0</span>
                         <button class="sb-btn" onclick="chScore('away',1)" data-tooltip="Add point">+</button>
                     </div>
-                    <button class="sb-btn" onclick="uploadScorebugLogo('away')" data-tooltip="Upload away logo" style="width:36px;height:36px;font-size:14px;margin-top:3px;">📷</button>
+                    <button class="sb-btn" onclick="uploadScorebugLogo('away')" data-tooltip="Upload away logo" style="width:30px;height:30px;font-size:12px;margin-top:2px;">📷</button>
                 </div>
+                <!-- QUARTER BLOCK -->
                 <div class="sb-block">
-                    <span class="sb-abbr" style="font-size:0.7rem;color:var(--sb-text);opacity:.7;">QUARTER</span>
+                    <span class="sb-abbr" style="font-size:0.6rem;color:var(--sb-text);opacity:.6;">QUARTER</span>
                     <span class="sb-qtr" id="sbQuarter">Q1</span>
                     <div class="sb-row">
                         <button class="sb-btn" onclick="chQuarter(-1)" data-tooltip="Previous quarter">◀</button>
                         <button class="sb-btn" onclick="chQuarter(1)" data-tooltip="Next quarter">▶</button>
                     </div>
                 </div>
-                <div class="sb-block">
+                <!-- HOME BLOCK -->
+                <div class="sb-block score-block">
                     <div class="sb-name-col">
                         <div class="sb-team-chip" id="sbHomeChip" style="background:#334155;"></div>
+                        <span class="sb-abbr" id="sbHomeAbbr">HME</span>
+                        <span class="sb-fullname" id="sbHomeFull">Home Team</span>
                     </div>
-                    <span class="sb-abbr" id="sbHomeAbbr">HME</span>
-                    <span class="sb-fullname" id="sbHomeFull">Home Team</span>
                     <div class="sb-row">
                         <button class="sb-btn" onclick="chScore('home',-1)" data-tooltip="Subtract point">−</button>
                         <span class="sb-val" id="sbHomeScore">0</span>
                         <button class="sb-btn" onclick="chScore('home',1)" data-tooltip="Add point">+</button>
                     </div>
-                    <button class="sb-btn" onclick="uploadScorebugLogo('home')" data-tooltip="Upload home logo" style="width:36px;height:36px;font-size:14px;margin-top:3px;">📷</button>
+                    <button class="sb-btn" onclick="uploadScorebugLogo('home')" data-tooltip="Upload home logo" style="width:30px;height:30px;font-size:12px;margin-top:2px;">📷</button>
                 </div>
-                <div class="sb-block">
-                    <span class="sb-abbr" style="font-size:0.7rem;color:var(--sb-text);opacity:.7;">CLOCK</span>
+                <!-- CLOCK BLOCK -->
+                <div class="sb-block clock-block">
+                    <span class="sb-abbr" style="font-size:0.6rem;color:var(--sb-text);opacity:.6;">CLOCK</span>
                     <span class="game-clock" id="gameClockDisplay">8:00</span>
                     <div class="sb-row">
                         <button class="sb-btn" onclick="startGC()" data-tooltip="Start clock (Space)">▶</button>
@@ -454,14 +481,15 @@
                         <button class="sb-btn" onclick="resetGC()" data-tooltip="Reset clock">↺</button>
                     </div>
                 </div>
-                <div class="sb-block">
-                    <span class="sb-abbr" style="font-size:0.7rem;color:var(--sb-text);opacity:.7;">GAME</span>
+                <!-- GAME BLOCK -->
+                <div class="sb-block game-block">
+                    <span class="sb-abbr" style="font-size:0.6rem;color:var(--sb-text);opacity:.6;">GAME</span>
                     <div class="sb-game-btns">
                         <button onclick="startGame()" data-tooltip="Start game (Q1)">▶ Start</button>
-                        <button onclick="setHalftime()" data-tooltip="Halftime">⏸ Half</button>
+                        <button onclick="setHalftime()" data-tooltip="Halftime" id="halfBtn">⏸ Half</button>
                         <button onclick="startSecondHalf()" data-tooltip="Start 2nd half (Q3)">⏭ 2nd</button>
                         <button onclick="setOvertime()" data-tooltip="Overtime">⏱ OT</button>
-                        <button onclick="endGame()" data-tooltip="End game">🏁 Final</button>
+                        <button onclick="endGame()" data-tooltip="End game" id="finalBtn">🏁 Final</button>
                     </div>
                 </div>
             </div>
@@ -506,7 +534,7 @@ let S = {
     cp: {}, ap: '', im: true, ua: 'all', uh: 'all',
     cid: 'h',
     colors: { 
-        scorebugBg: '#1a1a2e', 
+        scorebugBg: '#0d0d1a', 
         scorebugText: '#ffffff', 
         accent: '#facc15',
         teamCardAway: '#e2e8f0',
@@ -532,9 +560,8 @@ function normalizeState() {
         const alt = S.teams.find(t => t.id !== S.awayId);
         S.homeId = alt ? alt.id : S.awayId;
     }
-    if (!S.colors) S.colors = { scorebugBg: '#1a1a2e', scorebugText: '#ffffff', accent: '#facc15', teamCardAway: '#e2e8f0', teamCardHome: '#e2e8f0', teamCardBorder: '#94a3b8' };
+    if (!S.colors) S.colors = { scorebugBg: '#0d0d1a', scorebugText: '#ffffff', accent: '#facc15', teamCardAway: '#e2e8f0', teamCardHome: '#e2e8f0', teamCardBorder: '#94a3b8' };
     if (S.gc.max === undefined) S.gc.max = 480;
-    // Ensure clock is NEVER running on load
     S.gc.run = false;
 }
 function loadState() {
@@ -617,7 +644,7 @@ function toggleTheme() {
     saveState(); renderAll();
 }
 
-// Outdoor mode - toggle with visual feedback
+// Outdoor mode
 function toggleOutdoor() {
     S.outdoor = !S.outdoor;
     document.body.style.fontSize = S.outdoor ? '18px' : '14px';
@@ -680,14 +707,13 @@ function chScore(side, delta) { if (side === 'away') S.as = Math.max(0, S.as + d
 function chQuarter(delta) {
     const maxQ = S.md7 === '7v7' ? 2 : (S.gameState === 'OVERTIME' ? 5 : 4);
     S.q = Math.min(maxQ, Math.max(1, S.q + delta));
-    // Reset clock when quarter changes, but keep it paused
     if (delta !== 0) {
         S.gc.rem = S.gc.max || 480;
         S.gc.run = false;
         updateGameClockDisplay();
         toast(`⏱️ Clock reset to ${Math.floor(S.gc.rem/60)}:${String(S.gc.rem%60).padStart(2,'0')}`);
     }
-    if (S.gameState !== 'OVERTIME') {
+    if (S.gameState !== 'OVERTIME' && S.gameState !== 'HALFTIME') {
         S.gameState = S.q <= (S.md7 === '7v7' ? 1 : 2) ? 'FIRST_HALF' : 'SECOND_HALF';
     }
     updateScorebug(); updateGameStateBadge(); saveState();
@@ -706,16 +732,41 @@ function updateScorebug() {
     homeChip.innerHTML = home.logo ? `<img src="${home.logo}" alt="">` : teamAbbr(home)[0];
     document.getElementById('sbAwayScore').textContent = S.as;
     document.getElementById('sbHomeScore').textContent = S.hs;
+    
     let qLabel;
-    if (S.md7 === '7v7') qLabel = S.q === 1 ? '1st Half' : '2nd Half';
-    else qLabel = S.q >= 5 ? 'OT' : `Q${S.q}`;
+    if (S.gameState === 'HALFTIME') {
+        qLabel = 'HALF';
+    } else if (S.gameState === 'FINAL') {
+        qLabel = 'FINAL';
+    } else if (S.md7 === '7v7') {
+        qLabel = S.q === 1 ? '1st Half' : '2nd Half';
+    } else {
+        qLabel = S.q >= 5 ? 'OT' : `Q${S.q}`;
+    }
     document.getElementById('sbQuarter').textContent = qLabel;
     applyColors();
     updateDDTicker();
+    updateGameClockDisplay();
+    updateGameStateBadge();
 }
 function updateGameClockDisplay() {
     const m = Math.floor(S.gc.rem / 60), s = S.gc.rem % 60;
-    document.getElementById('gameClockDisplay').textContent = `${m}:${String(s).padStart(2, '0')}`;
+    const el = document.getElementById('gameClockDisplay');
+    el.textContent = `${m}:${String(s).padStart(2, '0')}`;
+    // Color the clock based on state
+    if (S.gameState === 'FINAL') {
+        el.className = 'game-clock clock-warning';
+        el.style.color = '#ff6b6b';
+    } else if (S.gameState === 'HALFTIME') {
+        el.className = 'game-clock paused';
+        el.style.color = '#f59e0b';
+    } else if (!S.gc.run) {
+        el.className = 'game-clock paused';
+        el.style.color = 'var(--sb-text)';
+    } else {
+        el.className = 'game-clock';
+        el.style.color = '#00ff88';
+    }
 }
 // Clock tick - ONLY runs if S.gc.run === true
 setInterval(() => { 
@@ -731,8 +782,18 @@ setInterval(() => {
 
 function updateDDTicker() {
     const el = document.getElementById('ddTicker'); if (!el) return;
-    if (S.gameState === 'READY' || S.gameState === 'FINAL') { 
-        el.textContent = S.gameState === 'FINAL' ? '🏁 GAME FINAL' : '🏈 SET POSSESSION TO BEGIN'; 
+    if (S.gameState === 'FINAL') { 
+        el.textContent = '🏁 GAME FINAL'; 
+        el.style.background = '#dc2626'; 
+        return; 
+    }
+    if (S.gameState === 'HALFTIME') { 
+        el.textContent = '⏸️ HALFTIME'; 
+        el.style.background = '#f59e0b'; 
+        return; 
+    }
+    if (S.gameState === 'READY') { 
+        el.textContent = '🏈 SET POSSESSION TO BEGIN'; 
         el.style.background = '#334155'; 
         return; 
     }
@@ -744,27 +805,94 @@ function updateDDTicker() {
 function updateGameStateBadge() {
     const pill = document.getElementById('livePill'); const txt = document.getElementById('livePillText');
     if (!pill || !txt) return;
-    pill.classList.remove('final');
-    if (S.gameState === 'FINAL') { pill.classList.add('show', 'final'); txt.textContent = 'FINAL'; }
-    else if (S.gameState === 'HALFTIME') { pill.classList.add('show'); txt.textContent = 'HALFTIME'; }
-    else if (S.gameState === 'FIRST_HALF' || S.gameState === 'SECOND_HALF' || S.gameState === 'OVERTIME') { pill.classList.add('show'); txt.textContent = 'LIVE'; }
-    else { pill.classList.remove('show'); }
+    pill.classList.remove('final', 'halftime');
+    if (S.gameState === 'FINAL') { 
+        pill.classList.add('show', 'final'); 
+        txt.textContent = 'FINAL'; 
+        document.getElementById('finalBtn').classList.add('final-active');
+    } else if (S.gameState === 'HALFTIME') { 
+        pill.classList.add('show', 'halftime'); 
+        txt.textContent = 'HALF'; 
+        document.getElementById('halfBtn').classList.add('half-active');
+    } else if (S.gameState === 'FIRST_HALF' || S.gameState === 'SECOND_HALF' || S.gameState === 'OVERTIME') { 
+        pill.classList.add('show'); 
+        txt.textContent = 'LIVE'; 
+        document.getElementById('halfBtn').classList.remove('half-active');
+        document.getElementById('finalBtn').classList.remove('final-active');
+    } else { 
+        pill.classList.remove('show'); 
+        document.getElementById('halfBtn').classList.remove('half-active');
+        document.getElementById('finalBtn').classList.remove('final-active');
+    }
 }
 
 // Game state - clock NEVER auto-starts
-function startGame() { if (S.gameState !== 'READY' && !confirm('Game already started. Reset?')) return; S.gameState = 'FIRST_HALF'; S.gc.rem = S.gc.max || 480; S.gc.run = false; S.q = 1; S.as = 0; S.hs = 0; S.down = 1; S.dist = 10; S.poss = 'home'; S.scoringLog = []; S.penaltyLog = []; updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); saveState(); toast('🏈 Game started!'); }
-function setHalftime() { S.gameState = 'HALFTIME'; S.gc.run = false; updateGameStateBadge(); saveState(); toast('⏸️ Halftime'); }
-function startSecondHalf() { S.gameState = 'SECOND_HALF'; S.gc.rem = S.gc.max || 480; S.gc.run = false; S.q = 3; updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); saveState(); toast('⏭️ 2nd Half started'); }
-function setOvertime() { S.gameState = 'OVERTIME'; S.gc.rem = 360; S.gc.run = false; S.q = 5; updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); saveState(); toast('⏱️ Overtime'); }
+function startGame() { 
+    if (S.gameState !== 'READY' && !confirm('Game already started. Reset?')) return; 
+    S.gameState = 'FIRST_HALF'; 
+    S.gc.rem = S.gc.max || 480; 
+    S.gc.run = false; 
+    S.q = 1; 
+    S.as = 0; S.hs = 0; 
+    S.down = 1; S.dist = 10; 
+    S.poss = 'home'; 
+    S.scoringLog = []; S.penaltyLog = []; 
+    updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); saveState(); 
+    toast('🏈 Game started!'); 
+}
+function setHalftime() { 
+    S.gameState = 'HALFTIME'; 
+    S.gc.run = false; 
+    S.q = 2; // Keep it at Q2 for display
+    updateScorebug(); 
+    updateGameClockDisplay(); 
+    updateGameStateBadge(); 
+    saveState(); 
+    toast('⏸️ Halftime'); 
+}
+function startSecondHalf() { 
+    S.gameState = 'SECOND_HALF'; 
+    S.gc.rem = S.gc.max || 480; 
+    S.gc.run = false; 
+    S.q = 3; 
+    updateScorebug(); 
+    updateGameClockDisplay(); 
+    updateGameStateBadge(); 
+    saveState(); 
+    toast('⏭️ 2nd Half started'); 
+}
+function setOvertime() { 
+    S.gameState = 'OVERTIME'; 
+    S.gc.rem = 360; 
+    S.gc.run = false; 
+    S.q = 5; 
+    updateScorebug(); 
+    updateGameClockDisplay(); 
+    updateGameStateBadge(); 
+    saveState(); 
+    toast('⏱️ Overtime'); 
+}
 function endGame() {
     if (!confirm('End game?')) return;
-    S.gameState = 'FINAL'; S.gc.run = false;
+    S.gameState = 'FINAL'; 
+    S.gc.run = false;
     const away = getTeam('away'), home = getTeam('home');
     S.gameHistory.push({ date: new Date().toISOString(), away: away.name, home: home.name, awayScore: S.as, homeScore: S.hs, log: [...S.scoringLog, ...S.penaltyLog] });
-    updateGameStateBadge(); saveState(); toast('🏁 Game ended');
+    updateScorebug(); 
+    updateGameClockDisplay(); 
+    updateGameStateBadge(); 
+    saveState(); 
+    toast('🏁 Game ended');
 }
-function startGC() { S.gc.run = true; toast('▶️ Clock running'); saveState(); }
-function pauseGC() { S.gc.run = false; toast('⏸️ Clock paused'); saveState(); }
+function startGC() { 
+    if (S.gameState === 'FINAL') { toast('⛔ Game is final'); return; }
+    if (S.gameState === 'HALFTIME') { toast('⏸️ Halftime - clock paused'); return; }
+    S.gc.run = true; 
+    toast('▶️ Clock running'); 
+    updateGameClockDisplay();
+    saveState(); 
+}
+function pauseGC() { S.gc.run = false; toast('⏸️ Clock paused'); updateGameClockDisplay(); saveState(); }
 function resetGC() { S.gc.run = false; S.gc.rem = S.gc.max || 480; updateGameClockDisplay(); saveState(); }
 function resetGame() {
     if (!confirm('Reset game? This clears score, clock, down/distance, and logs.')) return;
@@ -774,7 +902,7 @@ function resetGame() {
     updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); renderView(); saveState(); toast('🔄 Game reset');
 }
 
-// Game controls - possession starts game if in READY state
+// Game controls
 function setPossession(side) { 
     S.poss = side; 
     if (S.gameState === 'READY') {
@@ -857,7 +985,7 @@ function uploadScorebugLogo(side) {
 }
 function toggleScorebugDisplay() { const sb = document.getElementById('scorebug'); if (sb) { sb.style.display = sb.style.display === 'none' ? 'flex' : 'none'; } }
 
-// Navigation - NO tooltips on tabs
+// Navigation
 function renderNav() {
     const views = [
         { id: 'sport', label: '🏈 GAME' }, { id: 'roster', label: '📋 ROSTERS' },
@@ -876,7 +1004,7 @@ function renderView() {
 }
 function renderAll() { renderNav(); renderView(); updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); }
 
-// Game view - NO tooltips on player fields or text buttons
+// Game view
 function renderGame() {
     let html = '';
     html += '<div class="game-controls">';
@@ -951,7 +1079,7 @@ function setSideTeam(side, teamId) {
     saveState(); renderGame(); updateScorebug();
 }
 
-// Roster view - teams sync via cloud
+// Roster view
 function renderRoster() {
     const sortedTeams = [...S.teams].sort((a, b) => a.name.localeCompare(b.name));
     let selectedTeam = S.teams.find(t => t.id === S.cid) || S.teams[0];
@@ -1237,7 +1365,7 @@ function renderAdminContent() {
                 </div>
             </div>
             <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
-                <button class="hdr-btn" onclick="S.colors={scorebugBg:'#1a1a2e',scorebugText:'#ffffff',accent:'#facc15',teamCardAway:'#e2e8f0',teamCardHome:'#e2e8f0',teamCardBorder:'#94a3b8'};applyColors();saveState();renderAdmin();" data-tooltip="Reset colors to default">↺ Reset to Default</button>
+                <button class="hdr-btn" onclick="S.colors={scorebugBg:'#0d0d1a',scorebugText:'#ffffff',accent:'#facc15',teamCardAway:'#e2e8f0',teamCardHome:'#e2e8f0',teamCardBorder:'#94a3b8'};applyColors();saveState();renderAdmin();" data-tooltip="Reset colors to default">↺ Reset to Default</button>
                 <button class="hdr-btn" onclick="applyColors();toast('✅ Colors applied')" style="background:#22c55e;">✅ Apply Now</button>
             </div>`;
     }
