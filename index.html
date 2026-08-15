@@ -12,10 +12,9 @@
             --surface: #1e293b;
             --text: #f1f5f9;
             --border: #334155;
-            --green: #2d6a1e;
         }
         body {
-            font-family: 'Inter', Arial, sans-serif;
+            font-family: Arial, sans-serif;
             background: var(--bg);
             color: var(--text);
             height: 100vh;
@@ -47,51 +46,44 @@
             max-width: 100px;
             object-fit: contain;
         }
-        .brand-text h1 {
-            font-size: 1.2rem;
-            color: #fff;
-        }
-        .brand-text p {
-            font-size: 0.7rem;
-            color: var(--accent);
-        }
+        .brand-text h1 { font-size: 1.2rem; color: #fff; }
+        .brand-text p { font-size: 0.7rem; color: var(--accent); }
         .hdr-top-right {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
         }
         .wall-clock, .weather-pill {
             color: var(--accent);
             font-weight: 700;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             background: rgba(0,0,0,0.4);
             border: 1px solid var(--accent);
             border-radius: 6px;
-            padding: 4px 10px;
+            padding: 4px 8px;
+            white-space: nowrap;
         }
         .hdr-btn {
             background: #334155;
             color: #fff;
             border: 1px solid #475569;
             border-radius: 20px;
-            padding: 6px 12px;
-            font-size: 0.7rem;
+            padding: 6px 10px;
+            font-size: 0.65rem;
             cursor: pointer;
             white-space: nowrap;
         }
-        .hdr-btn:hover {
-            background: #475569;
-        }
+        .hdr-btn:hover { background: #475569; }
         .scorebug {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
+            gap: 12px;
             background: #0f172a;
             border: 3px solid var(--accent);
             border-radius: 12px;
-            padding: 10px 15px;
+            padding: 10px 12px;
             margin-top: 8px;
             flex-wrap: wrap;
         }
@@ -99,82 +91,47 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 0 10px;
+            padding: 0 8px;
         }
         .sb-abbr {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 800;
             color: var(--accent);
             margin-bottom: 4px;
-            max-width: 120px;
+            max-width: 110px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-        .sb-logo-sm {
-            width: 24px;
-            height: 24px;
-            object-fit: contain;
-        }
-        .sb-row {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .sb-val {
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: #fff;
-            min-width: 35px;
-            text-align: center;
-        }
-        .sb-qtr {
-            font-size: 1.3rem;
-            font-weight: 800;
-            color: var(--accent);
-        }
-        .game-clock {
-            font-family: monospace;
-            font-size: 1.3rem;
-            font-weight: 800;
-            color: #fff;
-        }
+        .sb-row { display: flex; align-items: center; gap: 5px; }
+        .sb-val { font-size: 1.6rem; font-weight: 900; color: #fff; min-width: 30px; text-align: center; }
+        .sb-qtr { font-size: 1.1rem; font-weight: 800; color: var(--accent); }
+        .game-clock { font-family: monospace; font-size: 1.1rem; font-weight: 800; color: #fff; }
         .sb-btn {
             background: #334155;
             border: 1px solid #475569;
             color: #fff;
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
-            font-size: 14px;
+            font-size: 12px;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
         }
-        .sb-btn:hover {
-            background: var(--accent);
-            color: #000;
-        }
-        .sb-game-btns {
-            display: flex;
-            gap: 4px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
+        .sb-btn:hover { background: var(--accent); color: #000; }
+        .sb-game-btns { display: flex; gap: 3px; flex-wrap: wrap; justify-content: center; }
         .sb-game-btns button {
             background: #334155;
             border: 1px solid #475569;
             color: #fff;
-            border-radius: 15px;
-            padding: 4px 10px;
-            font-size: 0.7rem;
+            border-radius: 12px;
+            padding: 4px 8px;
+            font-size: 0.6rem;
             cursor: pointer;
         }
-        .sb-game-btns button:hover {
-            background: var(--accent);
-            color: #000;
-        }
+        .sb-game-btns button:hover { background: var(--accent); color: #000; }
         nav {
             background: #1a1a1a;
             display: flex;
@@ -186,10 +143,10 @@
             background: none;
             border: none;
             color: #ccc;
-            padding: 10px 16px;
+            padding: 10px 14px;
             font-weight: 700;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
         }
         .nav-link.active {
             background: var(--accent);
@@ -204,37 +161,35 @@
         .game-controls {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px;
             align-items: center;
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 8px;
-            padding: 10px;
-            margin-bottom: 10px;
+            padding: 8px;
+            margin-bottom: 8px;
         }
         .game-controls button {
             background: #334155;
             color: #fff;
             border: 1px solid #475569;
-            border-radius: 18px;
-            padding: 8px 14px;
+            border-radius: 16px;
+            padding: 6px 10px;
             font-weight: 700;
+            font-size: 0.7rem;
             cursor: pointer;
         }
-        .game-controls button.active {
-            background: var(--accent);
-            color: #000;
-        }
+        .game-controls button.active { background: var(--accent); color: #000; }
         .game-controls button.td { background: #dc2626; }
         .game-controls button.fg { background: #2563eb; }
         .game-controls button.pat { background: #16a34a; }
         .game-controls button.safety { background: #f59e0b; color: #000; }
-        .game-controls button.flag-btn { background: var(--accent); color: #000; border-color: var(--accent); }
+        .game-controls button.flag-btn { background: var(--accent); color: #000; }
         .game-controls button.first-down { background: #22c55e; }
         .team-cards {
             display: flex;
-            gap: 10px;
-            height: calc(100% - 60px);
+            gap: 8px;
+            height: calc(100% - 50px);
         }
         .team-card {
             flex: 1;
@@ -246,103 +201,84 @@
             overflow: hidden;
         }
         .card-head {
-            padding: 10px;
+            padding: 8px;
             font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             color: #fff;
+            font-size: 0.8rem;
         }
         .card-head select {
             flex: 1;
-            padding: 6px;
+            padding: 5px;
             border-radius: 4px;
             background: #fff;
             color: #000;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
         .unit-tabs {
             display: flex;
-            gap: 4px;
-            padding: 5px 10px;
+            gap: 3px;
+            padding: 4px 8px;
             border-bottom: 1px solid var(--border);
         }
         .unit-tab {
             background: none;
             border: none;
             color: #ccc;
-            padding: 5px 10px;
+            padding: 4px 8px;
             cursor: pointer;
             font-weight: 700;
+            font-size: 0.65rem;
         }
-        .unit-tab.active {
-            background: var(--accent);
-            color: #000;
-            border-radius: 5px;
-        }
+        .unit-tab.active { background: var(--accent); color: #000; border-radius: 4px; }
         .player-list-body {
             flex: 1;
             overflow-y: auto;
-            padding: 10px;
+            padding: 8px;
         }
         .player-row {
             display: grid;
-            grid-template-columns: 35px 1fr 70px 35px 35px 30px;
-            gap: 8px;
+            grid-template-columns: 30px 1fr 60px 28px 28px 25px;
+            gap: 5px;
             align-items: center;
-            padding: 6px;
+            padding: 5px;
             border-bottom: 1px solid var(--border);
-            cursor: pointer;
         }
         .player-row input, .player-row select {
             background: transparent;
             border: 1px solid transparent;
             color: var(--text);
-            padding: 4px;
+            padding: 3px;
             width: 100%;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
         }
         .player-row input:focus, .player-row select:focus {
             border-color: var(--accent);
             outline: none;
         }
         .player-row.starter {
-            background: rgba(251,191,36,0.2);
+            background: rgba(251,191,36,0.15);
             border-left: 3px solid var(--accent);
         }
         .st-toggle, .pin-btn {
             background: none;
             border: 1px solid var(--border);
             border-radius: 50%;
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             cursor: pointer;
-            font-size: 0.7rem;
+            font-size: 0.6rem;
         }
-        .st-toggle.active {
-            background: var(--accent);
-            color: #000;
-        }
+        .st-toggle.active { background: var(--accent); color: #000; }
         footer {
             background: #1a1a1a;
-            padding: 6px 12px;
+            padding: 5px 10px;
             text-align: center;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             flex-shrink: 0;
             border-top: 1px solid var(--accent);
-        }
-        .tooltip-js {
-            position: fixed;
-            z-index: 10000;
-            background: #1e293b;
-            color: #fff;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            pointer-events: none;
-            display: none;
-            max-width: 200px;
-            border: 1px solid #475569;
         }
         .toast {
             position: fixed;
@@ -351,7 +287,7 @@
             transform: translateX(-50%);
             background: #333;
             color: #fff;
-            padding: 10px 20px;
+            padding: 8px 16px;
             border-radius: 20px;
             z-index: 9999;
             opacity: 0;
@@ -367,7 +303,7 @@
     </style>
 </head>
 <body>
-<div class="tooltip-js" id="tooltip"></div>
+<div class="toast" id="toast"></div>
 
 <header>
     <div class="hdr-top">
@@ -386,8 +322,7 @@
             <button class="hdr-btn" id="themeBtn" onclick="toggleTheme()">☀️ Light</button>
             <button class="hdr-btn" onclick="toggleOutdoor()">🌤</button>
             <button class="hdr-btn" onclick="printLU()">🖨️</button>
-            <button class="hdr-btn" id="resetBtn" onclick="resetGame()" style="background:#dc2626;">RESET</button>
-            <button class="hdr-btn" onclick="logoutAndShowPIN()">🔓</button>
+            <button class="hdr-btn" onclick="resetGame()" style="background:#dc2626;">RESET</button>
         </div>
     </div>
     <div class="scorebug" id="scorebug">
@@ -439,9 +374,8 @@
 
 <nav id="mainNav"></nav>
 <main id="main"></main>
-<div class="toast" id="toast"></div>
 <footer>
-    © 2026 Clayton E. Greenberg | <a href="https://voiceofdfw.com" style="color:#ef4444;">VoiceofDFW.com</a> | 🏈 Digital Pressbox Command Center 🏈
+    © 2026 Clayton E. Greenberg | VoiceofDFW.com | 🏈 Digital Pressbox Command Center 🏈
 </footer>
 
 <script>
@@ -477,9 +411,7 @@ let S = {
     scoringLog: [],
     penaltyLog: [],
     gameHistory: [],
-    script: '',
-    cp: {},
-    ap: ''
+    script: ''
 };
 
 function g() { return S; }
@@ -500,25 +432,6 @@ function loadState() {
 }
 function getTeam(side) { return side === 'away' ? S.teams[0] : S.teams[1]; }
 
-// Tooltips
-const tooltipEl = document.getElementById('tooltip');
-document.addEventListener('mouseover', e => {
-    const t = e.target.closest('[data-tooltip]');
-    if (t) {
-        tooltipEl.textContent = t.getAttribute('data-tooltip');
-        tooltipEl.style.display = 'block';
-        tooltipEl.style.left = (e.clientX + 15) + 'px';
-        tooltipEl.style.top = (e.clientY + 15) + 'px';
-    }
-});
-document.addEventListener('mousemove', e => {
-    if (tooltipEl.style.display === 'block') {
-        tooltipEl.style.left = (e.clientX + 15) + 'px';
-        tooltipEl.style.top = (e.clientY + 15) + 'px';
-    }
-});
-document.addEventListener('mouseout', () => { tooltipEl.style.display = 'none'; });
-
 // Theme
 function toggleTheme() {
     S.md = S.md === 'dark' ? 'light' : 'dark';
@@ -526,10 +439,12 @@ function toggleTheme() {
         document.documentElement.style.setProperty('--bg', '#0f172a');
         document.documentElement.style.setProperty('--surface', '#1e293b');
         document.documentElement.style.setProperty('--text', '#f1f5f9');
+        document.documentElement.style.setProperty('--border', '#334155');
     } else {
         document.documentElement.style.setProperty('--bg', '#f1f5f9');
         document.documentElement.style.setProperty('--surface', '#e2e8f0');
         document.documentElement.style.setProperty('--text', '#0f172a');
+        document.documentElement.style.setProperty('--border', '#94a3b8');
     }
     document.getElementById('themeBtn').textContent = S.md === 'dark' ? '☀️ Light' : '🌙 Dark';
     saveState();
@@ -547,10 +462,9 @@ function updateWallClock() {
     const n = new Date();
     let h = n.getHours();
     const m = String(n.getMinutes()).padStart(2, '0');
-    const s = String(n.getSeconds()).padStart(2, '0');
     const a = h >= 12 ? 'PM' : 'AM';
     h = h % 12 || 12;
-    document.getElementById('wallClock').textContent = `${h}:${m}:${s} ${a}`;
+    document.getElementById('wallClock').textContent = `${h}:${m} ${a}`;
 }
 setInterval(updateWallClock, 1000);
 updateWallClock();
@@ -578,7 +492,7 @@ function chScore(side, delta) {
 function chQuarter(delta) {
     S.q = Math.min(4, Math.max(1, S.q + delta));
     if (S.q <= 2) S.gameState = 'FIRST_HALF';
-    else if (S.q <= 4) S.gameState = 'SECOND_HALF';
+    else S.gameState = 'SECOND_HALF';
     updateScorebug();
     saveState();
 }
@@ -621,12 +535,7 @@ function startGame() {
     saveState();
     toast('🏈 Game started!');
 }
-function setHalftime() {
-    S.gameState = 'HALFTIME';
-    S.gc.run = false;
-    saveState();
-    toast('⏸️ Halftime');
-}
+function setHalftime() { S.gameState = 'HALFTIME'; S.gc.run = false; saveState(); toast('⏸️ Halftime'); }
 function startSecondHalf() {
     S.gameState = 'SECOND_HALF';
     S.gc.rem = 480;
@@ -679,17 +588,8 @@ function resetGame() {
 }
 
 // Game controls
-function setPossession(side) {
-    S.poss = side;
-    renderGame();
-    saveState();
-}
-function firstDown() {
-    S.down = 1;
-    S.dist = 10;
-    renderGame();
-    toast('1st & 10');
-}
+function setPossession(side) { S.poss = side; renderGame(); saveState(); }
+function firstDown() { S.down = 1; S.dist = 10; renderGame(); toast('1st & 10'); }
 function setDown(v) { S.down = parseInt(v) || 1; saveState(); }
 function setDist(v) { S.dist = parseInt(v) || 1; saveState(); }
 function quickScore(type) {
@@ -727,11 +627,7 @@ function renderNav() {
     });
     document.getElementById('mainNav').innerHTML = html;
 }
-function switchView(v) {
-    S.v = v;
-    renderNav();
-    renderView();
-}
+function switchView(v) { S.v = v; renderNav(); renderView(); }
 function renderView() {
     if (S.v === 'roster') renderRoster();
     else if (S.v === 'log') renderLog();
@@ -762,10 +658,6 @@ function renderGame() {
     html += `<button class="pat" onclick="quickScore('pat')">PAT +1</button>`;
     html += `<button class="safety" onclick="quickScore('safety')">Safety +2</button>`;
     html += `<button class="flag-btn" onclick="quickPenalty()">🚩 FLAG</button>`;
-    html += `<button onclick="undoGame()">↩ Undo</button>`;
-    html += `<button onclick="redoGame()">↪ Redo</button>`;
-    html += `<button onclick="exportBoxScore()">📊 Export</button>`;
-    html += `<button onclick="printLU()">🖨️ Print</button>`;
     html += '</div>';
     
     html += '<div class="team-cards">';
@@ -777,15 +669,11 @@ function renderGame() {
     html += `<select>${S.teams.map(t => `<option>${t.name}</option>`).join('')}</select>`;
     html += `<button class="sb-btn" onclick="setPossession('away')">🏈</button>`;
     html += '</div>';
-    html += '<div class="unit-tabs">';
-    html += '<button class="unit-tab active">ALL</button>';
-    html += '<button class="unit-tab">OFF</button>';
-    html += '<button class="unit-tab">DEF</button>';
-    html += '</div>';
+    html += '<div class="unit-tabs"><button class="unit-tab active">ALL</button><button class="unit-tab">OFF</button><button class="unit-tab">DEF</button></div>';
     html += '<div class="player-list-body">';
     away.players.forEach(p => {
         html += `<div class="player-row${p.st ? ' starter' : ''}">`;
-        html += `<input value="${p.n}" style="width:35px;">`;
+        html += `<input value="${p.n}" style="width:30px;">`;
         html += `<input value="${p.na}">`;
         html += `<select>${['QB','RB','WR','TE','OL','DL','LB','DB','K','P'].map(o => `<option ${p.po === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
         html += `<button class="st-toggle ${p.st ? 'active' : ''}" onclick="toggleStarter('away','${p.id}')">⭐</button>`;
@@ -793,8 +681,7 @@ function renderGame() {
         html += `<button class="sb-btn" onclick="deletePlayer('away','${p.id}')">✕</button>`;
         html += '</div>';
     });
-    html += '</div>';
-    html += '</div>';
+    html += '</div></div>';
     
     // Home card
     html += `<div class="team-card">`;
@@ -803,15 +690,11 @@ function renderGame() {
     html += `<select>${S.teams.map(t => `<option>${t.name}</option>`).join('')}</select>`;
     html += `<button class="sb-btn" onclick="setPossession('home')">🏈</button>`;
     html += '</div>';
-    html += '<div class="unit-tabs">';
-    html += '<button class="unit-tab active">ALL</button>';
-    html += '<button class="unit-tab">OFF</button>';
-    html += '<button class="unit-tab">DEF</button>';
-    html += '</div>';
+    html += '<div class="unit-tabs"><button class="unit-tab active">ALL</button><button class="unit-tab">OFF</button><button class="unit-tab">DEF</button></div>';
     html += '<div class="player-list-body">';
     home.players.forEach(p => {
         html += `<div class="player-row${p.st ? ' starter' : ''}">`;
-        html += `<input value="${p.n}" style="width:35px;">`;
+        html += `<input value="${p.n}" style="width:30px;">`;
         html += `<input value="${p.na}">`;
         html += `<select>${['QB','RB','WR','TE','OL','DL','LB','DB','K','P'].map(o => `<option ${p.po === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
         html += `<button class="st-toggle ${p.st ? 'active' : ''}" onclick="toggleStarter('home','${p.id}')">⭐</button>`;
@@ -819,8 +702,7 @@ function renderGame() {
         html += `<button class="sb-btn" onclick="deletePlayer('home','${p.id}')">✕</button>`;
         html += '</div>';
     });
-    html += '</div>';
-    html += '</div>';
+    html += '</div></div>';
     
     html += '</div>';
     
@@ -843,9 +725,211 @@ function deletePlayer(side, pid) {
     saveState();
     renderGame();
 }
-function undoGame() { toast('Undo not available in this version'); }
-function redoGame() { toast('Redo not available in this version'); }
-function exportBoxScore() { toast('Export coming soon'); }
-function printLU() { toast('Print coming soon'); }
 
 // Roster view
+function renderRoster() {
+    let html = '<div class="panel"><h3>📋 ROSTERS</h3>';
+    S.teams.forEach((team, idx) => {
+        html += `<h4 style="margin-top:15px;">${team.name}</h4>`;
+        team.players.forEach(p => {
+            html += `<div style="display:flex;gap:8px;margin-bottom:5px;align-items:center;">
+                <input value="${p.n}" style="width:40px;padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">
+                <input value="${p.na}" style="flex:1;padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">
+                <select style="padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">
+                    ${['QB','RB','WR','TE','OL','DL','LB','DB','K','P'].map(o => `<option ${p.po === o ? 'selected' : ''}>${o}</option>`).join('')}
+                </select>
+                <button class="sb-btn" onclick="deletePlayerFromRoster(${idx},'${p.id}')">✕</button>
+            </div>`;
+        });
+        html += `<button class="hdr-btn" onclick="addPlayerToTeam(${idx})">➕ Add Player</button>`;
+    });
+    html += '</div>';
+    document.getElementById('main').innerHTML = html;
+}
+function deletePlayerFromRoster(teamIdx, pid) {
+    S.teams[teamIdx].players = S.teams[teamIdx].players.filter(x => x.id !== pid);
+    saveState();
+    renderRoster();
+}
+function addPlayerToTeam(teamIdx) {
+    S.teams[teamIdx].players.push({ id: 'p' + Date.now(), n: '', na: 'New Player', po: 'QB', st: false, nt: '', pinned: false });
+    saveState();
+    renderRoster();
+}
+
+// Log view
+function renderLog() {
+    let html = '<div class="panel"><h3>📜 GAME LOG</h3>';
+    const events = [...S.scoringLog.map(e => ({...e, type: 'score'})), ...S.penaltyLog.map(e => ({...e, type: 'penalty'}))];
+    if (events.length === 0) {
+        html += '<p>No events in current game.</p>';
+    } else {
+        html += '<h4>Current Game</h4><table style="width:100%;border-collapse:collapse;font-size:0.8rem;">';
+        html += '<tr><th>Time</th><th>Team</th><th>Event</th></tr>';
+        events.forEach(ev => {
+            const timeStr = ev.time ? `${Math.floor(ev.time/60)}:${String(ev.time%60).padStart(2,'0')}` : '--:--';
+            html += `<tr><td>${timeStr}</td><td>${ev.team === 'home' ? 'Home' : 'Away'}</td><td>${ev.type.toUpperCase()}</td></tr>`;
+        });
+        html += '</table>';
+    }
+    if (S.gameHistory.length > 0) {
+        html += '<hr><h4>Game History</h4>';
+        S.gameHistory.forEach((game, idx) => {
+            const d = new Date(game.date).toLocaleDateString();
+            html += `<div style="padding:5px;border-bottom:1px solid var(--border);">
+                ${d} - ${game.away} vs ${game.home} - ${game.awayScore}-${game.homeScore}
+                <button class="hdr-btn" onclick="printGameLog(${idx})">🖨️ Print</button>
+            </div>`;
+        });
+    }
+    html += '</div>';
+    document.getElementById('main').innerHTML = html;
+}
+function printGameLog(idx) {
+    const game = S.gameHistory[idx];
+    if (!game) return;
+    let html = '<html><head><title>Game Log</title></head><body>';
+    html += `<h2>${game.away} vs ${game.home}</h2>`;
+    html += `<p>Final Score: ${game.awayScore} - ${game.homeScore}</p>`;
+    html += '<table style="width:100%;border-collapse:collapse;">';
+    html += '<tr><th>Time</th><th>Team</th><th>Event</th></tr>';
+    game.log.forEach(ev => {
+        const timeStr = ev.time ? `${Math.floor(ev.time/60)}:${String(ev.time%60).padStart(2,'0')}` : '--:--';
+        html += `<tr><td>${timeStr}</td><td>${ev.team === 'home' ? 'Home' : 'Away'}</td><td>${ev.type.toUpperCase()}</td></tr>`;
+    });
+    html += '</table></body></html>';
+    const w = window.open();
+    w.document.write(html);
+    w.print();
+}
+
+// Script view
+function renderScript() {
+    let html = '<div style="padding:10px;height:100%;display:flex;flex-direction:column;">';
+    html += '<div style="display:flex;gap:6px;margin-bottom:8px;">';
+    html += '<button class="hdr-btn" onclick="document.execCommand(\'bold\')"><b>B</b></button>';
+    html += '<button class="hdr-btn" onclick="document.execCommand(\'italic\')"><i>I</i></button>';
+    html += '<button class="hdr-btn" onclick="document.execCommand(\'underline\')"><u>U</u></button>';
+    html += '<button class="hdr-btn" onclick="document.getElementById(\'scriptFileInput\').click()">📁 Upload</button>';
+    html += '<input type="file" id="scriptFileInput" accept=".txt,.md,.docx" style="display:none;" onchange="uploadScriptFile(this)">';
+    html += '<button class="hdr-btn" onclick="saveScript()">💾 Save</button>';
+    html += '<button class="hdr-btn" onclick="printScript()">🖨️ Print</button>';
+    html += '<button class="hdr-btn" onclick="clearScript()">🗑️ Clear</button>';
+    html += '</div>';
+    html += '<div id="scriptEditor" contenteditable="true" style="flex:1;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow-y:auto;color:var(--text);"></div>';
+    html += '</div>';
+    document.getElementById('main').innerHTML = html;
+    document.getElementById('scriptEditor').innerHTML = S.script || '';
+}
+function saveScript() {
+    S.script = document.getElementById('scriptEditor').innerHTML;
+    saveState();
+    toast('Script saved');
+}
+function printScript() {
+    const w = window.open();
+    w.document.write('<html><head><title>Script</title></head><body>' + S.script + '</body></html>');
+    w.print();
+}
+function clearScript() {
+    if (!confirm('Clear script?')) return;
+    S.script = '';
+    document.getElementById('scriptEditor').innerHTML = '';
+    saveState();
+    toast('Cleared');
+}
+function uploadScriptFile(input) {
+    const f = input.files[0];
+    if (!f) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+        const editor = document.getElementById('scriptEditor');
+        if (editor) editor.innerText = ev.target.result;
+        toast('Script uploaded');
+    };
+    reader.readAsText(f);
+}
+
+// Cloud sync
+async function fnlCloudSaveAll() {
+    try {
+        const snap = JSON.parse(JSON.stringify(S));
+        await fetch('https://lineup-api.claytongreenberg.workers.dev/api/lineup?id=fnl_full_sync', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(snap)
+        });
+        toast('✅ Saved to cloud');
+    } catch(e) { toast('❌ Save failed'); }
+}
+async function fnlCloudLoadAll() {
+    if (!confirm('Load from cloud?')) return;
+    try {
+        const r = await fetch('https://lineup-api.claytongreenberg.workers.dev/api/lineup?id=fnl_full_sync');
+        if (!r.ok) throw new Error('No data');
+        const snap = await r.json();
+        S = snap;
+        saveState();
+        renderAll();
+        toast('✅ Loaded from cloud');
+    } catch(e) { toast('❌ Load failed'); }
+}
+function printLU() {
+    let html = '<html><head><title>Lineup</title></head><body>';
+    S.teams.forEach(t => {
+        html += `<h2>${t.name}</h2><table style="width:100%;border-collapse:collapse;">`;
+        html += '<tr><th>#</th><th>Name</th><th>Pos</th></tr>';
+        t.players.filter(p => p.st).forEach(p => {
+            html += `<tr><td>${p.n}</td><td>${p.na}</td><td>${p.po}</td></tr>`;
+        });
+        html += '</table>';
+    });
+    html += '</body></html>';
+    const w = window.open();
+    w.document.write(html);
+    w.print();
+}
+
+// Expose globals
+window.chScore = chScore;
+window.chQuarter = chQuarter;
+window.startGC = startGC;
+window.pauseGC = pauseGC;
+window.resetGC = resetGC;
+window.startGame = startGame;
+window.setHalftime = setHalftime;
+window.startSecondHalf = startSecondHalf;
+window.setOvertime = setOvertime;
+window.endGame = endGame;
+window.setPossession = setPossession;
+window.setDown = setDown;
+window.setDist = setDist;
+window.firstDown = firstDown;
+window.quickScore = quickScore;
+window.quickPenalty = quickPenalty;
+window.toggleTheme = toggleTheme;
+window.toggleOutdoor = toggleOutdoor;
+window.resetGame = resetGame;
+window.switchView = switchView;
+window.toggleStarter = toggleStarter;
+window.togglePin = togglePin;
+window.deletePlayer = deletePlayer;
+window.deletePlayerFromRoster = deletePlayerFromRoster;
+window.addPlayerToTeam = addPlayerToTeam;
+window.printGameLog = printGameLog;
+window.saveScript = saveScript;
+window.printScript = printScript;
+window.clearScript = clearScript;
+window.uploadScriptFile = uploadScriptFile;
+window.fnlCloudSaveAll = fnlCloudSaveAll;
+window.fnlCloudLoadAll = fnlCloudLoadAll;
+window.printLU = printLU;
+
+// Initialize
+loadState();
+renderAll();
+updateScorebug();
+updateGameClockDisplay();
+</script>
+</body>
+</html>
