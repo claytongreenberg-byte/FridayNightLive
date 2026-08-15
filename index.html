@@ -1159,14 +1159,25 @@ function saveTeam() {
     team.color = document.getElementById('etc').value;
     team.mascot = document.getElementById('etm').value;
     team.coach = document.getElementById('etco').value;
-    saveState(); renderRoster(); updateScorebug(); toast('✅ Team saved');
+    // Logo is already saved from previewTeamLogo
+    saveState(); 
+    renderRoster(); 
+    updateScorebug(); 
+    toast('✅ Team saved');
 }
 function previewTeamLogo(input) {
     const f = input.files[0]; if (!f) return;
     const r = new FileReader();
     r.onload = ev => {
         const team = S.teams.find(t => t.id === S.cid);
-        if (team) { team.logo = ev.target.result; document.getElementById('etl').src = ev.target.result; document.getElementById('etl').style.display = 'inline-block'; toast('📷 Logo preview - click Save to confirm'); }
+        if (team) { 
+            team.logo = ev.target.result; // SAVE DIRECTLY TO TEAM
+            document.getElementById('etl').src = ev.target.result; 
+            document.getElementById('etl').style.display = 'inline-block'; 
+            saveState(); // Save immediately
+            updateScorebug(); // Update scorebug
+            toast('✅ Logo uploaded - saved to team!'); 
+        }
     };
     r.readAsDataURL(f);
 }
