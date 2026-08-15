@@ -18,6 +18,7 @@
             --scorebug-text: #ffffff;
             --team-card-away: #e2e8f0;
             --team-card-home: #e2e8f0;
+            --player-text: #0a0a0a;
         }
         body {
             font-family: Arial, sans-serif;
@@ -425,10 +426,24 @@
         }
         .player-row:last-child { border-bottom: none; }
         .player-row input, .player-row select {
-            background: transparent; border: 1px solid var(--border); color: var(--text);
-            padding: 2px; width: 100%; font-size: 0.6rem; border-radius: 3px;
+            background: transparent; 
+            border: 1px solid var(--border); 
+            color: #0a0a0a; /* DARKER FONT for player text */
+            padding: 2px; 
+            width: 100%; 
+            font-size: 0.65rem; 
+            font-weight: 700;
+            border-radius: 3px;
         }
-        .player-row input:focus, .player-row select:focus { border-color: var(--accent); outline: none; }
+        .player-row input::placeholder, .player-row select::placeholder {
+            color: #333;
+            opacity: 0.7;
+        }
+        .player-row input:focus, .player-row select:focus { 
+            border-color: var(--accent); 
+            outline: none; 
+            background: rgba(255,255,255,0.5);
+        }
         .player-row.starter { background: rgba(251,191,36,0.12); border-left: 3px solid var(--accent); }
         .st-toggle, .pin-btn {
             background: none; border: 1px solid var(--border); border-radius: 50%;
@@ -670,13 +685,13 @@ let S = {
     md7: 'tackle', p7: ['QB','Center','WR','WR','WR','DB','DB'],
     cf: '12h', cs: true,
     awayId: 'h', homeId: 's',
-    // Timeouts: 3 per team per game
     timeouts: { away: 3, home: 3 },
-    // Undo stack
+    timeoutConfig: {
+        tackle: { perHalf: 3, overtimePerPeriod: 1 },
+        sevens: { perHalf: 0, overtimePerPeriod: 0 }
+    },
     undoStack: [],
-    // Game session ID
     sessionId: null,
-    // Last event display
     lastEvent: { text: '🏈 Ready — Set possession to begin', type: 'info' },
     teams: [
         { id: 'h', name: 'Texas Hawks', abbr: 'TXH', color: '#1e3a5f', logo: '', mascot: '', coach: '', players: [
@@ -743,6 +758,12 @@ function normalizeState() {
     if (!S.colors) S.colors = { scorebugBg: '#0d0d1a', scorebugText: '#ffffff', accent: '#facc15', teamCardAway: '#e2e8f0', teamCardHome: '#e2e8f0', teamCardBorder: '#94a3b8' };
     if (S.gc.max === undefined) S.gc.max = 480;
     if (S.timeouts === undefined) S.timeouts = { away: 3, home: 3 };
+    if (S.timeoutConfig === undefined) {
+        S.timeoutConfig = {
+            tackle: { perHalf: 3, overtimePerPeriod: 1 },
+            sevens: { perHalf: 0, overtimePerPeriod: 0 }
+        };
+    }
     if (S.undoStack === undefined) S.undoStack = [];
     if (S.sessionId === undefined) S.sessionId = null;
     if (S.lastEvent === undefined) S.lastEvent = { text: '🏈 Ready — Set possession to begin', type: 'info' };
@@ -783,7 +804,6 @@ function teamAbbr(team) {
 
 // ---- UNDO SYSTEM ----
 function pushUndo() {
-    // Store current state for undo
     const snapshot = {
         as: S.as,
         hs: S.hs,
@@ -798,7 +818,6 @@ function pushUndo() {
         timeouts: { away: S.timeouts.away, home: S.timeouts.home }
     };
     S.undoStack.push(snapshot);
-    // Limit undo stack to 20
     if (S.undoStack.length > 20) S.undoStack.shift();
     updateUndoButton();
     saveState();
@@ -856,7 +875,6 @@ function setLastEvent(text, type) {
         else if (type === 'timeout') el.style.borderColor = '#f97316';
         else el.style.borderColor = 'var(--accent)';
     }
-    // Auto-clear after 10 seconds for events (except info)
     if (type !== 'info' && type !== 'undo') {
         clearTimeout(window.lastEventTimeout);
         window.lastEventTimeout = setTimeout(() => {
@@ -926,7 +944,6 @@ function toggleOutdoor() {
     if (S.outdoor) {
         btn.classList.add('outdoor-active');
         btn.textContent = '🌤 ON';
-        // Increase scorebug sizes
         document.querySelector('.scorebug').style.transform = 'scale(1.05)';
         document.querySelector('.scorebug').style.transformOrigin = 'center center';
     } else {
@@ -963,6 +980,7 @@ function applyColors() {
     document.documentElement.style.setProperty('--team-card-away', S.colors.teamCardAway);
     document.documentElement.style.setProperty('--team-card-home', S.colors.teamCardHome);
     document.documentElement.style.setProperty('--border', S.colors.teamCardBorder);
+    document.documentElement.style.setProperty('--player-text', '#0a0a0a');
     
     document.querySelectorAll('.team-card').forEach((card) => {
         if (card.classList.contains('away-card')) {
@@ -1022,7 +1040,6 @@ function updateScorebug() {
     }
     document.getElementById('sbQuarter').textContent = qLabel;
     
-    // Update timeouts
     updateTimeoutDisplay();
     
     applyColors();
@@ -1140,7 +1157,6 @@ function startGame() {
         toast('⏳ Game already in progress. Use RESET to start over.');
         return;
     }
-    // Generate session ID
     S.sessionId = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
     S.gameState = 'FIRST_HALF'; 
     S.gc.rem = S.gc.max || 480; 
@@ -1149,8 +1165,9 @@ function startGame() {
     S.as = 0; S.hs = 0; 
     S.down = 1; S.dist = 10; 
     S.poss = 'home'; 
-    S.scoringLog = []; S.penaltyLog = []; 
-    S.timeouts = { away: 3, home: 3 };
+    S.scoringLog = []; S.penaltyLog = [];
+    const timeoutCount = S.md7 === '7v7' ? (S.timeoutConfig.sevens ? S.timeoutConfig.sevens.perHalf : 0) : (S.timeoutConfig.tackle ? S.timeoutConfig.tackle.perHalf : 3);
+    S.timeouts = { away: timeoutCount, home: timeoutCount };
     S.undoStack = [];
     pushUndo();
     setLastEvent('🏈 GAME STARTED — Q1', 'info');
@@ -1168,6 +1185,8 @@ function setHalftime() {
     S.gameState = 'HALFTIME'; 
     S.gc.run = false; 
     S.q = 2;
+    const timeoutCount = S.md7 === '7v7' ? (S.timeoutConfig.sevens ? S.timeoutConfig.sevens.perHalf : 0) : (S.timeoutConfig.tackle ? S.timeoutConfig.tackle.perHalf : 3);
+    S.timeouts = { away: timeoutCount, home: timeoutCount };
     pushUndo();
     setLastEvent('⏸️ HALFTIME', 'info');
     updateScorebug(); 
@@ -1201,7 +1220,9 @@ function setOvertime() {
     S.gameState = 'OVERTIME'; 
     S.gc.rem = 360; 
     S.gc.run = false; 
-    S.q = 5; 
+    S.q = 5;
+    const otCount = S.md7 === '7v7' ? (S.timeoutConfig.sevens ? S.timeoutConfig.sevens.overtimePerPeriod : 0) : (S.timeoutConfig.tackle ? S.timeoutConfig.tackle.overtimePerPeriod : 1);
+    S.timeouts = { away: otCount, home: otCount };
     pushUndo();
     setLastEvent('⏱️ OVERTIME', 'info');
     updateScorebug(); 
@@ -1250,7 +1271,8 @@ function resetGame() {
     S.as = 0; S.hs = 0; S.q = 1; S.down = 1; S.dist = 10; S.poss = 'home';
     S.gameState = 'READY'; S.gc.rem = S.gc.max || 480; S.gc.run = false;
     S.scoringLog = []; S.penaltyLog = [];
-    S.timeouts = { away: 3, home: 3 };
+    const timeoutCount = S.md7 === '7v7' ? (S.timeoutConfig.sevens ? S.timeoutConfig.sevens.perHalf : 0) : (S.timeoutConfig.tackle ? S.timeoutConfig.tackle.perHalf : 3);
+    S.timeouts = { away: timeoutCount, home: timeoutCount };
     S.undoStack = [];
     S.sessionId = null;
     S.lastEvent = { text: '🏈 Ready — Set possession to begin', type: 'info' };
@@ -1341,7 +1363,6 @@ function quickScore(type) {
 // ---- Quick cues ----
 function quickCue(text, type) {
     setLastEvent(text, type || 'info');
-    // Log it as a note in the log
     S.scoringLog.push({ type: 'note', team: S.poss, player: text, points: 0, time: S.gc.rem, quarter: S.q, id: Date.now() + '_note' });
     saveState();
     toast(`📢 ${text}`);
@@ -1394,7 +1415,6 @@ function renderAll() { renderNav(); renderView(); updateScorebug(); updateGameCl
 // ---- Game view ----
 function renderGame() {
     let html = '';
-    // Quick Cues
     html += '<div class="quick-cues">';
     html += '<button class="td" onclick="quickScore(\'td\')" data-tooltip="Touchdown +6">🏈 TD</button>';
     html += '<button class="fg" onclick="quickScore(\'fg\')" data-tooltip="Field Goal +3">🎯 FG</button>';
@@ -1462,9 +1482,9 @@ function renderGame() {
         html += '<div class="player-list-body">';
         getPlayers(side, filter).forEach(p => {
             html += `<div class="player-row${p.st ? ' starter' : ''}">`;
-            html += `<input value="${p.n}" style="width:26px;" onchange="updateGamePlayerField('${side}','${p.id}','n',this.value)">`;
-            html += `<input value="${p.na}" onchange="updateGamePlayerField('${side}','${p.id}','na',this.value)">`;
-            html += `<select onchange="updateGamePlayerField('${side}','${p.id}','po',this.value)">${getPositions().map(o => `<option ${p.po === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
+            html += `<input value="${p.n}" style="width:26px;color:#0a0a0a;font-weight:700;" onchange="updateGamePlayerField('${side}','${p.id}','n',this.value)">`;
+            html += `<input value="${p.na}" style="color:#0a0a0a;font-weight:700;" onchange="updateGamePlayerField('${side}','${p.id}','na',this.value)">`;
+            html += `<select onchange="updateGamePlayerField('${side}','${p.id}','po',this.value)" style="color:#0a0a0a;font-weight:700;">${getPositions().map(o => `<option ${p.po === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
             html += `<button class="st-toggle ${p.st ? 'active' : ''}" onclick="toggleStarter('${side}','${p.id}')" data-tooltip="Toggle starter">⭐</button>`;
             html += `<button class="pin-btn" onclick="togglePin('${side}','${p.id}')" data-tooltip="Pin/unpin">📌</button>`;
             html += `<button class="sb-btn" onclick="deletePlayer('${side}','${p.id}')" data-tooltip="Delete player" style="width:18px;height:18px;font-size:9px;">✕</button>`;
@@ -1544,12 +1564,12 @@ function renderRoster() {
     html += '</div>';
     selectedTeam.players.forEach((p, pidx) => {
         html += `<div style="display:grid;grid-template-columns:32px 1fr 70px 50px 70px 70px 26px;gap:3px;margin-bottom:2px;align-items:center;">`;
-        html += `<input value="${p.n}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'n',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.6rem;">`;
-        html += `<input value="${p.na}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'na',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.6rem;">`;
-        html += `<select onchange="updatePlayerField('${selectedTeam.id}',${pidx},'po',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.6rem;">${getPositions().map(o => `<option ${p.po === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
-        html += `<select onchange="updatePlayerField('${selectedTeam.id}',${pidx},'st',this.value === 'true')" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.6rem;"><option value="false" ${!p.st ? 'selected' : ''}>Bench</option><option value="true" ${p.st ? 'selected' : ''}>Starter</option></select>`;
-        html += `<input value="${p.nt || ''}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'nt',this.value)" placeholder="Notes" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.6rem;">`;
-        html += `<input value="${p.pron || ''}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'pron',this.value)" placeholder="Pron" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.6rem;">`;
+        html += `<input value="${p.n}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'n',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">`;
+        html += `<input value="${p.na}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'na',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">`;
+        html += `<select onchange="updatePlayerField('${selectedTeam.id}',${pidx},'po',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">${getPositions().map(o => `<option ${p.po === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
+        html += `<select onchange="updatePlayerField('${selectedTeam.id}',${pidx},'st',this.value === 'true')" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;"><option value="false" ${!p.st ? 'selected' : ''}>Bench</option><option value="true" ${p.st ? 'selected' : ''}>Starter</option></select>`;
+        html += `<input value="${p.nt || ''}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'nt',this.value)" placeholder="Notes" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">`;
+        html += `<input value="${p.pron || ''}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'pron',this.value)" placeholder="Pron" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">`;
         html += `<button class="sb-btn" style="width:20px;height:20px;font-size:9px;" onclick="S.teams.find(t=>t.id==='${selectedTeam.id}').players.splice(${pidx},1);saveState();renderRoster();" data-tooltip="Delete player">✕</button>`;
         html += '</div>';
     });
@@ -1768,8 +1788,8 @@ function uploadScriptFile(input) {
 
 // ---- Admin view ----
 function renderAdmin() {
-    const tabs = ['theme', 'clock', '7v7', 'colors', 'backup', 'cloud', 'help'];
-    const labels = { theme: 'Theme', clock: 'Clock', '7v7': '7v7', colors: 'Colors', backup: 'Backup', cloud: 'Cloud', help: 'Help' };
+    const tabs = ['theme', 'clock', '7v7', 'timeouts', 'colors', 'backup', 'cloud', 'help'];
+    const labels = { theme: 'Theme', clock: 'Clock', '7v7': '7v7', timeouts: 'Timeouts', colors: 'Colors', backup: 'Backup', cloud: 'Cloud', help: 'Help' };
     let html = '<div class="panel"><div class="panel-header">';
     html += '<h3>⚙️ ADMIN</h3>';
     html += '<div class="panel-actions">';
@@ -1800,6 +1820,44 @@ function renderAdminContent() {
         c.innerHTML = `<h4>Game Mode</h4>
             <button class="hdr-btn" onclick="S.md7='tackle';saveState();renderAll();renderAdmin()" data-tooltip="11v11 tackle football">${S.md7 === 'tackle' ? '✅ Tackle' : 'Tackle'}</button> 
             <button class="hdr-btn" onclick="S.md7='7v7';saveState();renderAll();renderAdmin()" data-tooltip="7v7 format">${S.md7 === '7v7' ? '✅ 7v7' : '7v7'}</button>`; 
+    }
+    else if (S.at === 'timeouts') {
+        c.innerHTML = `<h4>⏱️ Timeout Rules</h4>
+            <p style="font-size:0.65rem;opacity:0.7;margin-bottom:8px;">Configure how many timeouts each team gets per half and overtime.</p>
+            
+            <div style="margin-bottom:12px;padding:10px;background:var(--bg);border-radius:6px;border:1px solid var(--border);">
+                <h5 style="font-size:0.7rem;margin-bottom:6px;">🏈 11-Man Tackle</h5>
+                <div style="display:flex;gap:16px;flex-wrap:wrap;">
+                    <label style="font-size:0.65rem;">Timeouts per half: 
+                        <input type="number" value="${S.timeoutConfig.tackle.perHalf}" min="0" max="5" style="width:50px;padding:3px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);" 
+                               onchange="S.timeoutConfig.tackle.perHalf=parseInt(this.value)||0;saveState();toast('✅ Timeout settings updated');">
+                    </label>
+                    <label style="font-size:0.65rem;">Timeouts per OT period: 
+                        <input type="number" value="${S.timeoutConfig.tackle.overtimePerPeriod}" min="0" max="3" style="width:50px;padding:3px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);" 
+                               onchange="S.timeoutConfig.tackle.overtimePerPeriod=parseInt(this.value)||0;saveState();toast('✅ Timeout settings updated');">
+                    </label>
+                </div>
+                <p style="font-size:0.55rem;opacity:0.5;margin-top:4px;">Default: 3 per half, 1 per OT period (UIL rules)</p>
+            </div>
+            
+            <div style="margin-bottom:12px;padding:10px;background:var(--bg);border-radius:6px;border:1px solid var(--border);">
+                <h5 style="font-size:0.7rem;margin-bottom:6px;">🏈 7v7</h5>
+                <div style="display:flex;gap:16px;flex-wrap:wrap;">
+                    <label style="font-size:0.65rem;">Timeouts per half: 
+                        <input type="number" value="${S.timeoutConfig.sevens.perHalf}" min="0" max="5" style="width:50px;padding:3px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);" 
+                               onchange="S.timeoutConfig.sevens.perHalf=parseInt(this.value)||0;saveState();toast('✅ Timeout settings updated');">
+                    </label>
+                    <label style="font-size:0.65rem;">Timeouts per OT period: 
+                        <input type="number" value="${S.timeoutConfig.sevens.overtimePerPeriod}" min="0" max="3" style="width:50px;padding:3px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);" 
+                               onchange="S.timeoutConfig.sevens.overtimePerPeriod=parseInt(this.value)||0;saveState();toast('✅ Timeout settings updated');">
+                    </label>
+                </div>
+                <p style="font-size:0.55rem;opacity:0.5;margin-top:4px;">Default: 0 timeouts (set your desired amount here)</p>
+            </div>
+            
+            <button class="hdr-btn" onclick="S.timeoutConfig={tackle:{perHalf:3,overtimePerPeriod:1},sevens:{perHalf:0,overtimePerPeriod:0}};saveState();renderAdmin();toast('✅ Timeout settings reset to defaults');" style="background:#f59e0b;color:#000;border-color:#f59e0b;">↺ Reset to Defaults</button>
+            <button class="hdr-btn" onclick="applyTimeoutConfig();toast('✅ Timeout config applied');" style="background:#22c55e;">✅ Apply Changes</button>
+        `;
     }
     else if (S.at === 'colors') {
         c.innerHTML = `<h4>🎨 Colors</h4>
@@ -1869,6 +1927,17 @@ function renderAdminContent() {
             <li>TD = red, FG = blue, 2PT = purple, PAT = green, Safety = amber</li>
             <li>Upload .txt or .md only for scripts and rosters (no .docx)</li>
         </ul>`;
+    }
+}
+function applyTimeoutConfig() {
+    const timeoutCount = S.md7 === '7v7' ? (S.timeoutConfig.sevens ? S.timeoutConfig.sevens.perHalf : 0) : (S.timeoutConfig.tackle ? S.timeoutConfig.tackle.perHalf : 3);
+    if (S.gameState === 'READY' || S.gameState === 'FIRST_HALF' || S.gameState === 'HALFTIME' || S.gameState === 'SECOND_HALF') {
+        S.timeouts = { away: timeoutCount, home: timeoutCount };
+        updateTimeoutDisplay();
+        saveState();
+        toast(`✅ Timeouts set to ${timeoutCount} per team`);
+    } else {
+        toast('ℹ️ Settings saved. Will apply on next game start.');
     }
 }
 function exportBackup() { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(S)], { type: 'application/json' })); a.download = 'fnl_backup.json'; a.click(); }
@@ -2025,7 +2094,6 @@ async function fnlCloudLoadLogsOnly() {
         if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {
             throw new Error('No data found');
         }
-        // Append logs with duplicate prevention using IDs
         if (data.scoringLog && Array.isArray(data.scoringLog)) {
             data.scoringLog.forEach(log => {
                 const exists = S.scoringLog.some(l => l.id === log.id);
@@ -2100,6 +2168,16 @@ async function fnlCloudLoadSettingsOnly() {
         if (data.cs !== undefined) S.cs = data.cs;
         if (data.md7 !== undefined) S.md7 = data.md7;
         if (data.gc && data.gc.max !== undefined) S.gc.max = data.gc.max;
+        if (data.timeoutConfig) {
+            if (data.timeoutConfig.tackle) {
+                S.timeoutConfig.tackle.perHalf = data.timeoutConfig.tackle.perHalf || S.timeoutConfig.tackle.perHalf;
+                S.timeoutConfig.tackle.overtimePerPeriod = data.timeoutConfig.tackle.overtimePerPeriod || S.timeoutConfig.tackle.overtimePerPeriod;
+            }
+            if (data.timeoutConfig.sevens) {
+                S.timeoutConfig.sevens.perHalf = data.timeoutConfig.sevens.perHalf || S.timeoutConfig.sevens.perHalf;
+                S.timeoutConfig.sevens.overtimePerPeriod = data.timeoutConfig.sevens.overtimePerPeriod || S.timeoutConfig.sevens.overtimePerPeriod;
+            }
+        }
         saveState();
         renderAll();
         applyColors();
@@ -2171,6 +2249,7 @@ window.exportTeamCSV = exportTeamCSV; window.parseRosterText = parseRosterText; 
 window.addClient = addClient; window.editClient = editClient; window.deleteClient = deleteClient; window.showAllPINs = showAllPINs;
 window.exportBackup = exportBackup; window.importBackup = importBackup; window.setSideTeam = setSideTeam; window.updateGamePlayerField = updateGamePlayerField;
 window.applyColors = applyColors; window.undoLastEvent = undoLastEvent; window.quickCue = quickCue; window.useTimeout = useTimeout; window.clearLogs = clearLogs;
+window.applyTimeoutConfig = applyTimeoutConfig;
 
 // ---- Init ----
 loadState();
