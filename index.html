@@ -84,7 +84,7 @@
             align-items: stretch;
             justify-content: center;
             gap: 0;
-            background: #0d0d1a !important; /* DARK CHARCOAL - NOT NAVY */
+            background: #0d0d1a !important;
             border: 3px solid var(--accent);
             border-radius: 12px;
             padding: 16px 20px 14px;
@@ -154,12 +154,13 @@
             50% { transform: translateY(-4px) scale(1.2); }
         }
         .sb-fullname {
-            font-size: 0.7rem; color: var(--sb-text); font-weight: 600;
+            font-size: 0.7rem; color: var(--sb-text); font-weight: 700;
             text-transform: uppercase; letter-spacing: 0.5px;
             max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-            background: rgba(0,0,0,0.25); padding: 2px 12px; border-radius: 10px;
+            background: rgba(0,0,0,0.3); padding: 2px 12px; border-radius: 10px;
             margin-top: 1px;
-            opacity: 0.8;
+            opacity: 1;
+            text-shadow: 0 0 10px rgba(255,255,255,0.15);
         }
         .sb-logo-sm { width: 22px; height: 22px; object-fit: contain; }
         .sb-row { display: flex; align-items: center; gap: 8px; }
@@ -180,7 +181,7 @@
         }
         .game-clock { 
             font-family: 'Courier New', monospace; 
-            font-size: 3rem; 
+            font-size: 3.6rem; 
             font-weight: 900; 
             color: #00ff88;
             text-shadow: 0 0 30px rgba(0,255,136,0.3), 0 0 60px rgba(0,255,136,0.1);
@@ -386,7 +387,7 @@
             .sb-block { padding: 0 10px; min-width: 60px; }
             .sb-val { font-size: 2.8rem; min-width: 45px; }
             .sb-abbr { font-size: 18px; }
-            .game-clock { font-size: 2.4rem; }
+            .game-clock { font-size: 2.8rem; }
             .sb-team-chip { width: 44px; height: 44px; font-size: 1.2rem; }
             .sb-fullname { font-size: 0.65rem; max-width: 120px; }
             .sb-btn { width: 34px; height: 34px; font-size: 14px; }
@@ -397,7 +398,7 @@
             .sb-block { padding: 0 6px; min-width: 40px; }
             .sb-val { font-size: 2rem; min-width: 30px; }
             .sb-abbr { font-size: 14px; }
-            .game-clock { font-size: 1.8rem; }
+            .game-clock { font-size: 2rem; }
             .sb-team-chip { width: 36px; height: 36px; font-size: 1rem; }
             .sb-fullname { font-size: 0.55rem; max-width: 80px; }
             .sb-btn { width: 30px; height: 30px; font-size: 12px; }
@@ -438,7 +439,7 @@
             <div class="scorebug" id="scorebug">
                 <span class="sb-network-tag">Voice of DFW Live</span>
                 <span class="live-pill" id="livePill"><span class="dot"></span><span id="livePillText">LIVE</span></span>
-                <!-- AWAY BLOCK (matches AWAY button) -->
+                <!-- AWAY BLOCK -->
                 <div class="sb-block score-block">
                     <div class="sb-name-col">
                         <div class="sb-team-chip" id="sbAwayChip" style="background:#334155;"></div>
@@ -462,7 +463,7 @@
                         <button class="sb-btn" onclick="chQuarter(1)" data-tooltip="Next quarter">▶</button>
                     </div>
                 </div>
-                <!-- HOME BLOCK (matches HOME button) -->
+                <!-- HOME BLOCK -->
                 <div class="sb-block score-block">
                     <div class="sb-name-col">
                         <div class="sb-team-chip" id="sbHomeChip" style="background:#334155;"></div>
@@ -692,11 +693,7 @@ function applyColors() {
     document.documentElement.style.setProperty('--team-card-home', S.colors.teamCardHome);
     document.documentElement.style.setProperty('--border', S.colors.teamCardBorder);
     
-    const sb = document.getElementById('scorebug');
-    if (sb) {
-        sb.style.background = S.colors.scorebugBg + ' !important';
-        sb.style.setProperty('--sb-text', S.colors.scorebugText);
-    }
+    // The scorebug background is controlled by the CSS variable, no need for inline style
     
     document.querySelectorAll('.team-card').forEach((card) => {
         if (card.classList.contains('away-card')) {
@@ -1159,7 +1156,6 @@ function saveTeam() {
     team.color = document.getElementById('etc').value;
     team.mascot = document.getElementById('etm').value;
     team.coach = document.getElementById('etco').value;
-    // Logo is already saved from previewTeamLogo
     saveState(); 
     renderRoster(); 
     updateScorebug(); 
@@ -1171,11 +1167,11 @@ function previewTeamLogo(input) {
     r.onload = ev => {
         const team = S.teams.find(t => t.id === S.cid);
         if (team) { 
-            team.logo = ev.target.result; // SAVE DIRECTLY TO TEAM
+            team.logo = ev.target.result;
             document.getElementById('etl').src = ev.target.result; 
             document.getElementById('etl').style.display = 'inline-block'; 
-            saveState(); // Save immediately
-            updateScorebug(); // Update scorebug
+            saveState();
+            updateScorebug();
             toast('✅ Logo uploaded - saved to team!'); 
         }
     };
@@ -1441,7 +1437,7 @@ function editClient(pin) { const c = S.cp[pin]; if (!c) return; const name = pro
 function deleteClient(pin) { if (!confirm('Delete client?')) return; delete S.cp[pin]; saveState(); renderClients(); }
 function showAllPINs() { const ks = Object.keys(S.cp); if (!ks.length) return toast('No clients'); let msg = 'Client PINs:\n'; ks.forEach(p => { msg += `${p} → ${S.cp[p].n}\n`; }); alert(msg); }
 
-// Cloud sync – UPDATED to use /api/sync/ endpoint with PUT
+// Cloud sync – uses /api/sync/ endpoint with PUT
 async function fnlCloudSaveAll() {
     try {
         const snap = JSON.parse(JSON.stringify(S));
