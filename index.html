@@ -914,20 +914,13 @@ function resetGame() {
 }
 
 // Game controls - order: AWAY then HOME
+
 function setPossession(side) { 
     S.poss = side; 
-    if (S.gameState === 'READY') {
-        S.gameState = 'FIRST_HALF';
-        S.q = 1;
-        S.gc.rem = S.gc.max || 480;
-        S.gc.run = false;
-        updateGameClockDisplay();
-        updateGameStateBadge();
-        toast(`🏈 ${side.toUpperCase()} has the ball - Game started!`);
-    } else {
-        toast(`🏈 ${side.toUpperCase()} has the ball`);
-    }
-    renderGame(); updateScorebug(); saveState(); 
+    toast(`🏈 ${side.toUpperCase()} has the ball`);
+    renderGame(); 
+    updateScorebug(); 
+    saveState(); 
 }
 function firstDown() { S.down = 1; S.dist = 10; renderGame(); updateDDTicker(); toast('1st & 10'); saveState(); }
 function setDown(v) { S.down = parseInt(v) || 1; updateDDTicker(); saveState(); }
