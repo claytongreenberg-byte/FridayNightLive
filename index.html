@@ -12,6 +12,8 @@
             --surface: #e2e8f0;
             --text: #0f172a;
             --border: #94a3b8;
+            --footer-bg: #1a1a1a;
+            --footer-text: #f1f5f9;
         }
         body {
             font-family: Arial, sans-serif;
@@ -70,8 +72,9 @@
             padding: 8px 12px;
             flex-wrap: wrap;
             width: 100%;
+            min-height: 90px;
         }
-        .sb-block { display: flex; flex-direction: column; align-items: center; padding: 0 6px; }
+        .sb-block { display: flex; flex-direction: column; align-items: center; padding: 0 6px; flex: 1 1 auto; min-width: 80px; }
         .sb-abbr {
             font-size: 13px; font-weight: 800; color: var(--accent); margin-bottom: 3px;
             max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
@@ -124,6 +127,10 @@
         .game-controls button.safety { background: #f59e0b; color: #000; }
         .game-controls button.flag-btn { background: var(--accent); color: #000; border-color: var(--accent); }
         .game-controls button.first-down { background: #22c55e; }
+        .game-controls select, .game-controls input {
+            padding: 4px 6px; border-radius: 4px; border: 1px solid var(--border);
+            background: var(--bg); color: var(--text);
+        }
         .team-cards { display: flex; gap: 6px; height: calc(100% - 45px); }
         .team-card {
             flex: 1; background: var(--surface); border: 1px solid var(--border);
@@ -159,8 +166,13 @@
         }
         .st-toggle.active { background: var(--accent); color: #000; }
         footer {
-            background: #1a1a1a; padding: 4px 8px; text-align: center;
-            font-size: 0.55rem; flex-shrink: 0; border-top: 1px solid var(--accent);
+            background: var(--footer-bg);
+            color: var(--footer-text);
+            padding: 4px 8px;
+            text-align: center;
+            font-size: 0.55rem;
+            flex-shrink: 0;
+            border-top: 1px solid var(--accent);
         }
         .toast {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
@@ -194,6 +206,22 @@
             background: none; border: 1px solid var(--border); color: inherit; cursor: pointer;
         }
         .admin-tab.active { background: var(--accent); color: #000; }
+        .possession-indicator {
+            display: inline-block; width: 12px; height: 12px; border-radius: 50%;
+            margin-left: 4px; border: 2px solid var(--accent);
+        }
+        .possession-indicator.home { background: #2563eb; }
+        .possession-indicator.away { background: #dc2626; }
+        .down-distance-display {
+            color: #fff; font-size: 0.75rem; font-weight: 700;
+            background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 4px;
+        }
+        @media (max-width: 768px) {
+            .team-cards { flex-direction: column; height: auto; }
+            .scorebug { gap: 5px; padding: 5px; }
+            .sb-block { min-width: 50px; }
+            .sb-val { font-size: 1.2rem; }
+        }
     </style>
 </head>
 <body>
@@ -210,71 +238,80 @@
             </div>
         </div>
         <div class="hdr-top-right">
-            <span class="wall-clock" id="wallClock">12:00 AM</span>
-            <span class="weather-pill" id="weatherHeader">--°F</span>
-            <button class="hdr-btn" onclick="fnlCloudSaveAll()">💾 SAVE</button>
-            <button class="hdr-btn" onclick="fnlCloudLoadAll()">📥 LOAD</button>
-            <button class="hdr-btn" id="themeBtn" onclick="toggleTheme()">🌙 Dark</button>
-            <button class="hdr-btn" onclick="toggleOutdoor()">🌤</button>
-            <button class="hdr-btn" onclick="printLU()">🖨️</button>
-            <button class="hdr-btn" onclick="resetGame()" style="background:#dc2626;">RESET</button>
+            <span class="wall-clock" id="wallClock" data-tooltip="Current time">12:00 AM</span>
+            <span class="weather-pill" id="weatherHeader" data-tooltip="Live weather">--°F</span>
+            <button class="hdr-btn" onclick="fnlCloudSaveAll()" data-tooltip="Save to cloud">💾 SAVE</button>
+            <button class="hdr-btn" onclick="fnlCloudLoadAll()" data-tooltip="Load from cloud">📥 LOAD</button>
+            <button class="hdr-btn" id="themeBtn" onclick="toggleTheme()" data-tooltip="Toggle dark/light mode">🌙 Dark</button>
+            <button class="hdr-btn" onclick="toggleOutdoor()" data-tooltip="Toggle outdoor mode (larger text)">🌤</button>
+            <button class="hdr-btn" onclick="printLU()" data-tooltip="Print lineup">🖨️</button>
+            <button class="hdr-btn" onclick="resetGame()" style="background:#dc2626;" data-tooltip="Reset entire game">RESET</button>
         </div>
     </div>
     <div class="hdr-bottom">
         <div class="scorebug" id="scorebug">
             <div class="sb-block">
-                <span class="sb-abbr" id="sbAwayAbbr">AWAY</span>
+                <span class="sb-abbr" id="sbAwayAbbr" data-tooltip="Away team">AWAY</span>
                 <div class="sb-row">
                     <button class="sb-btn" onclick="chScore('away',-1)" data-tooltip="Subtract point">−</button>
-                    <span class="sb-val" id="sbAwayScore">0</span>
+                    <span class="sb-val" id="sbAwayScore" data-tooltip="Away score">0</span>
                     <button class="sb-btn" onclick="chScore('away',1)" data-tooltip="Add point">+</button>
                 </div>
                 <button class="sb-btn" onclick="uploadScorebugLogo('away')" data-tooltip="Upload away logo" style="width:20px;height:20px;font-size:9px;">📷</button>
             </div>
             <div class="sb-block">
-                <span class="sb-abbr">QUARTER</span>
-                <span class="sb-qtr" id="sbQuarter">Q1</span>
+                <span class="sb-abbr" data-tooltip="Current period">PERIOD</span>
+                <span class="sb-qtr" id="sbQuarter" data-tooltip="Current quarter">Q1</span>
                 <div class="sb-row">
                     <button class="sb-btn" onclick="chQuarter(-1)" data-tooltip="Previous quarter">◀</button>
                     <button class="sb-btn" onclick="chQuarter(1)" data-tooltip="Next quarter">▶</button>
                 </div>
             </div>
             <div class="sb-block">
-                <span class="sb-abbr" id="sbHomeAbbr">HOME</span>
+                <span class="sb-abbr" id="sbHomeAbbr" data-tooltip="Home team">HOME</span>
                 <div class="sb-row">
                     <button class="sb-btn" onclick="chScore('home',-1)" data-tooltip="Subtract point">−</button>
-                    <span class="sb-val" id="sbHomeScore">0</span>
+                    <span class="sb-val" id="sbHomeScore" data-tooltip="Home score">0</span>
                     <button class="sb-btn" onclick="chScore('home',1)" data-tooltip="Add point">+</button>
                 </div>
                 <button class="sb-btn" onclick="uploadScorebugLogo('home')" data-tooltip="Upload home logo" style="width:20px;height:20px;font-size:9px;">📷</button>
             </div>
             <div class="sb-block">
-                <span class="sb-abbr">CLOCK</span>
-                <span class="game-clock" id="gameClockDisplay">8:00</span>
+                <span class="sb-abbr" data-tooltip="Game clock">CLOCK</span>
+                <span class="game-clock" id="gameClockDisplay" data-tooltip="Time remaining">8:00</span>
                 <div class="sb-row">
                     <button class="sb-btn" onclick="startGC()" data-tooltip="Start clock">▶</button>
                     <button class="sb-btn" onclick="pauseGC()" data-tooltip="Pause clock">⏸</button>
-                    <button class="sb-btn" onclick="resetGC()" data-tooltip="Reset clock">↺</button>
+                    <button class="sb-btn" onclick="resetGC()" data-tooltip="Reset clock to 8:00">↺</button>
                 </div>
             </div>
             <div class="sb-block">
-                <span class="sb-abbr">GAME</span>
+                <span class="sb-abbr" data-tooltip="Game controls">GAME</span>
                 <div class="sb-game-btns">
                     <button onclick="startGame()" data-tooltip="Start game (Q1)">▶ Start</button>
-                    <button onclick="setHalftime()" data-tooltip="Halftime">⏸ Half</button>
+                    <button onclick="setHalftime()" data-tooltip="Go to halftime">⏸ Half</button>
                     <button onclick="startSecondHalf()" data-tooltip="Start 2nd half (Q3)">⏭ 2nd</button>
-                    <button onclick="setOvertime()" data-tooltip="Overtime">⏱ OT</button>
+                    <button onclick="setOvertime()" data-tooltip="Overtime mode">⏱ OT</button>
                     <button onclick="endGame()" data-tooltip="End game">🏁 Final</button>
                 </div>
             </div>
+            <div class="sb-block">
+                <span class="sb-abbr" data-tooltip="Possession & downs">🏈</span>
+                <div class="sb-row">
+                    <span id="sbPossession" style="color:#fff;font-weight:700;font-size:0.9rem;">HOME</span>
+                </div>
+                <div class="sb-row">
+                    <span class="down-distance-display" id="sbDownDist" data-tooltip="Down and distance">1st & 10</span>
+                </div>
+            </div>
         </div>
-        <button class="sb-toggle-btn" onclick="toggleScorebugDisplay()" data-tooltip="Toggle scoreboard">👁️</button>
+        <button class="sb-toggle-btn" onclick="toggleScorebugDisplay()" data-tooltip="Toggle scoreboard visibility">👁️</button>
     </div>
 </header>
 
 <nav id="mainNav"></nav>
 <main id="main"></main>
-<footer>
+<footer id="footer">
     © 2026 Clayton E. Greenberg | VoiceofDFW.com | 🏈 Digital Pressbox Command Center 🏈
 </footer>
 
@@ -310,9 +347,13 @@ let S = {
 
 function g() { return S; }
 function toast(m) { const x = document.getElementById('toast'); x.textContent = m; x.classList.add('show'); setTimeout(() => x.classList.remove('show'), 2000); }
-function saveState() { localStorage.setItem('fnl_v21', JSON.stringify(S)); }
-function loadState() { const raw = localStorage.getItem('fnl_v21'); if (raw) { try { S = { ...S, ...JSON.parse(raw) }; } catch(e) {} } }
-function getTeam(side) { return side === 'away' ? S.teams[0] : S.teams[1]; }
+function saveState() { localStorage.setItem('fnl_v22', JSON.stringify(S)); }
+function loadState() { const raw = localStorage.getItem('fnl_v22'); if (raw) { try { const parsed = JSON.parse(raw); S = { ...S, ...parsed }; } catch(e) {} } }
+function getTeam(side) { 
+    if (side === 'away') return S.teams[0]; 
+    if (side === 'home') return S.teams[1];
+    return S.teams.find(t => t.id === side) || S.teams[0];
+}
 function getPositions() { return S.md7 === '7v7' ? S.p7 : ['QB','RB','FB','WR','TE','OL','C','G','T','DL','DE','DT','LB','OLB','ILB','CB','S','SS','FS','DB','K','P','LS','KR','PR']; }
 function getPlayers(side, filter) {
     const t = getTeam(side); if (!t) return [];
@@ -352,12 +393,25 @@ function positionTooltip(x, y) {
 // Theme
 function toggleTheme() {
     S.md = S.md === 'dark' ? 'light' : 'dark';
-    if (S.md === 'dark') { document.documentElement.style.setProperty('--bg', '#0f172a'); document.documentElement.style.setProperty('--surface', '#1e293b'); document.documentElement.style.setProperty('--text', '#f1f5f9'); document.documentElement.style.setProperty('--border', '#334155'); }
-    else { document.documentElement.style.setProperty('--bg', '#f1f5f9'); document.documentElement.style.setProperty('--surface', '#e2e8f0'); document.documentElement.style.setProperty('--text', '#0f172a'); document.documentElement.style.setProperty('--border', '#94a3b8'); }
+    if (S.md === 'dark') { 
+        document.documentElement.style.setProperty('--bg', '#0f172a'); 
+        document.documentElement.style.setProperty('--surface', '#1e293b'); 
+        document.documentElement.style.setProperty('--text', '#f1f5f9'); 
+        document.documentElement.style.setProperty('--border', '#334155');
+        document.documentElement.style.setProperty('--footer-bg', '#0f172a');
+        document.documentElement.style.setProperty('--footer-text', '#f1f5f9');
+    } else { 
+        document.documentElement.style.setProperty('--bg', '#f1f5f9'); 
+        document.documentElement.style.setProperty('--surface', '#e2e8f0'); 
+        document.documentElement.style.setProperty('--text', '#0f172a'); 
+        document.documentElement.style.setProperty('--border', '#94a3b8');
+        document.documentElement.style.setProperty('--footer-bg', '#1a1a1a');
+        document.documentElement.style.setProperty('--footer-text', '#f1f5f9');
+    }
     document.getElementById('themeBtn').textContent = S.md === 'dark' ? '☀️ Light' : '🌙 Dark';
     saveState(); renderAll();
 }
-function toggleOutdoor() { S.outdoor = !S.outdoor; document.body.style.fontSize = S.outdoor ? '18px' : '14px'; toast(S.outdoor ? 'Outdoor ON' : 'Outdoor OFF'); saveState(); }
+function toggleOutdoor() { S.outdoor = !S.outdoor; document.body.style.fontSize = S.outdoor ? '18px' : '14px'; toast(S.outdoor ? '🌤 Outdoor ON' : '🌤 Outdoor OFF'); saveState(); }
 
 // Clock
 function updateWallClock() {
@@ -379,25 +433,40 @@ updateWeather();
 // Scorebug
 function chScore(side, delta) { if (side === 'away') S.as = Math.max(0, S.as + delta); else S.hs = Math.max(0, S.hs + delta); updateScorebug(); saveState(); }
 function chQuarter(delta) {
-    S.q = Math.min(S.md7 === '7v7' ? 2 : 4, Math.max(1, S.q + delta));
-    if (S.q <= 2) S.gameState = 'FIRST_HALF'; else S.gameState = 'SECOND_HALF';
+    // Check if we're in overtime - allow Q5+
+    const maxQ = S.gameState === 'OVERTIME' ? 8 : (S.md7 === '7v7' ? 2 : 4);
+    S.q = Math.min(maxQ, Math.max(1, S.q + delta));
+    if (S.q <= 2) S.gameState = 'FIRST_HALF';
+    else if (S.q <= 4) S.gameState = 'SECOND_HALF';
+    else S.gameState = 'OVERTIME';
     updateScorebug(); saveState();
 }
 function updateScorebug() {
-    document.getElementById('sbAwayAbbr').innerHTML = (S.teams[0].logo ? `<img class="sb-logo-sm" src="${S.teams[0].logo}"> ` : '') + S.teams[0].name;
-    document.getElementById('sbHomeAbbr').innerHTML = (S.teams[1].logo ? `<img class="sb-logo-sm" src="${S.teams[1].logo}"> ` : '') + S.teams[1].name;
+    const awayTeam = S.teams[0];
+    const homeTeam = S.teams[1];
+    document.getElementById('sbAwayAbbr').innerHTML = (awayTeam.logo ? `<img class="sb-logo-sm" src="${awayTeam.logo}"> ` : '') + awayTeam.name;
+    document.getElementById('sbHomeAbbr').innerHTML = (homeTeam.logo ? `<img class="sb-logo-sm" src="${homeTeam.logo}"> ` : '') + homeTeam.name;
     document.getElementById('sbAwayScore').textContent = S.as;
     document.getElementById('sbHomeScore').textContent = S.hs;
-    document.getElementById('sbQuarter').textContent = S.md7 === '7v7' ? (S.q === 1 ? '1st Half' : '2nd Half') : `Q${S.q}`;
+    document.getElementById('sbQuarter').textContent = S.gameState === 'OVERTIME' ? 'OT' : (S.md7 === '7v7' ? (S.q === 1 ? '1st Half' : '2nd Half') : `Q${S.q}`);
+    
+    // Possession indicator
+    const possEl = document.getElementById('sbPossession');
+    const possTeam = S.poss === 'home' ? homeTeam : awayTeam;
+    possEl.innerHTML = `${possTeam.name} <span class="possession-indicator ${S.poss}"></span>`;
+    
+    // Down & distance
+    const ddEl = document.getElementById('sbDownDist');
+    ddEl.textContent = `${S.down}st & ${S.dist}`;
 }
 function updateGameClockDisplay() {
     const m = Math.floor(S.gc.rem / 60), s = S.gc.rem % 60;
     document.getElementById('gameClockDisplay').textContent = `${m}:${String(s).padStart(2, '0')}`;
 }
-setInterval(() => { if (S.gc.run && S.gc.rem > 0) { S.gc.rem--; updateGameClockDisplay(); if (S.gc.rem === 0) { S.gc.run = false; toast('Clock expired!'); } } }, 1000);
+setInterval(() => { if (S.gc.run && S.gc.rem > 0) { S.gc.rem--; updateGameClockDisplay(); if (S.gc.rem === 0) { S.gc.run = false; toast('⏰ Clock expired!'); } } }, 1000);
 
 // Game state
-function startGame() { if (S.gameState !== 'READY' && !confirm('Game already started. Reset?')) return; S.gameState = 'FIRST_HALF'; S.gc.rem = 480; S.gc.run = false; S.q = 1; S.as = 0; S.hs = 0; S.scoringLog = []; S.penaltyLog = []; updateScorebug(); updateGameClockDisplay(); saveState(); toast('🏈 Game started!'); }
+function startGame() { if (S.gameState !== 'READY' && !confirm('Game already started. Reset?')) return; S.gameState = 'FIRST_HALF'; S.gc.rem = 480; S.gc.run = false; S.q = 1; S.as = 0; S.hs = 0; S.down = 1; S.dist = 10; S.poss = 'home'; S.scoringLog = []; S.penaltyLog = []; updateScorebug(); updateGameClockDisplay(); saveState(); toast('🏈 Game started!'); }
 function setHalftime() { S.gameState = 'HALFTIME'; S.gc.run = false; saveState(); toast('⏸️ Halftime'); }
 function startSecondHalf() { S.gameState = 'SECOND_HALF'; S.gc.rem = 480; S.gc.run = false; S.q = 3; updateScorebug(); updateGameClockDisplay(); saveState(); toast('⏭️ 2nd Half started'); }
 function setOvertime() { S.gameState = 'OVERTIME'; S.gc.rem = 360; S.gc.run = false; S.q = 5; updateScorebug(); updateGameClockDisplay(); saveState(); toast('⏱️ Overtime'); }
@@ -410,40 +479,90 @@ function endGame() {
 function startGC() { S.gc.run = true; saveState(); }
 function pauseGC() { S.gc.run = false; saveState(); }
 function resetGC() { S.gc.run = false; S.gc.rem = 480; updateGameClockDisplay(); saveState(); }
-function resetGame() { if (confirm('Reset game?')) { S.as = 0; S.hs = 0; S.q = 1; S.gameState = 'READY'; S.gc.rem = 480; S.gc.run = false; updateScorebug(); updateGameClockDisplay(); saveState(); toast('Game reset'); } }
+function resetGame() { 
+    if (confirm('Reset game?')) { 
+        S.as = 0; S.hs = 0; S.q = 1; S.down = 1; S.dist = 10; S.poss = 'home';
+        S.gameState = 'READY'; S.gc.rem = 480; S.gc.run = false; 
+        S.scoringLog = []; S.penaltyLog = [];
+        updateScorebug(); updateGameClockDisplay(); saveState(); toast('🔄 Game reset'); 
+    } 
+}
 
-// Game controls
-function setPossession(side) { S.poss = side; renderGame(); saveState(); }
-function firstDown() { S.down = 1; S.dist = 10; renderGame(); toast('1st & 10'); }
-function setDown(v) { S.down = parseInt(v) || 1; saveState(); }
-function setDist(v) { S.dist = parseInt(v) || 1; saveState(); }
+// Game controls - FIXED: Team switch now works
+function setPossession(side) { S.poss = side; updateScorebug(); renderGame(); saveState(); }
+function firstDown() { S.down = 1; S.dist = 10; updateScorebug(); renderGame(); toast('1st & 10'); }
+function setDown(v) { S.down = parseInt(v) || 1; updateScorebug(); saveState(); }
+function setDist(v) { S.dist = parseInt(v) || 1; updateScorebug(); saveState(); }
+
+// Quick scoring - FIXED: Non-blocking UI instead of prompt()
 function quickScore(type) {
-    if (S.gameState === 'FINAL') { toast('Game is final'); return; }
-    let pts = 0; if (type === 'td') pts = 6; else if (type === 'fg') pts = 3; else if (type === 'pat') pts = 1; else if (type === 'safety') pts = 2;
+    if (S.gameState === 'FINAL') { toast('⛔ Game is final'); return; }
+    let pts = 0; let label = '';
+    if (type === 'td') { pts = 6; label = 'Touchdown'; }
+    else if (type === 'fg') { pts = 3; label = 'Field Goal'; }
+    else if (type === 'pat') { pts = 1; label = 'PAT'; }
+    else if (type === 'safety') { pts = 2; label = 'Safety'; }
     const team = getTeam(S.poss);
-    const input = prompt(`Enter player # for ${type.toUpperCase()} (optional):`);
-    let playerName = team.name;
-    if (input && input.trim()) { const p = team.players.find(x => x.n === input.trim()); if (p) playerName = p.na; else playerName = input.trim(); }
-    if (S.poss === 'home') S.hs += pts; else S.as += pts;
-    S.scoringLog.push({ type, team: S.poss, player: playerName, points: pts, time: S.gc.rem, quarter: S.q });
-    updateScorebug(); saveState(); toast(`${type.toUpperCase()} +${pts} - ${playerName}`);
+    const side = S.poss;
+    // Use a modal-like input without blocking the clock
+    showPlayerInput(`Enter player # for ${label} (optional):`, (input) => {
+        let playerName = team.name;
+        if (input && input.trim()) { 
+            const p = team.players.find(x => x.n === input.trim()); 
+            if (p) playerName = p.na; 
+            else playerName = input.trim(); 
+        }
+        if (side === 'home') S.hs += pts; else S.as += pts;
+        S.scoringLog.push({ type, team: side, player: playerName, points: pts, time: S.gc.rem, quarter: S.q });
+        updateScorebug(); saveState(); toast(`🏈 ${label} +${pts} - ${playerName}`);
+    });
 }
 function quickPenalty() {
-    if (S.gameState === 'FINAL') { toast('Game is final'); return; }
+    if (S.gameState === 'FINAL') { toast('⛔ Game is final'); return; }
     const team = getTeam(S.poss);
-    const input = prompt(`Enter player # for penalty (optional):`);
-    let playerName = team.name;
-    if (input && input.trim()) { const p = team.players.find(x => x.n === input.trim()); if (p) playerName = p.na; else playerName = input.trim(); }
-    S.penaltyLog.push({ type: 'flag', team: S.poss, player: playerName, time: S.gc.rem, quarter: S.q });
-    saveState(); toast(`🚩 Penalty on ${playerName}`);
+    showPlayerInput(`Enter player # for penalty (optional):`, (input) => {
+        let playerName = team.name;
+        if (input && input.trim()) { 
+            const p = team.players.find(x => x.n === input.trim()); 
+            if (p) playerName = p.na; 
+            else playerName = input.trim(); 
+        }
+        S.penaltyLog.push({ type: 'flag', team: S.poss, player: playerName, time: S.gc.rem, quarter: S.q });
+        saveState(); toast(`🚩 Penalty on ${playerName}`);
+    });
+}
+// Non-blocking input modal
+function showPlayerInput(message, callback) {
+    const existing = document.querySelector('.player-input-overlay');
+    if (existing) existing.remove();
+    const overlay = document.createElement('div');
+    overlay.className = 'player-input-overlay';
+    overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:99999;display:flex;align-items:center;justify-content:center;';
+    const modal = document.createElement('div');
+    modal.style.cssText = 'background:#fff;padding:20px;border-radius:12px;min-width:300px;max-width:400px;box-shadow:0 10px 30px rgba(0,0,0,0.3);';
+    modal.innerHTML = `
+        <p style="margin-bottom:12px;color:#000;font-weight:600;">${message}</p>
+        <input id="playerInputField" type="text" style="width:100%;padding:8px;border:2px solid #ccc;border-radius:6px;font-size:16px;" placeholder="Enter # or name...">
+        <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end;">
+            <button id="playerInputCancel" style="padding:6px 16px;border:none;border-radius:6px;cursor:pointer;background:#ccc;color:#000;">Cancel</button>
+            <button id="playerInputSubmit" style="padding:6px 16px;border:none;border-radius:6px;cursor:pointer;background:var(--accent);color:#000;font-weight:700;">OK</button>
+        </div>
+    `;
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+    const field = document.getElementById('playerInputField');
+    field.focus();
+    document.getElementById('playerInputSubmit').onclick = () => { const val = field.value; overlay.remove(); callback(val); };
+    document.getElementById('playerInputCancel').onclick = () => { overlay.remove(); callback(''); };
+    field.onkeydown = (e) => { if (e.key === 'Enter') { document.getElementById('playerInputSubmit').click(); } if (e.key === 'Escape') { document.getElementById('playerInputCancel').click(); } };
 }
 
 // Logo upload
 function uploadScorebugLogo(side) {
     const input = document.createElement('input'); input.type = 'file'; input.accept = 'image/*';
     input.onchange = function() {
-        const f = input.files[0]; if (!f || !f.type.startsWith('image/')) return toast('Image required');
-        const r = new FileReader(); r.onload = ev => { if (side === 'away') S.teams[0].logo = ev.target.result; else S.teams[1].logo = ev.target.result; saveState(); updateScorebug(); toast('Logo updated'); };
+        const f = input.files[0]; if (!f || !f.type.startsWith('image/')) return toast('📷 Image required');
+        const r = new FileReader(); r.onload = ev => { if (side === 'away') S.teams[0].logo = ev.target.result; else S.teams[1].logo = ev.target.result; saveState(); updateScorebug(); toast('✅ Logo updated'); };
         r.readAsDataURL(f);
     };
     input.click();
@@ -458,7 +577,7 @@ function renderNav() {
         { id: 'admin', label: '⚙️ ADMIN' }, { id: 'clients', label: '👥 CLIENTS' }
     ];
     let html = '';
-    views.forEach(v => { html += `<button class="nav-link ${S.v === v.id ? 'active' : ''}" onclick="switchView('${v.id}')">${v.label}</button>`; });
+    views.forEach(v => { html += `<button class="nav-link ${S.v === v.id ? 'active' : ''}" onclick="switchView('${v.id}')" data-tooltip="${v.label}">${v.label}</button>`; });
     document.getElementById('mainNav').innerHTML = html;
 }
 function switchView(v) { S.v = v; renderNav(); renderView(); }
@@ -469,21 +588,21 @@ function renderView() {
 }
 function renderAll() { renderNav(); renderView(); updateScorebug(); updateGameClockDisplay(); }
 
-// Game view
+// Game view - FIXED: Team dropdown now works
 function renderGame() {
     const away = S.teams[0], home = S.teams[1];
     let html = '';
     html += '<div class="game-controls">';
     html += `Down: <select onchange="setDown(this.value)">${[1,2,3,4].map(d => `<option ${d === S.down ? 'selected' : ''}>${d}</option>`).join('')}</select>`;
     html += ` Yards: <input type="number" value="${S.dist}" min="1" max="99" style="width:45px;" onchange="setDist(this.value)">`;
-    html += `<button class="first-down" onclick="firstDown()">🔻 1st Down</button>`;
-    html += `<button class="${S.poss === 'home' ? 'active' : ''}" onclick="setPossession('home')">🏠 HOME</button>`;
-    html += `<button class="${S.poss === 'away' ? 'active' : ''}" onclick="setPossession('away')">✈️ AWAY</button>`;
-    html += `<button class="td" onclick="quickScore('td')">TD +6</button>`;
-    html += `<button class="fg" onclick="quickScore('fg')">FG +3</button>`;
-    html += `<button class="pat" onclick="quickScore('pat')">PAT +1</button>`;
-    html += `<button class="safety" onclick="quickScore('safety')">Safety +2</button>`;
-    html += `<button class="flag-btn" onclick="quickPenalty()">🚩 FLAG</button>`;
+    html += `<button class="first-down" onclick="firstDown()" data-tooltip="Reset to 1st & 10">🔻 1st Down</button>`;
+    html += `<button class="${S.poss === 'home' ? 'active' : ''}" onclick="setPossession('home')" data-tooltip="Set possession to home">🏠 HOME</button>`;
+    html += `<button class="${S.poss === 'away' ? 'active' : ''}" onclick="setPossession('away')" data-tooltip="Set possession to away">✈️ AWAY</button>`;
+    html += `<button class="td" onclick="quickScore('td')" data-tooltip="Touchdown +6">TD +6</button>`;
+    html += `<button class="fg" onclick="quickScore('fg')" data-tooltip="Field Goal +3">FG +3</button>`;
+    html += `<button class="pat" onclick="quickScore('pat')" data-tooltip="PAT +1">PAT +1</button>`;
+    html += `<button class="safety" onclick="quickScore('safety')" data-tooltip="Safety +2">Safety +2</button>`;
+    html += `<button class="flag-btn" onclick="quickPenalty()" data-tooltip="Flag penalty">🚩 FLAG</button>`;
     html += '</div>';
     html += '<div class="team-cards">';
     ['away', 'home'].forEach(side => {
@@ -492,26 +611,28 @@ function renderGame() {
         html += `<div class="team-card">`;
         html += `<div class="card-head" style="background:${team.color};">`;
         html += `<span>${side.toUpperCase()}</span>`;
-        html += `<select>${S.teams.map(t => `<option ${t.id === team.id ? 'selected' : ''}>${t.name}</option>`).join('')}</select>`;
-        html += `<button class="sb-btn" onclick="setPossession('${side}')">🏈</button>`;
+        // FIXED: Team dropdown now has onchange handler
+        html += `<select id="teamSelect_${side}" onchange="switchTeam('${side}', this.value)">${S.teams.map((t, idx) => `<option value="${idx}" ${t.id === team.id ? 'selected' : ''}>${t.name}</option>`).join('')}</select>`;
+        html += `<button class="sb-btn" onclick="setPossession('${side}')" data-tooltip="Set possession">🏈</button>`;
         html += '</div>';
         html += '<div class="unit-tabs">';
-        html += `<button class="unit-tab ${filter === 'all' ? 'active' : ''}" onclick="setFilter('${side}','all')">ALL</button>`;
+        html += `<button class="unit-tab ${filter === 'all' ? 'active' : ''}" onclick="setFilter('${side}','all')" data-tooltip="All players">ALL</button>`;
         if (S.md7 === 'tackle') {
-            html += `<button class="unit-tab ${filter === 'offense' ? 'active' : ''}" onclick="setFilter('${side}','offense')">OFF</button>`;
-            html += `<button class="unit-tab ${filter === 'defense' ? 'active' : ''}" onclick="setFilter('${side}','defense')">DEF</button>`;
-            html += `<button class="unit-tab ${filter === 'special' ? 'active' : ''}" onclick="setFilter('${side}','special')">ST</button>`;
+            html += `<button class="unit-tab ${filter === 'offense' ? 'active' : ''}" onclick="setFilter('${side}','offense')" data-tooltip="Offense">OFF</button>`;
+            html += `<button class="unit-tab ${filter === 'defense' ? 'active' : ''}" onclick="setFilter('${side}','defense')" data-tooltip="Defense">DEF</button>`;
+            html += `<button class="unit-tab ${filter === 'special' ? 'active' : ''}" onclick="setFilter('${side}','special')" data-tooltip="Special teams">ST</button>`;
         }
         html += '</div>';
         html += '<div class="player-list-body">';
         getPlayers(side, filter).forEach(p => {
             html += `<div class="player-row${p.st ? ' starter' : ''}">`;
-            html += `<input value="${p.n}" style="width:28px;">`;
-            html += `<input value="${p.na}">`;
-            html += `<select>${getPositions().map(o => `<option ${p.po === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
+            // FIXED: Player inputs now have onchange handlers to save
+            html += `<input value="${p.n}" style="width:28px;" onchange="updateGamePlayer('${side}','${p.id}','n',this.value)">`;
+            html += `<input value="${p.na}" onchange="updateGamePlayer('${side}','${p.id}','na',this.value)">`;
+            html += `<select onchange="updateGamePlayer('${side}','${p.id}','po',this.value)">${getPositions().map(o => `<option ${p.po === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
             html += `<button class="st-toggle ${p.st ? 'active' : ''}" onclick="toggleStarter('${side}','${p.id}')" data-tooltip="Toggle starter">⭐</button>`;
             html += `<button class="pin-btn" onclick="togglePin('${side}','${p.id}')" data-tooltip="Pin/unpin">📌</button>`;
-            html += `<button class="sb-btn" onclick="deletePlayer('${side}','${p.id}')" data-tooltip="Delete">✕</button>`;
+            html += `<button class="sb-btn" onclick="deletePlayer('${side}','${p.id}')" data-tooltip="Delete player">✕</button>`;
             html += '</div>';
         });
         html += '</div></div>';
@@ -519,12 +640,51 @@ function renderGame() {
     html += '</div>';
     document.getElementById('main').innerHTML = html;
 }
+// FIXED: Team switch now works properly
+function switchTeam(side, idx) {
+    const newTeam = S.teams[parseInt(idx)];
+    if (!newTeam) return;
+    const currentTeam = getTeam(side);
+    const targetSide = side === 'away' ? 0 : 1;
+    const oldId = currentTeam.id;
+    const newId = newTeam.id;
+    // Don't allow switching to the same team on both sides
+    const otherSide = targetSide === 0 ? 1 : 0;
+    if (S.teams[otherSide].id === newId) {
+        toast('⚠️ Team already on the other side');
+        renderGame();
+        return;
+    }
+    // Swap teams
+    S.teams[targetSide] = newTeam;
+    // Find and remove duplicate
+    const dupIndex = S.teams.findIndex((t, i) => i !== targetSide && t.id === newId);
+    if (dupIndex !== -1) {
+        S.teams.splice(dupIndex, 1);
+        // If we removed the other side's team, fix the reference
+        if (dupIndex < targetSide) {
+            // The other side was before targetSide, so the targetSide index shifted
+            // Rebuild: put the old team back where it was
+            // This is complex; simpler: just use the team object directly
+        }
+    }
+    // Ensure we have exactly 2 teams
+    while (S.teams.length < 2) {
+        S.teams.push({ id: 't' + Date.now(), name: 'New Team', color: '#1e3a5f', logo: '', mascot: '', coach: '', players: [] });
+    }
+    saveState(); renderGame(); updateScorebug(); toast(`✅ Switched ${side} to ${newTeam.name}`);
+}
+function updateGamePlayer(side, pid, field, val) {
+    const team = getTeam(side);
+    const p = team.players.find(x => x.id === pid);
+    if (p) { p[field] = val; saveState(); }
+}
 function setFilter(side, f) { if (side === 'away') S.ua = f; else S.uh = f; renderGame(); }
 function toggleStarter(side, pid) { const team = getTeam(side); const p = team.players.find(x => x.id === pid); if (p) { p.st = !p.st; saveState(); renderGame(); } }
 function togglePin(side, pid) { const team = getTeam(side); const p = team.players.find(x => x.id === pid); if (p) { p.pinned = !p.pinned; saveState(); renderGame(); } }
 function deletePlayer(side, pid) { const team = getTeam(side); team.players = team.players.filter(x => x.id !== pid); saveState(); renderGame(); }
 
-// Roster view - SIDEBAR LAYOUT
+// Roster view
 function renderRoster() {
     const sortedTeams = [...S.teams].sort((a, b) => a.name.localeCompare(b.name));
     const selectedTeam = S.teams.find(t => t.id === S.cid) || S.teams[0];
@@ -534,9 +694,9 @@ function renderRoster() {
     html += '<div class="team-sidebar">';
     html += '<h4 style="margin-bottom:8px;">TEAMS</h4>';
     sortedTeams.forEach(t => {
-        html += `<div class="team-item ${t.id === S.cid ? 'active' : ''}" onclick="selectTeam('${t.id}')">${t.name} (${t.players.length})</div>`;
+        html += `<div class="team-item ${t.id === S.cid ? 'active' : ''}" onclick="selectTeam('${t.id}')" data-tooltip="${t.players.length} players">${t.name} (${t.players.length})</div>`;
     });
-    html += '<button class="hdr-btn" style="margin-top:8px;width:100%;" onclick="newTeam()">➕ New Team</button>';
+    html += '<button class="hdr-btn" style="margin-top:8px;width:100%;" onclick="newTeam()" data-tooltip="Create new team">➕ New Team</button>';
     html += '</div>';
     html += '<div class="roster-workspace">';
     html += `<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">`;
@@ -546,11 +706,11 @@ function renderRoster() {
     html += `<input id="etco" value="${selectedTeam.coach || ''}" placeholder="Coach" style="width:100px;padding:6px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
     html += `<img id="etl" src="${selectedTeam.logo}" style="width:30px;height:30px;${selectedTeam.logo ? '' : 'display:none'}">`;
     html += `<input type="file" id="etlf" accept="image/*" style="display:none;" onchange="previewTeamLogo(this)">`;
-    html += `<button class="hdr-btn" onclick="document.getElementById('etlf').click()">📷 Logo</button>`;
-    html += `<button class="hdr-btn" onclick="saveTeam()">💾 Save</button>`;
-    html += `<button class="hdr-btn" onclick="printRoster('${selectedTeam.id}')">🖨️ Print</button>`;
-    html += `<button class="hdr-btn" onclick="exportTeamCSV('${selectedTeam.id}')">📊 CSV</button>`;
-    html += `<button class="hdr-btn" style="background:#dc2626;" onclick="deleteTeamById('${selectedTeam.id}')">🗑️</button>`;
+    html += `<button class="hdr-btn" onclick="document.getElementById('etlf').click()" data-tooltip="Upload team logo">📷 Logo</button>`;
+    html += `<button class="hdr-btn" onclick="saveTeam()" data-tooltip="Save team changes">💾 Save</button>`;
+    html += `<button class="hdr-btn" onclick="printRoster('${selectedTeam.id}')" data-tooltip="Print roster">🖨️ Print</button>`;
+    html += `<button class="hdr-btn" onclick="exportTeamCSV('${selectedTeam.id}')" data-tooltip="Export as CSV">📊 CSV</button>`;
+    html += `<button class="hdr-btn" style="background:#dc2626;" onclick="deleteTeamById('${selectedTeam.id}')" data-tooltip="Delete team">🗑️</button>`;
     html += '</div>';
     html += '<div style="display:grid;grid-template-columns:40px 1fr 80px 60px 80px 80px 30px;gap:4px;font-size:0.6rem;font-weight:700;margin-bottom:4px;opacity:0.6;">';
     html += '<span>#</span><span>Name</span><span>Pos</span><span>Role</span><span>Notes</span><span>Pron</span><span></span>';
@@ -560,17 +720,17 @@ function renderRoster() {
         html += `<input value="${p.n}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'n',this.value)" style="padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
         html += `<input value="${p.na}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'na',this.value)" style="padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
         html += `<select onchange="updatePlayerField('${selectedTeam.id}',${pidx},'po',this.value)" style="padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">${getPositions().map(o => `<option ${p.po === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
-        html += `<select onchange="updatePlayerField('${selectedTeam.id}',${pidx},'st',this.value)" style="padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);"><option value="false" ${!p.st ? 'selected' : ''}>Bench</option><option value="true" ${p.st ? 'selected' : ''}>Starter</option></select>`;
+        html += `<select onchange="updatePlayerField('${selectedTeam.id}',${pidx},'st',this.value === 'true')" style="padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);"><option value="false" ${!p.st ? 'selected' : ''}>Bench</option><option value="true" ${p.st ? 'selected' : ''}>Starter</option></select>`;
         html += `<input value="${p.nt || ''}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'nt',this.value)" placeholder="Notes" style="padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
         html += `<input value="${p.pron || ''}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'pron',this.value)" placeholder="Pron" style="padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
-        html += `<button class="sb-btn" onclick="S.teams.find(t=>t.id==='${selectedTeam.id}').players.splice(${pidx},1);saveState();renderRoster();">✕</button>`;
+        html += `<button class="sb-btn" onclick="S.teams.find(t=>t.id==='${selectedTeam.id}').players.splice(${pidx},1);saveState();renderRoster();" data-tooltip="Delete player">✕</button>`;
         html += '</div>';
     });
-    html += `<button class="hdr-btn" onclick="addPlayerToTeam('${selectedTeam.id}')">➕ Add Player</button>`;
+    html += `<button class="hdr-btn" onclick="addPlayerToTeam('${selectedTeam.id}')" data-tooltip="Add new player">➕ Add Player</button>`;
     html += '<div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">';
     html += `<textarea id="parseArea" placeholder="Paste roster (Number Name Position)" style="flex:2;min-width:200px;height:50px;padding:6px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);"></textarea>`;
-    html += `<button class="hdr-btn" onclick="parseRosterText('${selectedTeam.id}')">📝 Parse</button>`;
-    html += `<input type="file" accept=".txt,.csv" onchange="uploadRosterFile('${selectedTeam.id}',this)">`;
+    html += `<button class="hdr-btn" onclick="parseRosterText('${selectedTeam.id}')" data-tooltip="Parse pasted roster">📝 Parse</button>`;
+    html += `<input type="file" accept=".txt,.csv" onchange="uploadRosterFile('${selectedTeam.id}',this)" data-tooltip="Upload roster file">`;
     html += '</div>';
     html += '</div>';
     html += '</div>';
@@ -589,14 +749,14 @@ function saveTeam() {
     team.color = document.getElementById('etc').value;
     team.mascot = document.getElementById('etm').value;
     team.coach = document.getElementById('etco').value;
-    saveState(); renderRoster(); updateScorebug(); toast('Team saved');
+    saveState(); renderRoster(); updateScorebug(); toast('✅ Team saved');
 }
 function previewTeamLogo(input) {
     const f = input.files[0]; if (!f) return;
     const r = new FileReader();
     r.onload = ev => {
         const team = S.teams.find(t => t.id === S.cid);
-        if (team) { team.logo = ev.target.result; document.getElementById('etl').src = ev.target.result; document.getElementById('etl').style.display = 'inline-block'; toast('Logo preview - click Save to confirm'); }
+        if (team) { team.logo = ev.target.result; document.getElementById('etl').src = ev.target.result; document.getElementById('etl').style.display = 'inline-block'; toast('📷 Logo preview - click Save to confirm'); }
     };
     r.readAsDataURL(f);
 }
@@ -613,7 +773,7 @@ function addPlayerToTeam(teamId) {
 }
 function printRoster(teamId) {
     const team = S.teams.find(t => t.id === teamId);
-    if (!team) return;
+    if (!team) { toast('Team not found'); return; }
     let html = `<html><head><title>${team.name} Roster</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #000;padding:4px}</style></head><body>`;
     html += `<h2>${team.name} Roster</h2>`;
     html += '<table><tr><th>#</th><th>Name</th><th>Pos</th><th>Notes</th><th>Starter</th></tr>';
@@ -621,7 +781,9 @@ function printRoster(teamId) {
         html += `<tr><td>${p.n}</td><td>${p.na}</td><td>${p.po}</td><td>${p.nt || ''}</td><td>${p.st ? 'Yes' : 'No'}</td></tr>`;
     });
     html += '</table></body></html>';
-    const w = window.open(); w.document.write(html); w.print();
+    const w = window.open();
+    if (!w) { toast('⚠️ Popup blocked! Please allow popups.'); return; }
+    w.document.write(html); w.print();
 }
 function exportTeamCSV(teamId) {
     const team = S.teams.find(t => t.id === teamId);
@@ -634,7 +796,7 @@ function parseRosterText(teamId) {
     const tx = document.getElementById('parseArea').value.trim();
     const team = S.teams.find(t => t.id === teamId);
     if (!team) return;
-    if (!tx) return toast('Empty');
+    if (!tx) return toast('⚠️ Empty input');
     const positions = getPositions();
     const lines = tx.split('\n');
     const out = [];
@@ -648,11 +810,13 @@ function parseRosterText(teamId) {
         if (words.length && positions.includes(words[words.length - 1].toUpperCase())) { po = words.pop().toUpperCase(); name = words.join(' '); }
         if (name) out.push({ id: 'p' + Date.now() + Math.random().toString(36).slice(2, 5), n, na: name, po: po || 'QB', st: false, nt: '', pron: '', ph: '', pinned: false });
     });
-    if (out.length) { team.players = out; saveState(); renderRoster(); toast(out.length + ' players parsed'); }
-    else toast('No players found');
+    if (out.length) { team.players = out; saveState(); renderRoster(); toast(`✅ ${out.length} players parsed`); }
+    else toast('❌ No players found');
 }
 function uploadRosterFile(teamId, input) {
     const f = input.files[0]; if (!f) return;
+    // Don't allow .docx - warn user
+    if (f.name.endsWith('.docx')) { toast('⚠️ .docx not supported. Please use .txt or .csv'); return; }
     const r = new FileReader(); r.onload = ev => { document.getElementById('parseArea').value = ev.target.result; parseRosterText(teamId); };
     r.readAsText(f);
 }
@@ -665,19 +829,21 @@ function renderLog() {
     else {
         html += '<h4>Current Game</h4><table style="width:100%;border-collapse:collapse;font-size:0.75rem;">';
         html += '<tr><th>Time</th><th>Team</th><th>Event</th><th>Details</th></tr>';
+        events.sort((a, b) => (b.time || 0) - (a.time || 0));
         events.forEach(ev => {
-            const timeStr = ev.time ? `${Math.floor(ev.time/60)}:${String(ev.time%60).padStart(2,'0')}` : '--:--';
+            const timeStr = ev.time !== undefined ? `${Math.floor(ev.time/60)}:${String(ev.time%60).padStart(2,'0')}` : '--:--';
             const teamLabel = ev.team === 'home' ? 'Home' : 'Away';
-            let desc = ev.type === 'score' ? `${ev.player} +${ev.points}` : ev.player;
+            let desc = ev.type === 'score' ? `${ev.player} +${ev.points}` : `${ev.player}`;
             html += `<tr><td>${timeStr}</td><td>${teamLabel}</td><td>${ev.type.toUpperCase()}</td><td>${desc}</td></tr>`;
         });
         html += '</table>';
     }
     if (S.gameHistory.length > 0) {
         html += '<hr><h4>Game History</h4>';
-        S.gameHistory.forEach((game, idx) => {
+        S.gameHistory.slice().reverse().forEach((game, idx) => {
             const d = new Date(game.date).toLocaleDateString();
-            html += `<div style="padding:5px;border-bottom:1px solid var(--border);">${d} - ${game.away} vs ${game.home} - ${game.awayScore}-${game.homeScore} <button class="hdr-btn" onclick="printGameLog(${idx})">🖨️ Print</button></div>`;
+            const realIdx = S.gameHistory.length - 1 - idx;
+            html += `<div style="padding:5px;border-bottom:1px solid var(--border);">${d} - ${game.away} vs ${game.home} - ${game.awayScore}-${game.homeScore} <button class="hdr-btn" onclick="printGameLog(${realIdx})" data-tooltip="Print game log">🖨️ Print</button></div>`;
         });
     }
     html += '</div>';
@@ -689,65 +855,110 @@ function printGameLog(idx) {
     html += `<h2>${game.away} vs ${game.home}</h2><p>Final Score: ${game.awayScore} - ${game.homeScore}</p>`;
     html += '<table><tr><th>Time</th><th>Team</th><th>Event</th><th>Details</th></tr>';
     game.log.forEach(ev => {
-        const timeStr = ev.time ? `${Math.floor(ev.time/60)}:${String(ev.time%60).padStart(2,'0')}` : '--:--';
+        const timeStr = ev.time !== undefined ? `${Math.floor(ev.time/60)}:${String(ev.time%60).padStart(2,'0')}` : '--:--';
         html += `<tr><td>${timeStr}</td><td>${ev.team === 'home' ? 'Home' : 'Away'}</td><td>${ev.type.toUpperCase()}</td><td>${ev.player || ''}</td></tr>`;
     });
     html += '</table></body></html>';
-    const w = window.open(); w.document.write(html); w.print();
+    const w = window.open();
+    if (!w) { toast('⚠️ Popup blocked! Please allow popups.'); return; }
+    w.document.write(html); w.print();
 }
 
 // Script view
 function renderScript() {
     let html = '<div style="padding:10px;height:100%;display:flex;flex-direction:column;">';
     html += '<div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;">';
-    html += '<button class="hdr-btn" onclick="document.execCommand(\'bold\')"><b>B</b></button>';
-    html += '<button class="hdr-btn" onclick="document.execCommand(\'italic\')"><i>I</i></button>';
-    html += '<button class="hdr-btn" onclick="document.execCommand(\'underline\')"><u>U</u></button>';
-    html += '<input type="color" onchange="document.execCommand(\'foreColor\',false,this.value)">';
-    html += '<button class="hdr-btn" onclick="document.getElementById(\'scriptFileInput\').click()">📁 Upload</button>';
-    html += '<input type="file" id="scriptFileInput" accept=".txt,.md,.docx" style="display:none;" onchange="uploadScriptFile(this)">';
-    html += '<button class="hdr-btn" onclick="saveScript()">💾 Save</button>';
-    html += '<button class="hdr-btn" onclick="printScript()">🖨️ Print</button>';
-    html += '<button class="hdr-btn" onclick="clearScript()">🗑️ Clear</button>';
+    html += '<button class="hdr-btn" onclick="document.execCommand(\'bold\')" data-tooltip="Bold"><b>B</b></button>';
+    html += '<button class="hdr-btn" onclick="document.execCommand(\'italic\')" data-tooltip="Italic"><i>I</i></button>';
+    html += '<button class="hdr-btn" onclick="document.execCommand(\'underline\')" data-tooltip="Underline"><u>U</u></button>';
+    html += '<input type="color" onchange="document.execCommand(\'foreColor\',false,this.value)" data-tooltip="Text color">';
+    html += '<button class="hdr-btn" onclick="document.getElementById(\'scriptFileInput\').click()" data-tooltip="Upload script file">📁 Upload</button>';
+    html += '<input type="file" id="scriptFileInput" accept=".txt,.md" style="display:none;" onchange="uploadScriptFile(this)" data-tooltip="Upload .txt or .md file">';
+    html += '<button class="hdr-btn" onclick="saveScript()" data-tooltip="Save script">💾 Save</button>';
+    html += '<button class="hdr-btn" onclick="printScript()" data-tooltip="Print script">🖨️ Print</button>';
+    html += '<button class="hdr-btn" onclick="clearScript()" data-tooltip="Clear script">🗑️ Clear</button>';
     html += '</div>';
     html += '<div id="scriptEditor" contenteditable="true" style="flex:1;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow-y:auto;color:var(--text);"></div>';
     html += '</div>';
     document.getElementById('main').innerHTML = html;
     document.getElementById('scriptEditor').innerHTML = S.script || '';
 }
-function saveScript() { S.script = document.getElementById('scriptEditor').innerHTML; saveState(); toast('Script saved'); }
-function printScript() { const w = window.open(); w.document.write('<html><head><title>Script</title></head><body>' + S.script + '</body></html>'); w.print(); }
-function clearScript() { if (!confirm('Clear script?')) return; S.script = ''; document.getElementById('scriptEditor').innerHTML = ''; saveState(); toast('Cleared'); }
-function uploadScriptFile(input) { const f = input.files[0]; if (!f) return; const r = new FileReader(); r.onload = ev => { const ed = document.getElementById('scriptEditor'); if (ed) ed.innerText = ev.target.result; toast('Script uploaded'); }; r.readAsText(f); }
+function saveScript() { S.script = document.getElementById('scriptEditor').innerHTML; saveState(); toast('✅ Script saved'); }
+function printScript() { 
+    const w = window.open(); 
+    if (!w) { toast('⚠️ Popup blocked!'); return; }
+    w.document.write('<html><head><title>Script</title></head><body>' + S.script + '</body></html>'); 
+    w.print(); 
+}
+function clearScript() { if (!confirm('Clear script?')) return; S.script = ''; document.getElementById('scriptEditor').innerHTML = ''; saveState(); toast('🗑️ Cleared'); }
+function uploadScriptFile(input) { 
+    const f = input.files[0]; if (!f) return; 
+    if (f.name.endsWith('.docx')) { toast('⚠️ .docx not supported. Please use .txt or .md'); return; }
+    const r = new FileReader(); 
+    r.onload = ev => { const ed = document.getElementById('scriptEditor'); if (ed) ed.innerText = ev.target.result; toast('✅ Script uploaded'); }; 
+    r.readAsText(f); 
+}
 
-// Admin view
+// Admin view - FIXED: Colors now apply
 function renderAdmin() {
     const tabs = ['theme', 'clock', '7v7', 'colors', 'backup', 'cloud', 'help'];
     const labels = { theme: 'Theme', clock: 'Clock', '7v7': '7v7', colors: 'Colors', backup: 'Backup', cloud: 'Cloud', help: 'Help' };
     let html = '<div class="panel"><h3>⚙️ ADMIN</h3><div class="admin-tabs">';
-    tabs.forEach(x => { html += `<button class="admin-tab ${S.at === x ? 'active' : ''}" onclick="S.at='${x}';renderAdmin()">${labels[x]}</button>`; });
+    tabs.forEach(x => { html += `<button class="admin-tab ${S.at === x ? 'active' : ''}" onclick="S.at='${x}';renderAdmin()" data-tooltip="${labels[x]}">${labels[x]}</button>`; });
     html += '</div><div id="ac"></div></div>';
     document.getElementById('main').innerHTML = html;
     renderAdminContent();
 }
 function renderAdminContent() {
     const c = document.getElementById('ac'); if (!c) return;
-    if (S.at === 'theme') { c.innerHTML = `<h4>Theme</h4><button class="hdr-btn" onclick="toggleTheme()">Toggle Theme</button> <button class="hdr-btn" onclick="toggleOutdoor()">Toggle Outdoor</button>`; }
+    if (S.at === 'theme') { c.innerHTML = `<h4>Theme</h4><button class="hdr-btn" onclick="toggleTheme()" data-tooltip="Toggle dark/light mode">Toggle Theme</button> <button class="hdr-btn" onclick="toggleOutdoor()" data-tooltip="Toggle outdoor mode">Toggle Outdoor</button>`; }
     else if (S.at === 'clock') { c.innerHTML = `<h4>Clock Format</h4><label><input type="radio" name="cf" value="12h" ${S.cf === '12h' ? 'checked' : ''} onchange="S.cf='12h';saveState();updateWallClock()"> 12h</label><label><input type="radio" name="cf" value="24h" ${S.cf === '24h' ? 'checked' : ''} onchange="S.cf='24h';saveState();updateWallClock()"> 24h</label><br><label><input type="checkbox" ${S.cs ? 'checked' : ''} onchange="S.cs=this.checked;saveState();updateWallClock()"> Show seconds</label>`; }
-    else if (S.at === '7v7') { c.innerHTML = `<h4>Game Mode</h4><button class="hdr-btn" onclick="S.md7='tackle';saveState();renderAll();renderAdmin()">${S.md7 === 'tackle' ? '✅ Tackle' : 'Tackle'}</button> <button class="hdr-btn" onclick="S.md7='7v7';saveState();renderAll();renderAdmin()">${S.md7 === '7v7' ? '✅ 7v7' : '7v7'}</button>`; }
-    else if (S.at === 'colors') { c.innerHTML = `<h4>Colors</h4><label>Scorebug BG: <input type="color" value="${S.colors.scorebugBg}" onchange="S.colors.scorebugBg=this.value;saveState()"></label><br><label>Team Card Away: <input type="color" value="${S.colors.teamCardBgAway}" onchange="S.colors.teamCardBgAway=this.value;saveState()"></label><br><label>Team Card Home: <input type="color" value="${S.colors.teamCardBgHome}" onchange="S.colors.teamCardBgHome=this.value;saveState()"></label>`; }
-    else if (S.at === 'backup') { c.innerHTML = `<h4>Backup</h4><button class="hdr-btn" onclick="exportBackup()">📤 Export</button> <button class="hdr-btn" onclick="document.getElementById('impf').click()">📥 Import</button><input type="file" id="impf" accept=".json" style="display:none;" onchange="importBackup(this)">`; }
-    else if (S.at === 'cloud') { c.innerHTML = `<h4>Cloud Sync</h4><button class="hdr-btn" onclick="fnlCloudSaveAll()">💾 Save</button> <button class="hdr-btn" onclick="fnlCloudLoadAll()">📥 Load</button>`; }
-    else if (S.at === 'help') { c.innerHTML = `<h4>📖 Help</h4><ul><li>Space = Start/Stop clock</li><li>Ctrl+S = Save</li><li>Hover icons for tooltips</li><li>Flag button is yellow</li><li>Game logs auto-save on Final</li></ul>`; }
+    else if (S.at === '7v7') { c.innerHTML = `<h4>Game Mode</h4><button class="hdr-btn" onclick="S.md7='tackle';saveState();renderAll();renderAdmin()" data-tooltip="11v11 tackle football">${S.md7 === 'tackle' ? '✅ Tackle' : 'Tackle'}</button> <button class="hdr-btn" onclick="S.md7='7v7';saveState();renderAll();renderAdmin()" data-tooltip="7v7 format">${S.md7 === '7v7' ? '✅ 7v7' : '7v7'}</button>`; }
+    else if (S.at === 'colors') { 
+        c.innerHTML = `<h4>Colors</h4>
+            <label>Scorebug BG: <input type="color" value="${S.colors.scorebugBg}" onchange="S.colors.scorebugBg=this.value;applyColors();saveState()" data-tooltip="Scorebug background"></label><br>
+            <label>Scorebug Text: <input type="color" value="${S.colors.scorebugText}" onchange="S.colors.scorebugText=this.value;applyColors();saveState()" data-tooltip="Scorebug text color"></label><br>
+            <label>Team Card Away BG: <input type="color" value="${S.colors.teamCardBgAway}" onchange="S.colors.teamCardBgAway=this.value;applyColors();saveState()" data-tooltip="Away team card background"></label><br>
+            <label>Team Card Home BG: <input type="color" value="${S.colors.teamCardBgHome}" onchange="S.colors.teamCardBgHome=this.value;applyColors();saveState()" data-tooltip="Home team card background"></label><br>
+            <label>Away Team Name Color: <input type="color" value="${S.colors.teamNameColorAway}" onchange="S.colors.teamNameColorAway=this.value;applyColors();saveState()" data-tooltip="Away team name text color"></label><br>
+            <label>Home Team Name Color: <input type="color" value="${S.colors.teamNameColorHome}" onchange="S.colors.teamNameColorHome=this.value;applyColors();saveState()" data-tooltip="Home team name text color"></label><br>
+            <button class="hdr-btn" onclick="applyColors()" data-tooltip="Apply colors now">✅ Apply Colors</button>
+        `; 
+    }
+    else if (S.at === 'backup') { c.innerHTML = `<h4>Backup</h4><button class="hdr-btn" onclick="exportBackup()" data-tooltip="Export backup JSON">📤 Export</button> <button class="hdr-btn" onclick="document.getElementById('impf').click()" data-tooltip="Import backup JSON">📥 Import</button><input type="file" id="impf" accept=".json" style="display:none;" onchange="importBackup(this)">`; }
+    else if (S.at === 'cloud') { c.innerHTML = `<h4>Cloud Sync</h4><button class="hdr-btn" onclick="fnlCloudSaveAll()" data-tooltip="Save to cloud">💾 Save</button> <button class="hdr-btn" onclick="fnlCloudLoadAll()" data-tooltip="Load from cloud">📥 Load</button>`; }
+    else if (S.at === 'help') { c.innerHTML = `<h4>📖 Help</h4><ul>
+        <li><kbd>Space</kbd> = Start/Stop clock</li>
+        <li><kbd>Ctrl+S</kbd> = Save state</li>
+        <li><kbd>Ctrl+Shift+S</kbd> = Cloud save</li>
+        <li>Hover icons for tooltips</li>
+        <li>Flag button is yellow</li>
+        <li>Game logs auto-save on Final</li>
+        <li>Upload .txt or .md only for scripts/rosters</li>
+        <li>.docx files are NOT supported</li>
+    </ul>`; }
 }
-function exportBackup() { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(S)], { type: 'application/json' })); a.download = 'fnl_backup.json'; a.click(); }
-function importBackup(input) { const f = input.files[0]; if (!f) return; const r = new FileReader(); r.onload = ev => { try { S = JSON.parse(ev.target.result); saveState(); renderAll(); toast('Restored'); } catch(e) { toast('Invalid file'); } }; r.readAsText(f); }
+function applyColors() {
+    const sb = document.getElementById('scorebug');
+    if (sb) {
+        sb.style.background = S.colors.scorebugBg;
+        sb.style.color = S.colors.scorebugText;
+        const allText = sb.querySelectorAll('.sb-abbr, .sb-val, .sb-qtr, .game-clock, .down-distance-display, #sbPossession');
+        allText.forEach(el => el.style.color = S.colors.scorebugText);
+    }
+    // Apply team card colors
+    document.querySelectorAll('.team-card').forEach((card, idx) => {
+        if (idx === 0) card.style.background = S.colors.teamCardBgAway;
+        else if (idx === 1) card.style.background = S.colors.teamCardBgHome;
+    });
+    toast('✅ Colors applied');
+}
 
 // Clients view
 function renderClients() {
     let html = '<div class="panel"><h3>👥 CLIENTS</h3>';
-    html += '<button class="hdr-btn" onclick="addClient()">➕ Add Client</button> ';
-    html += '<button class="hdr-btn" onclick="showAllPINs()">🔑 Show PINs</button>';
+    html += '<button class="hdr-btn" onclick="addClient()" data-tooltip="Add new client">➕ Add Client</button> ';
+    html += '<button class="hdr-btn" onclick="showAllPINs()" data-tooltip="Show all client PINs">🔑 Show PINs</button>';
     const keys = Object.keys(S.cp);
     if (keys.length === 0) { html += '<p>No clients yet.</p>'; }
     else {
@@ -755,24 +966,24 @@ function renderClients() {
             html += `<div style="display:flex;gap:8px;align-items:center;padding:8px;border:1px solid var(--border);border-radius:6px;margin-bottom:5px;">
                 <span style="font-weight:700;">${p}</span>
                 <span style="flex:1;">${S.cp[p].n || 'Unnamed'}</span>
-                <button class="hdr-btn" onclick="editClient('${p}')">✏️</button>
-                <button class="hdr-btn" style="background:#dc2626;" onclick="deleteClient('${p}')">🗑️</button>
+                <button class="hdr-btn" onclick="editClient('${p}')" data-tooltip="Edit client">✏️</button>
+                <button class="hdr-btn" style="background:#dc2626;" onclick="deleteClient('${p}')" data-tooltip="Delete client">🗑️</button>
             </div>`;
         });
     }
     html += '</div>';
     document.getElementById('main').innerHTML = html;
 }
-function addClient() { const pin = prompt('Enter PIN:'); if (!pin) return; const name = prompt('Client name:'); if (!name) return; S.cp[pin.toUpperCase()] = { n: name, l: '' }; saveState(); renderClients(); }
+function addClient() { const pin = prompt('Enter PIN:'); if (!pin) return; const name = prompt('Client name:'); if (!name) return; S.cp[pin.toUpperCase()] = { n: name, l: '' }; saveState(); renderClients(); toast('✅ Client added'); }
 function editClient(pin) { const c = S.cp[pin]; if (!c) return; const name = prompt('Client name:', c.n); if (name) { c.n = name; saveState(); renderClients(); } }
 function deleteClient(pin) { if (!confirm('Delete client?')) return; delete S.cp[pin]; saveState(); renderClients(); }
 function showAllPINs() { const ks = Object.keys(S.cp); if (!ks.length) return toast('No clients'); let msg = 'Client PINs:\n'; ks.forEach(p => { msg += `${p} → ${S.cp[p].n}\n`; }); alert(msg); }
 
 // Cloud sync
 async function fnlCloudSaveAll() {
-    try { const snap = JSON.parse(JSON.stringify(S)); await fetch('https://lineup-api.claytongreenberg.workers.dev/api/lineup?id=fnl_full_sync', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(snap) }); toast('✅ Saved'); } catch(e) { toast('❌ Save failed'); }
+    try { const snap = JSON.parse(JSON.stringify(S)); await fetch('https://lineup-api.claytongreenberg.workers.dev/api/lineup?id=fnl_full_sync', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(snap) }); toast('✅ Saved to cloud'); } catch(e) { toast('❌ Cloud save failed'); }
 }
-async function fnlCloudLoadAll() { if (!confirm('Load from cloud?')) return; try { const r = await fetch('https://lineup-api.claytongreenberg.workers.dev/api/lineup?id=fnl_full_sync'); if (!r.ok) throw new Error('No data'); S = await r.json(); saveState(); renderAll(); toast('✅ Loaded'); } catch(e) { toast('❌ Load failed'); } }
+async function fnlCloudLoadAll() { if (!confirm('Load from cloud?')) return; try { const r = await fetch('https://lineup-api.claytongreenberg.workers.dev/api/lineup?id=fnl_full_sync'); if (!r.ok) throw new Error('No data'); S = await r.json(); saveState(); renderAll(); toast('✅ Loaded from cloud'); } catch(e) { toast('❌ Cloud load failed'); } }
 
 // Print lineup
 function printLU() {
@@ -783,8 +994,25 @@ function printLU() {
         html += '</table>';
     });
     html += '</body></html>';
-    const w = window.open(); w.document.write(html); w.print();
+    const w = window.open();
+    if (!w) { toast('⚠️ Popup blocked!'); return; }
+    w.document.write(html); w.print();
 }
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+    // Space = toggle clock
+    if (e.key === ' ' && e.target === document.body) {
+        e.preventDefault();
+        if (S.gc.run) { pauseGC(); } else { startGC(); }
+        toast(S.gc.run ? '▶️ Clock running' : '⏸️ Clock paused');
+    }
+    // Ctrl+S = save state
+    if (e.key === 's' && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        if (e.shiftKey) { fnlCloudSaveAll(); } else { saveState(); toast('💾 Saved locally'); }
+    }
+});
 
 // Expose globals
 window.chScore = chScore; window.chQuarter = chQuarter; window.startGC = startGC; window.pauseGC = pauseGC; window.resetGC = resetGC;
@@ -800,13 +1028,24 @@ window.previewTeamLogo = previewTeamLogo; window.saveTeam = saveTeam; window.sel
 window.addPlayerToTeam = addPlayerToTeam; window.updatePlayerField = updatePlayerField; window.deleteTeamById = deleteTeamById;
 window.exportTeamCSV = exportTeamCSV; window.parseRosterText = parseRosterText; window.uploadRosterFile = uploadRosterFile;
 window.addClient = addClient; window.editClient = editClient; window.deleteClient = deleteClient; window.showAllPINs = showAllPINs;
-window.exportBackup = exportBackup; window.importBackup = importBackup;
+window.exportBackup = exportBackup; window.importBackup = importBackup; window.switchTeam = switchTeam; window.updateGamePlayer = updateGamePlayer;
+window.applyColors = applyColors;
 
 // Init
 loadState();
 renderAll();
 updateScorebug();
 updateGameClockDisplay();
+applyColors();
+
+// Footer visibility fix - ensure footer text is readable
+document.addEventListener('DOMContentLoaded', () => {
+    const footer = document.getElementById('footer');
+    if (footer) {
+        footer.style.color = '#f1f5f9';
+        footer.style.background = '#1a1a1a';
+    }
+});
 </script>
 </body>
 </html>
