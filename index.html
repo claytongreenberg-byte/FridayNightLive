@@ -47,7 +47,12 @@
         .brand-logo { height: 36px; width: auto; max-width: 80px; object-fit: contain; }
         .brand-text h1 { font-size: 1rem; color: #fff; }
         .brand-text p { font-size: 0.6rem; color: var(--accent); }
-        .hdr-top-right { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+        .hdr-top-right { 
+            display: flex; 
+            align-items: center; 
+            gap: 5px; 
+            flex-wrap: wrap; 
+        }
         .wall-clock, .weather-pill {
             color: var(--accent); font-weight: 700; font-size: 0.65rem;
             background: rgba(0,0,0,0.4); border: 1px solid var(--accent);
@@ -59,6 +64,10 @@
             cursor: pointer; white-space: nowrap; min-height: 26px;
         }
         .hdr-btn:hover { background: #475569; }
+        .hdr-btn.outdoor-active { 
+            background: #22c55e; 
+            border-color: #22c55e; 
+        }
         .hdr-bottom {
             display: flex;
             justify-content: center;
@@ -67,7 +76,7 @@
             margin-top: 6px;
         }
 
-        /* ===== ESPN-style scorebug ===== */
+        /* ===== MASSIVE ESPN-style scorebug ===== */
         .scorebug-wrap { width: 100%; display: flex; flex-direction: column; gap: 4px; }
         .scorebug {
             position: relative;
@@ -75,58 +84,58 @@
             align-items: center;
             justify-content: center;
             gap: 0;
-            background: var(--scorebug-bg);
+            background: #1a1a2e !important; /* DARK GRAY - NOT NAVY */
             border: 3px solid var(--accent);
-            border-radius: 10px;
-            padding: 14px 24px 12px;
+            border-radius: 12px;
+            padding: 18px 28px 16px;
             flex-wrap: nowrap;
             width: 100%;
             box-shadow: 0 4px 14px rgba(0,0,0,0.45);
-            --sb-text: var(--scorebug-text);
-            min-height: 130px;
+            --sb-text: #ffffff;
+            min-height: 160px;
         }
         .sb-network-tag {
-            position: absolute; top: -11px; left: 14px;
+            position: absolute; top: -12px; left: 16px;
             background: var(--accent); color: #000;
-            font-weight: 900; font-size: 0.6rem; letter-spacing: 1px;
-            padding: 2px 10px; border-radius: 4px; text-transform: uppercase;
+            font-weight: 900; font-size: 0.7rem; letter-spacing: 1px;
+            padding: 3px 14px; border-radius: 4px; text-transform: uppercase;
             box-shadow: 0 2px 4px rgba(0,0,0,0.4);
         }
         .live-pill {
-            position: absolute; top: -11px; right: 14px;
-            background: #dc2626; color: #fff; font-weight: 800; font-size: 0.55rem;
-            padding: 2px 9px; border-radius: 10px; display: none; align-items: center; gap: 4px;
+            position: absolute; top: -12px; right: 16px;
+            background: #dc2626; color: #fff; font-weight: 800; font-size: 0.6rem;
+            padding: 3px 14px; border-radius: 10px; display: none; align-items: center; gap: 4px;
             letter-spacing: 1px; box-shadow: 0 2px 4px rgba(0,0,0,0.4);
         }
         .live-pill.show { display: inline-flex; }
         .live-pill.final { background: #334155; }
-        .live-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: #fff; animation: sbpulse 1.2s infinite; }
+        .live-pill .dot { width: 8px; height: 8px; border-radius: 50%; background: #fff; animation: sbpulse 1.2s infinite; }
         .live-pill.final .dot { animation: none; }
         @keyframes sbpulse { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
         .sb-block {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 0 20px;
+            padding: 0 24px;
             border-right: 1px solid rgba(255,255,255,0.12);
             flex: 1 1 0;
-            min-width: 80px;
+            min-width: 100px;
         }
         .sb-block:last-child { border-right: none; }
         .sb-team-chip {
-            width: 48px; height: 48px; border-radius: 50%; overflow: hidden;
+            width: 56px; height: 56px; border-radius: 50%; overflow: hidden;
             display: flex; align-items: center; justify-content: center;
-            font-weight: 900; font-size: 1.2rem; color: #fff; margin-bottom: 4px;
+            font-weight: 900; font-size: 1.5rem; color: #fff; margin-bottom: 4px;
             border: 2px solid rgba(255,255,255,0.4); flex-shrink: 0;
         }
         .sb-team-chip img { width: 100%; height: 100%; object-fit: cover; }
         .sb-name-col { display: flex; flex-direction: column; align-items: center; margin-bottom: 4px; }
         .sb-abbr {
-            font-size: 22px; font-weight: 900; color: var(--sb-text); letter-spacing: 1px;
-            display: flex; align-items: center; gap: 6px;
+            font-size: 28px; font-weight: 900; color: var(--sb-text); letter-spacing: 1px;
+            display: flex; align-items: center; gap: 8px;
         }
         .sb-poss {
-            font-size: 18px;
+            font-size: 22px;
             animation: sbbounce 0.8s infinite;
             display: inline-block;
         }
@@ -135,37 +144,69 @@
             50% { transform: translateY(-4px) scale(1.2); }
         }
         .sb-fullname {
-            font-size: 0.75rem; color: var(--sb-text); font-weight: 700;
-            text-transform: uppercase; letter-spacing: 1px;
-            max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-            text-shadow: 0 0 12px rgba(255,255,255,0.15);
-            background: rgba(0,0,0,0.2); padding: 2px 10px; border-radius: 10px;
-            margin-top: 2px;
+            font-size: 0.85rem; color: var(--sb-text); font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1.5px;
+            max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            text-shadow: 0 0 20px rgba(255,255,255,0.2), 0 0 40px rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.3); padding: 4px 16px; border-radius: 14px;
+            margin-top: 3px;
+            border: 1px solid rgba(255,255,255,0.05);
         }
         .sb-logo-sm { width: 22px; height: 22px; object-fit: contain; }
-        .sb-row { display: flex; align-items: center; gap: 6px; }
-        .sb-val { font-size: 3rem; font-weight: 900; color: var(--sb-text); min-width: 50px; text-align: center; }
-        .sb-qtr { font-size: 1.6rem; font-weight: 800; color: var(--accent); }
-        .game-clock { font-family: 'Courier New', monospace; font-size: 2rem; font-weight: 800; color: var(--sb-text); }
+        .sb-row { display: flex; align-items: center; gap: 10px; }
+        .sb-val { 
+            font-size: 3.8rem; 
+            font-weight: 900; 
+            color: var(--sb-text); 
+            min-width: 65px; 
+            text-align: center;
+            text-shadow: 0 0 30px rgba(255,255,255,0.1);
+        }
+        .sb-qtr { font-size: 2rem; font-weight: 800; color: var(--accent); }
+        .game-clock { 
+            font-family: 'Courier New', monospace; 
+            font-size: 2.6rem; 
+            font-weight: 800; 
+            color: var(--sb-text);
+            text-shadow: 0 0 20px rgba(255,255,255,0.1);
+        }
         .sb-btn {
             background: #334155; border: 1px solid #475569; color: #fff;
-            width: 34px; height: 34px; border-radius: 50%; font-size: 14px;
+            width: 42px; height: 42px; border-radius: 50%; font-size: 18px;
             cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
         }
-        .sb-btn:hover { background: var(--accent); color: #000; }
-        .sb-game-btns { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; }
+        .sb-btn:hover { background: var(--accent); color: #000; transform: scale(1.05); }
+        .sb-game-btns { 
+            display: flex; 
+            gap: 8px; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+        }
         .sb-game-btns button {
             background: #334155; border: 1px solid #475569; color: #fff;
-            border-radius: 12px; padding: 5px 10px; font-size: 0.65rem; cursor: pointer;
+            border-radius: 18px; 
+            padding: 10px 18px; 
+            font-size: 0.85rem; 
+            font-weight: 700;
+            cursor: pointer;
+            min-height: 40px;
+            min-width: 55px;
+            transition: all 0.2s;
         }
-        .sb-game-btns button:hover { background: var(--accent); color: #000; }
+        .sb-game-btns button:hover { 
+            background: var(--accent); 
+            color: #000; 
+            transform: scale(1.05);
+        }
+        .sb-game-btns button:active { transform: scale(0.95); }
         .sb-toggle-btn {
             background: #334155; border: 1px solid #475569; color: #fff;
-            width: 36px; height: 36px; border-radius: 50%; font-size: 16px;
+            width: 42px; height: 42px; border-radius: 50%; font-size: 18px;
             cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
         .dd-ticker {
-            padding: 6px 14px; border-radius: 6px; font-weight: 800; font-size: 0.85rem;
+            padding: 10px 20px; border-radius: 8px; font-weight: 800; font-size: 1rem;
             text-align: center; color: #fff; letter-spacing: 0.5px; text-shadow: 0 1px 2px rgba(0,0,0,0.75);
             background: #334155;
         }
@@ -314,22 +355,26 @@
         }
 
         @media (max-width: 1024px) {
-            .scorebug { padding: 10px 14px; min-height: 100px; flex-wrap: wrap; }
-            .sb-block { padding: 0 12px; min-width: 60px; }
-            .sb-val { font-size: 2.2rem; min-width: 40px; }
-            .sb-abbr { font-size: 18px; }
-            .game-clock { font-size: 1.6rem; }
-            .sb-team-chip { width: 40px; height: 40px; font-size: 1rem; }
-            .sb-fullname { font-size: 0.65rem; max-width: 120px; }
+            .scorebug { padding: 12px 16px; min-height: 130px; flex-wrap: wrap; }
+            .sb-block { padding: 0 14px; min-width: 70px; }
+            .sb-val { font-size: 2.8rem; min-width: 50px; }
+            .sb-abbr { font-size: 22px; }
+            .game-clock { font-size: 2.2rem; }
+            .sb-team-chip { width: 48px; height: 48px; font-size: 1.3rem; }
+            .sb-fullname { font-size: 0.75rem; max-width: 150px; }
+            .sb-btn { width: 38px; height: 38px; font-size: 16px; }
+            .sb-game-btns button { font-size: 0.75rem; padding: 8px 14px; min-height: 36px; }
         }
         @media (max-width: 768px) {
-            .scorebug { padding: 8px 10px; min-height: 80px; flex-wrap: wrap; }
-            .sb-block { padding: 0 6px; min-width: 40px; }
-            .sb-val { font-size: 1.8rem; min-width: 30px; }
-            .sb-abbr { font-size: 14px; }
-            .game-clock { font-size: 1.2rem; }
-            .sb-team-chip { width: 32px; height: 32px; font-size: 0.8rem; }
-            .sb-fullname { font-size: 0.55rem; max-width: 80px; }
+            .scorebug { padding: 8px 10px; min-height: 100px; flex-wrap: wrap; }
+            .sb-block { padding: 0 8px; min-width: 50px; }
+            .sb-val { font-size: 2rem; min-width: 35px; }
+            .sb-abbr { font-size: 16px; }
+            .game-clock { font-size: 1.6rem; }
+            .sb-team-chip { width: 36px; height: 36px; font-size: 1rem; }
+            .sb-fullname { font-size: 0.6rem; max-width: 100px; }
+            .sb-btn { width: 32px; height: 32px; font-size: 14px; }
+            .sb-game-btns button { font-size: 0.6rem; padding: 4px 10px; min-height: 28px; }
             .team-cards { flex-direction: column; height: auto; }
             .roster-layout { flex-direction: column; }
             .team-sidebar { width: 100%; max-height: 200px; }
@@ -356,7 +401,7 @@
             <button class="hdr-btn" onclick="fnlCloudSaveAll()" data-tooltip="Save to cloud (Ctrl+S)">💾 SAVE</button>
             <button class="hdr-btn" onclick="fnlCloudLoadAll()" data-tooltip="Load from cloud">📥 LOAD</button>
             <button class="hdr-btn" id="themeBtn" onclick="toggleTheme()">🌙 Dark</button>
-            <button class="hdr-btn" onclick="toggleOutdoor()" data-tooltip="Larger text for outdoor use">🌤</button>
+            <button class="hdr-btn" id="outdoorBtn" onclick="toggleOutdoor()" data-tooltip="Outdoor mode (larger text)">🌤</button>
             <button class="hdr-btn" onclick="printLU()" data-tooltip="Print starting lineups">🖨️</button>
             <button class="hdr-btn" onclick="resetGame()" style="background:#dc2626;" data-tooltip="Reset entire game">RESET</button>
         </div>
@@ -377,10 +422,10 @@
                         <span class="sb-val" id="sbAwayScore">0</span>
                         <button class="sb-btn" onclick="chScore('away',1)" data-tooltip="Add point">+</button>
                     </div>
-                    <button class="sb-btn" onclick="uploadScorebugLogo('away')" data-tooltip="Upload away logo" style="width:28px;height:28px;font-size:12px;margin-top:3px;">📷</button>
+                    <button class="sb-btn" onclick="uploadScorebugLogo('away')" data-tooltip="Upload away logo" style="width:36px;height:36px;font-size:14px;margin-top:3px;">📷</button>
                 </div>
                 <div class="sb-block">
-                    <span class="sb-abbr" style="font-size:0.65rem;color:var(--sb-text);opacity:.7;">QUARTER</span>
+                    <span class="sb-abbr" style="font-size:0.7rem;color:var(--sb-text);opacity:.7;">QUARTER</span>
                     <span class="sb-qtr" id="sbQuarter">Q1</span>
                     <div class="sb-row">
                         <button class="sb-btn" onclick="chQuarter(-1)" data-tooltip="Previous quarter">◀</button>
@@ -398,10 +443,10 @@
                         <span class="sb-val" id="sbHomeScore">0</span>
                         <button class="sb-btn" onclick="chScore('home',1)" data-tooltip="Add point">+</button>
                     </div>
-                    <button class="sb-btn" onclick="uploadScorebugLogo('home')" data-tooltip="Upload home logo" style="width:28px;height:28px;font-size:12px;margin-top:3px;">📷</button>
+                    <button class="sb-btn" onclick="uploadScorebugLogo('home')" data-tooltip="Upload home logo" style="width:36px;height:36px;font-size:14px;margin-top:3px;">📷</button>
                 </div>
                 <div class="sb-block">
-                    <span class="sb-abbr" style="font-size:0.65rem;color:var(--sb-text);opacity:.7;">CLOCK</span>
+                    <span class="sb-abbr" style="font-size:0.7rem;color:var(--sb-text);opacity:.7;">CLOCK</span>
                     <span class="game-clock" id="gameClockDisplay">8:00</span>
                     <div class="sb-row">
                         <button class="sb-btn" onclick="startGC()" data-tooltip="Start clock (Space)">▶</button>
@@ -410,7 +455,7 @@
                     </div>
                 </div>
                 <div class="sb-block">
-                    <span class="sb-abbr" style="font-size:0.65rem;color:var(--sb-text);opacity:.7;">GAME</span>
+                    <span class="sb-abbr" style="font-size:0.7rem;color:var(--sb-text);opacity:.7;">GAME</span>
                     <div class="sb-game-btns">
                         <button onclick="startGame()" data-tooltip="Start game (Q1)">▶ Start</button>
                         <button onclick="setHalftime()" data-tooltip="Halftime">⏸ Half</button>
@@ -489,7 +534,7 @@ function normalizeState() {
     }
     if (!S.colors) S.colors = { scorebugBg: '#1a1a2e', scorebugText: '#ffffff', accent: '#facc15', teamCardAway: '#e2e8f0', teamCardHome: '#e2e8f0', teamCardBorder: '#94a3b8' };
     if (S.gc.max === undefined) S.gc.max = 480;
-    // Ensure clock is NOT running on load
+    // Ensure clock is NEVER running on load
     S.gc.run = false;
 }
 function loadState() {
@@ -571,7 +616,22 @@ function toggleTheme() {
     }
     saveState(); renderAll();
 }
-function toggleOutdoor() { S.outdoor = !S.outdoor; document.body.style.fontSize = S.outdoor ? '18px' : '14px'; toast(S.outdoor ? '🌤 Outdoor ON' : '🌤 Outdoor OFF'); saveState(); }
+
+// Outdoor mode - toggle with visual feedback
+function toggleOutdoor() {
+    S.outdoor = !S.outdoor;
+    document.body.style.fontSize = S.outdoor ? '18px' : '14px';
+    const btn = document.getElementById('outdoorBtn');
+    if (S.outdoor) {
+        btn.classList.add('outdoor-active');
+        btn.textContent = '🌤 ON';
+    } else {
+        btn.classList.remove('outdoor-active');
+        btn.textContent = '🌤';
+    }
+    toast(S.outdoor ? '🌤 Outdoor ON - Larger text' : '🌤 Outdoor OFF');
+    saveState();
+}
 
 // Clock - NEVER auto-starts
 function updateWallClock() {
@@ -590,7 +650,7 @@ function updateWeather() {
 }
 updateWeather();
 
-// Colors
+// Colors - APPLIED to scorebug background
 function applyColors() {
     document.documentElement.style.setProperty('--accent', S.colors.accent);
     document.documentElement.style.setProperty('--scorebug-bg', S.colors.scorebugBg);
@@ -601,7 +661,7 @@ function applyColors() {
     
     const sb = document.getElementById('scorebug');
     if (sb) {
-        sb.style.background = S.colors.scorebugBg;
+        sb.style.background = S.colors.scorebugBg + ' !important';
         sb.style.setProperty('--sb-text', S.colors.scorebugText);
     }
     
@@ -623,7 +683,7 @@ function chQuarter(delta) {
     // Reset clock when quarter changes, but keep it paused
     if (delta !== 0) {
         S.gc.rem = S.gc.max || 480;
-        S.gc.run = false; // Clock stays paused on quarter change
+        S.gc.run = false;
         updateGameClockDisplay();
         toast(`⏱️ Clock reset to ${Math.floor(S.gc.rem/60)}:${String(S.gc.rem%60).padStart(2,'0')}`);
     }
@@ -657,7 +717,7 @@ function updateGameClockDisplay() {
     const m = Math.floor(S.gc.rem / 60), s = S.gc.rem % 60;
     document.getElementById('gameClockDisplay').textContent = `${m}:${String(s).padStart(2, '0')}`;
 }
-// Clock tick - only runs if S.gc.run === true
+// Clock tick - ONLY runs if S.gc.run === true
 setInterval(() => { 
     if (S.gc.run && S.gc.rem > 0) { 
         S.gc.rem--; 
@@ -691,7 +751,7 @@ function updateGameStateBadge() {
     else { pill.classList.remove('show'); }
 }
 
-// Game state - clock never auto-starts on these
+// Game state - clock NEVER auto-starts
 function startGame() { if (S.gameState !== 'READY' && !confirm('Game already started. Reset?')) return; S.gameState = 'FIRST_HALF'; S.gc.rem = S.gc.max || 480; S.gc.run = false; S.q = 1; S.as = 0; S.hs = 0; S.down = 1; S.dist = 10; S.poss = 'home'; S.scoringLog = []; S.penaltyLog = []; updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); saveState(); toast('🏈 Game started!'); }
 function setHalftime() { S.gameState = 'HALFTIME'; S.gc.run = false; updateGameStateBadge(); saveState(); toast('⏸️ Halftime'); }
 function startSecondHalf() { S.gameState = 'SECOND_HALF'; S.gc.rem = S.gc.max || 480; S.gc.run = false; S.q = 3; updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); saveState(); toast('⏭️ 2nd Half started'); }
@@ -721,7 +781,7 @@ function setPossession(side) {
         S.gameState = 'FIRST_HALF';
         S.q = 1;
         S.gc.rem = S.gc.max || 480;
-        S.gc.run = false; // Clock does NOT auto-start
+        S.gc.run = false;
         updateGameClockDisplay();
         updateGameStateBadge();
         toast(`🏈 ${side.toUpperCase()} has the ball - Game started!`);
