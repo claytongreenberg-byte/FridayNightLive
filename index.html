@@ -700,7 +700,20 @@ function printLU() {
     html += '</body></html>';
     const w = window.open(); w.document.write(html); w.print();
 }
-
+function printRoster(idx) {
+    const team = S.teams[idx];
+    if (!team) return;
+    let html = `<html><head><title>${team.name} Roster</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #000;padding:4px}</style></head><body>`;
+    html += `<h2>${team.name} Roster</h2>`;
+    html += '<table><tr><th>#</th><th>Name</th><th>Pos</th><th>Notes</th><th>Starter</th></tr>';
+    team.players.forEach(p => {
+        html += `<tr><td>${p.n}</td><td>${p.na}</td><td>${p.po}</td><td>${p.nt || ''}</td><td>${p.st ? 'Yes' : 'No'}</td></tr>`;
+    });
+    html += '</table></body></html>';
+    const w = window.open();
+    w.document.write(html);
+    w.print();
+}
 // Expose globals
 window.chScore = chScore; window.chQuarter = chQuarter; window.startGC = startGC; window.pauseGC = pauseGC; window.resetGC = resetGC;
 window.startGame = startGame; window.setHalftime = setHalftime; window.startSecondHalf = startSecondHalf; window.setOvertime = setOvertime; window.endGame = endGame;
@@ -715,6 +728,7 @@ window.uploadTeamLogo = uploadTeamLogo; window.uploadPlayerPhoto = uploadPlayerP
 window.parseRosterText = parseRosterText; window.uploadRosterFile = uploadRosterFile; window.deleteTeam = deleteTeam;
 window.addClient = addClient; window.editClient = editClient; window.deleteClient = deleteClient; window.showAllPINs = showAllPINs;
 window.exportBackup = exportBackup; window.importBackup = importBackup;
+    window.printRoster = printRoster;
 
 // Init
 loadState();
