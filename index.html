@@ -803,11 +803,12 @@ function updateDDTicker() {
         el.style.background = '#f59e0b'; 
         return; 
     }
-    if (S.gameState === 'READY') { 
-        el.textContent = '🏈 SET POSSESSION TO BEGIN'; 
-        el.style.background = '#334155'; 
-        return; 
-    }
+  if (S.gameState === 'READY') { 
+    const team = getTeam(S.poss);
+    el.textContent = `🏈 ${team.name.toUpperCase()} HAS THE BALL • PRESS "▶ START" TO BEGIN`;
+    el.style.background = '#334155'; 
+    return; 
+}
     const team = getTeam(S.poss);
     const ord = { 1: '1ST', 2: '2ND', 3: '3RD', 4: '4TH' }[S.down] || (S.down + 'TH');
     el.innerHTML = `🏈 ${team.name.toUpperCase()} BALL &nbsp;•&nbsp; ${ord} &amp; ${S.dist}`;
