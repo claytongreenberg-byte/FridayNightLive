@@ -18,7 +18,6 @@
             --scorebug-text: #ffffff;
             --team-card-away: #e2e8f0;
             --team-card-home: #e2e8f0;
-            --player-text: #0a0a0a;
         }
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -344,8 +343,8 @@
             margin-top: 1px;
         }
         .timeout-dot {
-            width: 6px;
-            height: 6px;
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
             background: #4ade80;
             transition: all 0.2s;
@@ -353,6 +352,12 @@
         .timeout-dot.used {
             background: #334155;
             opacity: 0.3;
+        }
+        .timeout-zero {
+            font-size: 0.55rem;
+            font-weight: 800;
+            color: #f87171;
+            letter-spacing: 0.3px;
         }
         .timeout-label {
             font-size: 0.4rem;
@@ -396,8 +401,16 @@
             font-size: 0.6rem;
             white-space: nowrap;
         }
-        .nav-link.active { background: var(--accent); color: #000; border-radius: 6px 6px 0 0; }
-        main { flex: 1; overflow: auto; padding: 6px; }
+        .nav-link.active {
+            background: var(--accent);
+            color: #000;
+            border-radius: 6px 6px 0 0;
+        }
+        main {
+            flex: 1;
+            overflow: auto;
+            padding: 6px;
+        }
 
         /* ===== Main game controls layout ===== */
         .panel-header {
@@ -408,10 +421,17 @@
             gap: 6px;
             margin-bottom: 6px;
         }
-        .panel-header h3 { margin: 0; font-size: 0.85rem; }
-        .panel-actions { display: flex; gap: 5px; flex-wrap: wrap; }
+        .panel-header h3 {
+            margin: 0;
+            font-size: 0.85rem;
+        }
+        .panel-actions {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
 
-        /* Quick cues row – compact, ESPN-style */
+        /* Quick cues row – ANNOUNCEMENTS ONLY (no scoring) */
         .quick-cues {
             display: flex;
             flex-wrap: wrap;
@@ -435,16 +455,14 @@
             transition: all 0.15s;
             white-space: nowrap;
         }
-        .quick-cues button:hover { background: var(--accent); color: #000; transform: scale(1.04); }
+        .quick-cues button:hover {
+            background: var(--accent);
+            color: #000;
+            transform: scale(1.04);
+        }
         .quick-cues button:active { transform: scale(0.95); }
-        .quick-cues button.td { background: #dc2626; border-color: #dc2626; }
-        .quick-cues button.fg { background: #2563eb; border-color: #2563eb; }
-        .quick-cues button.twopt { background: #8b5cf6; border-color: #8b5cf6; }
-        .quick-cues button.pat { background: #16a34a; border-color: #16a34a; }
-        .quick-cues button.safety { background: #f59e0b; color: #000; border-color: #f59e0b; }
-        .quick-cues button.flag { background: var(--accent); color: #000; border-color: var(--accent); }
 
-        /* Possession row – BIG, ESPN-style */
+        /* Possession row – BIG buttons + Timeouts */
         .possession-row {
             display: flex;
             flex-wrap: wrap;
@@ -496,7 +514,10 @@
             color: #fff;
             transition: all 0.15s;
         }
-        .possession-row .to-btn:hover { transform: scale(1.04); background: #ea580c; }
+        .possession-row .to-btn:hover {
+            transform: scale(1.04);
+            background: #ea580c;
+        }
         .possession-row .clock-status {
             font-size: 0.6rem;
             opacity: 0.6;
@@ -505,10 +526,16 @@
             background: rgba(0,0,0,0.1);
             border-radius: 12px;
         }
-        .possession-row .clock-status.running { color: #4ade80; opacity: 1; }
-        .possession-row .clock-status.paused { color: #facc15; opacity: 1; }
+        .possession-row .clock-status.running {
+            color: #4ade80;
+            opacity: 1;
+        }
+        .possession-row .clock-status.paused {
+            color: #facc15;
+            opacity: 1;
+        }
 
-        /* Game controls – down/distance + scoring */
+        /* Game controls – ALL scoring + down/distance (no duplicates) */
         .game-controls {
             display: flex;
             flex-wrap: wrap;
@@ -659,7 +686,10 @@
             outline: none;
             background: rgba(255,255,255,0.4);
         }
-        .player-row.starter { background: rgba(251,191,36,0.10); border-left: 3px solid var(--accent); }
+        .player-row.starter {
+            background: rgba(251,191,36,0.10);
+            border-left: 3px solid var(--accent);
+        }
         .st-toggle,
         .pin-btn {
             background: none;
@@ -978,7 +1008,9 @@
 </footer>
 
 <script>
-    // Full state
+    // ============================================================
+    // FULL STATE
+    // ============================================================
     let S = {
         v: 'sport',
         md: 'light',
@@ -1008,19 +1040,19 @@
         lastEvent: { text: '🏈 Ready — Set possession to begin', type: 'info' },
         teams: [
             { id: 'h', name: 'Texas Hawks', abbr: 'TXH', color: '#1e3a5f', logo: '', mascot: '', coach: '', players: [
-                    { id: 'h1', n: '7', na: 'Marcus Johnson', po: 'QB', st: true, nt: '', pron: '', ph: '', pinned: false },
-                    { id: 'h2', n: '55', na: 'Chris Williams', po: 'Center', st: true, nt: '', pron: '', ph: '', pinned: false },
-                    { id: 'h3', n: '11', na: 'Jalen Smith', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false },
-                    { id: 'h4', n: '88', na: 'Ty Washington', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false },
-                    { id: 'h5', n: '15', na: 'Jordan Davis', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false }
-                ] },
+                { id: 'h1', n: '7', na: 'Marcus Johnson', po: 'QB', st: true, nt: '', pron: '', ph: '', pinned: false },
+                { id: 'h2', n: '55', na: 'Chris Williams', po: 'Center', st: true, nt: '', pron: '', ph: '', pinned: false },
+                { id: 'h3', n: '11', na: 'Jalen Smith', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false },
+                { id: 'h4', n: '88', na: 'Ty Washington', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false },
+                { id: 'h5', n: '15', na: 'Jordan Davis', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false }
+            ] },
             { id: 's', name: 'Dallas Cowboys', abbr: 'DAL', color: '#7f1d1d', logo: '', mascot: '', coach: '', players: [
-                    { id: 's1', n: '12', na: 'Caleb White', po: 'QB', st: true, nt: '', pron: '', ph: '', pinned: false },
-                    { id: 's2', n: '72', na: 'Mason Lee', po: 'Center', st: true, nt: '', pron: '', ph: '', pinned: false },
-                    { id: 's3', n: '1', na: 'Adrian Flores', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false },
-                    { id: 's4', n: '5', na: 'Xavier Reed', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false },
-                    { id: 's5', n: '18', na: 'Karter Hill', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false }
-                ] }
+                { id: 's1', n: '12', na: 'Caleb White', po: 'QB', st: true, nt: '', pron: '', ph: '', pinned: false },
+                { id: 's2', n: '72', na: 'Mason Lee', po: 'Center', st: true, nt: '', pron: '', ph: '', pinned: false },
+                { id: 's3', n: '1', na: 'Adrian Flores', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false },
+                { id: 's4', n: '5', na: 'Xavier Reed', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false },
+                { id: 's5', n: '18', na: 'Karter Hill', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false }
+            ] }
         ],
         scoringLog: [],
         penaltyLog: [],
@@ -1042,14 +1074,16 @@
         }
     };
 
-    const STORAGE_KEY = 'fnl_v23';
+    const STORAGE_KEY = 'fnl_v24';
 
     function g() { return S; }
 
-    function toast(m) { const x = document.getElementById('toast');
+    function toast(m) {
+        const x = document.getElementById('toast');
         x.textContent = m;
         x.classList.add('show');
-        setTimeout(() => x.classList.remove('show'), 2000); }
+        setTimeout(() => x.classList.remove('show'), 2000);
+    }
 
     // ---- persistence ----
     function saveState() {
@@ -1434,15 +1468,39 @@
             document.getElementById('btnFinal').classList.remove('final-active'); }
     }
 
-    // ---- Timeouts ----
+    // ---- TIMEOUTS ----
     function updateTimeoutDisplay() {
         const away = S.timeouts.away || 0;
         const home = S.timeouts.home || 0;
-        for (let i = 1; i <= 3; i++) {
-            const awayEl = document.getElementById('awayTO' + i);
-            const homeEl = document.getElementById('homeTO' + i);
-            if (awayEl) awayEl.className = 'timeout-dot' + (i > away ? ' used' : '');
-            if (homeEl) homeEl.className = 'timeout-dot' + (i > home ? ' used' : '');
+        // Update away dots
+        const awayContainer = document.getElementById('sbAwayChip')?.parentElement?.nextElementSibling?.nextElementSibling;
+        // Find the timeout display for away
+        const awayTOEl = document.querySelector('.sb-block.score-block:first-child .timeout-display');
+        const homeTOEl = document.querySelector('.sb-block.score-block:last-child .timeout-display');
+        
+        // Update away
+        if (awayTOEl) {
+            if (away === 0) {
+                awayTOEl.innerHTML = `<span class="timeout-zero">NONE</span>`;
+            } else {
+                let html = `<span class="timeout-label">TO:</span>`;
+                for (let i = 1; i <= 3; i++) {
+                    html += `<span class="timeout-dot${i > away ? ' used' : ''}"></span>`;
+                }
+                awayTOEl.innerHTML = html;
+            }
+        }
+        // Update home
+        if (homeTOEl) {
+            if (home === 0) {
+                homeTOEl.innerHTML = `<span class="timeout-zero">NONE</span>`;
+            } else {
+                let html = `<span class="timeout-label">TO:</span>`;
+                for (let i = 1; i <= 3; i++) {
+                    html += `<span class="timeout-dot${i > home ? ' used' : ''}"></span>`;
+                }
+                homeTOEl.innerHTML = html;
+            }
         }
     }
 
@@ -1450,7 +1508,7 @@
         if (S.gameState === 'FINAL') { toast('⛔ Game is final'); return; }
         if (S.gameState === 'READY') { toast('⏳ Start the game first'); return; }
         const key = side === 'away' ? 'away' : 'home';
-        if (S.timeouts[key] <= 0) { toast(`⚠️ ${side.toUpperCase()} no timeouts left`); return; }
+        if (S.timeouts[key] <= 0) { toast(`⚠️ ${side.toUpperCase()} has no timeouts left`); return; }
         S.timeouts[key]--;
         // Pause clock on timeout
         S.gc.run = false;
@@ -1700,6 +1758,7 @@
         });
     }
 
+    // ---- Quick cues ----
     function quickCue(text, type) {
         setLastEvent(text, type || 'info');
         S.scoringLog.push({ type: 'note', team: S.poss, player: text, points: 0, time: S.gc.rem, quarter: S.q, id: Date.now() + '_note' });
@@ -1707,6 +1766,7 @@
         toast(`📢 ${text}`);
     }
 
+    // ---- Penalty ----
     function quickPenalty() {
         if (S.gameState === 'FINAL') { toast('⛔ Game final'); return; }
         if (S.gameState === 'READY') { toast('⏳ Start the game first'); return; }
@@ -1772,24 +1832,18 @@
         updateGameStateBadge();
         updateUndoButton(); }
 
-    // ---- Game view ----
+    // ---- GAME VIEW - Clean, no duplicates ----
     function renderGame() {
         let html = '';
 
-        // QUICK CUES
+        // QUICK CUES – Announcements ONLY (NO scoring buttons here)
         html += '<div class="quick-cues">';
-        html += '<button class="td" onclick="quickScore(\'td\')" data-tooltip="Touchdown +6">🏈 TD</button>';
-        html += '<button class="fg" onclick="quickScore(\'fg\')" data-tooltip="Field Goal +3">🎯 FG</button>';
-        html += '<button class="twopt" onclick="quickScore(\'twopt\')" data-tooltip="2-Point +2">➕ 2PT</button>';
-        html += '<button class="pat" onclick="quickScore(\'pat\')" data-tooltip="PAT +1">🎯 PAT</button>';
-        html += '<button class="safety" onclick="quickScore(\'safety\')" data-tooltip="Safety +2">⚡ Safety</button>';
-        html += '<button class="flag" onclick="quickPenalty()" data-tooltip="Penalty">🚩 PENALTY</button>';
-        html += '<button onclick="quickCue(\'🔻 FIRST DOWN\',\'info\')" data-tooltip="1st down">🔻 1st</button>';
-        html += '<button onclick="quickCue(\'🏈 PUNT\',\'info\')" data-tooltip="Punt">🦵 Punt</button>';
-        html += '<button onclick="quickCue(\'🔄 INTERCEPTION\',\'info\')" data-tooltip="INT">🔄 INT</button>';
-        html += '<button onclick="quickCue(\'😱 FUMBLE\',\'info\')" data-tooltip="Fumble">😱 Fumble</button>';
-        html += '<button onclick="quickCue(\'⏱️ INJURY TIMEOUT\',\'timeout\')" data-tooltip="Injury">🆘 Injury</button>';
-        html += '<button onclick="quickCue(\'⏱️ END OF QUARTER\',\'info\')" data-tooltip="End Qtr">⏱️ End Qtr</button>';
+        html += '<button onclick="quickCue(\'🔻 FIRST DOWN\',\'info\')" data-tooltip="Announce 1st down">🔻 1st Down</button>';
+        html += '<button onclick="quickCue(\'🏈 PUNT\',\'info\')" data-tooltip="Announce punt">🦵 Punt</button>';
+        html += '<button onclick="quickCue(\'🔄 INTERCEPTION\',\'info\')" data-tooltip="Announce interception">🔄 INT</button>';
+        html += '<button onclick="quickCue(\'😱 FUMBLE\',\'info\')" data-tooltip="Announce fumble">😱 Fumble</button>';
+        html += '<button onclick="quickCue(\'⏱️ INJURY TIMEOUT\',\'timeout\')" data-tooltip="Announce injury timeout">🆘 Injury</button>';
+        html += '<button onclick="quickCue(\'⏱️ END OF QUARTER\',\'info\')" data-tooltip="Announce end of quarter">⏱️ End Qtr</button>';
         html += '</div>';
 
         html += '<div class="panel-header">';
@@ -1799,7 +1853,7 @@
         html += `<button class="hdr-btn undo-btn" onclick="undoLastEvent()" id="undoBtn2" data-tooltip="Undo last event">↩ Undo</button>`;
         html += '</div></div>';
 
-        // ---- POSSESSION ROW - BIG ESPN STYLE ----
+        // ---- POSSESSION ROW - Big buttons + Timeouts ----
         const awayTeam = getTeam('away');
         const homeTeam = getTeam('home');
         html += `<div class="possession-row">`;
@@ -1811,7 +1865,7 @@
         html += `<span class="clock-status ${S.gc.run ? 'running' : 'paused'}">${S.gc.run ? '▶ LIVE' : '⏸ PAUSED'}</span>`;
         html += `</div>`;
 
-        // ---- DOWN & DISTANCE + SCORING ----
+        // ---- GAME CONTROLS - All scoring + down/distance (NO duplicates) ----
         html += '<div class="game-controls">';
         html += `<span class="group-label">DOWN</span>`;
         html += `<select onchange="setDown(this.value)">${[1,2,3,4].map(d => `<option ${d === S.down ? 'selected' : ''}>${d}</option>`).join('')}</select>`;
@@ -1918,7 +1972,7 @@
         updateScorebug();
     }
 
-    // ---- Roster view (shortened for brevity, same as previous) ----
+    // ---- ROSTER VIEW ----
     function renderRoster() {
         const sortedTeams = [...S.teams].sort((a, b) => a.name.localeCompare(b.name));
         let selectedTeam = S.teams.find(t => t.id === S.cid) || S.teams[0];
@@ -2125,7 +2179,7 @@
         r.readAsText(f);
     }
 
-    // ---- Log view ----
+    // ---- LOG VIEW ----
     function renderLog() {
         let html = '<div class="panel"><div class="panel-header">';
         html += '<h3>📜 GAME LOG</h3>';
@@ -2190,7 +2244,7 @@
         safePrint(html);
     }
 
-    // ---- Script view ----
+    // ---- SCRIPT VIEW ----
     function renderScript() {
         let html = '<div style="padding:8px;height:100%;display:flex;flex-direction:column;">';
         html += '<div class="panel-header">';
@@ -2237,7 +2291,7 @@
         r.readAsText(f);
     }
 
-    // ---- Admin view ----
+    // ---- ADMIN VIEW ----
     function renderAdmin() {
         const tabs = ['theme', 'clock', '7v7', 'timeouts', 'colors', 'backup', 'cloud', 'help'];
         const labels = { theme: 'Theme', clock: 'Clock', '7v7': '7v7', timeouts: 'Timeouts', colors: 'Colors', backup: 'Backup', cloud: 'Cloud', help: 'Help' };
@@ -2280,7 +2334,7 @@
                         <label style="font-size:0.65rem;">Per half: <input type="number" value="${S.timeoutConfig.tackle.perHalf}" min="0" max="5" style="width:50px;padding:3px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);" onchange="S.timeoutConfig.tackle.perHalf=parseInt(this.value)||0;saveState();toast('✅ Updated');"></label>
                         <label style="font-size:0.65rem;">Per OT: <input type="number" value="${S.timeoutConfig.tackle.overtimePerPeriod}" min="0" max="3" style="width:50px;padding:3px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);" onchange="S.timeoutConfig.tackle.overtimePerPeriod=parseInt(this.value)||0;saveState();toast('✅ Updated');"></label>
                     </div>
-                    <p style="font-size:0.55rem;opacity:0.5;margin-top:4px;">Default: 3 per half, 1 per OT (UIL rules)</p>
+                    <p style="font-size:0.55rem;opacity:0.5;margin-top:4px;">Default: 3 per half, 1 per OT</p>
                 </div>
                 <div style="margin-bottom:12px;padding:10px;background:var(--bg);border-radius:6px;border:1px solid var(--border);">
                     <h5 style="font-size:0.7rem;margin-bottom:6px;">🏈 7v7</h5>
@@ -2288,7 +2342,7 @@
                         <label style="font-size:0.65rem;">Per half: <input type="number" value="${S.timeoutConfig.sevens.perHalf}" min="0" max="5" style="width:50px;padding:3px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);" onchange="S.timeoutConfig.sevens.perHalf=parseInt(this.value)||0;saveState();toast('✅ Updated');"></label>
                         <label style="font-size:0.65rem;">Per OT: <input type="number" value="${S.timeoutConfig.sevens.overtimePerPeriod}" min="0" max="3" style="width:50px;padding:3px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);" onchange="S.timeoutConfig.sevens.overtimePerPeriod=parseInt(this.value)||0;saveState();toast('✅ Updated');"></label>
                     </div>
-                    <p style="font-size:0.55rem;opacity:0.5;margin-top:4px;">Default: 0 (set your desired amount)</p>
+                    <p style="font-size:0.55rem;opacity:0.5;margin-top:4px;">Default: 0</p>
                 </div>
                 <button class="hdr-btn" onclick="S.timeoutConfig={tackle:{perHalf:3,overtimePerPeriod:1},sevens:{perHalf:0,overtimePerPeriod:0}};saveState();renderAdmin();toast('✅ Reset');" style="background:#f59e0b;color:#000;">↺ Reset Defaults</button>
                 <button class="hdr-btn" onclick="applyTimeoutConfig();toast('✅ Applied');" style="background:#22c55e;">✅ Apply</button>`;
@@ -2366,7 +2420,7 @@
                 toast('✅ Restored'); } catch (e) { toast('❌ Invalid file'); } };
         r.readAsText(f); }
 
-    // ---- Clients view ----
+    // ---- CLIENTS VIEW ----
     function renderClients() {
         let html = '<div class="panel"><div class="panel-header">';
         html += '<h3>👥 CLIENTS</h3>';
@@ -2408,7 +2462,7 @@
         ks.forEach(p => { msg += `${p} → ${S.cp[p].n}\n`; });
         alert(msg); }
 
-    // ---- Cloud sync ----
+    // ---- CLOUD SYNC ----
     async function fnlCloudSaveAll() {
         try {
             const snap = JSON.parse(JSON.stringify(S));
