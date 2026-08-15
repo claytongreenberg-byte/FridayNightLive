@@ -25,6 +25,7 @@
             overflow: hidden;
             font-size: 14px;
         }
+        select { -webkit-appearance: menulist; appearance: menulist; }
         header {
             background: linear-gradient(180deg, #2d6a1e, #1f4d14);
             padding: 6px 10px;
@@ -50,8 +51,8 @@
         }
         .hdr-btn {
             background: #334155; color: #fff; border: 1px solid #475569;
-            border-radius: 16px; padding: 4px 8px; font-size: 0.6rem;
-            cursor: pointer; white-space: nowrap;
+            border-radius: 16px; padding: 5px 9px; font-size: 0.62rem;
+            cursor: pointer; white-space: nowrap; min-height: 26px;
         }
         .hdr-btn:hover { background: #475569; }
         .hdr-bottom {
@@ -61,39 +62,92 @@
             gap: 6px;
             margin-top: 6px;
         }
+
+        /* ===== ESPN-style scorebug ===== */
+        .scorebug-wrap { width: 100%; display: flex; flex-direction: column; gap: 4px; }
         .scorebug {
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            background: #0f172a;
-            border: 3px solid var(--accent);
-            border-radius: 12px;
-            padding: 8px 12px;
+            gap: 0;
+            background: linear-gradient(180deg, #0b1220, #000);
+            border: 2px solid var(--accent);
+            border-radius: 10px;
+            padding: 10px 18px 8px;
             flex-wrap: wrap;
             width: 100%;
-            min-height: 90px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.45);
+            --sb-text: #ffffff;
         }
-        .sb-block { display: flex; flex-direction: column; align-items: center; padding: 0 6px; flex: 1 1 auto; min-width: 80px; }
+        .sb-network-tag {
+            position: absolute; top: -11px; left: 14px;
+            background: var(--accent); color: #000;
+            font-weight: 900; font-size: 0.55rem; letter-spacing: 1px;
+            padding: 2px 8px; border-radius: 4px; text-transform: uppercase;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+        }
+        .live-pill {
+            position: absolute; top: -11px; right: 14px;
+            background: #dc2626; color: #fff; font-weight: 800; font-size: 0.55rem;
+            padding: 2px 9px; border-radius: 10px; display: none; align-items: center; gap: 4px;
+            letter-spacing: 1px; box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+        }
+        .live-pill.show { display: inline-flex; }
+        .live-pill.final { background: #334155; }
+        .live-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: #fff; animation: sbpulse 1.2s infinite; }
+        .live-pill.final .dot { animation: none; }
+        @keyframes sbpulse { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+        .sb-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 14px;
+            border-right: 1px solid rgba(255,255,255,0.15);
+            flex: 1 1 0;
+            min-width: 60px;
+        }
+        .sb-block:last-child { border-right: none; }
+        .sb-team-chip {
+            width: 30px; height: 30px; border-radius: 50%; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 0.7rem; color: #fff; margin-bottom: 3px;
+            border: 1px solid rgba(255,255,255,0.35); flex-shrink: 0;
+        }
+        .sb-team-chip img { width: 100%; height: 100%; object-fit: cover; }
+        .sb-name-col { display: flex; flex-direction: column; align-items: center; margin-bottom: 3px; }
         .sb-abbr {
-            font-size: 13px; font-weight: 800; color: var(--accent); margin-bottom: 3px;
-            max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            font-size: 15px; font-weight: 900; color: var(--sb-text); letter-spacing: 1px;
+            display: flex; align-items: center; gap: 4px;
+        }
+        .sb-poss {
+            font-size: 14px;
+            animation: sbbounce 0.8s infinite;
+            display: inline-block;
+        }
+        @keyframes sbbounce {
+            0%,100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-4px) scale(1.2); }
+        }
+        .sb-fullname {
+            font-size: 0.5rem; color: var(--sb-text); opacity: 0.7; text-transform: uppercase;
+            letter-spacing: 0.5px; max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
         .sb-logo-sm { width: 22px; height: 22px; object-fit: contain; }
         .sb-row { display: flex; align-items: center; gap: 4px; }
-        .sb-val { font-size: 1.6rem; font-weight: 900; color: #fff; min-width: 28px; text-align: center; }
+        .sb-val { font-size: 2rem; font-weight: 900; color: var(--sb-text); min-width: 28px; text-align: center; }
         .sb-qtr { font-size: 1rem; font-weight: 800; color: var(--accent); }
-        .game-clock { font-family: monospace; font-size: 1rem; font-weight: 800; color: #fff; }
+        .game-clock { font-family: 'Courier New', monospace; font-size: 1.05rem; font-weight: 800; color: var(--sb-text); }
         .sb-btn {
             background: #334155; border: 1px solid #475569; color: #fff;
-            width: 26px; height: 26px; border-radius: 50%; font-size: 11px;
+            width: 28px; height: 28px; border-radius: 50%; font-size: 11px;
             cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
         }
         .sb-btn:hover { background: var(--accent); color: #000; }
         .sb-game-btns { display: flex; gap: 3px; flex-wrap: wrap; justify-content: center; }
         .sb-game-btns button {
             background: #334155; border: 1px solid #475569; color: #fff;
-            border-radius: 12px; padding: 3px 7px; font-size: 0.6rem; cursor: pointer;
+            border-radius: 12px; padding: 4px 8px; font-size: 0.6rem; cursor: pointer;
         }
         .sb-game-btns button:hover { background: var(--accent); color: #000; }
         .sb-toggle-btn {
@@ -101,6 +155,13 @@
             width: 30px; height: 30px; border-radius: 50%; font-size: 14px;
             cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
+        .dd-ticker {
+            padding: 5px 10px; border-radius: 6px; font-weight: 800; font-size: 0.72rem;
+            text-align: center; color: #fff; letter-spacing: 0.5px; text-shadow: 0 1px 2px rgba(0,0,0,0.75);
+            background: #334155;
+        }
+        /* ===== end scorebug ===== */
+
         nav {
             background: #1a1a1a; display: flex; gap: 4px; padding: 0 10px;
             flex-shrink: 0; overflow-x: auto;
@@ -118,7 +179,8 @@
         }
         .game-controls button {
             background: #334155; color: #fff; border: 1px solid #475569;
-            border-radius: 14px; padding: 5px 8px; font-weight: 700; font-size: 0.65rem; cursor: pointer;
+            border-radius: 14px; padding: 6px 9px; font-weight: 700; font-size: 0.65rem; cursor: pointer;
+            min-height: 30px;
         }
         .game-controls button.active { background: var(--accent); color: #000; }
         .game-controls button.td { background: #dc2626; }
@@ -127,10 +189,6 @@
         .game-controls button.safety { background: #f59e0b; color: #000; }
         .game-controls button.flag-btn { background: var(--accent); color: #000; border-color: var(--accent); }
         .game-controls button.first-down { background: #22c55e; }
-        .game-controls select, .game-controls input {
-            padding: 4px 6px; border-radius: 4px; border: 1px solid var(--border);
-            background: var(--bg); color: var(--text);
-        }
         .team-cards { display: flex; gap: 6px; height: calc(100% - 45px); }
         .team-card {
             flex: 1; background: var(--surface); border: 1px solid var(--border);
@@ -141,8 +199,10 @@
             gap: 5px; color: #fff; font-size: 0.75rem;
         }
         .card-head select {
-            flex: 1; padding: 4px; border-radius: 4px; background: #fff; color: #000; font-size: 0.75rem;
+            flex: 1; padding: 5px 4px; border-radius: 4px; background: #fff; color: #000;
+            font-size: 0.75rem; min-height: 26px; border: 1px solid #94a3b8;
         }
+        .card-head .mini-logo { width: 20px; height: 20px; object-fit: cover; border-radius: 50%; flex-shrink: 0; }
         .unit-tabs { display: flex; gap: 3px; padding: 3px 6px; border-bottom: 1px solid var(--border); }
         .unit-tab {
             background: none; border: none; color: var(--text); padding: 3px 6px;
@@ -151,18 +211,18 @@
         .unit-tab.active { background: var(--accent); color: #000; border-radius: 4px; }
         .player-list-body { flex: 1; overflow-y: auto; padding: 5px; }
         .player-row {
-            display: grid; grid-template-columns: 28px 1fr 55px 25px 25px 22px;
+            display: grid; grid-template-columns: 30px 1fr 56px 26px 26px 24px;
             gap: 4px; align-items: center; padding: 4px; border-bottom: 1px solid var(--border);
         }
         .player-row input, .player-row select {
-            background: transparent; border: 1px solid transparent; color: var(--text);
-            padding: 2px; width: 100%; font-size: 0.7rem;
+            background: transparent; border: 1px solid var(--border); color: var(--text);
+            padding: 3px 2px; width: 100%; font-size: 0.7rem; border-radius: 3px;
         }
         .player-row input:focus, .player-row select:focus { border-color: var(--accent); outline: none; }
         .player-row.starter { background: rgba(251,191,36,0.15); border-left: 3px solid var(--accent); }
         .st-toggle, .pin-btn {
             background: none; border: 1px solid var(--border); border-radius: 50%;
-            width: 20px; height: 20px; cursor: pointer; font-size: 0.55rem;
+            width: 22px; height: 22px; cursor: pointer; font-size: 0.55rem;
         }
         .st-toggle.active { background: var(--accent); color: #000; }
         footer {
@@ -177,7 +237,7 @@
         .toast {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             background: #333; color: #fff; padding: 8px 16px; border-radius: 20px;
-            z-index: 9999; opacity: 0; transition: opacity 0.3s;
+            z-index: 9999; opacity: 0; transition: opacity 0.3s; pointer-events: none;
         }
         .toast.show { opacity: 1; }
         .tooltip-js {
@@ -188,7 +248,7 @@
         .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
         .roster-layout { display: flex; gap: 10px; height: 100%; }
         .team-sidebar {
-            width: 180px; flex-shrink: 0; background: var(--surface);
+            width: 190px; flex-shrink: 0; background: var(--surface);
             border: 1px solid var(--border); border-radius: 8px; padding: 10px; overflow-y: auto;
         }
         .team-item {
@@ -206,21 +266,36 @@
             background: none; border: 1px solid var(--border); color: inherit; cursor: pointer;
         }
         .admin-tab.active { background: var(--accent); color: #000; }
-        .possession-indicator {
-            display: inline-block; width: 12px; height: 12px; border-radius: 50%;
-            margin-left: 4px; border: 2px solid var(--accent);
+        /* player picker modal */
+        .pp-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 10001;
+            display: flex; align-items: center; justify-content: center; padding: 16px;
         }
-        .possession-indicator.home { background: #2563eb; }
-        .possession-indicator.away { background: #dc2626; }
-        .down-distance-display {
-            color: #fff; font-size: 0.75rem; font-weight: 700;
-            background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 4px;
+        .pp-box {
+            background: var(--bg); color: var(--text); border-radius: 10px; padding: 16px;
+            max-width: 380px; width: 100%; max-height: 82vh; overflow-y: auto;
+            border: 2px solid var(--accent); box-shadow: 0 8px 24px rgba(0,0,0,0.5);
         }
+        .pp-box h3 { margin-bottom: 10px; font-size: 0.95rem; }
+        .pp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 10px; }
+        .pp-grid button {
+            background: #334155; color: #fff; border: 1px solid #475569; border-radius: 6px;
+            padding: 8px 4px; font-size: 0.7rem; cursor: pointer; line-height: 1.3;
+        }
+        .pp-grid button:hover { background: var(--accent); color: #000; }
+        .pp-actions { display: flex; gap: 6px; }
+        .pp-actions input {
+            flex: 1; padding: 7px; border-radius: 4px; border: 1px solid var(--border);
+            background: transparent; color: var(--text);
+        }
+
         @media (max-width: 768px) {
+            .scorebug { padding: 8px 10px; gap: 4px; }
+            .sb-block { padding: 0 6px; min-width: 40px; }
+            .sb-val { font-size: 1.4rem; }
             .team-cards { flex-direction: column; height: auto; }
-            .scorebug { gap: 5px; padding: 5px; }
-            .sb-block { min-width: 50px; }
-            .sb-val { font-size: 1.2rem; }
+            .roster-layout { flex-direction: column; }
+            .team-sidebar { width: 100%; max-height: 200px; }
         }
     </style>
 </head>
@@ -240,78 +315,82 @@
         <div class="hdr-top-right">
             <span class="wall-clock" id="wallClock" data-tooltip="Current time">12:00 AM</span>
             <span class="weather-pill" id="weatherHeader" data-tooltip="Live weather">--°F</span>
-            <button class="hdr-btn" onclick="fnlCloudSaveAll()" data-tooltip="Save to cloud">💾 SAVE</button>
+            <button class="hdr-btn" onclick="fnlCloudSaveAll()" data-tooltip="Save to cloud (Ctrl+S)">💾 SAVE</button>
             <button class="hdr-btn" onclick="fnlCloudLoadAll()" data-tooltip="Load from cloud">📥 LOAD</button>
             <button class="hdr-btn" id="themeBtn" onclick="toggleTheme()" data-tooltip="Toggle dark/light mode">🌙 Dark</button>
-            <button class="hdr-btn" onclick="toggleOutdoor()" data-tooltip="Toggle outdoor mode (larger text)">🌤</button>
-            <button class="hdr-btn" onclick="printLU()" data-tooltip="Print lineup">🖨️</button>
+            <button class="hdr-btn" onclick="toggleOutdoor()" data-tooltip="Outdoor mode (larger text)">🌤</button>
+            <button class="hdr-btn" onclick="printLU()" data-tooltip="Print tonight's starting lineups">🖨️</button>
             <button class="hdr-btn" onclick="resetGame()" style="background:#dc2626;" data-tooltip="Reset entire game">RESET</button>
         </div>
     </div>
     <div class="hdr-bottom">
-        <div class="scorebug" id="scorebug">
-            <div class="sb-block">
-                <span class="sb-abbr" id="sbAwayAbbr" data-tooltip="Away team">AWAY</span>
-                <div class="sb-row">
-                    <button class="sb-btn" onclick="chScore('away',-1)" data-tooltip="Subtract point">−</button>
-                    <span class="sb-val" id="sbAwayScore" data-tooltip="Away score">0</span>
-                    <button class="sb-btn" onclick="chScore('away',1)" data-tooltip="Add point">+</button>
+        <div class="scorebug-wrap">
+            <div class="scorebug" id="scorebug">
+                <span class="sb-network-tag">Voice of DFW Live</span>
+                <span class="live-pill" id="livePill"><span class="dot"></span><span id="livePillText">LIVE</span></span>
+                <div class="sb-block">
+                    <div class="sb-name-col">
+                        <div class="sb-team-chip" id="sbAwayChip" style="background:#334155;"></div>
+                    </div>
+                    <span class="sb-abbr" id="sbAwayAbbr">AWY</span>
+                    <span class="sb-fullname" id="sbAwayFull">Away Team</span>
+                    <div class="sb-row">
+                        <button class="sb-btn" onclick="chScore('away',-1)" data-tooltip="Subtract point">−</button>
+                        <span class="sb-val" id="sbAwayScore">0</span>
+                        <button class="sb-btn" onclick="chScore('away',1)" data-tooltip="Add point">+</button>
+                    </div>
+                    <button class="sb-btn" onclick="uploadScorebugLogo('away')" data-tooltip="Upload away logo" style="width:20px;height:20px;font-size:9px;margin-top:3px;">📷</button>
                 </div>
-                <button class="sb-btn" onclick="uploadScorebugLogo('away')" data-tooltip="Upload away logo" style="width:20px;height:20px;font-size:9px;">📷</button>
+                <div class="sb-block">
+                    <span class="sb-abbr" style="font-size:0.6rem;color:var(--sb-text);opacity:.7;">QUARTER</span>
+                    <span class="sb-qtr" id="sbQuarter">Q1</span>
+                    <div class="sb-row">
+                        <button class="sb-btn" onclick="chQuarter(-1)" data-tooltip="Previous quarter">◀</button>
+                        <button class="sb-btn" onclick="chQuarter(1)" data-tooltip="Next quarter">▶</button>
+                    </div>
+                </div>
+                <div class="sb-block">
+                    <div class="sb-name-col">
+                        <div class="sb-team-chip" id="sbHomeChip" style="background:#334155;"></div>
+                    </div>
+                    <span class="sb-abbr" id="sbHomeAbbr">HME</span>
+                    <span class="sb-fullname" id="sbHomeFull">Home Team</span>
+                    <div class="sb-row">
+                        <button class="sb-btn" onclick="chScore('home',-1)" data-tooltip="Subtract point">−</button>
+                        <span class="sb-val" id="sbHomeScore">0</span>
+                        <button class="sb-btn" onclick="chScore('home',1)" data-tooltip="Add point">+</button>
+                    </div>
+                    <button class="sb-btn" onclick="uploadScorebugLogo('home')" data-tooltip="Upload home logo" style="width:20px;height:20px;font-size:9px;margin-top:3px;">📷</button>
+                </div>
+                <div class="sb-block">
+                    <span class="sb-abbr" style="font-size:0.6rem;color:var(--sb-text);opacity:.7;">CLOCK</span>
+                    <span class="game-clock" id="gameClockDisplay">8:00</span>
+                    <div class="sb-row">
+                        <button class="sb-btn" onclick="startGC()" data-tooltip="Start clock (Space)">▶</button>
+                        <button class="sb-btn" onclick="pauseGC()" data-tooltip="Pause clock (Space)">⏸</button>
+                        <button class="sb-btn" onclick="resetGC()" data-tooltip="Reset clock">↺</button>
+                    </div>
+                </div>
+                <div class="sb-block">
+                    <span class="sb-abbr" style="font-size:0.6rem;color:var(--sb-text);opacity:.7;">GAME</span>
+                    <div class="sb-game-btns">
+                        <button onclick="startGame()" data-tooltip="Start game (Q1)">▶ Start</button>
+                        <button onclick="setHalftime()" data-tooltip="Halftime">⏸ Half</button>
+                        <button onclick="startSecondHalf()" data-tooltip="Start 2nd half (Q3)">⏭ 2nd</button>
+                        <button onclick="setOvertime()" data-tooltip="Overtime">⏱ OT</button>
+                        <button onclick="endGame()" data-tooltip="End game">🏁 Final</button>
+                    </div>
+                </div>
             </div>
-            <div class="sb-block">
-                <span class="sb-abbr" data-tooltip="Current period">PERIOD</span>
-                <span class="sb-qtr" id="sbQuarter" data-tooltip="Current quarter">Q1</span>
-                <div class="sb-row">
-                    <button class="sb-btn" onclick="chQuarter(-1)" data-tooltip="Previous quarter">◀</button>
-                    <button class="sb-btn" onclick="chQuarter(1)" data-tooltip="Next quarter">▶</button>
-                </div>
-            </div>
-            <div class="sb-block">
-                <span class="sb-abbr" id="sbHomeAbbr" data-tooltip="Home team">HOME</span>
-                <div class="sb-row">
-                    <button class="sb-btn" onclick="chScore('home',-1)" data-tooltip="Subtract point">−</button>
-                    <span class="sb-val" id="sbHomeScore" data-tooltip="Home score">0</span>
-                    <button class="sb-btn" onclick="chScore('home',1)" data-tooltip="Add point">+</button>
-                </div>
-                <button class="sb-btn" onclick="uploadScorebugLogo('home')" data-tooltip="Upload home logo" style="width:20px;height:20px;font-size:9px;">📷</button>
-            </div>
-            <div class="sb-block">
-                <span class="sb-abbr" data-tooltip="Game clock">CLOCK</span>
-                <span class="game-clock" id="gameClockDisplay" data-tooltip="Time remaining">8:00</span>
-                <div class="sb-row">
-                    <button class="sb-btn" onclick="startGC()" data-tooltip="Start clock">▶</button>
-                    <button class="sb-btn" onclick="pauseGC()" data-tooltip="Pause clock">⏸</button>
-                    <button class="sb-btn" onclick="resetGC()" data-tooltip="Reset clock to 8:00">↺</button>
-                </div>
-            </div>
-            <div class="sb-block">
-                <span class="sb-abbr" data-tooltip="Game controls">GAME</span>
-                <div class="sb-game-btns">
-                    <button onclick="startGame()" data-tooltip="Start game (Q1)">▶ Start</button>
-                    <button onclick="setHalftime()" data-tooltip="Go to halftime">⏸ Half</button>
-                    <button onclick="startSecondHalf()" data-tooltip="Start 2nd half (Q3)">⏭ 2nd</button>
-                    <button onclick="setOvertime()" data-tooltip="Overtime mode">⏱ OT</button>
-                    <button onclick="endGame()" data-tooltip="End game">🏁 Final</button>
-                </div>
-            </div>
-            <div class="sb-block">
-                <span class="sb-abbr" data-tooltip="Possession & downs">🏈</span>
-                <div class="sb-row">
-                    <span id="sbPossession" style="color:#fff;font-weight:700;font-size:0.9rem;">HOME</span>
-                </div>
-                <div class="sb-row">
-                    <span class="down-distance-display" id="sbDownDist" data-tooltip="Down and distance">1st & 10</span>
-                </div>
-            </div>
+            <div class="dd-ticker" id="ddTicker">🏈 SET POSSESSION TO BEGIN</div>
         </div>
-        <button class="sb-toggle-btn" onclick="toggleScorebugDisplay()" data-tooltip="Toggle scoreboard visibility">👁️</button>
+        <button class="sb-toggle-btn" onclick="toggleScorebugDisplay()" data-tooltip="Toggle scoreboard">👁️</button>
     </div>
 </header>
 
 <nav id="mainNav"></nav>
 <main id="main"></main>
-<footer id="footer">
+<footer>
     © 2026 Clayton E. Greenberg | VoiceofDFW.com | 🏈 Digital Pressbox Command Center 🏈
 </footer>
 
@@ -323,15 +402,16 @@ let S = {
     gameState: 'READY', gc: { rem: 480, run: false },
     md7: 'tackle', p7: ['QB','Center','WR','WR','WR','DB','DB'],
     cf: '12h', cs: true,
+    awayId: 'h', homeId: 's',
     teams: [
-        { id: 'h', name: 'Texas Hawks', color: '#1e3a5f', logo: '', mascot: '', coach: '', players: [
+        { id: 'h', name: 'Texas Hawks', abbr: 'TXH', color: '#1e3a5f', logo: '', mascot: '', coach: '', players: [
             { id: 'h1', n: '7', na: 'Marcus Johnson', po: 'QB', st: true, nt: '', pron: '', ph: '', pinned: false },
             { id: 'h2', n: '55', na: 'Chris Williams', po: 'Center', st: true, nt: '', pron: '', ph: '', pinned: false },
             { id: 'h3', n: '11', na: 'Jalen Smith', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false },
             { id: 'h4', n: '88', na: 'Ty Washington', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false },
             { id: 'h5', n: '15', na: 'Jordan Davis', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false }
         ]},
-        { id: 's', name: 'Dallas Cowboys', color: '#7f1d1d', logo: '', mascot: '', coach: '', players: [
+        { id: 's', name: 'Dallas Cowboys', abbr: 'DAL', color: '#7f1d1d', logo: '', mascot: '', coach: '', players: [
             { id: 's1', n: '12', na: 'Caleb White', po: 'QB', st: true, nt: '', pron: '', ph: '', pinned: false },
             { id: 's2', n: '72', na: 'Mason Lee', po: 'Center', st: true, nt: '', pron: '', ph: '', pinned: false },
             { id: 's3', n: '1', na: 'Adrian Flores', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false },
@@ -342,17 +422,38 @@ let S = {
     scoringLog: [], penaltyLog: [], gameHistory: [], script: '',
     cp: {}, ap: '', im: true, ua: 'all', uh: 'all',
     cid: 'h',
-    colors: { scorebugBg: '#0f172a', scorebugText: '#ffffff', teamCardBgAway: '#e2e8f0', teamCardBgHome: '#e2e8f0', teamNameColorAway: '#0f172a', teamNameColorHome: '#0f172a' }
+    colors: { scorebugBg: '#0b1220', scorebugText: '#ffffff', accent: '#facc15' }
 };
+
+const STORAGE_KEY = 'fnl_v22';
 
 function g() { return S; }
 function toast(m) { const x = document.getElementById('toast'); x.textContent = m; x.classList.add('show'); setTimeout(() => x.classList.remove('show'), 2000); }
-function saveState() { localStorage.setItem('fnl_v22', JSON.stringify(S)); }
-function loadState() { const raw = localStorage.getItem('fnl_v22'); if (raw) { try { const parsed = JSON.parse(raw); S = { ...S, ...parsed }; } catch(e) {} } }
-function getTeam(side) { 
-    if (side === 'away') return S.teams[0]; 
-    if (side === 'home') return S.teams[1];
-    return S.teams.find(t => t.id === side) || S.teams[0];
+
+// ---- persistence ----
+function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(S)); }
+function normalizeState() {
+    if (!Array.isArray(S.teams) || S.teams.length === 0) {
+        S.teams = [{ id: 't1', name: 'Away Team', abbr: 'AWY', color: '#334155', logo: '', mascot: '', coach: '', players: [] }];
+    }
+    S.teams.forEach(t => { if (t.abbr === undefined) t.abbr = ''; });
+    if (!S.teams.find(t => t.id === S.awayId)) S.awayId = S.teams[0].id;
+    if (!S.teams.find(t => t.id === S.homeId) || S.homeId === S.awayId) {
+        const alt = S.teams.find(t => t.id !== S.awayId);
+        S.homeId = alt ? alt.id : S.awayId;
+    }
+    if (!S.colors) S.colors = { scorebugBg: '#0b1220', scorebugText: '#ffffff', accent: '#facc15' };
+}
+function loadState() {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) { try { S = { ...S, ...JSON.parse(raw) }; } catch(e) {} }
+    normalizeState();
+}
+function getTeam(side) {
+    const id = side === 'away' ? S.awayId : S.homeId;
+    let t = S.teams.find(x => x.id === id);
+    if (!t) t = side === 'home' ? (S.teams[1] || S.teams[0]) : S.teams[0];
+    return t || { name: 'TBD', abbr: 'TBD', color: '#334155', players: [], id: '' };
 }
 function getPositions() { return S.md7 === '7v7' ? S.p7 : ['QB','RB','FB','WR','TE','OL','C','G','T','DL','DE','DT','LB','OLB','ILB','CB','S','SS','FS','DB','K','P','LS','KR','PR']; }
 function getPlayers(side, filter) {
@@ -369,6 +470,12 @@ function getPlayers(side, filter) {
     list.sort((a, b) => (parseInt(a.n) || 999) - (parseInt(b.n) || 999));
     return list;
 }
+function teamAbbr(team) {
+    if (team.abbr && team.abbr.trim()) return team.abbr.trim().toUpperCase().slice(0, 4);
+    const words = (team.name || 'TBD').trim().split(/\s+/);
+    if (words.length > 1) return words.map(w => w[0]).join('').toUpperCase().slice(0, 4);
+    return (team.name || 'TBD').slice(0, 3).toUpperCase();
+}
 
 // Tooltips
 const tooltipEl = document.getElementById('tooltip');
@@ -378,10 +485,6 @@ document.addEventListener('mouseover', e => {
 });
 document.addEventListener('mousemove', e => { if (tooltipEl.style.display === 'block') positionTooltip(e.clientX, e.clientY); });
 document.addEventListener('mouseout', e => { if (!e.target.closest('[data-tooltip]')) tooltipEl.style.display = 'none'; });
-document.addEventListener('click', e => {
-    const t = e.target.closest('[data-tooltip]');
-    if (t) { tooltipEl.textContent = t.getAttribute('data-tooltip'); tooltipEl.style.display = 'block'; positionTooltip(e.clientX, e.clientY); setTimeout(() => tooltipEl.style.display = 'none', 2000); }
-});
 function positionTooltip(x, y) {
     let left = x + 15, top = y + 15;
     const rect = tooltipEl.getBoundingClientRect();
@@ -389,6 +492,14 @@ function positionTooltip(x, y) {
     if (top + rect.height > window.innerHeight) top = y - rect.height - 15;
     tooltipEl.style.left = left + 'px'; tooltipEl.style.top = top + 'px';
 }
+
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+    const tag = (e.target.tagName || '').toLowerCase();
+    const typing = tag === 'input' || tag === 'select' || tag === 'textarea' || e.target.isContentEditable;
+    if (e.code === 'Space' && !typing) { e.preventDefault(); if (S.gc.run) pauseGC(); else startGC(); }
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') { e.preventDefault(); fnlCloudSaveAll(); }
+});
 
 // Theme
 function toggleTheme() {
@@ -430,34 +541,51 @@ function updateWeather() {
 }
 updateWeather();
 
+// Colors - now actually applied
+function applyColors() {
+    document.documentElement.style.setProperty('--accent', S.colors.accent);
+    const sb = document.getElementById('scorebug');
+    if (sb) {
+        sb.style.background = `linear-gradient(180deg, ${S.colors.scorebugBg}, #000)`;
+        sb.style.setProperty('--sb-text', S.colors.scorebugText);
+    }
+    // Apply to team cards too
+    document.querySelectorAll('.team-card').forEach((card, idx) => {
+        const team = getTeam(idx === 0 ? 'away' : 'home');
+        if (team) card.style.borderColor = team.color || S.colors.accent;
+    });
+}
+
 // Scorebug
 function chScore(side, delta) { if (side === 'away') S.as = Math.max(0, S.as + delta); else S.hs = Math.max(0, S.hs + delta); updateScorebug(); saveState(); }
 function chQuarter(delta) {
-    // Check if we're in overtime - allow Q5+
-    const maxQ = S.gameState === 'OVERTIME' ? 8 : (S.md7 === '7v7' ? 2 : 4);
+    const maxQ = S.md7 === '7v7' ? 2 : (S.gameState === 'OVERTIME' ? 5 : 4);
     S.q = Math.min(maxQ, Math.max(1, S.q + delta));
-    if (S.q <= 2) S.gameState = 'FIRST_HALF';
-    else if (S.q <= 4) S.gameState = 'SECOND_HALF';
-    else S.gameState = 'OVERTIME';
-    updateScorebug(); saveState();
+    if (S.gameState !== 'OVERTIME') {
+        S.gameState = S.q <= (S.md7 === '7v7' ? 1 : 2) ? 'FIRST_HALF' : 'SECOND_HALF';
+    }
+    updateScorebug(); updateGameStateBadge(); saveState();
 }
 function updateScorebug() {
-    const awayTeam = S.teams[0];
-    const homeTeam = S.teams[1];
-    document.getElementById('sbAwayAbbr').innerHTML = (awayTeam.logo ? `<img class="sb-logo-sm" src="${awayTeam.logo}"> ` : '') + awayTeam.name;
-    document.getElementById('sbHomeAbbr').innerHTML = (homeTeam.logo ? `<img class="sb-logo-sm" src="${homeTeam.logo}"> ` : '') + homeTeam.name;
+    const away = getTeam('away'), home = getTeam('home');
+    document.getElementById('sbAwayAbbr').innerHTML = teamAbbr(away) + (S.poss === 'away' ? ' <span class="sb-poss">🏈</span>' : '');
+    document.getElementById('sbHomeAbbr').innerHTML = teamAbbr(home) + (S.poss === 'home' ? ' <span class="sb-poss">🏈</span>' : '');
+    document.getElementById('sbAwayFull').textContent = away.name;
+    document.getElementById('sbHomeFull').textContent = home.name;
+    const awayChip = document.getElementById('sbAwayChip');
+    const homeChip = document.getElementById('sbHomeChip');
+    awayChip.style.background = away.color || '#334155';
+    awayChip.innerHTML = away.logo ? `<img src="${away.logo}" alt="">` : teamAbbr(away)[0];
+    homeChip.style.background = home.color || '#334155';
+    homeChip.innerHTML = home.logo ? `<img src="${home.logo}" alt="">` : teamAbbr(home)[0];
     document.getElementById('sbAwayScore').textContent = S.as;
     document.getElementById('sbHomeScore').textContent = S.hs;
-    document.getElementById('sbQuarter').textContent = S.gameState === 'OVERTIME' ? 'OT' : (S.md7 === '7v7' ? (S.q === 1 ? '1st Half' : '2nd Half') : `Q${S.q}`);
-    
-    // Possession indicator
-    const possEl = document.getElementById('sbPossession');
-    const possTeam = S.poss === 'home' ? homeTeam : awayTeam;
-    possEl.innerHTML = `${possTeam.name} <span class="possession-indicator ${S.poss}"></span>`;
-    
-    // Down & distance
-    const ddEl = document.getElementById('sbDownDist');
-    ddEl.textContent = `${S.down}st & ${S.dist}`;
+    let qLabel;
+    if (S.md7 === '7v7') qLabel = S.q === 1 ? '1st Half' : '2nd Half';
+    else qLabel = S.q >= 5 ? 'OT' : `Q${S.q}`;
+    document.getElementById('sbQuarter').textContent = qLabel;
+    applyColors();
+    updateDDTicker();
 }
 function updateGameClockDisplay() {
     const m = Math.floor(S.gc.rem / 60), s = S.gc.rem % 60;
@@ -465,96 +593,102 @@ function updateGameClockDisplay() {
 }
 setInterval(() => { if (S.gc.run && S.gc.rem > 0) { S.gc.rem--; updateGameClockDisplay(); if (S.gc.rem === 0) { S.gc.run = false; toast('⏰ Clock expired!'); } } }, 1000);
 
+function updateDDTicker() {
+    const el = document.getElementById('ddTicker'); if (!el) return;
+    if (S.gameState === 'READY') { el.textContent = '🏈 SET POSSESSION TO BEGIN'; el.style.background = '#334155'; return; }
+    const team = getTeam(S.poss);
+    const ord = { 1: '1ST', 2: '2ND', 3: '3RD', 4: '4TH' }[S.down] || (S.down + 'TH');
+    el.innerHTML = `🏈 ${team.name.toUpperCase()} BALL &nbsp;•&nbsp; ${ord} &amp; ${S.dist}`;
+    el.style.background = team.color || '#334155';
+}
+function updateGameStateBadge() {
+    const pill = document.getElementById('livePill'); const txt = document.getElementById('livePillText');
+    if (!pill || !txt) return;
+    pill.classList.remove('final');
+    if (S.gameState === 'FINAL') { pill.classList.add('show', 'final'); txt.textContent = 'FINAL'; }
+    else if (S.gameState === 'HALFTIME') { pill.classList.add('show'); txt.textContent = 'HALFTIME'; }
+    else if (S.gameState === 'FIRST_HALF' || S.gameState === 'SECOND_HALF' || S.gameState === 'OVERTIME') { pill.classList.add('show'); txt.textContent = 'LIVE'; }
+    else { pill.classList.remove('show'); }
+}
+
 // Game state
-function startGame() { if (S.gameState !== 'READY' && !confirm('Game already started. Reset?')) return; S.gameState = 'FIRST_HALF'; S.gc.rem = 480; S.gc.run = false; S.q = 1; S.as = 0; S.hs = 0; S.down = 1; S.dist = 10; S.poss = 'home'; S.scoringLog = []; S.penaltyLog = []; updateScorebug(); updateGameClockDisplay(); saveState(); toast('🏈 Game started!'); }
-function setHalftime() { S.gameState = 'HALFTIME'; S.gc.run = false; saveState(); toast('⏸️ Halftime'); }
-function startSecondHalf() { S.gameState = 'SECOND_HALF'; S.gc.rem = 480; S.gc.run = false; S.q = 3; updateScorebug(); updateGameClockDisplay(); saveState(); toast('⏭️ 2nd Half started'); }
-function setOvertime() { S.gameState = 'OVERTIME'; S.gc.rem = 360; S.gc.run = false; S.q = 5; updateScorebug(); updateGameClockDisplay(); saveState(); toast('⏱️ Overtime'); }
+function startGame() { if (S.gameState !== 'READY' && !confirm('Game already started. Reset?')) return; S.gameState = 'FIRST_HALF'; S.gc.rem = 480; S.gc.run = false; S.q = 1; S.as = 0; S.hs = 0; S.down = 1; S.dist = 10; S.poss = 'home'; S.scoringLog = []; S.penaltyLog = []; updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); saveState(); toast('🏈 Game started!'); }
+function setHalftime() { S.gameState = 'HALFTIME'; S.gc.run = false; updateGameStateBadge(); saveState(); toast('⏸️ Halftime'); }
+function startSecondHalf() { S.gameState = 'SECOND_HALF'; S.gc.rem = 480; S.gc.run = false; S.q = 3; updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); saveState(); toast('⏭️ 2nd Half started'); }
+function setOvertime() { S.gameState = 'OVERTIME'; S.gc.rem = 360; S.gc.run = false; S.q = 5; updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); saveState(); toast('⏱️ Overtime'); }
 function endGame() {
     if (!confirm('End game?')) return;
     S.gameState = 'FINAL'; S.gc.run = false;
-    S.gameHistory.push({ date: new Date().toISOString(), away: S.teams[0].name, home: S.teams[1].name, awayScore: S.as, homeScore: S.hs, log: [...S.scoringLog, ...S.penaltyLog] });
-    saveState(); toast('🏁 Game ended');
+    const away = getTeam('away'), home = getTeam('home');
+    S.gameHistory.push({ date: new Date().toISOString(), away: away.name, home: home.name, awayScore: S.as, homeScore: S.hs, log: [...S.scoringLog, ...S.penaltyLog] });
+    updateGameStateBadge(); saveState(); toast('🏁 Game ended');
 }
-function startGC() { S.gc.run = true; saveState(); }
-function pauseGC() { S.gc.run = false; saveState(); }
+function startGC() { S.gc.run = true; toast('▶️ Clock running'); saveState(); }
+function pauseGC() { S.gc.run = false; toast('⏸️ Clock paused'); saveState(); }
 function resetGC() { S.gc.run = false; S.gc.rem = 480; updateGameClockDisplay(); saveState(); }
-function resetGame() { 
-    if (confirm('Reset game?')) { 
-        S.as = 0; S.hs = 0; S.q = 1; S.down = 1; S.dist = 10; S.poss = 'home';
-        S.gameState = 'READY'; S.gc.rem = 480; S.gc.run = false; 
-        S.scoringLog = []; S.penaltyLog = [];
-        updateScorebug(); updateGameClockDisplay(); saveState(); toast('🔄 Game reset'); 
-    } 
+function resetGame() {
+    if (!confirm('Reset game? This clears score, clock, down/distance, and logs.')) return;
+    S.as = 0; S.hs = 0; S.q = 1; S.down = 1; S.dist = 10; S.poss = 'home';
+    S.gameState = 'READY'; S.gc.rem = 480; S.gc.run = false;
+    S.scoringLog = []; S.penaltyLog = [];
+    updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); renderView(); saveState(); toast('🔄 Game reset');
 }
 
-// Game controls - FIXED: Team switch now works
-function setPossession(side) { S.poss = side; updateScorebug(); renderGame(); saveState(); }
-function firstDown() { S.down = 1; S.dist = 10; updateScorebug(); renderGame(); toast('1st & 10'); }
-function setDown(v) { S.down = parseInt(v) || 1; updateScorebug(); saveState(); }
-function setDist(v) { S.dist = parseInt(v) || 1; updateScorebug(); saveState(); }
+// Game controls
+function setPossession(side) { S.poss = side; renderGame(); updateScorebug(); saveState(); }
+function firstDown() { S.down = 1; S.dist = 10; renderGame(); updateDDTicker(); toast('1st & 10'); saveState(); }
+function setDown(v) { S.down = parseInt(v) || 1; updateDDTicker(); saveState(); }
+function setDist(v) { S.dist = parseInt(v) || 1; updateDDTicker(); saveState(); }
 
-// Quick scoring - FIXED: Non-blocking UI instead of prompt()
+// Non-blocking player picker
+function openPlayerPicker(title, onConfirm) {
+    const team = getTeam(S.poss);
+    const overlay = document.createElement('div');
+    overlay.className = 'pp-overlay';
+    const box = document.createElement('div');
+    box.className = 'pp-box';
+    let html = `<h3>${title} — ${team.name}</h3>`;
+    const sorted = [...team.players].sort((a, b) => (parseInt(a.n) || 999) - (parseInt(b.n) || 999));
+    if (sorted.length) {
+        html += '<div class="pp-grid">';
+        sorted.forEach(p => { html += `<button type="button" data-pid="${p.id}">#${p.n || '-'}<br>${p.na}</button>`; });
+        html += '</div>';
+    } else {
+        html += '<p style="margin-bottom:10px;opacity:.7;">No players on this roster yet.</p>';
+    }
+    html += `<div class="pp-actions">
+        <input id="ppManual" placeholder="Or type a name / number">
+        <button type="button" class="hdr-btn" id="ppSkip">Skip</button>
+        <button type="button" class="hdr-btn" id="ppCancel" style="background:#dc2626;">Cancel</button>
+    </div>`;
+    box.innerHTML = html;
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+    function close() { document.body.removeChild(overlay); }
+    box.querySelectorAll('button[data-pid]').forEach(btn => {
+        btn.onclick = () => { const p = team.players.find(x => x.id === btn.dataset.pid); close(); onConfirm(p ? p.na : team.name); };
+    });
+    box.querySelector('#ppSkip').onclick = () => { close(); onConfirm(team.name); };
+    box.querySelector('#ppCancel').onclick = () => { close(); };
+    const manual = box.querySelector('#ppManual');
+    manual.focus();
+    manual.addEventListener('keydown', e => { if (e.key === 'Enter') { const v = e.target.value.trim(); close(); onConfirm(v || team.name); } });
+}
 function quickScore(type) {
     if (S.gameState === 'FINAL') { toast('⛔ Game is final'); return; }
-    let pts = 0; let label = '';
-    if (type === 'td') { pts = 6; label = 'Touchdown'; }
-    else if (type === 'fg') { pts = 3; label = 'Field Goal'; }
-    else if (type === 'pat') { pts = 1; label = 'PAT'; }
-    else if (type === 'safety') { pts = 2; label = 'Safety'; }
-    const team = getTeam(S.poss);
-    const side = S.poss;
-    // Use a modal-like input without blocking the clock
-    showPlayerInput(`Enter player # for ${label} (optional):`, (input) => {
-        let playerName = team.name;
-        if (input && input.trim()) { 
-            const p = team.players.find(x => x.n === input.trim()); 
-            if (p) playerName = p.na; 
-            else playerName = input.trim(); 
-        }
-        if (side === 'home') S.hs += pts; else S.as += pts;
-        S.scoringLog.push({ type, team: side, player: playerName, points: pts, time: S.gc.rem, quarter: S.q });
-        updateScorebug(); saveState(); toast(`🏈 ${label} +${pts} - ${playerName}`);
+    let pts = 0; if (type === 'td') pts = 6; else if (type === 'fg') pts = 3; else if (type === 'pat') pts = 1; else if (type === 'safety') pts = 2;
+    openPlayerPicker(`${type.toUpperCase()} +${pts}`, (playerName) => {
+        if (S.poss === 'home') S.hs += pts; else S.as += pts;
+        S.scoringLog.push({ type, team: S.poss, player: playerName, points: pts, time: S.gc.rem, quarter: S.q });
+        updateScorebug(); saveState(); toast(`${type.toUpperCase()} +${pts} - ${playerName}`);
     });
 }
 function quickPenalty() {
     if (S.gameState === 'FINAL') { toast('⛔ Game is final'); return; }
-    const team = getTeam(S.poss);
-    showPlayerInput(`Enter player # for penalty (optional):`, (input) => {
-        let playerName = team.name;
-        if (input && input.trim()) { 
-            const p = team.players.find(x => x.n === input.trim()); 
-            if (p) playerName = p.na; 
-            else playerName = input.trim(); 
-        }
+    openPlayerPicker('🚩 Penalty on', (playerName) => {
         S.penaltyLog.push({ type: 'flag', team: S.poss, player: playerName, time: S.gc.rem, quarter: S.q });
         saveState(); toast(`🚩 Penalty on ${playerName}`);
     });
-}
-// Non-blocking input modal
-function showPlayerInput(message, callback) {
-    const existing = document.querySelector('.player-input-overlay');
-    if (existing) existing.remove();
-    const overlay = document.createElement('div');
-    overlay.className = 'player-input-overlay';
-    overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:99999;display:flex;align-items:center;justify-content:center;';
-    const modal = document.createElement('div');
-    modal.style.cssText = 'background:#fff;padding:20px;border-radius:12px;min-width:300px;max-width:400px;box-shadow:0 10px 30px rgba(0,0,0,0.3);';
-    modal.innerHTML = `
-        <p style="margin-bottom:12px;color:#000;font-weight:600;">${message}</p>
-        <input id="playerInputField" type="text" style="width:100%;padding:8px;border:2px solid #ccc;border-radius:6px;font-size:16px;" placeholder="Enter # or name...">
-        <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end;">
-            <button id="playerInputCancel" style="padding:6px 16px;border:none;border-radius:6px;cursor:pointer;background:#ccc;color:#000;">Cancel</button>
-            <button id="playerInputSubmit" style="padding:6px 16px;border:none;border-radius:6px;cursor:pointer;background:var(--accent);color:#000;font-weight:700;">OK</button>
-        </div>
-    `;
-    overlay.appendChild(modal);
-    document.body.appendChild(overlay);
-    const field = document.getElementById('playerInputField');
-    field.focus();
-    document.getElementById('playerInputSubmit').onclick = () => { const val = field.value; overlay.remove(); callback(val); };
-    document.getElementById('playerInputCancel').onclick = () => { overlay.remove(); callback(''); };
-    field.onkeydown = (e) => { if (e.key === 'Enter') { document.getElementById('playerInputSubmit').click(); } if (e.key === 'Escape') { document.getElementById('playerInputCancel').click(); } };
 }
 
 // Logo upload
@@ -562,7 +696,7 @@ function uploadScorebugLogo(side) {
     const input = document.createElement('input'); input.type = 'file'; input.accept = 'image/*';
     input.onchange = function() {
         const f = input.files[0]; if (!f || !f.type.startsWith('image/')) return toast('📷 Image required');
-        const r = new FileReader(); r.onload = ev => { if (side === 'away') S.teams[0].logo = ev.target.result; else S.teams[1].logo = ev.target.result; saveState(); updateScorebug(); toast('✅ Logo updated'); };
+        const r = new FileReader(); r.onload = ev => { const team = getTeam(side); team.logo = ev.target.result; saveState(); updateScorebug(); toast('✅ Logo updated'); };
         r.readAsDataURL(f);
     };
     input.click();
@@ -586,11 +720,10 @@ function renderView() {
     else if (S.v === 'script') renderScript(); else if (S.v === 'admin') renderAdmin();
     else if (S.v === 'clients') renderClients(); else renderGame();
 }
-function renderAll() { renderNav(); renderView(); updateScorebug(); updateGameClockDisplay(); }
+function renderAll() { renderNav(); renderView(); updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); }
 
-// Game view - FIXED: Team dropdown now works
+// Game view
 function renderGame() {
-    const away = S.teams[0], home = S.teams[1];
     let html = '';
     html += '<div class="game-controls">';
     html += `Down: <select onchange="setDown(this.value)">${[1,2,3,4].map(d => `<option ${d === S.down ? 'selected' : ''}>${d}</option>`).join('')}</select>`;
@@ -611,9 +744,9 @@ function renderGame() {
         html += `<div class="team-card">`;
         html += `<div class="card-head" style="background:${team.color};">`;
         html += `<span>${side.toUpperCase()}</span>`;
-        // FIXED: Team dropdown now has onchange handler
-        html += `<select id="teamSelect_${side}" onchange="switchTeam('${side}', this.value)">${S.teams.map((t, idx) => `<option value="${idx}" ${t.id === team.id ? 'selected' : ''}>${t.name}</option>`).join('')}</select>`;
-        html += `<button class="sb-btn" onclick="setPossession('${side}')" data-tooltip="Set possession">🏈</button>`;
+        if (team.logo) html += `<img class="mini-logo" src="${team.logo}" alt="">`;
+        html += `<select onchange="setSideTeam('${side}', this.value)" data-tooltip="Switch team">${S.teams.map(t => `<option value="${t.id}" ${t.id === team.id ? 'selected' : ''}>${t.name}</option>`).join('')}</select>`;
+        html += `<button class="sb-btn" onclick="setPossession('${side}')" data-tooltip="Give this team the ball">🏈</button>`;
         html += '</div>';
         html += '<div class="unit-tabs">';
         html += `<button class="unit-tab ${filter === 'all' ? 'active' : ''}" onclick="setFilter('${side}','all')" data-tooltip="All players">ALL</button>`;
@@ -626,13 +759,12 @@ function renderGame() {
         html += '<div class="player-list-body">';
         getPlayers(side, filter).forEach(p => {
             html += `<div class="player-row${p.st ? ' starter' : ''}">`;
-            // FIXED: Player inputs now have onchange handlers to save
-            html += `<input value="${p.n}" style="width:28px;" onchange="updateGamePlayer('${side}','${p.id}','n',this.value)">`;
-            html += `<input value="${p.na}" onchange="updateGamePlayer('${side}','${p.id}','na',this.value)">`;
-            html += `<select onchange="updateGamePlayer('${side}','${p.id}','po',this.value)">${getPositions().map(o => `<option ${p.po === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
+            html += `<input value="${p.n}" style="width:30px;" onchange="updateGamePlayerField('${side}','${p.id}','n',this.value)" data-tooltip="Player number">`;
+            html += `<input value="${p.na}" onchange="updateGamePlayerField('${side}','${p.id}','na',this.value)" data-tooltip="Player name">`;
+            html += `<select onchange="updateGamePlayerField('${side}','${p.id}','po',this.value)" data-tooltip="Position">${getPositions().map(o => `<option ${p.po === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
             html += `<button class="st-toggle ${p.st ? 'active' : ''}" onclick="toggleStarter('${side}','${p.id}')" data-tooltip="Toggle starter">⭐</button>`;
             html += `<button class="pin-btn" onclick="togglePin('${side}','${p.id}')" data-tooltip="Pin/unpin">📌</button>`;
-            html += `<button class="sb-btn" onclick="deletePlayer('${side}','${p.id}')" data-tooltip="Delete player">✕</button>`;
+            html += `<button class="sb-btn" onclick="deletePlayer('${side}','${p.id}')" data-tooltip="Delete player" style="width:22px;height:22px;">✕</button>`;
             html += '</div>';
         });
         html += '</div></div>';
@@ -640,77 +772,63 @@ function renderGame() {
     html += '</div>';
     document.getElementById('main').innerHTML = html;
 }
-// FIXED: Team switch now works properly
-function switchTeam(side, idx) {
-    const newTeam = S.teams[parseInt(idx)];
-    if (!newTeam) return;
-    const currentTeam = getTeam(side);
-    const targetSide = side === 'away' ? 0 : 1;
-    const oldId = currentTeam.id;
-    const newId = newTeam.id;
-    // Don't allow switching to the same team on both sides
-    const otherSide = targetSide === 0 ? 1 : 0;
-    if (S.teams[otherSide].id === newId) {
-        toast('⚠️ Team already on the other side');
-        renderGame();
-        return;
-    }
-    // Swap teams
-    S.teams[targetSide] = newTeam;
-    // Find and remove duplicate
-    const dupIndex = S.teams.findIndex((t, i) => i !== targetSide && t.id === newId);
-    if (dupIndex !== -1) {
-        S.teams.splice(dupIndex, 1);
-        // If we removed the other side's team, fix the reference
-        if (dupIndex < targetSide) {
-            // The other side was before targetSide, so the targetSide index shifted
-            // Rebuild: put the old team back where it was
-            // This is complex; simpler: just use the team object directly
-        }
-    }
-    // Ensure we have exactly 2 teams
-    while (S.teams.length < 2) {
-        S.teams.push({ id: 't' + Date.now(), name: 'New Team', color: '#1e3a5f', logo: '', mascot: '', coach: '', players: [] });
-    }
-    saveState(); renderGame(); updateScorebug(); toast(`✅ Switched ${side} to ${newTeam.name}`);
-}
-function updateGamePlayer(side, pid, field, val) {
-    const team = getTeam(side);
-    const p = team.players.find(x => x.id === pid);
-    if (p) { p[field] = val; saveState(); }
-}
 function setFilter(side, f) { if (side === 'away') S.ua = f; else S.uh = f; renderGame(); }
 function toggleStarter(side, pid) { const team = getTeam(side); const p = team.players.find(x => x.id === pid); if (p) { p.st = !p.st; saveState(); renderGame(); } }
 function togglePin(side, pid) { const team = getTeam(side); const p = team.players.find(x => x.id === pid); if (p) { p.pinned = !p.pinned; saveState(); renderGame(); } }
 function deletePlayer(side, pid) { const team = getTeam(side); team.players = team.players.filter(x => x.id !== pid); saveState(); renderGame(); }
+function updateGamePlayerField(side, pid, field, val) {
+    const team = getTeam(side);
+    const p = team.players.find(x => x.id === pid);
+    if (!p) return;
+    p[field] = val;
+    saveState();
+}
+function setSideTeam(side, teamId) {
+    const otherSide = side === 'away' ? 'home' : 'away';
+    const otherId = otherSide === 'away' ? S.awayId : S.homeId;
+    const thisId = side === 'away' ? S.awayId : S.homeId;
+    if (teamId === otherId) {
+        if (side === 'away') { S.awayId = teamId; S.homeId = thisId; } else { S.homeId = teamId; S.awayId = thisId; }
+        toast('🔄 Teams swapped');
+    } else {
+        if (side === 'away') S.awayId = teamId; else S.homeId = teamId;
+    }
+    saveState(); renderGame(); updateScorebug();
+}
 
 // Roster view
 function renderRoster() {
     const sortedTeams = [...S.teams].sort((a, b) => a.name.localeCompare(b.name));
-    const selectedTeam = S.teams.find(t => t.id === S.cid) || S.teams[0];
-    if (!selectedTeam) { S.teams.push({ id: 't' + Date.now(), name: 'New Team', color: '#1e3a5f', logo: '', mascot: '', coach: '', players: [] }); saveState(); return renderRoster(); }
+    let selectedTeam = S.teams.find(t => t.id === S.cid) || S.teams[0];
+    if (!selectedTeam) { S.teams.push({ id: 't' + Date.now(), name: 'New Team', abbr: '', color: '#1e3a5f', logo: '', mascot: '', coach: '', players: [] }); normalizeState(); saveState(); return renderRoster(); }
     S.cid = selectedTeam.id;
     let html = '<div class="roster-layout">';
     html += '<div class="team-sidebar">';
     html += '<h4 style="margin-bottom:8px;">TEAMS</h4>';
     sortedTeams.forEach(t => {
-        html += `<div class="team-item ${t.id === S.cid ? 'active' : ''}" onclick="selectTeam('${t.id}')" data-tooltip="${t.players.length} players">${t.name} (${t.players.length})</div>`;
+        const badge = (t.id === S.awayId ? ' ✈️' : '') + (t.id === S.homeId ? ' 🏠' : '');
+        html += `<div class="team-item ${t.id === S.cid ? 'active' : ''}" onclick="selectTeam('${t.id}')" data-tooltip="${t.players.length} players">${t.name} (${t.players.length})${badge}</div>`;
     });
     html += '<button class="hdr-btn" style="margin-top:8px;width:100%;" onclick="newTeam()" data-tooltip="Create new team">➕ New Team</button>';
     html += '</div>';
     html += '<div class="roster-workspace">';
     html += `<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">`;
     html += `<input id="etn" value="${selectedTeam.name}" placeholder="Team Name" style="flex:1;padding:6px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
+    html += `<input id="eta" value="${selectedTeam.abbr || ''}" placeholder="ABBR" maxlength="4" style="width:64px;padding:6px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);text-transform:uppercase;">`;
     html += `<input type="color" id="etc" value="${selectedTeam.color}" style="width:40px;height:30px;">`;
     html += `<input id="etm" value="${selectedTeam.mascot || ''}" placeholder="Mascot" style="width:100px;padding:6px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
     html += `<input id="etco" value="${selectedTeam.coach || ''}" placeholder="Coach" style="width:100px;padding:6px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
-    html += `<img id="etl" src="${selectedTeam.logo}" style="width:30px;height:30px;${selectedTeam.logo ? '' : 'display:none'}">`;
+    html += `<img id="etl" src="${selectedTeam.logo}" style="width:30px;height:30px;border-radius:50%;object-fit:cover;${selectedTeam.logo ? '' : 'display:none'}">`;
     html += `<input type="file" id="etlf" accept="image/*" style="display:none;" onchange="previewTeamLogo(this)">`;
     html += `<button class="hdr-btn" onclick="document.getElementById('etlf').click()" data-tooltip="Upload team logo">📷 Logo</button>`;
     html += `<button class="hdr-btn" onclick="saveTeam()" data-tooltip="Save team changes">💾 Save</button>`;
     html += `<button class="hdr-btn" onclick="printRoster('${selectedTeam.id}')" data-tooltip="Print roster">🖨️ Print</button>`;
     html += `<button class="hdr-btn" onclick="exportTeamCSV('${selectedTeam.id}')" data-tooltip="Export as CSV">📊 CSV</button>`;
     html += `<button class="hdr-btn" style="background:#dc2626;" onclick="deleteTeamById('${selectedTeam.id}')" data-tooltip="Delete team">🗑️</button>`;
+    html += '</div>';
+    html += `<div style="display:flex;gap:6px;margin-bottom:10px;">`;
+    html += `<button class="hdr-btn ${selectedTeam.id === S.awayId ? 'active' : ''}" onclick="setSideTeam('away','${selectedTeam.id}')" data-tooltip="Set as away team">✈️ Set as Away</button>`;
+    html += `<button class="hdr-btn ${selectedTeam.id === S.homeId ? 'active' : ''}" onclick="setSideTeam('home','${selectedTeam.id}')" data-tooltip="Set as home team">🏠 Set as Home</button>`;
     html += '</div>';
     html += '<div style="display:grid;grid-template-columns:40px 1fr 80px 60px 80px 80px 30px;gap:4px;font-size:0.6rem;font-weight:700;margin-bottom:4px;opacity:0.6;">';
     html += '<span>#</span><span>Name</span><span>Pos</span><span>Role</span><span>Notes</span><span>Pron</span><span></span>';
@@ -723,7 +841,7 @@ function renderRoster() {
         html += `<select onchange="updatePlayerField('${selectedTeam.id}',${pidx},'st',this.value === 'true')" style="padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);"><option value="false" ${!p.st ? 'selected' : ''}>Bench</option><option value="true" ${p.st ? 'selected' : ''}>Starter</option></select>`;
         html += `<input value="${p.nt || ''}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'nt',this.value)" placeholder="Notes" style="padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
         html += `<input value="${p.pron || ''}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'pron',this.value)" placeholder="Pron" style="padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
-        html += `<button class="sb-btn" onclick="S.teams.find(t=>t.id==='${selectedTeam.id}').players.splice(${pidx},1);saveState();renderRoster();" data-tooltip="Delete player">✕</button>`;
+        html += `<button class="sb-btn" style="width:22px;height:22px;" onclick="S.teams.find(t=>t.id==='${selectedTeam.id}').players.splice(${pidx},1);saveState();renderRoster();" data-tooltip="Delete player">✕</button>`;
         html += '</div>';
     });
     html += `<button class="hdr-btn" onclick="addPlayerToTeam('${selectedTeam.id}')" data-tooltip="Add new player">➕ Add Player</button>`;
@@ -739,13 +857,14 @@ function renderRoster() {
 function selectTeam(id) { S.cid = id; renderRoster(); }
 function newTeam() {
     const name = prompt('Team name:'); if (!name) return;
-    S.teams.push({ id: 't' + Date.now(), name, color: '#1e3a5f', logo: '', mascot: '', coach: '', players: [] });
+    S.teams.push({ id: 't' + Date.now(), name, abbr: '', color: '#1e3a5f', logo: '', mascot: '', coach: '', players: [] });
     S.cid = S.teams[S.teams.length - 1].id;
     saveState(); renderRoster();
 }
 function saveTeam() {
     const team = S.teams.find(t => t.id === S.cid); if (!team) return;
     team.name = document.getElementById('etn').value;
+    team.abbr = document.getElementById('eta').value.toUpperCase();
     team.color = document.getElementById('etc').value;
     team.mascot = document.getElementById('etm').value;
     team.coach = document.getElementById('etco').value;
@@ -760,7 +879,14 @@ function previewTeamLogo(input) {
     };
     r.readAsDataURL(f);
 }
-function deleteTeamById(id) { if (!confirm('Delete team?')) return; S.teams = S.teams.filter(t => t.id !== id); S.cid = S.teams.length ? S.teams[0].id : null; saveState(); renderRoster(); }
+function deleteTeamById(id) {
+    if (!confirm('Delete team?')) return;
+    S.teams = S.teams.filter(t => t.id !== id);
+    if (S.teams.length === 0) S.teams.push({ id: 't' + Date.now(), name: 'New Team', abbr: '', color: '#1e3a5f', logo: '', mascot: '', coach: '', players: [] });
+    normalizeState();
+    S.cid = S.teams[0].id;
+    saveState(); renderRoster(); updateScorebug();
+}
 function updatePlayerField(teamId, pidx, field, val) {
     const team = S.teams.find(t => t.id === teamId); if (!team || !team.players[pidx]) return;
     team.players[pidx][field] = val;
@@ -771,9 +897,17 @@ function addPlayerToTeam(teamId) {
     team.players.push({ id: 'p' + Date.now(), n: '', na: 'New Player', po: 'QB', st: false, nt: '', pron: '', ph: '', pinned: false });
     saveState(); renderRoster();
 }
+function safePrint(html) {
+    const w = window.open('', '_blank');
+    if (!w) { toast('⚠️ Enable pop-ups to print'); return; }
+    w.document.write(html);
+    w.document.close();
+    w.focus();
+    w.print();
+}
 function printRoster(teamId) {
     const team = S.teams.find(t => t.id === teamId);
-    if (!team) { toast('Team not found'); return; }
+    if (!team) return;
     let html = `<html><head><title>${team.name} Roster</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #000;padding:4px}</style></head><body>`;
     html += `<h2>${team.name} Roster</h2>`;
     html += '<table><tr><th>#</th><th>Name</th><th>Pos</th><th>Notes</th><th>Starter</th></tr>';
@@ -781,9 +915,7 @@ function printRoster(teamId) {
         html += `<tr><td>${p.n}</td><td>${p.na}</td><td>${p.po}</td><td>${p.nt || ''}</td><td>${p.st ? 'Yes' : 'No'}</td></tr>`;
     });
     html += '</table></body></html>';
-    const w = window.open();
-    if (!w) { toast('⚠️ Popup blocked! Please allow popups.'); return; }
-    w.document.write(html); w.print();
+    safePrint(html);
 }
 function exportTeamCSV(teamId) {
     const team = S.teams.find(t => t.id === teamId);
@@ -808,14 +940,13 @@ function parseRosterText(teamId) {
         let po = '', name = rest;
         const words = rest.split(/\s+/);
         if (words.length && positions.includes(words[words.length - 1].toUpperCase())) { po = words.pop().toUpperCase(); name = words.join(' '); }
-        if (name) out.push({ id: 'p' + Date.now() + Math.random().toString(36).slice(2, 5), n, na: name, po: po || 'QB', st: false, nt: '', pron: '', ph: '', pinned: false });
+        if (name) out.push({ id: 'p' + Date.now() + Math.random().toString(36).slice(2, 7), n, na: name, po: po || 'QB', st: false, nt: '', pron: '', ph: '', pinned: false });
     });
     if (out.length) { team.players = out; saveState(); renderRoster(); toast(`✅ ${out.length} players parsed`); }
     else toast('❌ No players found');
 }
 function uploadRosterFile(teamId, input) {
     const f = input.files[0]; if (!f) return;
-    // Don't allow .docx - warn user
     if (f.name.endsWith('.docx')) { toast('⚠️ .docx not supported. Please use .txt or .csv'); return; }
     const r = new FileReader(); r.onload = ev => { document.getElementById('parseArea').value = ev.target.result; parseRosterText(teamId); };
     r.readAsText(f);
@@ -833,7 +964,7 @@ function renderLog() {
         events.forEach(ev => {
             const timeStr = ev.time !== undefined ? `${Math.floor(ev.time/60)}:${String(ev.time%60).padStart(2,'0')}` : '--:--';
             const teamLabel = ev.team === 'home' ? 'Home' : 'Away';
-            let desc = ev.type === 'score' ? `${ev.player} +${ev.points}` : `${ev.player}`;
+            let desc = ev.type === 'score' ? `${ev.player} +${ev.points}` : ev.player;
             html += `<tr><td>${timeStr}</td><td>${teamLabel}</td><td>${ev.type.toUpperCase()}</td><td>${desc}</td></tr>`;
         });
         html += '</table>';
@@ -859,9 +990,7 @@ function printGameLog(idx) {
         html += `<tr><td>${timeStr}</td><td>${ev.team === 'home' ? 'Home' : 'Away'}</td><td>${ev.type.toUpperCase()}</td><td>${ev.player || ''}</td></tr>`;
     });
     html += '</table></body></html>';
-    const w = window.open();
-    if (!w) { toast('⚠️ Popup blocked! Please allow popups.'); return; }
-    w.document.write(html); w.print();
+    safePrint(html);
 }
 
 // Script view
@@ -872,8 +1001,8 @@ function renderScript() {
     html += '<button class="hdr-btn" onclick="document.execCommand(\'italic\')" data-tooltip="Italic"><i>I</i></button>';
     html += '<button class="hdr-btn" onclick="document.execCommand(\'underline\')" data-tooltip="Underline"><u>U</u></button>';
     html += '<input type="color" onchange="document.execCommand(\'foreColor\',false,this.value)" data-tooltip="Text color">';
-    html += '<button class="hdr-btn" onclick="document.getElementById(\'scriptFileInput\').click()" data-tooltip="Upload script file">📁 Upload</button>';
-    html += '<input type="file" id="scriptFileInput" accept=".txt,.md" style="display:none;" onchange="uploadScriptFile(this)" data-tooltip="Upload .txt or .md file">';
+    html += '<button class="hdr-btn" onclick="document.getElementById(\'scriptFileInput\').click()" data-tooltip="Upload script file">📁 Upload .txt/.md</button>';
+    html += '<input type="file" id="scriptFileInput" accept=".txt,.md" style="display:none;" onchange="uploadScriptFile(this)">';
     html += '<button class="hdr-btn" onclick="saveScript()" data-tooltip="Save script">💾 Save</button>';
     html += '<button class="hdr-btn" onclick="printScript()" data-tooltip="Print script">🖨️ Print</button>';
     html += '<button class="hdr-btn" onclick="clearScript()" data-tooltip="Clear script">🗑️ Clear</button>';
@@ -884,22 +1013,16 @@ function renderScript() {
     document.getElementById('scriptEditor').innerHTML = S.script || '';
 }
 function saveScript() { S.script = document.getElementById('scriptEditor').innerHTML; saveState(); toast('✅ Script saved'); }
-function printScript() { 
-    const w = window.open(); 
-    if (!w) { toast('⚠️ Popup blocked!'); return; }
-    w.document.write('<html><head><title>Script</title></head><body>' + S.script + '</body></html>'); 
-    w.print(); 
-}
+function printScript() { safePrint('<html><head><title>Script</title></head><body>' + S.script + '</body></html>'); }
 function clearScript() { if (!confirm('Clear script?')) return; S.script = ''; document.getElementById('scriptEditor').innerHTML = ''; saveState(); toast('🗑️ Cleared'); }
-function uploadScriptFile(input) { 
-    const f = input.files[0]; if (!f) return; 
+function uploadScriptFile(input) {
+    const f = input.files[0]; if (!f) return;
     if (f.name.endsWith('.docx')) { toast('⚠️ .docx not supported. Please use .txt or .md'); return; }
-    const r = new FileReader(); 
-    r.onload = ev => { const ed = document.getElementById('scriptEditor'); if (ed) ed.innerText = ev.target.result; toast('✅ Script uploaded'); }; 
-    r.readAsText(f); 
+    const r = new FileReader(); r.onload = ev => { const ed = document.getElementById('scriptEditor'); if (ed) ed.innerText = ev.target.result; toast('✅ Script uploaded'); };
+    r.readAsText(f);
 }
 
-// Admin view - FIXED: Colors now apply
+// Admin view
 function renderAdmin() {
     const tabs = ['theme', 'clock', '7v7', 'colors', 'backup', 'cloud', 'help'];
     const labels = { theme: 'Theme', clock: 'Clock', '7v7': '7v7', colors: 'Colors', backup: 'Backup', cloud: 'Cloud', help: 'Help' };
@@ -914,45 +1037,32 @@ function renderAdminContent() {
     if (S.at === 'theme') { c.innerHTML = `<h4>Theme</h4><button class="hdr-btn" onclick="toggleTheme()" data-tooltip="Toggle dark/light mode">Toggle Theme</button> <button class="hdr-btn" onclick="toggleOutdoor()" data-tooltip="Toggle outdoor mode">Toggle Outdoor</button>`; }
     else if (S.at === 'clock') { c.innerHTML = `<h4>Clock Format</h4><label><input type="radio" name="cf" value="12h" ${S.cf === '12h' ? 'checked' : ''} onchange="S.cf='12h';saveState();updateWallClock()"> 12h</label><label><input type="radio" name="cf" value="24h" ${S.cf === '24h' ? 'checked' : ''} onchange="S.cf='24h';saveState();updateWallClock()"> 24h</label><br><label><input type="checkbox" ${S.cs ? 'checked' : ''} onchange="S.cs=this.checked;saveState();updateWallClock()"> Show seconds</label>`; }
     else if (S.at === '7v7') { c.innerHTML = `<h4>Game Mode</h4><button class="hdr-btn" onclick="S.md7='tackle';saveState();renderAll();renderAdmin()" data-tooltip="11v11 tackle football">${S.md7 === 'tackle' ? '✅ Tackle' : 'Tackle'}</button> <button class="hdr-btn" onclick="S.md7='7v7';saveState();renderAll();renderAdmin()" data-tooltip="7v7 format">${S.md7 === '7v7' ? '✅ 7v7' : '7v7'}</button>`; }
-    else if (S.at === 'colors') { 
-        c.innerHTML = `<h4>Colors</h4>
-            <label>Scorebug BG: <input type="color" value="${S.colors.scorebugBg}" onchange="S.colors.scorebugBg=this.value;applyColors();saveState()" data-tooltip="Scorebug background"></label><br>
-            <label>Scorebug Text: <input type="color" value="${S.colors.scorebugText}" onchange="S.colors.scorebugText=this.value;applyColors();saveState()" data-tooltip="Scorebug text color"></label><br>
-            <label>Team Card Away BG: <input type="color" value="${S.colors.teamCardBgAway}" onchange="S.colors.teamCardBgAway=this.value;applyColors();saveState()" data-tooltip="Away team card background"></label><br>
-            <label>Team Card Home BG: <input type="color" value="${S.colors.teamCardBgHome}" onchange="S.colors.teamCardBgHome=this.value;applyColors();saveState()" data-tooltip="Home team card background"></label><br>
-            <label>Away Team Name Color: <input type="color" value="${S.colors.teamNameColorAway}" onchange="S.colors.teamNameColorAway=this.value;applyColors();saveState()" data-tooltip="Away team name text color"></label><br>
-            <label>Home Team Name Color: <input type="color" value="${S.colors.teamNameColorHome}" onchange="S.colors.teamNameColorHome=this.value;applyColors();saveState()" data-tooltip="Home team name text color"></label><br>
-            <button class="hdr-btn" onclick="applyColors()" data-tooltip="Apply colors now">✅ Apply Colors</button>
-        `; 
+    else if (S.at === 'colors') {
+        c.innerHTML = `<h4>Colors</h4><div style="display:flex;flex-direction:column;gap:8px;max-width:320px;">
+            <label style="display:flex;justify-content:space-between;align-items:center;">Scorebug Background <input type="color" value="${S.colors.scorebugBg}" oninput="S.colors.scorebugBg=this.value;applyColors();saveState()" data-tooltip="Scorebug background color"></label>
+            <label style="display:flex;justify-content:space-between;align-items:center;">Scorebug Text <input type="color" value="${S.colors.scorebugText}" oninput="S.colors.scorebugText=this.value;applyColors();saveState()" data-tooltip="Scorebug text color"></label>
+            <label style="display:flex;justify-content:space-between;align-items:center;">Accent Color <input type="color" value="${S.colors.accent}" oninput="S.colors.accent=this.value;applyColors();saveState()" data-tooltip="Accent color (gold border, highlights)"></label>
+            <button class="hdr-btn" onclick="S.colors={scorebugBg:'#0b1220',scorebugText:'#ffffff',accent:'#facc15'};applyColors();saveState();renderAdmin();" data-tooltip="Reset colors to default">↺ Reset to Default</button>
+        </div>`;
     }
     else if (S.at === 'backup') { c.innerHTML = `<h4>Backup</h4><button class="hdr-btn" onclick="exportBackup()" data-tooltip="Export backup JSON">📤 Export</button> <button class="hdr-btn" onclick="document.getElementById('impf').click()" data-tooltip="Import backup JSON">📥 Import</button><input type="file" id="impf" accept=".json" style="display:none;" onchange="importBackup(this)">`; }
     else if (S.at === 'cloud') { c.innerHTML = `<h4>Cloud Sync</h4><button class="hdr-btn" onclick="fnlCloudSaveAll()" data-tooltip="Save to cloud">💾 Save</button> <button class="hdr-btn" onclick="fnlCloudLoadAll()" data-tooltip="Load from cloud">📥 Load</button>`; }
-    else if (S.at === 'help') { c.innerHTML = `<h4>📖 Help</h4><ul>
-        <li><kbd>Space</kbd> = Start/Stop clock</li>
-        <li><kbd>Ctrl+S</kbd> = Save state</li>
-        <li><kbd>Ctrl+Shift+S</kbd> = Cloud save</li>
-        <li>Hover icons for tooltips</li>
-        <li>Flag button is yellow</li>
-        <li>Game logs auto-save on Final</li>
-        <li>Upload .txt or .md only for scripts/rosters</li>
-        <li>.docx files are NOT supported</li>
-    </ul>`; }
-}
-function applyColors() {
-    const sb = document.getElementById('scorebug');
-    if (sb) {
-        sb.style.background = S.colors.scorebugBg;
-        sb.style.color = S.colors.scorebugText;
-        const allText = sb.querySelectorAll('.sb-abbr, .sb-val, .sb-qtr, .game-clock, .down-distance-display, #sbPossession');
-        allText.forEach(el => el.style.color = S.colors.scorebugText);
+    else if (S.at === 'help') { 
+        c.innerHTML = `<h4>📖 Help</h4><ul style="padding-left:18px;line-height:1.8;">
+            <li><kbd>Space</kbd> = Start/Stop game clock (when not typing)</li>
+            <li><kbd>Ctrl/Cmd+S</kbd> = Save to cloud</li>
+            <li>Hover any icon for a tooltip</li>
+            <li>Flag button is gold; scoring buttons are color-coded</li>
+            <li>TD = red, FG = blue, PAT = green, Safety = amber</li>
+            <li>Game logs auto-save to history when you hit Final</li>
+            <li>Use dropdown in team cards or Roster tab to assign sides</li>
+            <li>Upload .txt or .md only for scripts and rosters</li>
+            <li>.docx files are NOT supported</li>
+        </ul>`;
     }
-    // Apply team card colors
-    document.querySelectorAll('.team-card').forEach((card, idx) => {
-        if (idx === 0) card.style.background = S.colors.teamCardBgAway;
-        else if (idx === 1) card.style.background = S.colors.teamCardBgHome;
-    });
-    toast('✅ Colors applied');
 }
+function exportBackup() { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(S)], { type: 'application/json' })); a.download = 'fnl_backup.json'; a.click(); }
+function importBackup(input) { const f = input.files[0]; if (!f) return; const r = new FileReader(); r.onload = ev => { try { S = JSON.parse(ev.target.result); normalizeState(); saveState(); renderAll(); toast('✅ Restored'); } catch(e) { toast('❌ Invalid file'); } }; r.readAsText(f); }
 
 // Clients view
 function renderClients() {
@@ -983,36 +1093,20 @@ function showAllPINs() { const ks = Object.keys(S.cp); if (!ks.length) return to
 async function fnlCloudSaveAll() {
     try { const snap = JSON.parse(JSON.stringify(S)); await fetch('https://lineup-api.claytongreenberg.workers.dev/api/lineup?id=fnl_full_sync', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(snap) }); toast('✅ Saved to cloud'); } catch(e) { toast('❌ Cloud save failed'); }
 }
-async function fnlCloudLoadAll() { if (!confirm('Load from cloud?')) return; try { const r = await fetch('https://lineup-api.claytongreenberg.workers.dev/api/lineup?id=fnl_full_sync'); if (!r.ok) throw new Error('No data'); S = await r.json(); saveState(); renderAll(); toast('✅ Loaded from cloud'); } catch(e) { toast('❌ Cloud load failed'); } }
+async function fnlCloudLoadAll() { if (!confirm('Load from cloud?')) return; try { const r = await fetch('https://lineup-api.claytongreenberg.workers.dev/api/lineup?id=fnl_full_sync'); if (!r.ok) throw new Error('No data'); S = await r.json(); normalizeState(); saveState(); renderAll(); toast('✅ Loaded from cloud'); } catch(e) { toast('❌ Cloud load failed'); } }
 
-// Print lineup
+// Print starting lineups
 function printLU() {
-    let html = '<html><head><title>Lineup</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #000;padding:4px}</style></head><body>';
-    S.teams.forEach(t => {
-        html += `<h2>${t.name}</h2><table><tr><th>#</th><th>Name</th><th>Pos</th></tr>`;
+    let html = '<html><head><title>Starting Lineups</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse;margin-bottom:16px}th,td{border:1px solid #000;padding:4px}</style></head><body>';
+    ['away', 'home'].forEach(side => {
+        const t = getTeam(side);
+        html += `<h2>${side === 'away' ? 'Away' : 'Home'}: ${t.name}</h2><table><tr><th>#</th><th>Name</th><th>Pos</th></tr>`;
         t.players.filter(p => p.st).forEach(p => { html += `<tr><td>${p.n}</td><td>${p.na}</td><td>${p.po}</td></tr>`; });
         html += '</table>';
     });
     html += '</body></html>';
-    const w = window.open();
-    if (!w) { toast('⚠️ Popup blocked!'); return; }
-    w.document.write(html); w.print();
+    safePrint(html);
 }
-
-// Keyboard shortcuts
-document.addEventListener('keydown', (e) => {
-    // Space = toggle clock
-    if (e.key === ' ' && e.target === document.body) {
-        e.preventDefault();
-        if (S.gc.run) { pauseGC(); } else { startGC(); }
-        toast(S.gc.run ? '▶️ Clock running' : '⏸️ Clock paused');
-    }
-    // Ctrl+S = save state
-    if (e.key === 's' && (e.ctrlKey || e.metaKey)) {
-        e.preventDefault();
-        if (e.shiftKey) { fnlCloudSaveAll(); } else { saveState(); toast('💾 Saved locally'); }
-    }
-});
 
 // Expose globals
 window.chScore = chScore; window.chQuarter = chQuarter; window.startGC = startGC; window.pauseGC = pauseGC; window.resetGC = resetGC;
@@ -1028,7 +1122,7 @@ window.previewTeamLogo = previewTeamLogo; window.saveTeam = saveTeam; window.sel
 window.addPlayerToTeam = addPlayerToTeam; window.updatePlayerField = updatePlayerField; window.deleteTeamById = deleteTeamById;
 window.exportTeamCSV = exportTeamCSV; window.parseRosterText = parseRosterText; window.uploadRosterFile = uploadRosterFile;
 window.addClient = addClient; window.editClient = editClient; window.deleteClient = deleteClient; window.showAllPINs = showAllPINs;
-window.exportBackup = exportBackup; window.importBackup = importBackup; window.switchTeam = switchTeam; window.updateGamePlayer = updateGamePlayer;
+window.exportBackup = exportBackup; window.importBackup = importBackup; window.setSideTeam = setSideTeam; window.updateGamePlayerField = updateGamePlayerField;
 window.applyColors = applyColors;
 
 // Init
@@ -1036,16 +1130,8 @@ loadState();
 renderAll();
 updateScorebug();
 updateGameClockDisplay();
+updateGameStateBadge();
 applyColors();
-
-// Footer visibility fix - ensure footer text is readable
-document.addEventListener('DOMContentLoaded', () => {
-    const footer = document.getElementById('footer');
-    if (footer) {
-        footer.style.color = '#f1f5f9';
-        footer.style.background = '#1a1a1a';
-    }
-});
 </script>
 </body>
 </html>
