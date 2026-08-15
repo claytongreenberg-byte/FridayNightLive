@@ -78,12 +78,12 @@
             background: var(--scorebug-bg);
             border: 3px solid var(--accent);
             border-radius: 10px;
-            padding: 12px 20px 10px;
-            flex-wrap: wrap;
+            padding: 14px 24px 12px;
+            flex-wrap: nowrap;
             width: 100%;
             box-shadow: 0 4px 14px rgba(0,0,0,0.45);
             --sb-text: var(--scorebug-text);
-            min-height: 120px;
+            min-height: 130px;
         }
         .sb-network-tag {
             position: absolute; top: -11px; left: 14px;
@@ -107,26 +107,26 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 0 18px;
-            border-right: 1px solid rgba(255,255,255,0.15);
+            padding: 0 20px;
+            border-right: 1px solid rgba(255,255,255,0.12);
             flex: 1 1 0;
-            min-width: 70px;
+            min-width: 80px;
         }
         .sb-block:last-child { border-right: none; }
         .sb-team-chip {
-            width: 36px; height: 36px; border-radius: 50%; overflow: hidden;
+            width: 48px; height: 48px; border-radius: 50%; overflow: hidden;
             display: flex; align-items: center; justify-content: center;
-            font-weight: 900; font-size: 0.9rem; color: #fff; margin-bottom: 4px;
-            border: 2px solid rgba(255,255,255,0.35); flex-shrink: 0;
+            font-weight: 900; font-size: 1.2rem; color: #fff; margin-bottom: 4px;
+            border: 2px solid rgba(255,255,255,0.4); flex-shrink: 0;
         }
         .sb-team-chip img { width: 100%; height: 100%; object-fit: cover; }
         .sb-name-col { display: flex; flex-direction: column; align-items: center; margin-bottom: 4px; }
         .sb-abbr {
-            font-size: 18px; font-weight: 900; color: var(--sb-text); letter-spacing: 1px;
+            font-size: 22px; font-weight: 900; color: var(--sb-text); letter-spacing: 1px;
             display: flex; align-items: center; gap: 6px;
         }
         .sb-poss {
-            font-size: 16px;
+            font-size: 18px;
             animation: sbbounce 0.8s infinite;
             display: inline-block;
         }
@@ -135,17 +135,21 @@
             50% { transform: translateY(-4px) scale(1.2); }
         }
         .sb-fullname {
-            font-size: 0.6rem; color: var(--sb-text); opacity: 0.7; text-transform: uppercase;
-            letter-spacing: 0.5px; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            font-size: 0.75rem; color: var(--sb-text); font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px;
+            max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            text-shadow: 0 0 12px rgba(255,255,255,0.15);
+            background: rgba(0,0,0,0.2); padding: 2px 10px; border-radius: 10px;
+            margin-top: 2px;
         }
         .sb-logo-sm { width: 22px; height: 22px; object-fit: contain; }
         .sb-row { display: flex; align-items: center; gap: 6px; }
-        .sb-val { font-size: 2.4rem; font-weight: 900; color: var(--sb-text); min-width: 40px; text-align: center; }
-        .sb-qtr { font-size: 1.2rem; font-weight: 800; color: var(--accent); }
-        .game-clock { font-family: 'Courier New', monospace; font-size: 1.4rem; font-weight: 800; color: var(--sb-text); }
+        .sb-val { font-size: 3rem; font-weight: 900; color: var(--sb-text); min-width: 50px; text-align: center; }
+        .sb-qtr { font-size: 1.6rem; font-weight: 800; color: var(--accent); }
+        .game-clock { font-family: 'Courier New', monospace; font-size: 2rem; font-weight: 800; color: var(--sb-text); }
         .sb-btn {
             background: #334155; border: 1px solid #475569; color: #fff;
-            width: 32px; height: 32px; border-radius: 50%; font-size: 13px;
+            width: 34px; height: 34px; border-radius: 50%; font-size: 14px;
             cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
         }
         .sb-btn:hover { background: var(--accent); color: #000; }
@@ -157,7 +161,7 @@
         .sb-game-btns button:hover { background: var(--accent); color: #000; }
         .sb-toggle-btn {
             background: #334155; border: 1px solid #475569; color: #fff;
-            width: 34px; height: 34px; border-radius: 50%; font-size: 16px;
+            width: 36px; height: 36px; border-radius: 50%; font-size: 16px;
             cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
         .dd-ticker {
@@ -309,13 +313,23 @@
             background: transparent; color: var(--text);
         }
 
+        @media (max-width: 1024px) {
+            .scorebug { padding: 10px 14px; min-height: 100px; flex-wrap: wrap; }
+            .sb-block { padding: 0 12px; min-width: 60px; }
+            .sb-val { font-size: 2.2rem; min-width: 40px; }
+            .sb-abbr { font-size: 18px; }
+            .game-clock { font-size: 1.6rem; }
+            .sb-team-chip { width: 40px; height: 40px; font-size: 1rem; }
+            .sb-fullname { font-size: 0.65rem; max-width: 120px; }
+        }
         @media (max-width: 768px) {
-            .scorebug { padding: 8px 10px; gap: 4px; min-height: 80px; }
+            .scorebug { padding: 8px 10px; min-height: 80px; flex-wrap: wrap; }
             .sb-block { padding: 0 6px; min-width: 40px; }
-            .sb-val { font-size: 1.6rem; min-width: 30px; }
+            .sb-val { font-size: 1.8rem; min-width: 30px; }
             .sb-abbr { font-size: 14px; }
-            .game-clock { font-size: 1rem; }
-            .sb-team-chip { width: 28px; height: 28px; font-size: 0.7rem; }
+            .game-clock { font-size: 1.2rem; }
+            .sb-team-chip { width: 32px; height: 32px; font-size: 0.8rem; }
+            .sb-fullname { font-size: 0.55rem; max-width: 80px; }
             .team-cards { flex-direction: column; height: auto; }
             .roster-layout { flex-direction: column; }
             .team-sidebar { width: 100%; max-height: 200px; }
@@ -330,20 +344,20 @@
 <header>
     <div class="hdr-top">
         <div class="hdr-top-left">
-            <img src="FNL.jpg" alt="FNL" class="brand-logo" onerror="this.style.display='none'">
+            <img src="FNL.jpg" alt="FNL" class="brand-logo" id="brandLogo" onerror="this.style.display='none'">
             <div class="brand-text">
                 <h1>🏈 FRIDAY NIGHT LIVE</h1>
                 <p>PA CONSOLE</p>
             </div>
         </div>
         <div class="hdr-top-right">
-            <span class="wall-clock" id="wallClock" data-tooltip="Current time">12:00 AM</span>
-            <span class="weather-pill" id="weatherHeader" data-tooltip="Live weather">--°F</span>
+            <span class="wall-clock" id="wallClock">12:00 AM</span>
+            <span class="weather-pill" id="weatherHeader">--°F</span>
             <button class="hdr-btn" onclick="fnlCloudSaveAll()" data-tooltip="Save to cloud (Ctrl+S)">💾 SAVE</button>
             <button class="hdr-btn" onclick="fnlCloudLoadAll()" data-tooltip="Load from cloud">📥 LOAD</button>
-            <button class="hdr-btn" id="themeBtn" onclick="toggleTheme()" data-tooltip="Toggle dark/light mode">🌙 Dark</button>
-            <button class="hdr-btn" onclick="toggleOutdoor()" data-tooltip="Outdoor mode (larger text)">🌤</button>
-            <button class="hdr-btn" onclick="printLU()" data-tooltip="Print tonight's starting lineups">🖨️</button>
+            <button class="hdr-btn" id="themeBtn" onclick="toggleTheme()">🌙 Dark</button>
+            <button class="hdr-btn" onclick="toggleOutdoor()" data-tooltip="Larger text for outdoor use">🌤</button>
+            <button class="hdr-btn" onclick="printLU()" data-tooltip="Print starting lineups">🖨️</button>
             <button class="hdr-btn" onclick="resetGame()" style="background:#dc2626;" data-tooltip="Reset entire game">RESET</button>
         </div>
     </div>
@@ -363,7 +377,7 @@
                         <span class="sb-val" id="sbAwayScore">0</span>
                         <button class="sb-btn" onclick="chScore('away',1)" data-tooltip="Add point">+</button>
                     </div>
-                    <button class="sb-btn" onclick="uploadScorebugLogo('away')" data-tooltip="Upload away logo" style="width:24px;height:24px;font-size:11px;margin-top:3px;">📷</button>
+                    <button class="sb-btn" onclick="uploadScorebugLogo('away')" data-tooltip="Upload away logo" style="width:28px;height:28px;font-size:12px;margin-top:3px;">📷</button>
                 </div>
                 <div class="sb-block">
                     <span class="sb-abbr" style="font-size:0.65rem;color:var(--sb-text);opacity:.7;">QUARTER</span>
@@ -384,7 +398,7 @@
                         <span class="sb-val" id="sbHomeScore">0</span>
                         <button class="sb-btn" onclick="chScore('home',1)" data-tooltip="Add point">+</button>
                     </div>
-                    <button class="sb-btn" onclick="uploadScorebugLogo('home')" data-tooltip="Upload home logo" style="width:24px;height:24px;font-size:11px;margin-top:3px;">📷</button>
+                    <button class="sb-btn" onclick="uploadScorebugLogo('home')" data-tooltip="Upload home logo" style="width:28px;height:28px;font-size:12px;margin-top:3px;">📷</button>
                 </div>
                 <div class="sb-block">
                     <span class="sb-abbr" style="font-size:0.65rem;color:var(--sb-text);opacity:.7;">CLOCK</span>
@@ -475,6 +489,8 @@ function normalizeState() {
     }
     if (!S.colors) S.colors = { scorebugBg: '#1a1a2e', scorebugText: '#ffffff', accent: '#facc15', teamCardAway: '#e2e8f0', teamCardHome: '#e2e8f0', teamCardBorder: '#94a3b8' };
     if (S.gc.max === undefined) S.gc.max = 480;
+    // Ensure clock is NOT running on load
+    S.gc.run = false;
 }
 function loadState() {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -509,7 +525,7 @@ function teamAbbr(team) {
     return (team.name || 'TBD').slice(0, 3).toUpperCase();
 }
 
-// Tooltips
+// Tooltips - ONLY for icon buttons
 const tooltipEl = document.getElementById('tooltip');
 document.addEventListener('mouseover', e => {
     const t = e.target.closest('[data-tooltip]');
@@ -543,6 +559,7 @@ function toggleTheme() {
         document.documentElement.style.setProperty('--border', '#334155');
         document.documentElement.style.setProperty('--footer-bg', '#0f172a');
         document.documentElement.style.setProperty('--footer-text', '#f1f5f9');
+        document.getElementById('themeBtn').textContent = '☀️ Light';
     } else { 
         document.documentElement.style.setProperty('--bg', '#f1f5f9'); 
         document.documentElement.style.setProperty('--surface', '#e2e8f0'); 
@@ -550,13 +567,13 @@ function toggleTheme() {
         document.documentElement.style.setProperty('--border', '#94a3b8');
         document.documentElement.style.setProperty('--footer-bg', '#1a1a1a');
         document.documentElement.style.setProperty('--footer-text', '#f1f5f9');
+        document.getElementById('themeBtn').textContent = '🌙 Dark';
     }
-    document.getElementById('themeBtn').textContent = S.md === 'dark' ? '☀️ Light' : '🌙 Dark';
     saveState(); renderAll();
 }
 function toggleOutdoor() { S.outdoor = !S.outdoor; document.body.style.fontSize = S.outdoor ? '18px' : '14px'; toast(S.outdoor ? '🌤 Outdoor ON' : '🌤 Outdoor OFF'); saveState(); }
 
-// Clock
+// Clock - NEVER auto-starts
 function updateWallClock() {
     const n = new Date(); let h = n.getHours(); const m = String(n.getMinutes()).padStart(2, '0'); const s = String(n.getSeconds()).padStart(2, '0');
     let x = '';
@@ -573,7 +590,7 @@ function updateWeather() {
 }
 updateWeather();
 
-// Colors - now applies to everything
+// Colors
 function applyColors() {
     document.documentElement.style.setProperty('--accent', S.colors.accent);
     document.documentElement.style.setProperty('--scorebug-bg', S.colors.scorebugBg);
@@ -588,7 +605,6 @@ function applyColors() {
         sb.style.setProperty('--sb-text', S.colors.scorebugText);
     }
     
-    // Apply to team cards
     document.querySelectorAll('.team-card').forEach((card) => {
         if (card.classList.contains('away-card')) {
             card.style.background = S.colors.teamCardAway;
@@ -604,10 +620,10 @@ function chScore(side, delta) { if (side === 'away') S.as = Math.max(0, S.as + d
 function chQuarter(delta) {
     const maxQ = S.md7 === '7v7' ? 2 : (S.gameState === 'OVERTIME' ? 5 : 4);
     S.q = Math.min(maxQ, Math.max(1, S.q + delta));
-    // Reset clock when quarter changes
+    // Reset clock when quarter changes, but keep it paused
     if (delta !== 0) {
         S.gc.rem = S.gc.max || 480;
-        S.gc.run = false;
+        S.gc.run = false; // Clock stays paused on quarter change
         updateGameClockDisplay();
         toast(`⏱️ Clock reset to ${Math.floor(S.gc.rem/60)}:${String(S.gc.rem%60).padStart(2,'0')}`);
     }
@@ -641,7 +657,17 @@ function updateGameClockDisplay() {
     const m = Math.floor(S.gc.rem / 60), s = S.gc.rem % 60;
     document.getElementById('gameClockDisplay').textContent = `${m}:${String(s).padStart(2, '0')}`;
 }
-setInterval(() => { if (S.gc.run && S.gc.rem > 0) { S.gc.rem--; updateGameClockDisplay(); if (S.gc.rem === 0) { S.gc.run = false; toast('⏰ Clock expired!'); } } }, 1000);
+// Clock tick - only runs if S.gc.run === true
+setInterval(() => { 
+    if (S.gc.run && S.gc.rem > 0) { 
+        S.gc.rem--; 
+        updateGameClockDisplay(); 
+        if (S.gc.rem === 0) { 
+            S.gc.run = false; 
+            toast('⏰ Clock expired!'); 
+        } 
+    } 
+}, 1000);
 
 function updateDDTicker() {
     const el = document.getElementById('ddTicker'); if (!el) return;
@@ -665,7 +691,7 @@ function updateGameStateBadge() {
     else { pill.classList.remove('show'); }
 }
 
-// Game state
+// Game state - clock never auto-starts on these
 function startGame() { if (S.gameState !== 'READY' && !confirm('Game already started. Reset?')) return; S.gameState = 'FIRST_HALF'; S.gc.rem = S.gc.max || 480; S.gc.run = false; S.q = 1; S.as = 0; S.hs = 0; S.down = 1; S.dist = 10; S.poss = 'home'; S.scoringLog = []; S.penaltyLog = []; updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); saveState(); toast('🏈 Game started!'); }
 function setHalftime() { S.gameState = 'HALFTIME'; S.gc.run = false; updateGameStateBadge(); saveState(); toast('⏸️ Halftime'); }
 function startSecondHalf() { S.gameState = 'SECOND_HALF'; S.gc.rem = S.gc.max || 480; S.gc.run = false; S.q = 3; updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); saveState(); toast('⏭️ 2nd Half started'); }
@@ -688,13 +714,14 @@ function resetGame() {
     updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); renderView(); saveState(); toast('🔄 Game reset');
 }
 
-// Game controls
+// Game controls - possession starts game if in READY state
 function setPossession(side) { 
     S.poss = side; 
     if (S.gameState === 'READY') {
         S.gameState = 'FIRST_HALF';
         S.q = 1;
         S.gc.rem = S.gc.max || 480;
+        S.gc.run = false; // Clock does NOT auto-start
         updateGameClockDisplay();
         updateGameStateBadge();
         toast(`🏈 ${side.toUpperCase()} has the ball - Game started!`);
@@ -770,7 +797,7 @@ function uploadScorebugLogo(side) {
 }
 function toggleScorebugDisplay() { const sb = document.getElementById('scorebug'); if (sb) { sb.style.display = sb.style.display === 'none' ? 'flex' : 'none'; } }
 
-// Navigation - removed tooltips from tab names
+// Navigation - NO tooltips on tabs
 function renderNav() {
     const views = [
         { id: 'sport', label: '🏈 GAME' }, { id: 'roster', label: '📋 ROSTERS' },
@@ -789,15 +816,15 @@ function renderView() {
 }
 function renderAll() { renderNav(); renderView(); updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); }
 
-// Game view
+// Game view - NO tooltips on player fields or text buttons
 function renderGame() {
     let html = '';
     html += '<div class="game-controls">';
     html += `Down: <select onchange="setDown(this.value)">${[1,2,3,4].map(d => `<option ${d === S.down ? 'selected' : ''}>${d}</option>`).join('')}</select>`;
     html += ` Yards: <input type="number" value="${S.dist}" min="1" max="99" style="width:45px;" onchange="setDist(this.value)">`;
     html += `<button class="first-down" onclick="firstDown()" data-tooltip="Reset to 1st & 10">🔻 1st Down</button>`;
-    html += `<button class="${S.poss === 'home' ? 'active' : ''}" onclick="setPossession('home')" data-tooltip="Set possession to home">🏠 HOME</button>`;
-    html += `<button class="${S.poss === 'away' ? 'active' : ''}" onclick="setPossession('away')" data-tooltip="Set possession to away">✈️ AWAY</button>`;
+    html += `<button class="${S.poss === 'home' ? 'active' : ''}" onclick="setPossession('home')">🏠 HOME</button>`;
+    html += `<button class="${S.poss === 'away' ? 'active' : ''}" onclick="setPossession('away')">✈️ AWAY</button>`;
     html += `<button class="td" onclick="quickScore('td')" data-tooltip="Touchdown +6">TD +6</button>`;
     html += `<button class="fg" onclick="quickScore('fg')" data-tooltip="Field Goal +3">FG +3</button>`;
     html += `<button class="pat" onclick="quickScore('pat')" data-tooltip="PAT +1">PAT +1</button>`;
@@ -826,9 +853,9 @@ function renderGame() {
         html += '<div class="player-list-body">';
         getPlayers(side, filter).forEach(p => {
             html += `<div class="player-row${p.st ? ' starter' : ''}">`;
-            html += `<input value="${p.n}" style="width:30px;" onchange="updateGamePlayerField('${side}','${p.id}','n',this.value)" data-tooltip="Player number">`;
-            html += `<input value="${p.na}" onchange="updateGamePlayerField('${side}','${p.id}','na',this.value)" data-tooltip="Player name">`;
-            html += `<select onchange="updateGamePlayerField('${side}','${p.id}','po',this.value)" data-tooltip="Position">${getPositions().map(o => `<option ${p.po === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
+            html += `<input value="${p.n}" style="width:30px;" onchange="updateGamePlayerField('${side}','${p.id}','n',this.value)">`;
+            html += `<input value="${p.na}" onchange="updateGamePlayerField('${side}','${p.id}','na',this.value)">`;
+            html += `<select onchange="updateGamePlayerField('${side}','${p.id}','po',this.value)">${getPositions().map(o => `<option ${p.po === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
             html += `<button class="st-toggle ${p.st ? 'active' : ''}" onclick="toggleStarter('${side}','${p.id}')" data-tooltip="Toggle starter">⭐</button>`;
             html += `<button class="pin-btn" onclick="togglePin('${side}','${p.id}')" data-tooltip="Pin/unpin">📌</button>`;
             html += `<button class="sb-btn" onclick="deletePlayer('${side}','${p.id}')" data-tooltip="Delete player" style="width:22px;height:22px;">✕</button>`;
@@ -864,7 +891,7 @@ function setSideTeam(side, teamId) {
     saveState(); renderGame(); updateScorebug();
 }
 
-// Roster view - teams persist across devices via localStorage and cloud sync
+// Roster view - teams sync via cloud
 function renderRoster() {
     const sortedTeams = [...S.teams].sort((a, b) => a.name.localeCompare(b.name));
     let selectedTeam = S.teams.find(t => t.id === S.cid) || S.teams[0];
@@ -878,7 +905,7 @@ function renderRoster() {
         html += `<div class="team-item ${t.id === S.cid ? 'active' : ''}" onclick="selectTeam('${t.id}')" data-tooltip="${t.players.length} players">${t.name} (${t.players.length})${badge}</div>`;
     });
     html += '<button class="hdr-btn" style="margin-top:8px;width:100%;" onclick="newTeam()" data-tooltip="Create new team">➕ New Team</button>';
-    html += '<div style="margin-top:8px;font-size:0.55rem;opacity:0.6;text-align:center;">Teams sync across devices via cloud</div>';
+    html += '<div style="margin-top:8px;font-size:0.55rem;opacity:0.6;text-align:center;">Teams sync across devices via cloud save/load</div>';
     html += '</div>';
     html += '<div class="roster-workspace">';
     html += `<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">`;
@@ -1091,7 +1118,7 @@ function uploadScriptFile(input) {
     r.readAsText(f);
 }
 
-// Admin view - comprehensive color controls
+// Admin view
 function renderAdmin() {
     const tabs = ['theme', 'clock', '7v7', 'colors', 'backup', 'cloud', 'help'];
     const labels = { theme: 'Theme', clock: 'Clock', '7v7': '7v7', colors: 'Colors', backup: 'Backup', cloud: 'Cloud', help: 'Help' };
@@ -1105,7 +1132,7 @@ function renderAdminContent() {
     const c = document.getElementById('ac'); if (!c) return;
     if (S.at === 'theme') { 
         c.innerHTML = `<h4>Theme</h4>
-            <button class="hdr-btn" onclick="toggleTheme()" data-tooltip="Toggle dark/light mode">Toggle Theme</button> 
+            <button class="hdr-btn" onclick="toggleTheme()">Toggle Theme</button> 
             <button class="hdr-btn" onclick="toggleOutdoor()" data-tooltip="Toggle outdoor mode">Toggle Outdoor</button>`; 
     }
     else if (S.at === 'clock') { 
@@ -1113,7 +1140,8 @@ function renderAdminContent() {
             <label><input type="radio" name="cf" value="12h" ${S.cf === '12h' ? 'checked' : ''} onchange="S.cf='12h';saveState();updateWallClock()"> 12h</label>
             <label><input type="radio" name="cf" value="24h" ${S.cf === '24h' ? 'checked' : ''} onchange="S.cf='24h';saveState();updateWallClock()"> 24h</label><br>
             <label><input type="checkbox" ${S.cs ? 'checked' : ''} onchange="S.cs=this.checked;saveState();updateWallClock()"> Show seconds</label><br><br>
-            <label>Quarter Length: <input type="number" value="${Math.floor((S.gc.max || 480)/60)}" min="1" max="15" style="width:50px;" onchange="S.gc.max=this.value*60;if(S.gc.rem>S.gc.max)S.gc.rem=S.gc.max;saveState();updateGameClockDisplay();"> minutes</label>`;
+            <label style="font-weight:700;">Quarter Length: <input type="number" value="${Math.floor((S.gc.max || 480)/60)}" min="1" max="15" style="width:50px;padding:4px;border:1px solid var(--border);border-radius:4px;" onchange="S.gc.max=this.value*60;if(S.gc.rem>S.gc.max)S.gc.rem=S.gc.max;saveState();updateGameClockDisplay();"> minutes</label>
+            <p style="font-size:0.65rem;opacity:0.7;margin-top:4px;">Clock only runs when you click ▶ (play) button</p>`;
     }
     else if (S.at === '7v7') { 
         c.innerHTML = `<h4>Game Mode</h4>
@@ -1161,24 +1189,21 @@ function renderAdminContent() {
     }
     else if (S.at === 'cloud') { 
         c.innerHTML = `<h4>Cloud Sync</h4>
-            <p style="font-size:0.7rem;opacity:0.7;margin-bottom:8px;">Teams and rosters sync across all devices via cloud storage.</p>
+            <p style="font-size:0.7rem;opacity:0.7;margin-bottom:8px;">Teams, rosters, and all settings sync across devices.</p>
             <button class="hdr-btn" onclick="fnlCloudSaveAll()" data-tooltip="Save to cloud">💾 Save</button> 
             <button class="hdr-btn" onclick="fnlCloudLoadAll()" data-tooltip="Load from cloud">📥 Load</button>`; 
     }
     else if (S.at === 'help') { 
         c.innerHTML = `<h4>📖 Help</h4><ul style="padding-left:18px;line-height:1.8;">
-            <li><kbd>Space</kbd> = Start/Stop game clock (when not typing)</li>
+            <li><kbd>Space</kbd> = Start/Stop game clock (when not typing in a field)</li>
             <li><kbd>Ctrl/Cmd+S</kbd> = Save to cloud</li>
-            <li>Hover any icon for a tooltip</li>
-            <li>Flag button is gold; scoring buttons are color-coded</li>
-            <li>TD = red, FG = blue, PAT = green, Safety = amber</li>
-            <li>Game logs auto-save to history when you hit Final</li>
-            <li>Use dropdown in team cards or Roster tab to assign sides</li>
-            <li>Upload .txt or .md only for scripts and rosters</li>
-            <li>.docx files are NOT supported</li>
             <li><strong>To set possession:</strong> Click HOME or AWAY button in Game Controls, or click the 🏈 button on a team card</li>
-            <li><strong>To change quarter length:</strong> Go to Admin → Clock → adjust minutes</li>
-            <li><strong>Teams sync across devices:</strong> Save to cloud, then load on any device</li>
+            <li><strong>Clock only runs</strong> when you click the ▶ (play) button - it never auto-starts</li>
+            <li><strong>To change quarter length:</strong> Admin → Clock → adjust minutes</li>
+            <li><strong>Teams sync across devices:</strong> Save to cloud on one device, Load on another</li>
+            <li>Hover any icon button for a tooltip</li>
+            <li>TD = red, FG = blue, PAT = green, Safety = amber</li>
+            <li>Upload .txt or .md only for scripts and rosters (no .docx)</li>
         </ul>`;
     }
 }
@@ -1246,13 +1271,17 @@ window.addClient = addClient; window.editClient = editClient; window.deleteClien
 window.exportBackup = exportBackup; window.importBackup = importBackup; window.setSideTeam = setSideTeam; window.updateGamePlayerField = updateGamePlayerField;
 window.applyColors = applyColors;
 
-// Init
+// Init - clock is ALWAYS paused on load
 loadState();
 renderAll();
 updateScorebug();
 updateGameClockDisplay();
 updateGameStateBadge();
 applyColors();
+
+// Ensure clock is NEVER running on load
+S.gc.run = false;
+saveState();
 </script>
 </body>
 </html>
