@@ -2,8 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Friday Night Live – PA Console</title>
+    <link rel="icon" type="image/png" href="https://fridaynightlive.voiceofdfw.com/favicon-96x96.png" sizes="96x96" />
+    <link rel="manifest" href="https://fridaynightlive.voiceofdfw.com/site.webmanifest" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -21,6 +24,7 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            font-size: 14px;
         }
         header {
             background: linear-gradient(180deg, #2d6a1e, #1f4d14);
@@ -38,169 +42,73 @@
             gap: 10px;
             flex-wrap: wrap;
         }
-        .hdr-top-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .brand-logo {
-            height: 40px;
-            width: auto;
-            max-width: 100px;
-            object-fit: contain;
-        }
-        .brand-text h1 { font-size: 1.2rem; color: #fff; }
-        .brand-text p { font-size: 0.7rem; color: var(--accent); }
-        .hdr-top-right {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
+        .hdr-top-left { display: flex; align-items: center; gap: 10px; }
+        .brand-logo { height: 40px; width: auto; max-width: 100px; object-fit: contain; }
+        .brand-text h1 { font-size: 1.1rem; color: #fff; }
+        .brand-text p { font-size: 0.65rem; color: var(--accent); }
+        .hdr-top-right { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
         .wall-clock, .weather-pill {
-            color: var(--accent);
-            font-weight: 700;
-            font-size: 0.75rem;
-            background: rgba(0,0,0,0.4);
-            border: 2px solid var(--accent);
-            border-radius: 6px;
-            padding: 4px 8px;
-            white-space: nowrap;
+            color: var(--accent); font-weight: 700; font-size: 0.7rem;
+            background: rgba(0,0,0,0.4); border: 2px solid var(--accent);
+            border-radius: 6px; padding: 4px 8px; white-space: nowrap;
         }
         .hdr-btn {
-            background: #334155;
-            color: #fff;
-            border: 1px solid #475569;
-            border-radius: 20px;
-            padding: 6px 10px;
-            font-size: 0.65rem;
-            cursor: pointer;
-            white-space: nowrap;
+            background: #334155; color: #fff; border: 1px solid #475569;
+            border-radius: 20px; padding: 6px 10px; font-size: 0.65rem;
+            cursor: pointer; white-space: nowrap;
         }
         .hdr-btn:hover { background: #475569; }
-        .hdr-bottom {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-        }
+        .hdr-bottom { display: flex; justify-content: center; align-items: center; gap: 8px; flex-wrap: wrap; }
         .scorebug {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            background: #0f172a;
-            border: 3px solid var(--accent);
-            border-radius: 12px;
-            padding: 10px 12px;
-            flex-wrap: wrap;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            background: #0f172a; border: 3px solid var(--accent); border-radius: 12px;
+            padding: 8px 10px; flex-wrap: wrap;
         }
-        .sb-block {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 0 8px;
-        }
+        .sb-block { display: flex; flex-direction: column; align-items: center; padding: 0 6px; }
         .sb-abbr {
-            font-size: 14px;
-            font-weight: 800;
-            color: var(--accent);
-            margin-bottom: 4px;
-            max-width: 130px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            font-size: 13px; font-weight: 800; color: var(--accent); margin-bottom: 3px;
+            max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
-        .sb-logo-sm { width: 24px; height: 24px; object-fit: contain; }
-        .sb-row { display: flex; align-items: center; gap: 5px; }
-        .sb-val { font-size: 1.6rem; font-weight: 900; color: #fff; min-width: 30px; text-align: center; }
-        .sb-qtr { font-size: 1.1rem; font-weight: 800; color: var(--accent); }
-        .game-clock { font-family: monospace; font-size: 1.1rem; font-weight: 800; color: #fff; }
+        .sb-logo-sm { width: 22px; height: 22px; object-fit: contain; }
+        .sb-row { display: flex; align-items: center; gap: 4px; }
+        .sb-val { font-size: 1.5rem; font-weight: 900; color: #fff; min-width: 28px; text-align: center; }
+        .sb-qtr { font-size: 1rem; font-weight: 800; color: var(--accent); }
+        .game-clock { font-family: monospace; font-size: 1rem; font-weight: 800; color: #fff; }
         .sb-btn {
-            background: #334155;
-            border: 1px solid #475569;
-            color: #fff;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            font-size: 12px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+            background: #334155; border: 1px solid #475569; color: #fff;
+            width: 26px; height: 26px; border-radius: 50%; font-size: 11px;
+            cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
         }
         .sb-btn:hover { background: var(--accent); color: #000; }
         .sb-game-btns { display: flex; gap: 3px; flex-wrap: wrap; justify-content: center; }
         .sb-game-btns button {
-            background: #334155;
-            border: 1px solid #475569;
-            color: #fff;
-            border-radius: 12px;
-            padding: 4px 8px;
-            font-size: 0.6rem;
-            cursor: pointer;
+            background: #334155; border: 1px solid #475569; color: #fff;
+            border-radius: 12px; padding: 3px 7px; font-size: 0.6rem; cursor: pointer;
         }
         .sb-game-btns button:hover { background: var(--accent); color: #000; }
         .sb-toggle-btn {
-            background: #334155;
-            border: 1px solid #475569;
-            color: #fff;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            font-size: 16px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
+            background: #334155; border: 1px solid #475569; color: #fff;
+            width: 34px; height: 34px; border-radius: 50%; font-size: 15px;
+            cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
         nav {
-            background: #1a1a1a;
-            display: flex;
-            gap: 4px;
-            padding: 0 10px;
-            flex-shrink: 0;
+            background: #1a1a1a; display: flex; gap: 4px; padding: 0 10px;
+            flex-shrink: 0; overflow-x: auto;
         }
         .nav-link {
-            background: none;
-            border: none;
-            color: #ccc;
-            padding: 10px 14px;
-            font-weight: 700;
-            cursor: pointer;
-            font-size: 0.75rem;
+            background: none; border: none; color: #ccc; padding: 8px 12px;
+            font-weight: 700; cursor: pointer; font-size: 0.7rem; white-space: nowrap;
         }
-        .nav-link.active {
-            background: var(--accent);
-            color: #000;
-            border-radius: 6px 6px 0 0;
-        }
-        main {
-            flex: 1;
-            overflow: auto;
-            padding: 10px;
-        }
+        .nav-link.active { background: var(--accent); color: #000; border-radius: 6px 6px 0 0; }
+        main { flex: 1; overflow: auto; padding: 8px; }
         .game-controls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            align-items: center;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 8px;
-            margin-bottom: 8px;
+            display: flex; flex-wrap: wrap; gap: 5px; align-items: center;
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 8px; padding: 6px; margin-bottom: 6px;
         }
         .game-controls button {
-            background: #334155;
-            color: #fff;
-            border: 1px solid #475569;
-            border-radius: 16px;
-            padding: 6px 10px;
-            font-weight: 700;
-            font-size: 0.7rem;
-            cursor: pointer;
+            background: #334155; color: #fff; border: 1px solid #475569;
+            border-radius: 14px; padding: 5px 8px; font-weight: 700; font-size: 0.65rem; cursor: pointer;
         }
         .game-controls button.active { background: var(--accent); color: #000; }
         .game-controls button.td { background: #dc2626; }
@@ -209,134 +117,62 @@
         .game-controls button.safety { background: #f59e0b; color: #000; }
         .game-controls button.flag-btn { background: var(--accent); color: #000; border-color: var(--accent); }
         .game-controls button.first-down { background: #22c55e; }
-        .team-cards {
-            display: flex;
-            gap: 8px;
-            height: calc(100% - 50px);
-        }
+        .team-cards { display: flex; gap: 6px; height: calc(100% - 45px); }
         .team-card {
-            flex: 1;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+            flex: 1; background: var(--surface); border: 1px solid var(--border);
+            border-radius: 8px; display: flex; flex-direction: column; overflow: hidden;
         }
         .card-head {
-            padding: 8px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #fff;
-            font-size: 0.8rem;
+            padding: 6px; font-weight: 700; display: flex; align-items: center;
+            gap: 5px; color: #fff; font-size: 0.75rem;
         }
         .card-head select {
-            flex: 1;
-            padding: 5px;
-            border-radius: 4px;
-            background: #fff;
-            color: #000;
-            font-size: 0.8rem;
+            flex: 1; padding: 4px; border-radius: 4px; background: #fff; color: #000; font-size: 0.75rem;
         }
-        .unit-tabs {
-            display: flex;
-            gap: 3px;
-            padding: 4px 8px;
-            border-bottom: 1px solid var(--border);
-        }
+        .unit-tabs { display: flex; gap: 3px; padding: 3px 6px; border-bottom: 1px solid var(--border); }
         .unit-tab {
-            background: none;
-            border: none;
-            color: #ccc;
-            padding: 4px 8px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 0.65rem;
+            background: none; border: none; color: #ccc; padding: 3px 6px;
+            cursor: pointer; font-weight: 700; font-size: 0.6rem;
         }
         .unit-tab.active { background: var(--accent); color: #000; border-radius: 4px; }
-        .player-list-body {
-            flex: 1;
-            overflow-y: auto;
-            padding: 8px;
-        }
+        .player-list-body { flex: 1; overflow-y: auto; padding: 5px; }
         .player-row {
-            display: grid;
-            grid-template-columns: 30px 1fr 60px 28px 28px 25px;
-            gap: 5px;
-            align-items: center;
-            padding: 5px;
-            border-bottom: 1px solid var(--border);
+            display: grid; grid-template-columns: 28px 1fr 55px 25px 25px 22px;
+            gap: 4px; align-items: center; padding: 4px; border-bottom: 1px solid var(--border);
         }
         .player-row input, .player-row select {
-            background: transparent;
-            border: 1px solid transparent;
-            color: var(--text);
-            padding: 3px;
-            width: 100%;
-            font-size: 0.75rem;
+            background: transparent; border: 1px solid transparent; color: var(--text);
+            padding: 2px; width: 100%; font-size: 0.7rem;
         }
-        .player-row input:focus, .player-row select:focus {
-            border-color: var(--accent);
-            outline: none;
-        }
-        .player-row.starter {
-            background: rgba(251,191,36,0.15);
-            border-left: 3px solid var(--accent);
-        }
+        .player-row input:focus, .player-row select:focus { border-color: var(--accent); outline: none; }
+        .player-row.starter { background: rgba(251,191,36,0.15); border-left: 3px solid var(--accent); }
         .st-toggle, .pin-btn {
-            background: none;
-            border: 1px solid var(--border);
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-            font-size: 0.6rem;
+            background: none; border: 1px solid var(--border); border-radius: 50%;
+            width: 20px; height: 20px; cursor: pointer; font-size: 0.55rem;
         }
         .st-toggle.active { background: var(--accent); color: #000; }
         footer {
-            background: #1a1a1a;
-            padding: 5px 10px;
-            text-align: center;
-            font-size: 0.6rem;
-            flex-shrink: 0;
-            border-top: 1px solid var(--accent);
+            background: #1a1a1a; padding: 4px 8px; text-align: center;
+            font-size: 0.55rem; flex-shrink: 0; border-top: 1px solid var(--accent);
         }
         .toast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #333;
-            color: #fff;
-            padding: 8px 16px;
-            border-radius: 20px;
-            z-index: 9999;
-            opacity: 0;
-            transition: opacity 0.3s;
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: #333; color: #fff; padding: 8px 16px; border-radius: 20px;
+            z-index: 9999; opacity: 0; transition: opacity 0.3s;
         }
         .toast.show { opacity: 1; }
         .tooltip-js {
-            position: fixed;
-            z-index: 10000;
-            background: #1e293b;
-            color: #fff;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            pointer-events: none;
-            display: none;
-            max-width: 200px;
-            border: 1px solid #475569;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            position: fixed; z-index: 10000; background: #1e293b; color: #fff;
+            padding: 6px 12px; border-radius: 6px; font-size: 0.7rem;
+            pointer-events: none; display: none; max-width: 200px; border: 1px solid #475569;
         }
-        .panel {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 15px;
+        .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
+        .admin-tabs { display: flex; gap: 4px; margin-bottom: 8px; flex-wrap: wrap; }
+        .admin-tab {
+            padding: 4px 10px; border-radius: 12px; font-size: 0.6rem; font-weight: 700;
+            background: none; border: 1px solid var(--border); color: inherit; cursor: pointer;
         }
+        .admin-tab.active { background: var(--accent); color: #000; }
     </style>
 </head>
 <body>
@@ -372,7 +208,7 @@
                     <span class="sb-val" id="sbAwayScore">0</span>
                     <button class="sb-btn" onclick="chScore('away',1)" data-tooltip="Add point">+</button>
                 </div>
-                <button class="sb-btn" onclick="uploadScorebugLogo('away')" data-tooltip="Upload away team logo" style="width:22px;height:22px;font-size:10px;">📷</button>
+                <button class="sb-btn" onclick="uploadScorebugLogo('away')" data-tooltip="Upload away logo" style="width:20px;height:20px;font-size:9px;">📷</button>
             </div>
             <div class="sb-block">
                 <span class="sb-abbr">QUARTER</span>
@@ -389,7 +225,7 @@
                     <span class="sb-val" id="sbHomeScore">0</span>
                     <button class="sb-btn" onclick="chScore('home',1)" data-tooltip="Add point">+</button>
                 </div>
-                <button class="sb-btn" onclick="uploadScorebugLogo('home')" data-tooltip="Upload home team logo" style="width:22px;height:22px;font-size:10px;">📷</button>
+                <button class="sb-btn" onclick="uploadScorebugLogo('home')" data-tooltip="Upload home logo" style="width:20px;height:20px;font-size:9px;">📷</button>
             </div>
             <div class="sb-block">
                 <span class="sb-abbr">CLOCK</span>
@@ -424,237 +260,131 @@
 <script>
 // Full state
 let S = {
-    v: 'sport',
-    md: 'dark',
-    outdoor: false,
-    as: 0,
-    hs: 0,
-    q: 1,
-    down: 1,
-    dist: 10,
-    poss: 'home',
-    gameState: 'READY',
-    gc: { rem: 480, run: false },
+    v: 'sport', md: 'dark', outdoor: false, at: 'theme',
+    as: 0, hs: 0, q: 1, down: 1, dist: 10, poss: 'home',
+    gameState: 'READY', gc: { rem: 480, run: false },
+    md7: 'tackle', p7: ['QB','Center','WR','WR','WR','DB','DB'],
+    cf: '12h', cs: true,
     teams: [
-        { id: 'h', name: 'Texas Hawks', color: '#1e3a5f', logo: '', players: [
-            { id: 'h1', n: '7', na: 'Marcus Johnson', po: 'QB', st: true, nt: '', pinned: false },
-            { id: 'h2', n: '55', na: 'Chris Williams', po: 'Center', st: true, nt: '', pinned: false },
-            { id: 'h3', n: '11', na: 'Jalen Smith', po: 'WR', st: true, nt: '', pinned: false },
-            { id: 'h4', n: '88', na: 'Ty Washington', po: 'WR', st: true, nt: '', pinned: false },
-            { id: 'h5', n: '15', na: 'Jordan Davis', po: 'WR', st: true, nt: '', pinned: false }
+        { id: 'h', name: 'Texas Hawks', color: '#1e3a5f', logo: '', mascot: '', coach: '', players: [
+            { id: 'h1', n: '7', na: 'Marcus Johnson', po: 'QB', st: true, nt: '', pron: '', ph: '', pinned: false },
+            { id: 'h2', n: '55', na: 'Chris Williams', po: 'Center', st: true, nt: '', pron: '', ph: '', pinned: false },
+            { id: 'h3', n: '11', na: 'Jalen Smith', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false },
+            { id: 'h4', n: '88', na: 'Ty Washington', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false },
+            { id: 'h5', n: '15', na: 'Jordan Davis', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false }
         ]},
-        { id: 's', name: 'Dallas Cowboys', color: '#7f1d1d', logo: '', players: [
-            { id: 's1', n: '12', na: 'Caleb White', po: 'QB', st: true, nt: '', pinned: false },
-            { id: 's2', n: '72', na: 'Mason Lee', po: 'Center', st: true, nt: '', pinned: false },
-            { id: 's3', n: '1', na: 'Adrian Flores', po: 'WR', st: true, nt: '', pinned: false },
-            { id: 's4', n: '5', na: 'Xavier Reed', po: 'WR', st: true, nt: '', pinned: false },
-            { id: 's5', n: '18', na: 'Karter Hill', po: 'WR', st: true, nt: '', pinned: false }
+        { id: 's', name: 'Dallas Cowboys', color: '#7f1d1d', logo: '', mascot: '', coach: '', players: [
+            { id: 's1', n: '12', na: 'Caleb White', po: 'QB', st: true, nt: '', pron: '', ph: '', pinned: false },
+            { id: 's2', n: '72', na: 'Mason Lee', po: 'Center', st: true, nt: '', pron: '', ph: '', pinned: false },
+            { id: 's3', n: '1', na: 'Adrian Flores', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false },
+            { id: 's4', n: '5', na: 'Xavier Reed', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false },
+            { id: 's5', n: '18', na: 'Karter Hill', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false }
         ]}
     ],
-    scoringLog: [],
-    penaltyLog: [],
-    gameHistory: [],
-    script: ''
+    scoringLog: [], penaltyLog: [], gameHistory: [], script: '',
+    cp: {}, ap: '', im: true, ua: 'all', uh: 'all',
+    colors: { scorebugBg: '#0f172a', scorebugText: '#ffffff', teamCardBgAway: '#1e293b', teamCardBgHome: '#1e293b', teamNameColorAway: '#ffffff', teamNameColorHome: '#ffffff' }
 };
 
 function g() { return S; }
-function toast(m) { 
-    const x = document.getElementById('toast'); 
-    x.textContent = m; 
-    x.classList.add('show'); 
-    setTimeout(() => x.classList.remove('show'), 2000); 
-}
-function saveState() { 
-    localStorage.setItem('fnl_v21', JSON.stringify(S)); 
-}
-function loadState() {
-    const raw = localStorage.getItem('fnl_v21');
-    if (raw) {
-        try { S = { ...S, ...JSON.parse(raw) }; } catch(e) {}
-    }
-}
+function toast(m) { const x = document.getElementById('toast'); x.textContent = m; x.classList.add('show'); setTimeout(() => x.classList.remove('show'), 2000); }
+function saveState() { localStorage.setItem('fnl_v21', JSON.stringify(S)); }
+function loadState() { const raw = localStorage.getItem('fnl_v21'); if (raw) { try { S = { ...S, ...JSON.parse(raw) }; } catch(e) {} } }
 function getTeam(side) { return side === 'away' ? S.teams[0] : S.teams[1]; }
+function getPositions() { return S.md7 === '7v7' ? S.p7 : ['QB','RB','FB','WR','TE','OL','C','G','T','DL','DE','DT','LB','OLB','ILB','CB','S','SS','FS','DB','K','P','LS','KR','PR']; }
+function getPlayers(side, filter) {
+    const t = getTeam(side); if (!t) return [];
+    let list = [...t.players];
+    if (S.md7 === 'tackle') {
+        const off = ['QB','RB','FB','WR','TE','OL','C','G','T'];
+        const def = ['DL','DE','DT','LB','OLB','ILB','CB','S','SS','FS','DB'];
+        const st = ['K','P','LS','KR','PR'];
+        if (filter === 'offense') list = list.filter(p => off.includes(p.po));
+        else if (filter === 'defense') list = list.filter(p => def.includes(p.po));
+        else if (filter === 'special') list = list.filter(p => st.includes(p.po));
+    }
+    list.sort((a, b) => (parseInt(a.n) || 999) - (parseInt(b.n) || 999));
+    return list;
+}
 
-// Tooltips (JS-based, always visible)
+// Tooltips
 const tooltipEl = document.getElementById('tooltip');
 document.addEventListener('mouseover', e => {
     const t = e.target.closest('[data-tooltip]');
-    if (t) {
-        tooltipEl.textContent = t.getAttribute('data-tooltip');
-        tooltipEl.style.display = 'block';
-        positionTooltip(e.clientX, e.clientY);
-    }
+    if (t) { tooltipEl.textContent = t.getAttribute('data-tooltip'); tooltipEl.style.display = 'block'; positionTooltip(e.clientX, e.clientY); }
 });
-document.addEventListener('mousemove', e => {
-    if (tooltipEl.style.display === 'block') positionTooltip(e.clientX, e.clientY);
-});
-document.addEventListener('mouseout', e => {
-    if (!e.target.closest('[data-tooltip]')) tooltipEl.style.display = 'none';
-});
+document.addEventListener('mousemove', e => { if (tooltipEl.style.display === 'block') positionTooltip(e.clientX, e.clientY); });
+document.addEventListener('mouseout', e => { if (!e.target.closest('[data-tooltip]')) tooltipEl.style.display = 'none'; });
 function positionTooltip(x, y) {
-    let left = x + 15;
-    let top = y + 15;
+    let left = x + 15, top = y + 15;
     const rect = tooltipEl.getBoundingClientRect();
     if (left + rect.width > window.innerWidth) left = x - rect.width - 15;
     if (top + rect.height > window.innerHeight) top = y - rect.height - 15;
-    tooltipEl.style.left = left + 'px';
-    tooltipEl.style.top = top + 'px';
+    tooltipEl.style.left = left + 'px'; tooltipEl.style.top = top + 'px';
 }
 
 // Theme
 function toggleTheme() {
     S.md = S.md === 'dark' ? 'light' : 'dark';
-    if (S.md === 'dark') {
-        document.documentElement.style.setProperty('--bg', '#0f172a');
-        document.documentElement.style.setProperty('--surface', '#1e293b');
-        document.documentElement.style.setProperty('--text', '#f1f5f9');
-        document.documentElement.style.setProperty('--border', '#334155');
-    } else {
-        document.documentElement.style.setProperty('--bg', '#f1f5f9');
-        document.documentElement.style.setProperty('--surface', '#e2e8f0');
-        document.documentElement.style.setProperty('--text', '#0f172a');
-        document.documentElement.style.setProperty('--border', '#94a3b8');
-    }
+    if (S.md === 'dark') { document.documentElement.style.setProperty('--bg', '#0f172a'); document.documentElement.style.setProperty('--surface', '#1e293b'); document.documentElement.style.setProperty('--text', '#f1f5f9'); document.documentElement.style.setProperty('--border', '#334155'); }
+    else { document.documentElement.style.setProperty('--bg', '#f1f5f9'); document.documentElement.style.setProperty('--surface', '#e2e8f0'); document.documentElement.style.setProperty('--text', '#0f172a'); document.documentElement.style.setProperty('--border', '#94a3b8'); }
     document.getElementById('themeBtn').textContent = S.md === 'dark' ? '☀️ Light' : '🌙 Dark';
-    saveState();
-    renderAll();
+    saveState(); renderAll();
 }
-function toggleOutdoor() {
-    S.outdoor = !S.outdoor;
-    document.body.style.fontSize = S.outdoor ? '18px' : '16px';
-    toast(S.outdoor ? 'Outdoor ON' : 'Outdoor OFF');
-    saveState();
-}
+function toggleOutdoor() { S.outdoor = !S.outdoor; document.body.style.fontSize = S.outdoor ? '18px' : '14px'; toast(S.outdoor ? 'Outdoor ON' : 'Outdoor OFF'); saveState(); }
 
 // Clock
 function updateWallClock() {
-    const n = new Date();
-    let h = n.getHours();
-    const m = String(n.getMinutes()).padStart(2, '0');
-    const a = h >= 12 ? 'PM' : 'AM';
-    h = h % 12 || 12;
-    document.getElementById('wallClock').textContent = `${h}:${m} ${a}`;
+    const n = new Date(); let h = n.getHours(); const m = String(n.getMinutes()).padStart(2, '0'); const s = String(n.getSeconds()).padStart(2, '0');
+    let x = '';
+    if (S.cf === '12h') { const a = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12; x = `${h}:${m}${S.cs ? ':' + s : ''} ${a}`; }
+    else { h = String(h).padStart(2, '0'); x = `${h}:${m}${S.cs ? ':' + s : ''}`; }
+    document.getElementById('wallClock').textContent = x;
 }
-setInterval(updateWallClock, 1000);
-updateWallClock();
+setInterval(updateWallClock, 1000); updateWallClock();
 
 // Weather
 function updateWeather() {
     fetch('https://api.open-meteo.com/v1/forecast?latitude=32.7767&longitude=-96.7970&current=temperature_2m,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=mph')
-        .then(r => r.json())
-        .then(d => {
-            if (d.current) {
-                document.getElementById('weatherHeader').textContent = `🌤 ${Math.round(d.current.temperature_2m)}°F | 💨 ${Math.round(d.current.wind_speed_10m)}mph`;
-            }
-        })
-        .catch(() => {});
+        .then(r => r.json()).then(d => { if (d.current) { document.getElementById('weatherHeader').textContent = `🌤 ${Math.round(d.current.temperature_2m)}°F | 💨 ${Math.round(d.current.wind_speed_10m)}mph`; } }).catch(() => {});
 }
 updateWeather();
 
 // Scorebug
-function chScore(side, delta) {
-    if (side === 'away') S.as = Math.max(0, S.as + delta);
-    else S.hs = Math.max(0, S.hs + delta);
-    updateScorebug();
-    saveState();
-}
+function chScore(side, delta) { if (side === 'away') S.as = Math.max(0, S.as + delta); else S.hs = Math.max(0, S.hs + delta); updateScorebug(); saveState(); }
 function chQuarter(delta) {
-    S.q = Math.min(4, Math.max(1, S.q + delta));
-    if (S.q <= 2) S.gameState = 'FIRST_HALF';
-    else S.gameState = 'SECOND_HALF';
-    updateScorebug();
-    saveState();
+    S.q = Math.min(S.md7 === '7v7' ? 2 : 4, Math.max(1, S.q + delta));
+    if (S.q <= 2) S.gameState = 'FIRST_HALF'; else S.gameState = 'SECOND_HALF';
+    updateScorebug(); saveState();
 }
 function updateScorebug() {
     document.getElementById('sbAwayAbbr').innerHTML = (S.teams[0].logo ? `<img class="sb-logo-sm" src="${S.teams[0].logo}"> ` : '') + S.teams[0].name;
     document.getElementById('sbHomeAbbr').innerHTML = (S.teams[1].logo ? `<img class="sb-logo-sm" src="${S.teams[1].logo}"> ` : '') + S.teams[1].name;
     document.getElementById('sbAwayScore').textContent = S.as;
     document.getElementById('sbHomeScore').textContent = S.hs;
-    document.getElementById('sbQuarter').textContent = `Q${S.q}`;
+    document.getElementById('sbQuarter').textContent = S.md7 === '7v7' ? (S.q === 1 ? '1st Half' : '2nd Half') : `Q${S.q}`;
 }
 function updateGameClockDisplay() {
-    const m = Math.floor(S.gc.rem / 60);
-    const s = S.gc.rem % 60;
+    const m = Math.floor(S.gc.rem / 60), s = S.gc.rem % 60;
     document.getElementById('gameClockDisplay').textContent = `${m}:${String(s).padStart(2, '0')}`;
 }
-setInterval(() => {
-    if (S.gc.run && S.gc.rem > 0) {
-        S.gc.rem--;
-        updateGameClockDisplay();
-        if (S.gc.rem === 0) {
-            S.gc.run = false;
-            toast('Clock expired!');
-        }
-    }
-}, 1000);
+setInterval(() => { if (S.gc.run && S.gc.rem > 0) { S.gc.rem--; updateGameClockDisplay(); if (S.gc.rem === 0) { S.gc.run = false; toast('Clock expired!'); } } }, 1000);
 
 // Game state
-function startGame() {
-    if (S.gameState !== 'READY' && !confirm('Game already started. Reset?')) return;
-    S.gameState = 'FIRST_HALF';
-    S.gc.rem = 480;
-    S.gc.run = false;
-    S.q = 1;
-    S.as = 0;
-    S.hs = 0;
-    S.scoringLog = [];
-    S.penaltyLog = [];
-    updateScorebug();
-    updateGameClockDisplay();
-    saveState();
-    toast('🏈 Game started!');
-}
+function startGame() { if (S.gameState !== 'READY' && !confirm('Game already started. Reset?')) return; S.gameState = 'FIRST_HALF'; S.gc.rem = 480; S.gc.run = false; S.q = 1; S.as = 0; S.hs = 0; S.scoringLog = []; S.penaltyLog = []; updateScorebug(); updateGameClockDisplay(); saveState(); toast('🏈 Game started!'); }
 function setHalftime() { S.gameState = 'HALFTIME'; S.gc.run = false; saveState(); toast('⏸️ Halftime'); }
-function startSecondHalf() {
-    S.gameState = 'SECOND_HALF';
-    S.gc.rem = 480;
-    S.gc.run = false;
-    S.q = 3;
-    updateScorebug();
-    updateGameClockDisplay();
-    saveState();
-    toast('⏭️ 2nd Half started');
-}
-function setOvertime() {
-    S.gameState = 'OVERTIME';
-    S.gc.rem = 360;
-    S.gc.run = false;
-    S.q = 5;
-    updateScorebug();
-    updateGameClockDisplay();
-    saveState();
-    toast('⏱️ Overtime');
-}
+function startSecondHalf() { S.gameState = 'SECOND_HALF'; S.gc.rem = 480; S.gc.run = false; S.q = 3; updateScorebug(); updateGameClockDisplay(); saveState(); toast('⏭️ 2nd Half started'); }
+function setOvertime() { S.gameState = 'OVERTIME'; S.gc.rem = 360; S.gc.run = false; S.q = 5; updateScorebug(); updateGameClockDisplay(); saveState(); toast('⏱️ Overtime'); }
 function endGame() {
     if (!confirm('End game?')) return;
-    S.gameState = 'FINAL';
-    S.gc.run = false;
-    S.gameHistory.push({
-        date: new Date().toISOString(),
-        away: S.teams[0].name,
-        home: S.teams[1].name,
-        awayScore: S.as,
-        homeScore: S.hs,
-        log: [...S.scoringLog, ...S.penaltyLog]
-    });
-    saveState();
-    toast('🏁 Game ended');
+    S.gameState = 'FINAL'; S.gc.run = false;
+    S.gameHistory.push({ date: new Date().toISOString(), away: S.teams[0].name, home: S.teams[1].name, awayScore: S.as, homeScore: S.hs, log: [...S.scoringLog, ...S.penaltyLog] });
+    saveState(); toast('🏁 Game ended');
 }
 function startGC() { S.gc.run = true; saveState(); }
 function pauseGC() { S.gc.run = false; saveState(); }
 function resetGC() { S.gc.run = false; S.gc.rem = 480; updateGameClockDisplay(); saveState(); }
-function resetGame() {
-    if (confirm('Reset game?')) {
-        S.as = 0; S.hs = 0; S.q = 1;
-        S.gameState = 'READY';
-        S.gc.rem = 480;
-        S.gc.run = false;
-        updateScorebug();
-        updateGameClockDisplay();
-        saveState();
-        toast('Game reset');
-    }
-}
+function resetGame() { if (confirm('Reset game?')) { S.as = 0; S.hs = 0; S.q = 1; S.gameState = 'READY'; S.gc.rem = 480; S.gc.run = false; updateScorebug(); updateGameClockDisplay(); saveState(); toast('Game reset'); } }
 
 // Game controls
 function setPossession(side) { S.poss = side; renderGame(); saveState(); }
@@ -663,94 +393,63 @@ function setDown(v) { S.down = parseInt(v) || 1; saveState(); }
 function setDist(v) { S.dist = parseInt(v) || 1; saveState(); }
 function quickScore(type) {
     if (S.gameState === 'FINAL') { toast('Game is final'); return; }
-    let pts = 0;
-    if (type === 'td') pts = 6;
-    else if (type === 'fg') pts = 3;
-    else if (type === 'pat') pts = 1;
-    else if (type === 'safety') pts = 2;
-    if (S.poss === 'home') S.hs += pts;
-    else S.as += pts;
-    S.scoringLog.push({ type, team: S.poss, points: pts, time: S.gc.rem, quarter: S.q });
-    updateScorebug();
-    saveState();
-    toast(`${type.toUpperCase()} +${pts}`);
+    let pts = 0; if (type === 'td') pts = 6; else if (type === 'fg') pts = 3; else if (type === 'pat') pts = 1; else if (type === 'safety') pts = 2;
+    const team = getTeam(S.poss);
+    const input = prompt(`Enter player # for ${type.toUpperCase()} (optional):`);
+    let playerName = team.name;
+    if (input && input.trim()) { const p = team.players.find(x => x.n === input.trim()); if (p) playerName = p.na; else playerName = input.trim(); }
+    if (S.poss === 'home') S.hs += pts; else S.as += pts;
+    S.scoringLog.push({ type, team: S.poss, player: playerName, points: pts, time: S.gc.rem, quarter: S.q });
+    updateScorebug(); saveState(); toast(`${type.toUpperCase()} +${pts} - ${playerName}`);
 }
 function quickPenalty() {
     if (S.gameState === 'FINAL') { toast('Game is final'); return; }
     const team = getTeam(S.poss);
     const input = prompt(`Enter player # for penalty (optional):`);
     let playerName = team.name;
-    if (input && input.trim()) {
-        const num = input.trim();
-        const p = team.players.find(x => x.n === num);
-        if (p) playerName = p.na;
-        else playerName = num;
-    }
+    if (input && input.trim()) { const p = team.players.find(x => x.n === input.trim()); if (p) playerName = p.na; else playerName = input.trim(); }
     S.penaltyLog.push({ type: 'flag', team: S.poss, player: playerName, time: S.gc.rem, quarter: S.q });
-    saveState();
-    toast(`🚩 Penalty on ${playerName}`);
+    saveState(); toast(`🚩 Penalty on ${playerName}`);
 }
 
-// Scorebug logo upload
+// Logo upload
 function uploadScorebugLogo(side) {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
+    const input = document.createElement('input'); input.type = 'file'; input.accept = 'image/*';
     input.onchange = function() {
-        const f = input.files[0];
-        if (!f || !f.type.startsWith('image/')) return toast('Image required');
-        const r = new FileReader();
-        r.onload = ev => {
-            if (side === 'away') S.teams[0].logo = ev.target.result;
-            else S.teams[1].logo = ev.target.result;
-            saveState();
-            updateScorebug();
-            toast('Logo updated');
-        };
+        const f = input.files[0]; if (!f || !f.type.startsWith('image/')) return toast('Image required');
+        const r = new FileReader(); r.onload = ev => { if (side === 'away') S.teams[0].logo = ev.target.result; else S.teams[1].logo = ev.target.result; saveState(); updateScorebug(); toast('Logo updated'); };
         r.readAsDataURL(f);
     };
     input.click();
 }
+function toggleScorebugDisplay() { const sb = document.getElementById('scorebug'); if (sb) { sb.style.display = sb.style.display === 'none' ? 'flex' : 'none'; } }
 
 // Navigation
 function renderNav() {
     const views = [
-        { id: 'sport', label: '🏈 GAME' },
-        { id: 'roster', label: '📋 ROSTERS' },
-        { id: 'log', label: '📜 LOG' },
-        { id: 'script', label: '🎙️ SCRIPT' },
-        { id: 'admin', label: '⚙️ ADMIN' }
+        { id: 'sport', label: '🏈 GAME' }, { id: 'roster', label: '📋 ROSTERS' },
+        { id: 'log', label: '📜 LOG' }, { id: 'script', label: '🎙️ SCRIPT' },
+        { id: 'admin', label: '⚙️ ADMIN' }, { id: 'clients', label: '👥 CLIENTS' }
     ];
     let html = '';
-    views.forEach(v => {
-        html += `<button class="nav-link ${S.v === v.id ? 'active' : ''}" onclick="switchView('${v.id}')">${v.label}</button>`;
-    });
+    views.forEach(v => { html += `<button class="nav-link ${S.v === v.id ? 'active' : ''}" onclick="switchView('${v.id}')">${v.label}</button>`; });
     document.getElementById('mainNav').innerHTML = html;
 }
 function switchView(v) { S.v = v; renderNav(); renderView(); }
 function renderView() {
-    if (S.v === 'roster') renderRoster();
-    else if (S.v === 'log') renderLog();
-    else if (S.v === 'script') renderScript();
-    else if (S.v === 'admin') renderAdmin();
-    else renderGame();
+    if (S.v === 'roster') renderRoster(); else if (S.v === 'log') renderLog();
+    else if (S.v === 'script') renderScript(); else if (S.v === 'admin') renderAdmin();
+    else if (S.v === 'clients') renderClients(); else renderGame();
 }
-function renderAll() {
-    renderNav();
-    renderView();
-    updateScorebug();
-    updateGameClockDisplay();
-}
+function renderAll() { renderNav(); renderView(); updateScorebug(); updateGameClockDisplay(); }
 
 // Game view
 function renderGame() {
-    const away = S.teams[0];
-    const home = S.teams[1];
+    const away = S.teams[0], home = S.teams[1];
     let html = '';
-    
     html += '<div class="game-controls">';
     html += `Down: <select onchange="setDown(this.value)">${[1,2,3,4].map(d => `<option ${d === S.down ? 'selected' : ''}>${d}</option>`).join('')}</select>`;
-    html += ` Yards: <input type="number" value="${S.dist}" min="1" max="99" style="width:50px;" onchange="setDist(this.value)">`;
+    html += ` Yards: <input type="number" value="${S.dist}" min="1" max="99" style="width:45px;" onchange="setDist(this.value)">`;
     html += `<button class="first-down" onclick="firstDown()">🔻 1st Down</button>`;
     html += `<button class="${S.poss === 'home' ? 'active' : ''}" onclick="setPossession('home')">🏠 HOME</button>`;
     html += `<button class="${S.poss === 'away' ? 'active' : ''}" onclick="setPossession('away')">✈️ AWAY</button>`;
@@ -760,130 +459,131 @@ function renderGame() {
     html += `<button class="safety" onclick="quickScore('safety')">Safety +2</button>`;
     html += `<button class="flag-btn" onclick="quickPenalty()">🚩 FLAG</button>`;
     html += '</div>';
-    
     html += '<div class="team-cards">';
-    
-    // Away card
-    html += `<div class="team-card">`;
-    html += `<div class="card-head" style="background:${away.color};">`;
-    html += `<span>AWAY</span>`;
-    html += `<select>${S.teams.map(t => `<option>${t.name}</option>`).join('')}</select>`;
-    html += `<button class="sb-btn" onclick="setPossession('away')">🏈</button>`;
-    html += '</div>';
-    html += '<div class="unit-tabs"><button class="unit-tab active">ALL</button><button class="unit-tab">OFF</button><button class="unit-tab">DEF</button></div>';
-    html += '<div class="player-list-body">';
-    away.players.forEach(p => {
-        html += `<div class="player-row${p.st ? ' starter' : ''}">`;
-        html += `<input value="${p.n}" style="width:30px;">`;
-        html += `<input value="${p.na}">`;
-        html += `<select>${['QB','RB','WR','TE','OL','DL','LB','DB','K','P'].map(o => `<option ${p.po === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
-        html += `<button class="st-toggle ${p.st ? 'active' : ''}" onclick="toggleStarter('away','${p.id}')" data-tooltip="Toggle starter">⭐</button>`;
-        html += `<button class="pin-btn" onclick="togglePin('away','${p.id}')" data-tooltip="Pin/unpin player">📌</button>`;
-        html += `<button class="sb-btn" onclick="deletePlayer('away','${p.id}')" data-tooltip="Delete player">✕</button>`;
+    ['away', 'home'].forEach(side => {
+        const team = getTeam(side);
+        const filter = S[side === 'away' ? 'ua' : 'uh'] || 'all';
+        html += `<div class="team-card">`;
+        html += `<div class="card-head" style="background:${team.color};">`;
+        html += `<span>${side.toUpperCase()}</span>`;
+        html += `<select>${S.teams.map(t => `<option ${t.id === team.id ? 'selected' : ''}>${t.name}</option>`).join('')}</select>`;
+        html += `<button class="sb-btn" onclick="setPossession('${side}')">🏈</button>`;
         html += '</div>';
-    });
-    html += '</div></div>';
-    
-    // Home card
-    html += `<div class="team-card">`;
-    html += `<div class="card-head" style="background:${home.color};">`;
-    html += `<span>HOME</span>`;
-    html += `<select>${S.teams.map(t => `<option>${t.name}</option>`).join('')}</select>`;
-    html += `<button class="sb-btn" onclick="setPossession('home')">🏈</button>`;
-    html += '</div>';
-    html += '<div class="unit-tabs"><button class="unit-tab active">ALL</button><button class="unit-tab">OFF</button><button class="unit-tab">DEF</button></div>';
-    html += '<div class="player-list-body">';
-    home.players.forEach(p => {
-        html += `<div class="player-row${p.st ? ' starter' : ''}">`;
-        html += `<input value="${p.n}" style="width:30px;">`;
-        html += `<input value="${p.na}">`;
-        html += `<select>${['QB','RB','WR','TE','OL','DL','LB','DB','K','P'].map(o => `<option ${p.po === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
-        html += `<button class="st-toggle ${p.st ? 'active' : ''}" onclick="toggleStarter('home','${p.id}')" data-tooltip="Toggle starter">⭐</button>`;
-        html += `<button class="pin-btn" onclick="togglePin('home','${p.id}')" data-tooltip="Pin/unpin player">📌</button>`;
-        html += `<button class="sb-btn" onclick="deletePlayer('home','${p.id}')" data-tooltip="Delete player">✕</button>`;
+        html += '<div class="unit-tabs">';
+        html += `<button class="unit-tab ${filter === 'all' ? 'active' : ''}" onclick="setFilter('${side}','all')">ALL</button>`;
+        if (S.md7 === 'tackle') {
+            html += `<button class="unit-tab ${filter === 'offense' ? 'active' : ''}" onclick="setFilter('${side}','offense')">OFF</button>`;
+            html += `<button class="unit-tab ${filter === 'defense' ? 'active' : ''}" onclick="setFilter('${side}','defense')">DEF</button>`;
+            html += `<button class="unit-tab ${filter === 'special' ? 'active' : ''}" onclick="setFilter('${side}','special')">ST</button>`;
+        }
         html += '</div>';
+        html += '<div class="player-list-body">';
+        getPlayers(side, filter).forEach(p => {
+            html += `<div class="player-row${p.st ? ' starter' : ''}">`;
+            html += `<input value="${p.n}" style="width:28px;">`;
+            html += `<input value="${p.na}">`;
+            html += `<select>${getPositions().map(o => `<option ${p.po === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
+            html += `<button class="st-toggle ${p.st ? 'active' : ''}" onclick="toggleStarter('${side}','${p.id}')" data-tooltip="Toggle starter">⭐</button>`;
+            html += `<button class="pin-btn" onclick="togglePin('${side}','${p.id}')" data-tooltip="Pin/unpin">📌</button>`;
+            html += `<button class="sb-btn" onclick="deletePlayer('${side}','${p.id}')" data-tooltip="Delete">✕</button>`;
+            html += '</div>';
+        });
+        html += '</div></div>';
     });
-    html += '</div></div>';
-    
     html += '</div>';
-    
     document.getElementById('main').innerHTML = html;
 }
-
-function toggleStarter(side, pid) {
-    const team = getTeam(side);
-    const p = team.players.find(x => x.id === pid);
-    if (p) { p.st = !p.st; saveState(); renderGame(); }
-}
-function togglePin(side, pid) {
-    const team = getTeam(side);
-    const p = team.players.find(x => x.id === pid);
-    if (p) { p.pinned = !p.pinned; saveState(); renderGame(); }
-}
-function deletePlayer(side, pid) {
-    const team = getTeam(side);
-    team.players = team.players.filter(x => x.id !== pid);
-    saveState();
-    renderGame();
-}
+function setFilter(side, f) { if (side === 'away') S.ua = f; else S.uh = f; renderGame(); }
+function toggleStarter(side, pid) { const team = getTeam(side); const p = team.players.find(x => x.id === pid); if (p) { p.st = !p.st; saveState(); renderGame(); } }
+function togglePin(side, pid) { const team = getTeam(side); const p = team.players.find(x => x.id === pid); if (p) { p.pinned = !p.pinned; saveState(); renderGame(); } }
+function deletePlayer(side, pid) { const team = getTeam(side); team.players = team.players.filter(x => x.id !== pid); saveState(); renderGame(); }
 
 // Roster view
 function renderRoster() {
     let html = '<div class="panel"><h3>📋 ROSTERS</h3>';
     S.teams.forEach((team, idx) => {
-        html += `<h4 style="margin-top:15px;">${team.name} <button class="hdr-btn" onclick="printRoster(${idx})">🖨️ Print</button></h4>`;
-        team.players.forEach(p => {
-            html += `<div style="display:flex;gap:8px;margin-bottom:5px;align-items:center;">
-                <input value="${p.n}" style="width:40px;padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">
-                <input value="${p.na}" style="flex:1;padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">
-                <select style="padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">
-                    ${['QB','RB','WR','TE','OL','DL','LB','DB','K','P'].map(o => `<option ${p.po === o ? 'selected' : ''}>${o}</option>`).join('')}
-                </select>
-                <button class="sb-btn" onclick="deletePlayerFromRoster(${idx},'${p.id}')">✕</button>
-            </div>`;
+        html += `<div style="border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:10px;">`;
+        html += `<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px;">`;
+        html += `<input value="${team.name}" onchange="S.teams[${idx}].name=this.value;saveState();" style="flex:1;padding:6px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
+        html += `<input type="color" value="${team.color}" onchange="S.teams[${idx}].color=this.value;saveState();">`;
+        html += `<input value="${team.mascot || ''}" placeholder="Mascot" onchange="S.teams[${idx}].mascot=this.value;saveState();" style="width:100px;padding:6px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
+        html += `<input value="${team.coach || ''}" placeholder="Coach" onchange="S.teams[${idx}].coach=this.value;saveState();" style="width:100px;padding:6px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
+        html += `<img src="${team.logo}" style="width:30px;height:30px;${team.logo ? '' : 'display:none'}">`;
+        html += `<input type="file" accept="image/*" onchange="uploadTeamLogo(${idx},this)">`;
+        html += `<button class="hdr-btn" onclick="printRoster(${idx})">🖨️ Print</button>`;
+        html += `<button class="hdr-btn" onclick="exportTeamCSV(${idx})">📊 CSV</button>`;
+        html += `<button class="hdr-btn" style="background:#dc2626;" onclick="deleteTeam(${idx})">🗑️</button>`;
+        html += '</div>';
+        team.players.forEach((p, pidx) => {
+            html += `<div style="display:flex;gap:6px;margin-bottom:4px;align-items:center;">`;
+            html += `<input value="${p.n}" onchange="S.teams[${idx}].players[${pidx}].n=this.value;saveState();" style="width:40px;padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
+            html += `<input value="${p.na}" onchange="S.teams[${idx}].players[${pidx}].na=this.value;saveState();" style="flex:1;padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
+            html += `<select onchange="S.teams[${idx}].players[${pidx}].po=this.value;saveState();" style="padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">${getPositions().map(o => `<option ${p.po === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
+            html += `<select onchange="S.teams[${idx}].players[${pidx}].st=this.value==='1';saveState();" style="padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);"><option value="0" ${!p.st ? 'selected' : ''}>Bench</option><option value="1" ${p.st ? 'selected' : ''}>Starter</option></select>`;
+            html += `<input value="${p.nt || ''}" placeholder="Notes" onchange="S.teams[${idx}].players[${pidx}].nt=this.value;saveState();" style="width:80px;padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
+            html += `<input value="${p.pron || ''}" placeholder="Pron" onchange="S.teams[${idx}].players[${pidx}].pron=this.value;saveState();" style="width:80px;padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
+            html += `<input type="file" accept="image/*" onchange="uploadPlayerPhoto(${idx},${pidx},this)">`;
+            html += `<button class="sb-btn" onclick="S.teams[${idx}].players.splice(${pidx},1);saveState();renderRoster();">✕</button>`;
+            html += '</div>';
         });
-        html += `<button class="hdr-btn" onclick="addPlayerToTeam(${idx})">➕ Add Player</button>`;
+        html += `<button class="hdr-btn" onclick="S.teams[${idx}].players.push({id:'p'+Date.now(),n:'',na:'New Player',po:'QB',st:false,nt:'',pron:'',ph:'',pinned:false});saveState();renderRoster();">➕ Add Player</button>`;
+        html += '<div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">';
+        html += `<textarea id="parseArea${idx}" placeholder="Paste roster (Number Name Position)" style="flex:2;min-width:200px;height:50px;padding:6px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);"></textarea>`;
+        html += `<button class="hdr-btn" onclick="parseRosterText(${idx})">📝 Parse</button>`;
+        html += `<input type="file" accept=".txt,.csv" onchange="uploadRosterFile(${idx},this)">`;
+        html += '</div>';
+        html += '</div>';
     });
+    html += '<button class="hdr-btn" onclick="S.teams.push({id:\'t\'+Date.now(),name:\'New Team\',color:\'#1e3a5f\',logo:\'\',mascot:\'\',coach:\'\',players:[]});saveState();renderRoster();">➕ New Team</button>';
     html += '</div>';
     document.getElementById('main').innerHTML = html;
 }
-function deletePlayerFromRoster(teamIdx, pid) {
-    S.teams[teamIdx].players = S.teams[teamIdx].players.filter(x => x.id !== pid);
-    saveState();
-    renderRoster();
-}
-function addPlayerToTeam(teamIdx) {
-    S.teams[teamIdx].players.push({ id: 'p' + Date.now(), n: '', na: 'New Player', po: 'QB', st: false, nt: '', pinned: false });
-    saveState();
-    renderRoster();
-}
-function printRoster(idx) {
+function deleteTeam(idx) { if (!confirm('Delete team?')) return; S.teams.splice(idx, 1); saveState(); renderRoster(); }
+function uploadTeamLogo(idx, input) { const f = input.files[0]; if (!f) return; const r = new FileReader(); r.onload = ev => { S.teams[idx].logo = ev.target.result; saveState(); renderRoster(); }; r.readAsDataURL(f); }
+function uploadPlayerPhoto(teamIdx, playerIdx, input) { const f = input.files[0]; if (!f) return; const r = new FileReader(); r.onload = ev => { S.teams[teamIdx].players[playerIdx].ph = ev.target.result; saveState(); toast('Photo saved'); }; r.readAsDataURL(f); }
+function exportTeamCSV(idx) {
     const team = S.teams[idx];
-    let html = `<html><head><title>${team.name} Roster</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #000;padding:4px}</style></head><body>`;
-    html += `<h2>${team.name} Roster</h2>`;
-    html += '<table><tr><th>#</th><th>Name</th><th>Pos</th><th>Starter</th></tr>';
-    team.players.forEach(p => {
-        html += `<tr><td>${p.n}</td><td>${p.na}</td><td>${p.po}</td><td>${p.st ? 'Yes' : 'No'}</td></tr>`;
+    let csv = 'Number,Name,Position,Starter,Notes,Pronunciation\n';
+    team.players.forEach(p => { csv += `"${p.n}","${p.na}","${p.po}","${p.st ? 'Yes' : 'No'}","${(p.nt || '').replace(/"/g, '""')}","${p.pron || ''}"\n`; });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' })); a.download = team.name + '.csv'; a.click();
+}
+function parseRosterText(idx) {
+    const tx = document.getElementById('parseArea' + idx).value.trim();
+    if (!tx) return toast('Empty');
+    const positions = getPositions();
+    const lines = tx.split('\n');
+    const out = [];
+    lines.forEach(l => {
+        if (!l.trim()) return;
+        let n = '', rest = l.trim();
+        const m = rest.match(/^(\d{1,3})\s+/);
+        if (m) { n = m[1]; rest = rest.slice(m[0].length).trim(); }
+        let po = '', name = rest;
+        const words = rest.split(/\s+/);
+        if (words.length && positions.includes(words[words.length - 1].toUpperCase())) { po = words.pop().toUpperCase(); name = words.join(' '); }
+        if (name) out.push({ id: 'p' + Date.now() + Math.random().toString(36).slice(2, 5), n, na: name, po: po || 'QB', st: false, nt: '', pron: '', ph: '', pinned: false });
     });
-    html += '</table></body></html>';
-    const w = window.open();
-    w.document.write(html);
-    w.print();
+    if (out.length) { S.teams[idx].players = out; saveState(); renderRoster(); toast(out.length + ' players parsed'); }
+    else toast('No players found');
+}
+function uploadRosterFile(idx, input) {
+    const f = input.files[0]; if (!f) return;
+    const r = new FileReader(); r.onload = ev => { document.getElementById('parseArea' + idx).value = ev.target.result; parseRosterText(idx); };
+    r.readAsText(f);
 }
 
 // Log view
 function renderLog() {
     let html = '<div class="panel"><h3>📜 GAME LOG</h3>';
     const events = [...S.scoringLog.map(e => ({...e, type: 'score'})), ...S.penaltyLog.map(e => ({...e, type: 'penalty'}))];
-    if (events.length === 0) {
-        html += '<p>No events in current game.</p>';
-    } else {
-        html += '<h4>Current Game</h4><table style="width:100%;border-collapse:collapse;font-size:0.8rem;">';
+    if (events.length === 0) { html += '<p>No events in current game.</p>'; }
+    else {
+        html += '<h4>Current Game</h4><table style="width:100%;border-collapse:collapse;font-size:0.75rem;">';
         html += '<tr><th>Time</th><th>Team</th><th>Event</th><th>Details</th></tr>';
         events.forEach(ev => {
             const timeStr = ev.time ? `${Math.floor(ev.time/60)}:${String(ev.time%60).padStart(2,'0')}` : '--:--';
             const teamLabel = ev.team === 'home' ? 'Home' : 'Away';
-            let desc = ev.type === 'score' ? `${ev.player || ''} +${ev.points || ''}` : ev.player || '';
+            let desc = ev.type === 'score' ? `${ev.player} +${ev.points}` : ev.player;
             html += `<tr><td>${timeStr}</td><td>${teamLabel}</td><td>${ev.type.toUpperCase()}</td><td>${desc}</td></tr>`;
         });
         html += '</table>';
@@ -892,30 +592,23 @@ function renderLog() {
         html += '<hr><h4>Game History</h4>';
         S.gameHistory.forEach((game, idx) => {
             const d = new Date(game.date).toLocaleDateString();
-            html += `<div style="padding:5px;border-bottom:1px solid var(--border);">
-                ${d} - ${game.away} vs ${game.home} - ${game.awayScore}-${game.homeScore}
-                <button class="hdr-btn" onclick="printGameLog(${idx})">🖨️ Print</button>
-            </div>`;
+            html += `<div style="padding:5px;border-bottom:1px solid var(--border);">${d} - ${game.away} vs ${game.home} - ${game.awayScore}-${game.homeScore} <button class="hdr-btn" onclick="printGameLog(${idx})">🖨️ Print</button></div>`;
         });
     }
     html += '</div>';
     document.getElementById('main').innerHTML = html;
 }
 function printGameLog(idx) {
-    const game = S.gameHistory[idx];
-    if (!game) return;
+    const game = S.gameHistory[idx]; if (!game) return;
     let html = `<html><head><title>Game Log</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #000;padding:4px}</style></head><body>`;
-    html += `<h2>${game.away} vs ${game.home}</h2>`;
-    html += `<p>Final Score: ${game.awayScore} - ${game.homeScore}</p>`;
-    html += '<table><tr><th>Time</th><th>Team</th><th>Event</th></tr>';
+    html += `<h2>${game.away} vs ${game.home}</h2><p>Final Score: ${game.awayScore} - ${game.homeScore}</p>`;
+    html += '<table><tr><th>Time</th><th>Team</th><th>Event</th><th>Details</th></tr>';
     game.log.forEach(ev => {
         const timeStr = ev.time ? `${Math.floor(ev.time/60)}:${String(ev.time%60).padStart(2,'0')}` : '--:--';
-        html += `<tr><td>${timeStr}</td><td>${ev.team === 'home' ? 'Home' : 'Away'}</td><td>${ev.type.toUpperCase()}</td></tr>`;
+        html += `<tr><td>${timeStr}</td><td>${ev.team === 'home' ? 'Home' : 'Away'}</td><td>${ev.type.toUpperCase()}</td><td>${ev.player || ''}</td></tr>`;
     });
     html += '</table></body></html>';
-    const w = window.open();
-    w.document.write(html);
-    w.print();
+    const w = window.open(); w.document.write(html); w.print();
 }
 
 // Script view
@@ -925,6 +618,7 @@ function renderScript() {
     html += '<button class="hdr-btn" onclick="document.execCommand(\'bold\')"><b>B</b></button>';
     html += '<button class="hdr-btn" onclick="document.execCommand(\'italic\')"><i>I</i></button>';
     html += '<button class="hdr-btn" onclick="document.execCommand(\'underline\')"><u>U</u></button>';
+    html += '<input type="color" onchange="document.execCommand(\'foreColor\',false,this.value)">';
     html += '<button class="hdr-btn" onclick="document.getElementById(\'scriptFileInput\').click()">📁 Upload</button>';
     html += '<input type="file" id="scriptFileInput" accept=".txt,.md,.docx" style="display:none;" onchange="uploadScriptFile(this)">';
     html += '<button class="hdr-btn" onclick="saveScript()">💾 Save</button>';
@@ -936,132 +630,93 @@ function renderScript() {
     document.getElementById('main').innerHTML = html;
     document.getElementById('scriptEditor').innerHTML = S.script || '';
 }
-function saveScript() {
-    S.script = document.getElementById('scriptEditor').innerHTML;
-    saveState();
-    toast('Script saved');
-}
-function printScript() {
-    const w = window.open();
-    w.document.write('<html><head><title>Script</title></head><body>' + S.script + '</body></html>');
-    w.print();
-}
-function clearScript() {
-    if (!confirm('Clear script?')) return;
-    S.script = '';
-    document.getElementById('scriptEditor').innerHTML = '';
-    saveState();
-    toast('Cleared');
-}
-function uploadScriptFile(input) {
-    const f = input.files[0];
-    if (!f) return;
-    const reader = new FileReader();
-    reader.onload = ev => {
-        const editor = document.getElementById('scriptEditor');
-        if (editor) editor.innerText = ev.target.result;
-        toast('Script uploaded');
-    };
-    reader.readAsText(f);
-}
+function saveScript() { S.script = document.getElementById('scriptEditor').innerHTML; saveState(); toast('Script saved'); }
+function printScript() { const w = window.open(); w.document.write('<html><head><title>Script</title></head><body>' + S.script + '</body></html>'); w.print(); }
+function clearScript() { if (!confirm('Clear script?')) return; S.script = ''; document.getElementById('scriptEditor').innerHTML = ''; saveState(); toast('Cleared'); }
+function uploadScriptFile(input) { const f = input.files[0]; if (!f) return; const r = new FileReader(); r.onload = ev => { const ed = document.getElementById('scriptEditor'); if (ed) ed.innerText = ev.target.result; toast('Script uploaded'); }; r.readAsText(f); }
 
 // Admin view
 function renderAdmin() {
-    let html = '<div class="panel"><h3>⚙️ ADMIN</h3>';
-    html += '<button class="hdr-btn" onclick="toggleTheme()">Toggle Theme</button> ';
-    html += '<button class="hdr-btn" onclick="toggleOutdoor()">Toggle Outdoor</button> ';
-    html += '<button class="hdr-btn" onclick="if(confirm(\'Reset all data?\')){localStorage.clear();location.reload();}">🧹 Clear All</button>';
-    html += '<hr><h4>Help</h4><ul style="font-size:0.8rem;line-height:1.6;padding-left:20px;">';
-    html += '<li><strong>Space</strong> – Start/stop clock</li>';
-    html += '<li><strong>Ctrl+S</strong> – Save</li>';
-    html += '<li>Hover any icon for tooltip</li>';
-    html += '<li>Flag button is yellow for penalties</li>';
-    html += '</ul></div>';
+    const tabs = ['theme', 'clock', '7v7', 'colors', 'backup', 'cloud', 'help'];
+    const labels = { theme: 'Theme', clock: 'Clock', '7v7': '7v7', colors: 'Colors', backup: 'Backup', cloud: 'Cloud', help: 'Help' };
+    let html = '<div class="panel"><h3>⚙️ ADMIN</h3><div class="admin-tabs">';
+    tabs.forEach(x => { html += `<button class="admin-tab ${S.at === x ? 'active' : ''}" onclick="S.at='${x}';renderAdmin()">${labels[x]}</button>`; });
+    html += '</div><div id="ac"></div></div>';
+    document.getElementById('main').innerHTML = html;
+    renderAdminContent();
+}
+function renderAdminContent() {
+    const c = document.getElementById('ac'); if (!c) return;
+    if (S.at === 'theme') { c.innerHTML = `<h4>Theme</h4><button class="hdr-btn" onclick="toggleTheme()">Toggle Theme</button> <button class="hdr-btn" onclick="toggleOutdoor()">Toggle Outdoor</button>`; }
+    else if (S.at === 'clock') { c.innerHTML = `<h4>Clock Format</h4><label><input type="radio" name="cf" value="12h" ${S.cf === '12h' ? 'checked' : ''} onchange="S.cf='12h';saveState();updateWallClock()"> 12h</label><label><input type="radio" name="cf" value="24h" ${S.cf === '24h' ? 'checked' : ''} onchange="S.cf='24h';saveState();updateWallClock()"> 24h</label><br><label><input type="checkbox" ${S.cs ? 'checked' : ''} onchange="S.cs=this.checked;saveState();updateWallClock()"> Show seconds</label>`; }
+    else if (S.at === '7v7') { c.innerHTML = `<h4>Game Mode</h4><button class="hdr-btn" onclick="S.md7='tackle';saveState();renderAll();renderAdmin()">${S.md7 === 'tackle' ? '✅ Tackle' : 'Tackle'}</button> <button class="hdr-btn" onclick="S.md7='7v7';saveState();renderAll();renderAdmin()">${S.md7 === '7v7' ? '✅ 7v7' : '7v7'}</button>`; }
+    else if (S.at === 'colors') { c.innerHTML = `<h4>Colors</h4><label>Scorebug BG: <input type="color" value="${S.colors.scorebugBg}" onchange="S.colors.scorebugBg=this.value;saveState()"></label><br><label>Team Card Away: <input type="color" value="${S.colors.teamCardBgAway}" onchange="S.colors.teamCardBgAway=this.value;saveState()"></label><br><label>Team Card Home: <input type="color" value="${S.colors.teamCardBgHome}" onchange="S.colors.teamCardBgHome=this.value;saveState()"></label>`; }
+    else if (S.at === 'backup') { c.innerHTML = `<h4>Backup</h4><button class="hdr-btn" onclick="exportBackup()">📤 Export</button> <button class="hdr-btn" onclick="document.getElementById('impf').click()">📥 Import</button><input type="file" id="impf" accept=".json" style="display:none;" onchange="importBackup(this)">`; }
+    else if (S.at === 'cloud') { c.innerHTML = `<h4>Cloud Sync</h4><button class="hdr-btn" onclick="fnlCloudSaveAll()">💾 Save</button> <button class="hdr-btn" onclick="fnlCloudLoadAll()">📥 Load</button>`; }
+    else if (S.at === 'help') { c.innerHTML = `<h4>📖 Help</h4><ul><li>Space = Start/Stop clock</li><li>Ctrl+S = Save</li><li>Hover icons for tooltips</li><li>Flag button is yellow</li><li>Game logs auto-save on Final</li></ul>`; }
+}
+function exportBackup() { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(S)], { type: 'application/json' })); a.download = 'fnl_backup.json'; a.click(); }
+function importBackup(input) { const f = input.files[0]; if (!f) return; const r = new FileReader(); r.onload = ev => { try { S = JSON.parse(ev.target.result); saveState(); renderAll(); toast('Restored'); } catch(e) { toast('Invalid file'); } }; r.readAsText(f); }
+
+// Clients view
+function renderClients() {
+    let html = '<div class="panel"><h3>👥 CLIENTS</h3>';
+    html += '<button class="hdr-btn" onclick="addClient()">➕ Add Client</button> ';
+    html += '<button class="hdr-btn" onclick="showAllPINs()">🔑 Show PINs</button>';
+    const keys = Object.keys(S.cp);
+    if (keys.length === 0) { html += '<p>No clients yet.</p>'; }
+    else {
+        keys.forEach(p => {
+            html += `<div style="display:flex;gap:8px;align-items:center;padding:8px;border:1px solid var(--border);border-radius:6px;margin-bottom:5px;">
+                <span style="font-weight:700;">${p}</span>
+                <span style="flex:1;">${S.cp[p].n || 'Unnamed'}</span>
+                <button class="hdr-btn" onclick="editClient('${p}')">✏️</button>
+                <button class="hdr-btn" style="background:#dc2626;" onclick="deleteClient('${p}')">🗑️</button>
+            </div>`;
+        });
+    }
+    html += '</div>';
     document.getElementById('main').innerHTML = html;
 }
+function addClient() { const pin = prompt('Enter PIN:'); if (!pin) return; const name = prompt('Client name:'); if (!name) return; S.cp[pin.toUpperCase()] = { n: name, l: '' }; saveState(); renderClients(); }
+function editClient(pin) { const c = S.cp[pin]; if (!c) return; const name = prompt('Client name:', c.n); if (name) { c.n = name; saveState(); renderClients(); } }
+function deleteClient(pin) { if (!confirm('Delete client?')) return; delete S.cp[pin]; saveState(); renderClients(); }
+function showAllPINs() { const ks = Object.keys(S.cp); if (!ks.length) return toast('No clients'); let msg = 'Client PINs:\n'; ks.forEach(p => { msg += `${p} → ${S.cp[p].n}\n`; }); alert(msg); }
 
 // Cloud sync
 async function fnlCloudSaveAll() {
-    try {
-        const snap = JSON.parse(JSON.stringify(S));
-        await fetch('https://lineup-api.claytongreenberg.workers.dev/api/lineup?id=fnl_full_sync', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(snap)
-        });
-        toast('✅ Saved to cloud');
-    } catch(e) { toast('❌ Save failed'); }
+    try { const snap = JSON.parse(JSON.stringify(S)); await fetch('https://lineup-api.claytongreenberg.workers.dev/api/lineup?id=fnl_full_sync', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(snap) }); toast('✅ Saved'); } catch(e) { toast('❌ Save failed'); }
 }
-async function fnlCloudLoadAll() {
-    if (!confirm('Load from cloud?')) return;
-    try {
-        const r = await fetch('https://lineup-api.claytongreenberg.workers.dev/api/lineup?id=fnl_full_sync');
-        if (!r.ok) throw new Error('No data');
-        const snap = await r.json();
-        S = snap;
-        saveState();
-        renderAll();
-        toast('✅ Loaded from cloud');
-    } catch(e) { toast('❌ Load failed'); }
-}
+async function fnlCloudLoadAll() { if (!confirm('Load from cloud?')) return; try { const r = await fetch('https://lineup-api.claytongreenberg.workers.dev/api/lineup?id=fnl_full_sync'); if (!r.ok) throw new Error('No data'); S = await r.json(); saveState(); renderAll(); toast('✅ Loaded'); } catch(e) { toast('❌ Load failed'); } }
+
+// Print lineup
 function printLU() {
-    let html = '<html><head><title>Lineup</title></head><body>';
+    let html = '<html><head><title>Lineup</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #000;padding:4px}</style></head><body>';
     S.teams.forEach(t => {
-        html += `<h2>${t.name}</h2><table style="width:100%;border-collapse:collapse;">`;
-        html += '<tr><th>#</th><th>Name</th><th>Pos</th></tr>';
-        t.players.filter(p => p.st).forEach(p => {
-            html += `<tr><td>${p.n}</td><td>${p.na}</td><td>${p.po}</td></tr>`;
-        });
+        html += `<h2>${t.name}</h2><table><tr><th>#</th><th>Name</th><th>Pos</th></tr>`;
+        t.players.filter(p => p.st).forEach(p => { html += `<tr><td>${p.n}</td><td>${p.na}</td><td>${p.po}</td></tr>`; });
         html += '</table>';
     });
     html += '</body></html>';
-    const w = window.open();
-    w.document.write(html);
-    w.print();
+    const w = window.open(); w.document.write(html); w.print();
 }
 
 // Expose globals
-window.chScore = chScore;
-window.chQuarter = chQuarter;
-window.startGC = startGC;
-window.pauseGC = pauseGC;
-window.resetGC = resetGC;
-window.startGame = startGame;
-window.setHalftime = setHalftime;
-window.startSecondHalf = startSecondHalf;
-window.setOvertime = setOvertime;
-window.endGame = endGame;
-window.setPossession = setPossession;
-window.setDown = setDown;
-window.setDist = setDist;
-window.firstDown = firstDown;
-window.quickScore = quickScore;
-window.quickPenalty = quickPenalty;
-window.toggleTheme = toggleTheme;
-window.toggleOutdoor = toggleOutdoor;
-window.resetGame = resetGame;
-window.switchView = switchView;
-window.toggleStarter = toggleStarter;
-window.togglePin = togglePin;
-window.deletePlayer = deletePlayer;
-window.deletePlayerFromRoster = deletePlayerFromRoster;
-window.addPlayerToTeam = addPlayerToTeam;
-window.printGameLog = printGameLog;
-window.printRoster = printRoster;
-window.saveScript = saveScript;
-window.printScript = printScript;
-window.clearScript = clearScript;
-window.uploadScriptFile = uploadScriptFile;
-window.fnlCloudSaveAll = fnlCloudSaveAll;
-window.fnlCloudLoadAll = fnlCloudLoadAll;
-window.printLU = printLU;
-window.uploadScorebugLogo = uploadScorebugLogo;
-window.toggleScorebugDisplay = function() {
-    const sb = document.getElementById('scorebug');
-    if (sb) { sb.style.display = sb.style.display === 'none' ? 'flex' : 'none'; }
-};
+window.chScore = chScore; window.chQuarter = chQuarter; window.startGC = startGC; window.pauseGC = pauseGC; window.resetGC = resetGC;
+window.startGame = startGame; window.setHalftime = setHalftime; window.startSecondHalf = startSecondHalf; window.setOvertime = setOvertime; window.endGame = endGame;
+window.setPossession = setPossession; window.setDown = setDown; window.setDist = setDist; window.firstDown = firstDown;
+window.quickScore = quickScore; window.quickPenalty = quickPenalty; window.toggleTheme = toggleTheme; window.toggleOutdoor = toggleOutdoor;
+window.resetGame = resetGame; window.switchView = switchView; window.toggleStarter = toggleStarter; window.togglePin = togglePin;
+window.deletePlayer = deletePlayer; window.setFilter = setFilter; window.printGameLog = printGameLog; window.printRoster = printRoster;
+window.saveScript = saveScript; window.printScript = printScript; window.clearScript = clearScript; window.uploadScriptFile = uploadScriptFile;
+window.fnlCloudSaveAll = fnlCloudSaveAll; window.fnlCloudLoadAll = fnlCloudLoadAll; window.printLU = printLU;
+window.uploadScorebugLogo = uploadScorebugLogo; window.toggleScorebugDisplay = toggleScorebugDisplay;
+window.uploadTeamLogo = uploadTeamLogo; window.uploadPlayerPhoto = uploadPlayerPhoto; window.exportTeamCSV = exportTeamCSV;
+window.parseRosterText = parseRosterText; window.uploadRosterFile = uploadRosterFile; window.deleteTeam = deleteTeam;
+window.addClient = addClient; window.editClient = editClient; window.deleteClient = deleteClient; window.showAllPINs = showAllPINs;
+window.exportBackup = exportBackup; window.importBackup = importBackup;
 
-// Initialize
+// Init
 loadState();
 renderAll();
 updateScorebug();
