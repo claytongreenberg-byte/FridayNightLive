@@ -1,263 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>Friday Night Live – PA Console</title>
-    <link rel="icon" type="image/png" href="https://fridaynightlive.voiceofdfw.com/favicon-96x96.png" sizes="96x96" />
-    <link rel="manifest" href="https://fridaynightlive.voiceofdfw.com/site.webmanifest" />
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --accent: #facc15;
-            --bg: #0f172a;
-            --surface: #1e293b;
-            --text: #f1f5f9;
-            --border: #334155;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            font-size: 14px;
-        }
-        header {
-            background: linear-gradient(180deg, #2d6a1e, #1f4d14);
-            padding: 8px 12px;
-            border-bottom: 3px solid var(--accent);
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .hdr-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .hdr-top-left { display: flex; align-items: center; gap: 10px; }
-        .brand-logo { height: 40px; width: auto; max-width: 100px; object-fit: contain; }
-        .brand-text h1 { font-size: 1.1rem; color: #fff; }
-        .brand-text p { font-size: 0.65rem; color: var(--accent); }
-        .hdr-top-right { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-        .wall-clock, .weather-pill {
-            color: var(--accent); font-weight: 700; font-size: 0.7rem;
-            background: rgba(0,0,0,0.4); border: 2px solid var(--accent);
-            border-radius: 6px; padding: 4px 8px; white-space: nowrap;
-        }
-        .hdr-btn {
-            background: #334155; color: #fff; border: 1px solid #475569;
-            border-radius: 20px; padding: 6px 10px; font-size: 0.65rem;
-            cursor: pointer; white-space: nowrap;
-        }
-        .hdr-btn:hover { background: #475569; }
-        .hdr-bottom { display: flex; justify-content: center; align-items: center; gap: 8px; flex-wrap: wrap; }
-        .scorebug {
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            background: #0f172a; border: 3px solid var(--accent); border-radius: 12px;
-            padding: 8px 10px; flex-wrap: wrap;
-        }
-        .sb-block { display: flex; flex-direction: column; align-items: center; padding: 0 6px; }
-        .sb-abbr {
-            font-size: 13px; font-weight: 800; color: var(--accent); margin-bottom: 3px;
-            max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-        }
-        .sb-logo-sm { width: 22px; height: 22px; object-fit: contain; }
-        .sb-row { display: flex; align-items: center; gap: 4px; }
-        .sb-val { font-size: 1.5rem; font-weight: 900; color: #fff; min-width: 28px; text-align: center; }
-        .sb-qtr { font-size: 1rem; font-weight: 800; color: var(--accent); }
-        .game-clock { font-family: monospace; font-size: 1rem; font-weight: 800; color: #fff; }
-        .sb-btn {
-            background: #334155; border: 1px solid #475569; color: #fff;
-            width: 26px; height: 26px; border-radius: 50%; font-size: 11px;
-            cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
-        }
-        .sb-btn:hover { background: var(--accent); color: #000; }
-        .sb-game-btns { display: flex; gap: 3px; flex-wrap: wrap; justify-content: center; }
-        .sb-game-btns button {
-            background: #334155; border: 1px solid #475569; color: #fff;
-            border-radius: 12px; padding: 3px 7px; font-size: 0.6rem; cursor: pointer;
-        }
-        .sb-game-btns button:hover { background: var(--accent); color: #000; }
-        .sb-toggle-btn {
-            background: #334155; border: 1px solid #475569; color: #fff;
-            width: 34px; height: 34px; border-radius: 50%; font-size: 15px;
-            cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
-        }
-        nav {
-            background: #1a1a1a; display: flex; gap: 4px; padding: 0 10px;
-            flex-shrink: 0; overflow-x: auto;
-        }
-        .nav-link {
-            background: none; border: none; color: #ccc; padding: 8px 12px;
-            font-weight: 700; cursor: pointer; font-size: 0.7rem; white-space: nowrap;
-        }
-        .nav-link.active { background: var(--accent); color: #000; border-radius: 6px 6px 0 0; }
-        main { flex: 1; overflow: auto; padding: 8px; }
-        .game-controls {
-            display: flex; flex-wrap: wrap; gap: 5px; align-items: center;
-            background: var(--surface); border: 1px solid var(--border);
-            border-radius: 8px; padding: 6px; margin-bottom: 6px;
-        }
-        .game-controls button {
-            background: #334155; color: #fff; border: 1px solid #475569;
-            border-radius: 14px; padding: 5px 8px; font-weight: 700; font-size: 0.65rem; cursor: pointer;
-        }
-        .game-controls button.active { background: var(--accent); color: #000; }
-        .game-controls button.td { background: #dc2626; }
-        .game-controls button.fg { background: #2563eb; }
-        .game-controls button.pat { background: #16a34a; }
-        .game-controls button.safety { background: #f59e0b; color: #000; }
-        .game-controls button.flag-btn { background: var(--accent); color: #000; border-color: var(--accent); }
-        .game-controls button.first-down { background: #22c55e; }
-        .team-cards { display: flex; gap: 6px; height: calc(100% - 45px); }
-        .team-card {
-            flex: 1; background: var(--surface); border: 1px solid var(--border);
-            border-radius: 8px; display: flex; flex-direction: column; overflow: hidden;
-        }
-        .card-head {
-            padding: 6px; font-weight: 700; display: flex; align-items: center;
-            gap: 5px; color: #fff; font-size: 0.75rem;
-        }
-        .card-head select {
-            flex: 1; padding: 4px; border-radius: 4px; background: #fff; color: #000; font-size: 0.75rem;
-        }
-        .unit-tabs { display: flex; gap: 3px; padding: 3px 6px; border-bottom: 1px solid var(--border); }
-        .unit-tab {
-            background: none; border: none; color: #ccc; padding: 3px 6px;
-            cursor: pointer; font-weight: 700; font-size: 0.6rem;
-        }
-        .unit-tab.active { background: var(--accent); color: #000; border-radius: 4px; }
-        .player-list-body { flex: 1; overflow-y: auto; padding: 5px; }
-        .player-row {
-            display: grid; grid-template-columns: 28px 1fr 55px 25px 25px 22px;
-            gap: 4px; align-items: center; padding: 4px; border-bottom: 1px solid var(--border);
-        }
-        .player-row input, .player-row select {
-            background: transparent; border: 1px solid transparent; color: var(--text);
-            padding: 2px; width: 100%; font-size: 0.7rem;
-        }
-        .player-row input:focus, .player-row select:focus { border-color: var(--accent); outline: none; }
-        .player-row.starter { background: rgba(251,191,36,0.15); border-left: 3px solid var(--accent); }
-        .st-toggle, .pin-btn {
-            background: none; border: 1px solid var(--border); border-radius: 50%;
-            width: 20px; height: 20px; cursor: pointer; font-size: 0.55rem;
-        }
-        .st-toggle.active { background: var(--accent); color: #000; }
-        footer {
-            background: #1a1a1a; padding: 4px 8px; text-align: center;
-            font-size: 0.55rem; flex-shrink: 0; border-top: 1px solid var(--accent);
-        }
-        .toast {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: #333; color: #fff; padding: 8px 16px; border-radius: 20px;
-            z-index: 9999; opacity: 0; transition: opacity 0.3s;
-        }
-        .toast.show { opacity: 1; }
-        .tooltip-js {
-            position: fixed; z-index: 10000; background: #1e293b; color: #fff;
-            padding: 6px 12px; border-radius: 6px; font-size: 0.7rem;
-            pointer-events: none; display: none; max-width: 200px; border: 1px solid #475569;
-        }
-        .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
-        .admin-tabs { display: flex; gap: 4px; margin-bottom: 8px; flex-wrap: wrap; }
-        .admin-tab {
-            padding: 4px 10px; border-radius: 12px; font-size: 0.6rem; font-weight: 700;
-            background: none; border: 1px solid var(--border); color: inherit; cursor: pointer;
-        }
-        .admin-tab.active { background: var(--accent); color: #000; }
-    </style>
-</head>
-<body>
-<div class="toast" id="toast"></div>
-<div class="tooltip-js" id="tooltip"></div>
-
-<header>
-    <div class="hdr-top">
-        <div class="hdr-top-left">
-            <img src="FNL.jpg" alt="FNL" class="brand-logo" onerror="this.style.display='none'">
-            <div class="brand-text">
-                <h1>🏈 FRIDAY NIGHT LIVE</h1>
-                <p>PA CONSOLE</p>
-            </div>
-        </div>
-        <div class="hdr-top-right">
-            <span class="wall-clock" id="wallClock">12:00 AM</span>
-            <span class="weather-pill" id="weatherHeader">--°F</span>
-            <button class="hdr-btn" onclick="fnlCloudSaveAll()">💾 SAVE</button>
-            <button class="hdr-btn" onclick="fnlCloudLoadAll()">📥 LOAD</button>
-            <button class="hdr-btn" id="themeBtn" onclick="toggleTheme()">☀️ Light</button>
-            <button class="hdr-btn" onclick="toggleOutdoor()">🌤</button>
-            <button class="hdr-btn" onclick="printLU()">🖨️</button>
-            <button class="hdr-btn" onclick="resetGame()" style="background:#dc2626;">RESET</button>
-        </div>
-    </div>
-    <div class="hdr-bottom">
-        <div class="scorebug" id="scorebug">
-            <div class="sb-block">
-                <span class="sb-abbr" id="sbAwayAbbr">AWAY</span>
-                <div class="sb-row">
-                    <button class="sb-btn" onclick="chScore('away',-1)" data-tooltip="Subtract point">−</button>
-                    <span class="sb-val" id="sbAwayScore">0</span>
-                    <button class="sb-btn" onclick="chScore('away',1)" data-tooltip="Add point">+</button>
-                </div>
-                <button class="sb-btn" onclick="uploadScorebugLogo('away')" data-tooltip="Upload away logo" style="width:20px;height:20px;font-size:9px;">📷</button>
-            </div>
-            <div class="sb-block">
-                <span class="sb-abbr">QUARTER</span>
-                <span class="sb-qtr" id="sbQuarter">Q1</span>
-                <div class="sb-row">
-                    <button class="sb-btn" onclick="chQuarter(-1)" data-tooltip="Previous quarter">◀</button>
-                    <button class="sb-btn" onclick="chQuarter(1)" data-tooltip="Next quarter">▶</button>
-                </div>
-            </div>
-            <div class="sb-block">
-                <span class="sb-abbr" id="sbHomeAbbr">HOME</span>
-                <div class="sb-row">
-                    <button class="sb-btn" onclick="chScore('home',-1)" data-tooltip="Subtract point">−</button>
-                    <span class="sb-val" id="sbHomeScore">0</span>
-                    <button class="sb-btn" onclick="chScore('home',1)" data-tooltip="Add point">+</button>
-                </div>
-                <button class="sb-btn" onclick="uploadScorebugLogo('home')" data-tooltip="Upload home logo" style="width:20px;height:20px;font-size:9px;">📷</button>
-            </div>
-            <div class="sb-block">
-                <span class="sb-abbr">CLOCK</span>
-                <span class="game-clock" id="gameClockDisplay">8:00</span>
-                <div class="sb-row">
-                    <button class="sb-btn" onclick="startGC()" data-tooltip="Start clock">▶</button>
-                    <button class="sb-btn" onclick="pauseGC()" data-tooltip="Pause clock">⏸</button>
-                    <button class="sb-btn" onclick="resetGC()" data-tooltip="Reset clock">↺</button>
-                </div>
-            </div>
-            <div class="sb-block">
-                <span class="sb-abbr">GAME</span>
-                <div class="sb-game-btns">
-                    <button onclick="startGame()" data-tooltip="Start game (Q1)">▶ Start</button>
-                    <button onclick="setHalftime()" data-tooltip="Halftime">⏸ Half</button>
-                    <button onclick="startSecondHalf()" data-tooltip="Start 2nd half (Q3)">⏭ 2nd</button>
-                    <button onclick="setOvertime()" data-tooltip="Overtime">⏱ OT</button>
-                    <button onclick="endGame()" data-tooltip="End game">🏁 Final</button>
-                </div>
-            </div>
-        </div>
-        <button class="sb-toggle-btn" onclick="toggleScorebugDisplay()" data-tooltip="Toggle scoreboard">👁️</button>
-    </div>
-</header>
-
-<nav id="mainNav"></nav>
-<main id="main"></main>
-<footer>
-    © 2026 Clayton E. Greenberg | VoiceofDFW.com | 🏈 Digital Pressbox Command Center 🏈
-</footer>
-
-<script>
 // Full state
 let S = {
     v: 'sport', md: 'dark', outdoor: false, at: 'theme',
@@ -283,6 +23,7 @@ let S = {
     ],
     scoringLog: [], penaltyLog: [], gameHistory: [], script: '',
     cp: {}, ap: '', im: true, ua: 'all', uh: 'all',
+    cid: 'h',
     colors: { scorebugBg: '#0f172a', scorebugText: '#ffffff', teamCardBgAway: '#1e293b', teamCardBgHome: '#1e293b', teamNameColorAway: '#ffffff', teamNameColorHome: '#ffffff' }
 };
 
@@ -315,6 +56,10 @@ document.addEventListener('mouseover', e => {
 });
 document.addEventListener('mousemove', e => { if (tooltipEl.style.display === 'block') positionTooltip(e.clientX, e.clientY); });
 document.addEventListener('mouseout', e => { if (!e.target.closest('[data-tooltip]')) tooltipEl.style.display = 'none'; });
+document.addEventListener('click', e => {
+    const t = e.target.closest('[data-tooltip]');
+    if (t) { tooltipEl.textContent = t.getAttribute('data-tooltip'); tooltipEl.style.display = 'block'; positionTooltip(e.clientX, e.clientY); setTimeout(() => tooltipEl.style.display = 'none', 2000); }
+});
 function positionTooltip(x, y) {
     let left = x + 15, top = y + 15;
     const rect = tooltipEl.getBoundingClientRect();
@@ -498,57 +243,120 @@ function toggleStarter(side, pid) { const team = getTeam(side); const p = team.p
 function togglePin(side, pid) { const team = getTeam(side); const p = team.players.find(x => x.id === pid); if (p) { p.pinned = !p.pinned; saveState(); renderGame(); } }
 function deletePlayer(side, pid) { const team = getTeam(side); team.players = team.players.filter(x => x.id !== pid); saveState(); renderGame(); }
 
-// Roster view
+// Roster view - SIDEBAR LAYOUT
 function renderRoster() {
-    let html = '<div class="panel"><h3>📋 ROSTERS</h3>';
-    S.teams.forEach((team, idx) => {
-        html += `<div style="border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:10px;">`;
-        html += `<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px;">`;
-        html += `<input value="${team.name}" onchange="S.teams[${idx}].name=this.value;saveState();" style="flex:1;padding:6px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
-        html += `<input type="color" value="${team.color}" onchange="S.teams[${idx}].color=this.value;saveState();">`;
-        html += `<input value="${team.mascot || ''}" placeholder="Mascot" onchange="S.teams[${idx}].mascot=this.value;saveState();" style="width:100px;padding:6px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
-        html += `<input value="${team.coach || ''}" placeholder="Coach" onchange="S.teams[${idx}].coach=this.value;saveState();" style="width:100px;padding:6px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
-        html += `<img src="${team.logo}" style="width:30px;height:30px;${team.logo ? '' : 'display:none'}">`;
-        html += `<input type="file" accept="image/*" onchange="uploadTeamLogo(${idx},this)">`;
-        html += `<button class="hdr-btn" onclick="printRoster(${idx})">🖨️ Print</button>`;
-        html += `<button class="hdr-btn" onclick="exportTeamCSV(${idx})">📊 CSV</button>`;
-        html += `<button class="hdr-btn" style="background:#dc2626;" onclick="deleteTeam(${idx})">🗑️</button>`;
-        html += '</div>';
-        team.players.forEach((p, pidx) => {
-            html += `<div style="display:flex;gap:6px;margin-bottom:4px;align-items:center;">`;
-            html += `<input value="${p.n}" onchange="S.teams[${idx}].players[${pidx}].n=this.value;saveState();" style="width:40px;padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
-            html += `<input value="${p.na}" onchange="S.teams[${idx}].players[${pidx}].na=this.value;saveState();" style="flex:1;padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
-            html += `<select onchange="S.teams[${idx}].players[${pidx}].po=this.value;saveState();" style="padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">${getPositions().map(o => `<option ${p.po === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
-            html += `<select onchange="S.teams[${idx}].players[${pidx}].st=this.value==='1';saveState();" style="padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);"><option value="0" ${!p.st ? 'selected' : ''}>Bench</option><option value="1" ${p.st ? 'selected' : ''}>Starter</option></select>`;
-            html += `<input value="${p.nt || ''}" placeholder="Notes" onchange="S.teams[${idx}].players[${pidx}].nt=this.value;saveState();" style="width:80px;padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
-            html += `<input value="${p.pron || ''}" placeholder="Pron" onchange="S.teams[${idx}].players[${pidx}].pron=this.value;saveState();" style="width:80px;padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
-            html += `<input type="file" accept="image/*" onchange="uploadPlayerPhoto(${idx},${pidx},this)">`;
-            html += `<button class="sb-btn" onclick="S.teams[${idx}].players.splice(${pidx},1);saveState();renderRoster();">✕</button>`;
-            html += '</div>';
-        });
-        html += `<button class="hdr-btn" onclick="S.teams[${idx}].players.push({id:'p'+Date.now(),n:'',na:'New Player',po:'QB',st:false,nt:'',pron:'',ph:'',pinned:false});saveState();renderRoster();">➕ Add Player</button>`;
-        html += '<div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">';
-        html += `<textarea id="parseArea${idx}" placeholder="Paste roster (Number Name Position)" style="flex:2;min-width:200px;height:50px;padding:6px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);"></textarea>`;
-        html += `<button class="hdr-btn" onclick="parseRosterText(${idx})">📝 Parse</button>`;
-        html += `<input type="file" accept=".txt,.csv" onchange="uploadRosterFile(${idx},this)">`;
-        html += '</div>';
+    const sortedTeams = [...S.teams].sort((a, b) => a.name.localeCompare(b.name));
+    const selectedTeam = S.teams.find(t => t.id === S.cid) || S.teams[0];
+    if (!selectedTeam) { S.teams.push({ id: 't' + Date.now(), name: 'New Team', color: '#1e3a5f', logo: '', mascot: '', coach: '', players: [] }); saveState(); return renderRoster(); }
+    S.cid = selectedTeam.id;
+    let html = '<div class="roster-layout">';
+    // Sidebar
+    html += '<div class="team-sidebar">';
+    html += '<h4 style="margin-bottom:8px;">TEAMS</h4>';
+    sortedTeams.forEach(t => {
+        html += `<div class="team-item ${t.id === S.cid ? 'active' : ''}" onclick="selectTeam('${t.id}')">${t.name} (${t.players.length})</div>`;
+    });
+    html += '<button class="hdr-btn" style="margin-top:8px;width:100%;" onclick="newTeam()">➕ New Team</button>';
+    html += '</div>';
+    // Workspace
+    html += '<div class="roster-workspace">';
+    html += `<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">`;
+    html += `<input id="etn" value="${selectedTeam.name}" placeholder="Team Name" style="flex:1;padding:6px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
+    html += `<input type="color" id="etc" value="${selectedTeam.color}" style="width:40px;height:30px;">`;
+    html += `<input id="etm" value="${selectedTeam.mascot || ''}" placeholder="Mascot" style="width:100px;padding:6px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
+    html += `<input id="etco" value="${selectedTeam.coach || ''}" placeholder="Coach" style="width:100px;padding:6px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
+    html += `<img id="etl" src="${selectedTeam.logo}" style="width:30px;height:30px;${selectedTeam.logo ? '' : 'display:none'}">`;
+    html += `<input type="file" id="etlf" accept="image/*" style="display:none;" onchange="previewTeamLogo(this)">`;
+    html += `<button class="hdr-btn" onclick="document.getElementById('etlf').click()">📷 Logo</button>`;
+    html += `<button class="hdr-btn" onclick="saveTeam()">💾 Save</button>`;
+    html += `<button class="hdr-btn" onclick="printRoster('${selectedTeam.id}')">🖨️ Print</button>`;
+    html += `<button class="hdr-btn" onclick="exportTeamCSV('${selectedTeam.id}')">📊 CSV</button>`;
+    html += `<button class="hdr-btn" style="background:#dc2626;" onclick="deleteTeamById('${selectedTeam.id}')">🗑️</button>`;
+    html += '</div>';
+    // Players
+    html += '<div style="display:grid;grid-template-columns:40px 1fr 80px 60px 80px 80px 30px;gap:4px;font-size:0.6rem;font-weight:700;margin-bottom:4px;opacity:0.6;">';
+    html += '<span>#</span><span>Name</span><span>Pos</span><span>Role</span><span>Notes</span><span>Pron</span><span></span>';
+    html += '</div>';
+    selectedTeam.players.forEach((p, pidx) => {
+        html += `<div style="display:grid;grid-template-columns:40px 1fr 80px 60px 80px 80px 30px;gap:4px;margin-bottom:3px;align-items:center;">`;
+        html += `<input value="${p.n}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'n',this.value)" style="padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
+        html += `<input value="${p.na}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'na',this.value)" style="padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
+        html += `<select onchange="updatePlayerField('${selectedTeam.id}',${pidx},'po',this.value)" style="padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">${getPositions().map(o => `<option ${p.po === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
+        html += `<select onchange="updatePlayerField('${selectedTeam.id}',${pidx},'st',this.value)" style="padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);"><option value="false" ${!p.st ? 'selected' : ''}>Bench</option><option value="true" ${p.st ? 'selected' : ''}>Starter</option></select>`;
+        html += `<input value="${p.nt || ''}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'nt',this.value)" placeholder="Notes" style="padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
+        html += `<input value="${p.pron || ''}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'pron',this.value)" placeholder="Pron" style="padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);">`;
+        html += `<button class="sb-btn" onclick="S.teams.find(t=>t.id==='${selectedTeam.id}').players.splice(${pidx},1);saveState();renderRoster();">✕</button>`;
         html += '</div>';
     });
-    html += '<button class="hdr-btn" onclick="S.teams.push({id:\'t\'+Date.now(),name:\'New Team\',color:\'#1e3a5f\',logo:\'\',mascot:\'\',coach:\'\',players:[]});saveState();renderRoster();">➕ New Team</button>';
+    html += `<button class="hdr-btn" onclick="addPlayerToTeam('${selectedTeam.id}')">➕ Add Player</button>`;
+    // Parse area
+    html += '<div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">';
+    html += `<textarea id="parseArea" placeholder="Paste roster (Number Name Position)" style="flex:2;min-width:200px;height:50px;padding:6px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);"></textarea>`;
+    html += `<button class="hdr-btn" onclick="parseRosterText('${selectedTeam.id}')">📝 Parse</button>`;
+    html += `<input type="file" accept=".txt,.csv" onchange="uploadRosterFile('${selectedTeam.id}',this)">`;
+    html += '</div>';
+    html += '</div>';
     html += '</div>';
     document.getElementById('main').innerHTML = html;
 }
-function deleteTeam(idx) { if (!confirm('Delete team?')) return; S.teams.splice(idx, 1); saveState(); renderRoster(); }
-function uploadTeamLogo(idx, input) { const f = input.files[0]; if (!f) return; const r = new FileReader(); r.onload = ev => { S.teams[idx].logo = ev.target.result; saveState(); renderRoster(); }; r.readAsDataURL(f); }
-function uploadPlayerPhoto(teamIdx, playerIdx, input) { const f = input.files[0]; if (!f) return; const r = new FileReader(); r.onload = ev => { S.teams[teamIdx].players[playerIdx].ph = ev.target.result; saveState(); toast('Photo saved'); }; r.readAsDataURL(f); }
-function exportTeamCSV(idx) {
-    const team = S.teams[idx];
+function selectTeam(id) { S.cid = id; renderRoster(); }
+function newTeam() {
+    const name = prompt('Team name:'); if (!name) return;
+    S.teams.push({ id: 't' + Date.now(), name, color: '#1e3a5f', logo: '', mascot: '', coach: '', players: [] });
+    S.cid = S.teams[S.teams.length - 1].id;
+    saveState(); renderRoster();
+}
+function saveTeam() {
+    const team = S.teams.find(t => t.id === S.cid); if (!team) return;
+    team.name = document.getElementById('etn').value;
+    team.color = document.getElementById('etc').value;
+    team.mascot = document.getElementById('etm').value;
+    team.coach = document.getElementById('etco').value;
+    saveState(); renderRoster(); updateScorebug(); toast('Team saved');
+}
+function previewTeamLogo(input) {
+    const f = input.files[0]; if (!f) return;
+    const r = new FileReader();
+    r.onload = ev => {
+        const team = S.teams.find(t => t.id === S.cid);
+        if (team) { team.logo = ev.target.result; document.getElementById('etl').src = ev.target.result; document.getElementById('etl').style.display = 'inline-block'; toast('Logo preview - click Save to confirm'); }
+    };
+    r.readAsDataURL(f);
+}
+function deleteTeamById(id) { if (!confirm('Delete team?')) return; S.teams = S.teams.filter(t => t.id !== id); S.cid = S.teams.length ? S.teams[0].id : null; saveState(); renderRoster(); }
+function updatePlayerField(teamId, pidx, field, val) {
+    const team = S.teams.find(t => t.id === teamId); if (!team || !team.players[pidx]) return;
+    team.players[pidx][field] = val;
+    saveState();
+}
+function addPlayerToTeam(teamId) {
+    const team = S.teams.find(t => t.id === teamId); if (!team) return;
+    team.players.push({ id: 'p' + Date.now(), n: '', na: 'New Player', po: 'QB', st: false, nt: '', pron: '', ph: '', pinned: false });
+    saveState(); renderRoster();
+}
+function printRoster(teamId) {
+    const team = S.teams.find(t => t.id === teamId);
+    if (!team) return;
+    let html = `<html><head><title>${team.name} Roster</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #000;padding:4px}</style></head><body>`;
+    html += `<h2>${team.name} Roster</h2>`;
+    html += '<table><tr><th>#</th><th>Name</th><th>Pos</th><th>Notes</th><th>Starter</th></tr>';
+    team.players.forEach(p => {
+        html += `<tr><td>${p.n}</td><td>${p.na}</td><td>${p.po}</td><td>${p.nt || ''}</td><td>${p.st ? 'Yes' : 'No'}</td></tr>`;
+    });
+    html += '</table></body></html>';
+    const w = window.open(); w.document.write(html); w.print();
+}
+function exportTeamCSV(teamId) {
+    const team = S.teams.find(t => t.id === teamId);
+    if (!team) return;
     let csv = 'Number,Name,Position,Starter,Notes,Pronunciation\n';
     team.players.forEach(p => { csv += `"${p.n}","${p.na}","${p.po}","${p.st ? 'Yes' : 'No'}","${(p.nt || '').replace(/"/g, '""')}","${p.pron || ''}"\n`; });
     const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' })); a.download = team.name + '.csv'; a.click();
 }
-function parseRosterText(idx) {
-    const tx = document.getElementById('parseArea' + idx).value.trim();
+function parseRosterText(teamId) {
+    const tx = document.getElementById('parseArea').value.trim();
+    const team = S.teams.find(t => t.id === teamId);
+    if (!team) return;
     if (!tx) return toast('Empty');
     const positions = getPositions();
     const lines = tx.split('\n');
@@ -563,12 +371,12 @@ function parseRosterText(idx) {
         if (words.length && positions.includes(words[words.length - 1].toUpperCase())) { po = words.pop().toUpperCase(); name = words.join(' '); }
         if (name) out.push({ id: 'p' + Date.now() + Math.random().toString(36).slice(2, 5), n, na: name, po: po || 'QB', st: false, nt: '', pron: '', ph: '', pinned: false });
     });
-    if (out.length) { S.teams[idx].players = out; saveState(); renderRoster(); toast(out.length + ' players parsed'); }
+    if (out.length) { team.players = out; saveState(); renderRoster(); toast(out.length + ' players parsed'); }
     else toast('No players found');
 }
-function uploadRosterFile(idx, input) {
+function uploadRosterFile(teamId, input) {
     const f = input.files[0]; if (!f) return;
-    const r = new FileReader(); r.onload = ev => { document.getElementById('parseArea' + idx).value = ev.target.result; parseRosterText(idx); };
+    const r = new FileReader(); r.onload = ev => { document.getElementById('parseArea').value = ev.target.result; parseRosterText(teamId); };
     r.readAsText(f);
 }
 
@@ -700,20 +508,7 @@ function printLU() {
     html += '</body></html>';
     const w = window.open(); w.document.write(html); w.print();
 }
-function printRoster(idx) {
-    const team = S.teams[idx];
-    if (!team) return;
-    let html = `<html><head><title>${team.name} Roster</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #000;padding:4px}</style></head><body>`;
-    html += `<h2>${team.name} Roster</h2>`;
-    html += '<table><tr><th>#</th><th>Name</th><th>Pos</th><th>Notes</th><th>Starter</th></tr>';
-    team.players.forEach(p => {
-        html += `<tr><td>${p.n}</td><td>${p.na}</td><td>${p.po}</td><td>${p.nt || ''}</td><td>${p.st ? 'Yes' : 'No'}</td></tr>`;
-    });
-    html += '</table></body></html>';
-    const w = window.open();
-    w.document.write(html);
-    w.print();
-}
+
 // Expose globals
 window.chScore = chScore; window.chQuarter = chQuarter; window.startGC = startGC; window.pauseGC = pauseGC; window.resetGC = resetGC;
 window.startGame = startGame; window.setHalftime = setHalftime; window.startSecondHalf = startSecondHalf; window.setOvertime = setOvertime; window.endGame = endGame;
@@ -724,17 +519,14 @@ window.deletePlayer = deletePlayer; window.setFilter = setFilter; window.printGa
 window.saveScript = saveScript; window.printScript = printScript; window.clearScript = clearScript; window.uploadScriptFile = uploadScriptFile;
 window.fnlCloudSaveAll = fnlCloudSaveAll; window.fnlCloudLoadAll = fnlCloudLoadAll; window.printLU = printLU;
 window.uploadScorebugLogo = uploadScorebugLogo; window.toggleScorebugDisplay = toggleScorebugDisplay;
-window.uploadTeamLogo = uploadTeamLogo; window.uploadPlayerPhoto = uploadPlayerPhoto; window.exportTeamCSV = exportTeamCSV;
-window.parseRosterText = parseRosterText; window.uploadRosterFile = uploadRosterFile; window.deleteTeam = deleteTeam;
+window.previewTeamLogo = previewTeamLogo; window.saveTeam = saveTeam; window.selectTeam = selectTeam; window.newTeam = newTeam;
+window.addPlayerToTeam = addPlayerToTeam; window.updatePlayerField = updatePlayerField; window.deleteTeamById = deleteTeamById;
+window.exportTeamCSV = exportTeamCSV; window.parseRosterText = parseRosterText; window.uploadRosterFile = uploadRosterFile;
 window.addClient = addClient; window.editClient = editClient; window.deleteClient = deleteClient; window.showAllPINs = showAllPINs;
 window.exportBackup = exportBackup; window.importBackup = importBackup;
-    window.printRoster = printRoster;
 
 // Init
 loadState();
 renderAll();
 updateScorebug();
 updateGameClockDisplay();
-</script>
-</body>
-</html>
