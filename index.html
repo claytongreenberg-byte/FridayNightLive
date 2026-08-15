@@ -14,6 +14,10 @@
             --border: #94a3b8;
             --footer-bg: #1a1a1a;
             --footer-text: #f1f5f9;
+            --scorebug-bg: #1a1a2e;
+            --scorebug-text: #ffffff;
+            --team-card-away: #e2e8f0;
+            --team-card-home: #e2e8f0;
         }
         body {
             font-family: Arial, sans-serif;
@@ -71,20 +75,21 @@
             align-items: center;
             justify-content: center;
             gap: 0;
-            background: linear-gradient(180deg, #0b1220, #000);
-            border: 2px solid var(--accent);
+            background: var(--scorebug-bg);
+            border: 3px solid var(--accent);
             border-radius: 10px;
-            padding: 10px 18px 8px;
+            padding: 12px 20px 10px;
             flex-wrap: wrap;
             width: 100%;
             box-shadow: 0 4px 14px rgba(0,0,0,0.45);
-            --sb-text: #ffffff;
+            --sb-text: var(--scorebug-text);
+            min-height: 120px;
         }
         .sb-network-tag {
             position: absolute; top: -11px; left: 14px;
             background: var(--accent); color: #000;
-            font-weight: 900; font-size: 0.55rem; letter-spacing: 1px;
-            padding: 2px 8px; border-radius: 4px; text-transform: uppercase;
+            font-weight: 900; font-size: 0.6rem; letter-spacing: 1px;
+            padding: 2px 10px; border-radius: 4px; text-transform: uppercase;
             box-shadow: 0 2px 4px rgba(0,0,0,0.4);
         }
         .live-pill {
@@ -102,26 +107,26 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 0 14px;
+            padding: 0 18px;
             border-right: 1px solid rgba(255,255,255,0.15);
             flex: 1 1 0;
-            min-width: 60px;
+            min-width: 70px;
         }
         .sb-block:last-child { border-right: none; }
         .sb-team-chip {
-            width: 30px; height: 30px; border-radius: 50%; overflow: hidden;
+            width: 36px; height: 36px; border-radius: 50%; overflow: hidden;
             display: flex; align-items: center; justify-content: center;
-            font-weight: 900; font-size: 0.7rem; color: #fff; margin-bottom: 3px;
-            border: 1px solid rgba(255,255,255,0.35); flex-shrink: 0;
+            font-weight: 900; font-size: 0.9rem; color: #fff; margin-bottom: 4px;
+            border: 2px solid rgba(255,255,255,0.35); flex-shrink: 0;
         }
         .sb-team-chip img { width: 100%; height: 100%; object-fit: cover; }
-        .sb-name-col { display: flex; flex-direction: column; align-items: center; margin-bottom: 3px; }
+        .sb-name-col { display: flex; flex-direction: column; align-items: center; margin-bottom: 4px; }
         .sb-abbr {
-            font-size: 15px; font-weight: 900; color: var(--sb-text); letter-spacing: 1px;
-            display: flex; align-items: center; gap: 4px;
+            font-size: 18px; font-weight: 900; color: var(--sb-text); letter-spacing: 1px;
+            display: flex; align-items: center; gap: 6px;
         }
         .sb-poss {
-            font-size: 14px;
+            font-size: 16px;
             animation: sbbounce 0.8s infinite;
             display: inline-block;
         }
@@ -130,33 +135,33 @@
             50% { transform: translateY(-4px) scale(1.2); }
         }
         .sb-fullname {
-            font-size: 0.5rem; color: var(--sb-text); opacity: 0.7; text-transform: uppercase;
-            letter-spacing: 0.5px; max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            font-size: 0.6rem; color: var(--sb-text); opacity: 0.7; text-transform: uppercase;
+            letter-spacing: 0.5px; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
         .sb-logo-sm { width: 22px; height: 22px; object-fit: contain; }
-        .sb-row { display: flex; align-items: center; gap: 4px; }
-        .sb-val { font-size: 2rem; font-weight: 900; color: var(--sb-text); min-width: 28px; text-align: center; }
-        .sb-qtr { font-size: 1rem; font-weight: 800; color: var(--accent); }
-        .game-clock { font-family: 'Courier New', monospace; font-size: 1.05rem; font-weight: 800; color: var(--sb-text); }
+        .sb-row { display: flex; align-items: center; gap: 6px; }
+        .sb-val { font-size: 2.4rem; font-weight: 900; color: var(--sb-text); min-width: 40px; text-align: center; }
+        .sb-qtr { font-size: 1.2rem; font-weight: 800; color: var(--accent); }
+        .game-clock { font-family: 'Courier New', monospace; font-size: 1.4rem; font-weight: 800; color: var(--sb-text); }
         .sb-btn {
             background: #334155; border: 1px solid #475569; color: #fff;
-            width: 28px; height: 28px; border-radius: 50%; font-size: 11px;
+            width: 32px; height: 32px; border-radius: 50%; font-size: 13px;
             cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
         }
         .sb-btn:hover { background: var(--accent); color: #000; }
-        .sb-game-btns { display: flex; gap: 3px; flex-wrap: wrap; justify-content: center; }
+        .sb-game-btns { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; }
         .sb-game-btns button {
             background: #334155; border: 1px solid #475569; color: #fff;
-            border-radius: 12px; padding: 4px 8px; font-size: 0.6rem; cursor: pointer;
+            border-radius: 12px; padding: 5px 10px; font-size: 0.65rem; cursor: pointer;
         }
         .sb-game-btns button:hover { background: var(--accent); color: #000; }
         .sb-toggle-btn {
             background: #334155; border: 1px solid #475569; color: #fff;
-            width: 30px; height: 30px; border-radius: 50%; font-size: 14px;
+            width: 34px; height: 34px; border-radius: 50%; font-size: 16px;
             cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
         .dd-ticker {
-            padding: 5px 10px; border-radius: 6px; font-weight: 800; font-size: 0.72rem;
+            padding: 6px 14px; border-radius: 6px; font-weight: 800; font-size: 0.85rem;
             text-align: center; color: #fff; letter-spacing: 0.5px; text-shadow: 0 1px 2px rgba(0,0,0,0.75);
             background: #334155;
         }
@@ -191,18 +196,20 @@
         .game-controls button.first-down { background: #22c55e; }
         .team-cards { display: flex; gap: 6px; height: calc(100% - 45px); }
         .team-card {
-            flex: 1; background: var(--surface); border: 1px solid var(--border);
+            flex: 1; background: var(--team-card-bg); border: 2px solid var(--border);
             border-radius: 8px; display: flex; flex-direction: column; overflow: hidden;
         }
+        .team-card.away-card { background: var(--team-card-away); }
+        .team-card.home-card { background: var(--team-card-home); }
         .card-head {
-            padding: 6px; font-weight: 700; display: flex; align-items: center;
-            gap: 5px; color: #fff; font-size: 0.75rem;
+            padding: 8px; font-weight: 700; display: flex; align-items: center;
+            gap: 5px; color: #fff; font-size: 0.8rem;
         }
         .card-head select {
             flex: 1; padding: 5px 4px; border-radius: 4px; background: #fff; color: #000;
             font-size: 0.75rem; min-height: 26px; border: 1px solid #94a3b8;
         }
-        .card-head .mini-logo { width: 20px; height: 20px; object-fit: cover; border-radius: 50%; flex-shrink: 0; }
+        .card-head .mini-logo { width: 24px; height: 24px; object-fit: cover; border-radius: 50%; flex-shrink: 0; }
         .unit-tabs { display: flex; gap: 3px; padding: 3px 6px; border-bottom: 1px solid var(--border); }
         .unit-tab {
             background: none; border: none; color: var(--text); padding: 3px 6px;
@@ -266,6 +273,19 @@
             background: none; border: 1px solid var(--border); color: inherit; cursor: pointer;
         }
         .admin-tab.active { background: var(--accent); color: #000; }
+        .admin-color-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 500px;
+        }
+        .admin-color-item {
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .admin-color-item label {
+            font-size: 0.7rem; font-weight: 600;
+        }
+        .admin-color-item input[type="color"] {
+            width: 100%; height: 40px; border: 2px solid var(--border); border-radius: 6px;
+            cursor: pointer; padding: 2px;
+        }
         /* player picker modal */
         .pp-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 10001;
@@ -290,12 +310,16 @@
         }
 
         @media (max-width: 768px) {
-            .scorebug { padding: 8px 10px; gap: 4px; }
+            .scorebug { padding: 8px 10px; gap: 4px; min-height: 80px; }
             .sb-block { padding: 0 6px; min-width: 40px; }
-            .sb-val { font-size: 1.4rem; }
+            .sb-val { font-size: 1.6rem; min-width: 30px; }
+            .sb-abbr { font-size: 14px; }
+            .game-clock { font-size: 1rem; }
+            .sb-team-chip { width: 28px; height: 28px; font-size: 0.7rem; }
             .team-cards { flex-direction: column; height: auto; }
             .roster-layout { flex-direction: column; }
             .team-sidebar { width: 100%; max-height: 200px; }
+            .admin-color-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -339,10 +363,10 @@
                         <span class="sb-val" id="sbAwayScore">0</span>
                         <button class="sb-btn" onclick="chScore('away',1)" data-tooltip="Add point">+</button>
                     </div>
-                    <button class="sb-btn" onclick="uploadScorebugLogo('away')" data-tooltip="Upload away logo" style="width:20px;height:20px;font-size:9px;margin-top:3px;">📷</button>
+                    <button class="sb-btn" onclick="uploadScorebugLogo('away')" data-tooltip="Upload away logo" style="width:24px;height:24px;font-size:11px;margin-top:3px;">📷</button>
                 </div>
                 <div class="sb-block">
-                    <span class="sb-abbr" style="font-size:0.6rem;color:var(--sb-text);opacity:.7;">QUARTER</span>
+                    <span class="sb-abbr" style="font-size:0.65rem;color:var(--sb-text);opacity:.7;">QUARTER</span>
                     <span class="sb-qtr" id="sbQuarter">Q1</span>
                     <div class="sb-row">
                         <button class="sb-btn" onclick="chQuarter(-1)" data-tooltip="Previous quarter">◀</button>
@@ -360,10 +384,10 @@
                         <span class="sb-val" id="sbHomeScore">0</span>
                         <button class="sb-btn" onclick="chScore('home',1)" data-tooltip="Add point">+</button>
                     </div>
-                    <button class="sb-btn" onclick="uploadScorebugLogo('home')" data-tooltip="Upload home logo" style="width:20px;height:20px;font-size:9px;margin-top:3px;">📷</button>
+                    <button class="sb-btn" onclick="uploadScorebugLogo('home')" data-tooltip="Upload home logo" style="width:24px;height:24px;font-size:11px;margin-top:3px;">📷</button>
                 </div>
                 <div class="sb-block">
-                    <span class="sb-abbr" style="font-size:0.6rem;color:var(--sb-text);opacity:.7;">CLOCK</span>
+                    <span class="sb-abbr" style="font-size:0.65rem;color:var(--sb-text);opacity:.7;">CLOCK</span>
                     <span class="game-clock" id="gameClockDisplay">8:00</span>
                     <div class="sb-row">
                         <button class="sb-btn" onclick="startGC()" data-tooltip="Start clock (Space)">▶</button>
@@ -372,7 +396,7 @@
                     </div>
                 </div>
                 <div class="sb-block">
-                    <span class="sb-abbr" style="font-size:0.6rem;color:var(--sb-text);opacity:.7;">GAME</span>
+                    <span class="sb-abbr" style="font-size:0.65rem;color:var(--sb-text);opacity:.7;">GAME</span>
                     <div class="sb-game-btns">
                         <button onclick="startGame()" data-tooltip="Start game (Q1)">▶ Start</button>
                         <button onclick="setHalftime()" data-tooltip="Halftime">⏸ Half</button>
@@ -395,11 +419,11 @@
 </footer>
 
 <script>
-// Full state - DEFAULT LIGHT MODE
+// Full state
 let S = {
     v: 'sport', md: 'light', outdoor: false, at: 'theme',
     as: 0, hs: 0, q: 1, down: 1, dist: 10, poss: 'home',
-    gameState: 'READY', gc: { rem: 480, run: false },
+    gameState: 'READY', gc: { rem: 480, run: false, max: 480 },
     md7: 'tackle', p7: ['QB','Center','WR','WR','WR','DB','DB'],
     cf: '12h', cs: true,
     awayId: 'h', homeId: 's',
@@ -422,7 +446,14 @@ let S = {
     scoringLog: [], penaltyLog: [], gameHistory: [], script: '',
     cp: {}, ap: '', im: true, ua: 'all', uh: 'all',
     cid: 'h',
-    colors: { scorebugBg: '#0b1220', scorebugText: '#ffffff', accent: '#facc15' }
+    colors: { 
+        scorebugBg: '#1a1a2e', 
+        scorebugText: '#ffffff', 
+        accent: '#facc15',
+        teamCardAway: '#e2e8f0',
+        teamCardHome: '#e2e8f0',
+        teamCardBorder: '#94a3b8'
+    }
 };
 
 const STORAGE_KEY = 'fnl_v22';
@@ -442,7 +473,8 @@ function normalizeState() {
         const alt = S.teams.find(t => t.id !== S.awayId);
         S.homeId = alt ? alt.id : S.awayId;
     }
-    if (!S.colors) S.colors = { scorebugBg: '#0b1220', scorebugText: '#ffffff', accent: '#facc15' };
+    if (!S.colors) S.colors = { scorebugBg: '#1a1a2e', scorebugText: '#ffffff', accent: '#facc15', teamCardAway: '#e2e8f0', teamCardHome: '#e2e8f0', teamCardBorder: '#94a3b8' };
+    if (S.gc.max === undefined) S.gc.max = 480;
 }
 function loadState() {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -541,18 +573,29 @@ function updateWeather() {
 }
 updateWeather();
 
-// Colors - now actually applied
+// Colors - now applies to everything
 function applyColors() {
     document.documentElement.style.setProperty('--accent', S.colors.accent);
+    document.documentElement.style.setProperty('--scorebug-bg', S.colors.scorebugBg);
+    document.documentElement.style.setProperty('--scorebug-text', S.colors.scorebugText);
+    document.documentElement.style.setProperty('--team-card-away', S.colors.teamCardAway);
+    document.documentElement.style.setProperty('--team-card-home', S.colors.teamCardHome);
+    document.documentElement.style.setProperty('--border', S.colors.teamCardBorder);
+    
     const sb = document.getElementById('scorebug');
     if (sb) {
-        sb.style.background = `linear-gradient(180deg, ${S.colors.scorebugBg}, #000)`;
+        sb.style.background = S.colors.scorebugBg;
         sb.style.setProperty('--sb-text', S.colors.scorebugText);
     }
-    // Apply to team cards too
-    document.querySelectorAll('.team-card').forEach((card, idx) => {
-        const team = getTeam(idx === 0 ? 'away' : 'home');
-        if (team) card.style.borderColor = team.color || S.colors.accent;
+    
+    // Apply to team cards
+    document.querySelectorAll('.team-card').forEach((card) => {
+        if (card.classList.contains('away-card')) {
+            card.style.background = S.colors.teamCardAway;
+        } else if (card.classList.contains('home-card')) {
+            card.style.background = S.colors.teamCardHome;
+        }
+        card.style.borderColor = S.colors.teamCardBorder;
     });
 }
 
@@ -561,6 +604,13 @@ function chScore(side, delta) { if (side === 'away') S.as = Math.max(0, S.as + d
 function chQuarter(delta) {
     const maxQ = S.md7 === '7v7' ? 2 : (S.gameState === 'OVERTIME' ? 5 : 4);
     S.q = Math.min(maxQ, Math.max(1, S.q + delta));
+    // Reset clock when quarter changes
+    if (delta !== 0) {
+        S.gc.rem = S.gc.max || 480;
+        S.gc.run = false;
+        updateGameClockDisplay();
+        toast(`⏱️ Clock reset to ${Math.floor(S.gc.rem/60)}:${String(S.gc.rem%60).padStart(2,'0')}`);
+    }
     if (S.gameState !== 'OVERTIME') {
         S.gameState = S.q <= (S.md7 === '7v7' ? 1 : 2) ? 'FIRST_HALF' : 'SECOND_HALF';
     }
@@ -595,7 +645,11 @@ setInterval(() => { if (S.gc.run && S.gc.rem > 0) { S.gc.rem--; updateGameClockD
 
 function updateDDTicker() {
     const el = document.getElementById('ddTicker'); if (!el) return;
-    if (S.gameState === 'READY') { el.textContent = '🏈 SET POSSESSION TO BEGIN'; el.style.background = '#334155'; return; }
+    if (S.gameState === 'READY' || S.gameState === 'FINAL') { 
+        el.textContent = S.gameState === 'FINAL' ? '🏁 GAME FINAL' : '🏈 SET POSSESSION TO BEGIN'; 
+        el.style.background = '#334155'; 
+        return; 
+    }
     const team = getTeam(S.poss);
     const ord = { 1: '1ST', 2: '2ND', 3: '3RD', 4: '4TH' }[S.down] || (S.down + 'TH');
     el.innerHTML = `🏈 ${team.name.toUpperCase()} BALL &nbsp;•&nbsp; ${ord} &amp; ${S.dist}`;
@@ -612,9 +666,9 @@ function updateGameStateBadge() {
 }
 
 // Game state
-function startGame() { if (S.gameState !== 'READY' && !confirm('Game already started. Reset?')) return; S.gameState = 'FIRST_HALF'; S.gc.rem = 480; S.gc.run = false; S.q = 1; S.as = 0; S.hs = 0; S.down = 1; S.dist = 10; S.poss = 'home'; S.scoringLog = []; S.penaltyLog = []; updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); saveState(); toast('🏈 Game started!'); }
+function startGame() { if (S.gameState !== 'READY' && !confirm('Game already started. Reset?')) return; S.gameState = 'FIRST_HALF'; S.gc.rem = S.gc.max || 480; S.gc.run = false; S.q = 1; S.as = 0; S.hs = 0; S.down = 1; S.dist = 10; S.poss = 'home'; S.scoringLog = []; S.penaltyLog = []; updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); saveState(); toast('🏈 Game started!'); }
 function setHalftime() { S.gameState = 'HALFTIME'; S.gc.run = false; updateGameStateBadge(); saveState(); toast('⏸️ Halftime'); }
-function startSecondHalf() { S.gameState = 'SECOND_HALF'; S.gc.rem = 480; S.gc.run = false; S.q = 3; updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); saveState(); toast('⏭️ 2nd Half started'); }
+function startSecondHalf() { S.gameState = 'SECOND_HALF'; S.gc.rem = S.gc.max || 480; S.gc.run = false; S.q = 3; updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); saveState(); toast('⏭️ 2nd Half started'); }
 function setOvertime() { S.gameState = 'OVERTIME'; S.gc.rem = 360; S.gc.run = false; S.q = 5; updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); saveState(); toast('⏱️ Overtime'); }
 function endGame() {
     if (!confirm('End game?')) return;
@@ -625,17 +679,30 @@ function endGame() {
 }
 function startGC() { S.gc.run = true; toast('▶️ Clock running'); saveState(); }
 function pauseGC() { S.gc.run = false; toast('⏸️ Clock paused'); saveState(); }
-function resetGC() { S.gc.run = false; S.gc.rem = 480; updateGameClockDisplay(); saveState(); }
+function resetGC() { S.gc.run = false; S.gc.rem = S.gc.max || 480; updateGameClockDisplay(); saveState(); }
 function resetGame() {
     if (!confirm('Reset game? This clears score, clock, down/distance, and logs.')) return;
     S.as = 0; S.hs = 0; S.q = 1; S.down = 1; S.dist = 10; S.poss = 'home';
-    S.gameState = 'READY'; S.gc.rem = 480; S.gc.run = false;
+    S.gameState = 'READY'; S.gc.rem = S.gc.max || 480; S.gc.run = false;
     S.scoringLog = []; S.penaltyLog = [];
     updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); renderView(); saveState(); toast('🔄 Game reset');
 }
 
 // Game controls
-function setPossession(side) { S.poss = side; renderGame(); updateScorebug(); saveState(); }
+function setPossession(side) { 
+    S.poss = side; 
+    if (S.gameState === 'READY') {
+        S.gameState = 'FIRST_HALF';
+        S.q = 1;
+        S.gc.rem = S.gc.max || 480;
+        updateGameClockDisplay();
+        updateGameStateBadge();
+        toast(`🏈 ${side.toUpperCase()} has the ball - Game started!`);
+    } else {
+        toast(`🏈 ${side.toUpperCase()} has the ball`);
+    }
+    renderGame(); updateScorebug(); saveState(); 
+}
 function firstDown() { S.down = 1; S.dist = 10; renderGame(); updateDDTicker(); toast('1st & 10'); saveState(); }
 function setDown(v) { S.down = parseInt(v) || 1; updateDDTicker(); saveState(); }
 function setDist(v) { S.dist = parseInt(v) || 1; updateDDTicker(); saveState(); }
@@ -703,7 +770,7 @@ function uploadScorebugLogo(side) {
 }
 function toggleScorebugDisplay() { const sb = document.getElementById('scorebug'); if (sb) { sb.style.display = sb.style.display === 'none' ? 'flex' : 'none'; } }
 
-// Navigation
+// Navigation - removed tooltips from tab names
 function renderNav() {
     const views = [
         { id: 'sport', label: '🏈 GAME' }, { id: 'roster', label: '📋 ROSTERS' },
@@ -711,7 +778,7 @@ function renderNav() {
         { id: 'admin', label: '⚙️ ADMIN' }, { id: 'clients', label: '👥 CLIENTS' }
     ];
     let html = '';
-    views.forEach(v => { html += `<button class="nav-link ${S.v === v.id ? 'active' : ''}" onclick="switchView('${v.id}')" data-tooltip="${v.label}">${v.label}</button>`; });
+    views.forEach(v => { html += `<button class="nav-link ${S.v === v.id ? 'active' : ''}" onclick="switchView('${v.id}')">${v.label}</button>`; });
     document.getElementById('mainNav').innerHTML = html;
 }
 function switchView(v) { S.v = v; renderNav(); renderView(); }
@@ -741,19 +808,19 @@ function renderGame() {
     ['away', 'home'].forEach(side => {
         const team = getTeam(side);
         const filter = S[side === 'away' ? 'ua' : 'uh'] || 'all';
-        html += `<div class="team-card">`;
+        html += `<div class="team-card ${side}-card">`;
         html += `<div class="card-head" style="background:${team.color};">`;
         html += `<span>${side.toUpperCase()}</span>`;
         if (team.logo) html += `<img class="mini-logo" src="${team.logo}" alt="">`;
         html += `<select onchange="setSideTeam('${side}', this.value)" data-tooltip="Switch team">${S.teams.map(t => `<option value="${t.id}" ${t.id === team.id ? 'selected' : ''}>${t.name}</option>`).join('')}</select>`;
-        html += `<button class="sb-btn" onclick="setPossession('${side}')" data-tooltip="Give this team the ball">🏈</button>`;
+        html += `<button class="sb-btn" onclick="setPossession('${side}')" data-tooltip="Give this team the ball" style="width:28px;height:28px;">🏈</button>`;
         html += '</div>';
         html += '<div class="unit-tabs">';
-        html += `<button class="unit-tab ${filter === 'all' ? 'active' : ''}" onclick="setFilter('${side}','all')" data-tooltip="All players">ALL</button>`;
+        html += `<button class="unit-tab ${filter === 'all' ? 'active' : ''}" onclick="setFilter('${side}','all')">ALL</button>`;
         if (S.md7 === 'tackle') {
-            html += `<button class="unit-tab ${filter === 'offense' ? 'active' : ''}" onclick="setFilter('${side}','offense')" data-tooltip="Offense">OFF</button>`;
-            html += `<button class="unit-tab ${filter === 'defense' ? 'active' : ''}" onclick="setFilter('${side}','defense')" data-tooltip="Defense">DEF</button>`;
-            html += `<button class="unit-tab ${filter === 'special' ? 'active' : ''}" onclick="setFilter('${side}','special')" data-tooltip="Special teams">ST</button>`;
+            html += `<button class="unit-tab ${filter === 'offense' ? 'active' : ''}" onclick="setFilter('${side}','offense')">OFF</button>`;
+            html += `<button class="unit-tab ${filter === 'defense' ? 'active' : ''}" onclick="setFilter('${side}','defense')">DEF</button>`;
+            html += `<button class="unit-tab ${filter === 'special' ? 'active' : ''}" onclick="setFilter('${side}','special')">ST</button>`;
         }
         html += '</div>';
         html += '<div class="player-list-body">';
@@ -771,6 +838,7 @@ function renderGame() {
     });
     html += '</div>';
     document.getElementById('main').innerHTML = html;
+    applyColors();
 }
 function setFilter(side, f) { if (side === 'away') S.ua = f; else S.uh = f; renderGame(); }
 function toggleStarter(side, pid) { const team = getTeam(side); const p = team.players.find(x => x.id === pid); if (p) { p.st = !p.st; saveState(); renderGame(); } }
@@ -796,7 +864,7 @@ function setSideTeam(side, teamId) {
     saveState(); renderGame(); updateScorebug();
 }
 
-// Roster view
+// Roster view - teams persist across devices via localStorage and cloud sync
 function renderRoster() {
     const sortedTeams = [...S.teams].sort((a, b) => a.name.localeCompare(b.name));
     let selectedTeam = S.teams.find(t => t.id === S.cid) || S.teams[0];
@@ -810,6 +878,7 @@ function renderRoster() {
         html += `<div class="team-item ${t.id === S.cid ? 'active' : ''}" onclick="selectTeam('${t.id}')" data-tooltip="${t.players.length} players">${t.name} (${t.players.length})${badge}</div>`;
     });
     html += '<button class="hdr-btn" style="margin-top:8px;width:100%;" onclick="newTeam()" data-tooltip="Create new team">➕ New Team</button>';
+    html += '<div style="margin-top:8px;font-size:0.55rem;opacity:0.6;text-align:center;">Teams sync across devices via cloud</div>';
     html += '</div>';
     html += '<div class="roster-workspace">';
     html += `<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">`;
@@ -1022,31 +1091,80 @@ function uploadScriptFile(input) {
     r.readAsText(f);
 }
 
-// Admin view
+// Admin view - comprehensive color controls
 function renderAdmin() {
     const tabs = ['theme', 'clock', '7v7', 'colors', 'backup', 'cloud', 'help'];
     const labels = { theme: 'Theme', clock: 'Clock', '7v7': '7v7', colors: 'Colors', backup: 'Backup', cloud: 'Cloud', help: 'Help' };
     let html = '<div class="panel"><h3>⚙️ ADMIN</h3><div class="admin-tabs">';
-    tabs.forEach(x => { html += `<button class="admin-tab ${S.at === x ? 'active' : ''}" onclick="S.at='${x}';renderAdmin()" data-tooltip="${labels[x]}">${labels[x]}</button>`; });
+    tabs.forEach(x => { html += `<button class="admin-tab ${S.at === x ? 'active' : ''}" onclick="S.at='${x}';renderAdmin()">${labels[x]}</button>`; });
     html += '</div><div id="ac"></div></div>';
     document.getElementById('main').innerHTML = html;
     renderAdminContent();
 }
 function renderAdminContent() {
     const c = document.getElementById('ac'); if (!c) return;
-    if (S.at === 'theme') { c.innerHTML = `<h4>Theme</h4><button class="hdr-btn" onclick="toggleTheme()" data-tooltip="Toggle dark/light mode">Toggle Theme</button> <button class="hdr-btn" onclick="toggleOutdoor()" data-tooltip="Toggle outdoor mode">Toggle Outdoor</button>`; }
-    else if (S.at === 'clock') { c.innerHTML = `<h4>Clock Format</h4><label><input type="radio" name="cf" value="12h" ${S.cf === '12h' ? 'checked' : ''} onchange="S.cf='12h';saveState();updateWallClock()"> 12h</label><label><input type="radio" name="cf" value="24h" ${S.cf === '24h' ? 'checked' : ''} onchange="S.cf='24h';saveState();updateWallClock()"> 24h</label><br><label><input type="checkbox" ${S.cs ? 'checked' : ''} onchange="S.cs=this.checked;saveState();updateWallClock()"> Show seconds</label>`; }
-    else if (S.at === '7v7') { c.innerHTML = `<h4>Game Mode</h4><button class="hdr-btn" onclick="S.md7='tackle';saveState();renderAll();renderAdmin()" data-tooltip="11v11 tackle football">${S.md7 === 'tackle' ? '✅ Tackle' : 'Tackle'}</button> <button class="hdr-btn" onclick="S.md7='7v7';saveState();renderAll();renderAdmin()" data-tooltip="7v7 format">${S.md7 === '7v7' ? '✅ 7v7' : '7v7'}</button>`; }
-    else if (S.at === 'colors') {
-        c.innerHTML = `<h4>Colors</h4><div style="display:flex;flex-direction:column;gap:8px;max-width:320px;">
-            <label style="display:flex;justify-content:space-between;align-items:center;">Scorebug Background <input type="color" value="${S.colors.scorebugBg}" oninput="S.colors.scorebugBg=this.value;applyColors();saveState()" data-tooltip="Scorebug background color"></label>
-            <label style="display:flex;justify-content:space-between;align-items:center;">Scorebug Text <input type="color" value="${S.colors.scorebugText}" oninput="S.colors.scorebugText=this.value;applyColors();saveState()" data-tooltip="Scorebug text color"></label>
-            <label style="display:flex;justify-content:space-between;align-items:center;">Accent Color <input type="color" value="${S.colors.accent}" oninput="S.colors.accent=this.value;applyColors();saveState()" data-tooltip="Accent color (gold border, highlights)"></label>
-            <button class="hdr-btn" onclick="S.colors={scorebugBg:'#0b1220',scorebugText:'#ffffff',accent:'#facc15'};applyColors();saveState();renderAdmin();" data-tooltip="Reset colors to default">↺ Reset to Default</button>
-        </div>`;
+    if (S.at === 'theme') { 
+        c.innerHTML = `<h4>Theme</h4>
+            <button class="hdr-btn" onclick="toggleTheme()" data-tooltip="Toggle dark/light mode">Toggle Theme</button> 
+            <button class="hdr-btn" onclick="toggleOutdoor()" data-tooltip="Toggle outdoor mode">Toggle Outdoor</button>`; 
     }
-    else if (S.at === 'backup') { c.innerHTML = `<h4>Backup</h4><button class="hdr-btn" onclick="exportBackup()" data-tooltip="Export backup JSON">📤 Export</button> <button class="hdr-btn" onclick="document.getElementById('impf').click()" data-tooltip="Import backup JSON">📥 Import</button><input type="file" id="impf" accept=".json" style="display:none;" onchange="importBackup(this)">`; }
-    else if (S.at === 'cloud') { c.innerHTML = `<h4>Cloud Sync</h4><button class="hdr-btn" onclick="fnlCloudSaveAll()" data-tooltip="Save to cloud">💾 Save</button> <button class="hdr-btn" onclick="fnlCloudLoadAll()" data-tooltip="Load from cloud">📥 Load</button>`; }
+    else if (S.at === 'clock') { 
+        c.innerHTML = `<h4>Clock Format</h4>
+            <label><input type="radio" name="cf" value="12h" ${S.cf === '12h' ? 'checked' : ''} onchange="S.cf='12h';saveState();updateWallClock()"> 12h</label>
+            <label><input type="radio" name="cf" value="24h" ${S.cf === '24h' ? 'checked' : ''} onchange="S.cf='24h';saveState();updateWallClock()"> 24h</label><br>
+            <label><input type="checkbox" ${S.cs ? 'checked' : ''} onchange="S.cs=this.checked;saveState();updateWallClock()"> Show seconds</label><br><br>
+            <label>Quarter Length: <input type="number" value="${Math.floor((S.gc.max || 480)/60)}" min="1" max="15" style="width:50px;" onchange="S.gc.max=this.value*60;if(S.gc.rem>S.gc.max)S.gc.rem=S.gc.max;saveState();updateGameClockDisplay();"> minutes</label>`;
+    }
+    else if (S.at === '7v7') { 
+        c.innerHTML = `<h4>Game Mode</h4>
+            <button class="hdr-btn" onclick="S.md7='tackle';saveState();renderAll();renderAdmin()" data-tooltip="11v11 tackle football">${S.md7 === 'tackle' ? '✅ Tackle' : 'Tackle'}</button> 
+            <button class="hdr-btn" onclick="S.md7='7v7';saveState();renderAll();renderAdmin()" data-tooltip="7v7 format">${S.md7 === '7v7' ? '✅ 7v7' : '7v7'}</button>`; 
+    }
+    else if (S.at === 'colors') {
+        c.innerHTML = `<h4>🎨 Colors</h4>
+            <div class="admin-color-grid">
+                <div class="admin-color-item">
+                    <label>Scorebug Background</label>
+                    <input type="color" value="${S.colors.scorebugBg}" oninput="S.colors.scorebugBg=this.value;applyColors();saveState()">
+                </div>
+                <div class="admin-color-item">
+                    <label>Scorebug Text</label>
+                    <input type="color" value="${S.colors.scorebugText}" oninput="S.colors.scorebugText=this.value;applyColors();saveState()">
+                </div>
+                <div class="admin-color-item">
+                    <label>Accent Color (gold/borders)</label>
+                    <input type="color" value="${S.colors.accent}" oninput="S.colors.accent=this.value;applyColors();saveState()">
+                </div>
+                <div class="admin-color-item">
+                    <label>Away Team Card Background</label>
+                    <input type="color" value="${S.colors.teamCardAway}" oninput="S.colors.teamCardAway=this.value;applyColors();saveState()">
+                </div>
+                <div class="admin-color-item">
+                    <label>Home Team Card Background</label>
+                    <input type="color" value="${S.colors.teamCardHome}" oninput="S.colors.teamCardHome=this.value;applyColors();saveState()">
+                </div>
+                <div class="admin-color-item">
+                    <label>Card Borders</label>
+                    <input type="color" value="${S.colors.teamCardBorder}" oninput="S.colors.teamCardBorder=this.value;applyColors();saveState()">
+                </div>
+            </div>
+            <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+                <button class="hdr-btn" onclick="S.colors={scorebugBg:'#1a1a2e',scorebugText:'#ffffff',accent:'#facc15',teamCardAway:'#e2e8f0',teamCardHome:'#e2e8f0',teamCardBorder:'#94a3b8'};applyColors();saveState();renderAdmin();" data-tooltip="Reset colors to default">↺ Reset to Default</button>
+                <button class="hdr-btn" onclick="applyColors();toast('✅ Colors applied')" style="background:#22c55e;">✅ Apply Now</button>
+            </div>`;
+    }
+    else if (S.at === 'backup') { 
+        c.innerHTML = `<h4>Backup</h4>
+            <button class="hdr-btn" onclick="exportBackup()" data-tooltip="Export backup JSON">📤 Export</button> 
+            <button class="hdr-btn" onclick="document.getElementById('impf').click()" data-tooltip="Import backup JSON">📥 Import</button>
+            <input type="file" id="impf" accept=".json" style="display:none;" onchange="importBackup(this)">`; 
+    }
+    else if (S.at === 'cloud') { 
+        c.innerHTML = `<h4>Cloud Sync</h4>
+            <p style="font-size:0.7rem;opacity:0.7;margin-bottom:8px;">Teams and rosters sync across all devices via cloud storage.</p>
+            <button class="hdr-btn" onclick="fnlCloudSaveAll()" data-tooltip="Save to cloud">💾 Save</button> 
+            <button class="hdr-btn" onclick="fnlCloudLoadAll()" data-tooltip="Load from cloud">📥 Load</button>`; 
+    }
     else if (S.at === 'help') { 
         c.innerHTML = `<h4>📖 Help</h4><ul style="padding-left:18px;line-height:1.8;">
             <li><kbd>Space</kbd> = Start/Stop game clock (when not typing)</li>
@@ -1058,6 +1176,9 @@ function renderAdminContent() {
             <li>Use dropdown in team cards or Roster tab to assign sides</li>
             <li>Upload .txt or .md only for scripts and rosters</li>
             <li>.docx files are NOT supported</li>
+            <li><strong>To set possession:</strong> Click HOME or AWAY button in Game Controls, or click the 🏈 button on a team card</li>
+            <li><strong>To change quarter length:</strong> Go to Admin → Clock → adjust minutes</li>
+            <li><strong>Teams sync across devices:</strong> Save to cloud, then load on any device</li>
         </ul>`;
     }
 }
