@@ -68,6 +68,8 @@
             background: #22c55e; 
             border-color: #22c55e; 
         }
+        .hdr-btn.save-btn { background: #16a34a; border-color: #16a34a; }
+        .hdr-btn.save-btn:hover { background: #15803d; }
         .hdr-bottom {
             display: flex;
             justify-content: center;
@@ -248,6 +250,16 @@
         }
         .nav-link.active { background: var(--accent); color: #000; border-radius: 6px 6px 0 0; }
         main { flex: 1; overflow: auto; padding: 8px; }
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .panel-header h3 { margin: 0; }
+        .panel-actions { display: flex; gap: 6px; flex-wrap: wrap; }
         .game-controls {
             display: flex; flex-wrap: wrap; gap: 5px; align-items: center;
             background: var(--surface); border: 1px solid var(--border);
@@ -426,8 +438,7 @@
         <div class="hdr-top-right">
             <span class="wall-clock" id="wallClock">12:00 AM</span>
             <span class="weather-pill" id="weatherHeader">--°F</span>
-            <button class="hdr-btn" onclick="fnlCloudSaveAll()" data-tooltip="Save to cloud (Ctrl+S)">💾 SAVE</button>
-            <button class="hdr-btn" onclick="fnlCloudLoadAll()" data-tooltip="Load from cloud">📥 LOAD</button>
+            <button class="hdr-btn save-btn" onclick="fnlCloudSaveAll()" data-tooltip="Save ALL data to cloud (Ctrl+S)">💾 SAVE ALL</button>
             <button class="hdr-btn" id="themeBtn" onclick="toggleTheme()">🌙 Dark</button>
             <button class="hdr-btn" id="outdoorBtn" onclick="toggleOutdoor()" data-tooltip="Outdoor mode (larger text)">🌤</button>
             <button class="hdr-btn" onclick="printLU()" data-tooltip="Print starting lineups">🖨️</button>
@@ -692,8 +703,6 @@ function applyColors() {
     document.documentElement.style.setProperty('--team-card-away', S.colors.teamCardAway);
     document.documentElement.style.setProperty('--team-card-home', S.colors.teamCardHome);
     document.documentElement.style.setProperty('--border', S.colors.teamCardBorder);
-    
-    // The scorebug background is controlled by the CSS variable, no need for inline style
     
     document.querySelectorAll('.team-card').forEach((card) => {
         if (card.classList.contains('away-card')) {
@@ -1006,14 +1015,18 @@ function renderView() {
 }
 function renderAll() { renderNav(); renderView(); updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); }
 
-// Game view - AWAY then HOME (matches scorebug order)
+// Game view
 function renderGame() {
     let html = '';
+    html += '<div class="panel-header">';
+    html += '<h3>🏈 GAME CONTROLS</h3>';
+    html += '<div class="panel-actions">';
+    html += `<button class="hdr-btn" onclick="fnlCloudLoadGameState()" data-tooltip="Load game state from cloud (merges with current)">📥 LOAD GAME STATE</button>`;
+    html += '</div></div>';
     html += '<div class="game-controls">';
     html += `Down: <select onchange="setDown(this.value)">${[1,2,3,4].map(d => `<option ${d === S.down ? 'selected' : ''}>${d}</option>`).join('')}</select>`;
     html += ` Yards: <input type="number" value="${S.dist}" min="1" max="99" style="width:45px;" onchange="setDist(this.value)">`;
     html += `<button class="first-down" onclick="firstDown()" data-tooltip="Reset to 1st & 10">🔻 1st Down</button>`;
-    // AWAY first, then HOME (matches scorebug)
     html += `<button class="${S.poss === 'away' ? 'active' : ''}" onclick="setPossession('away')">✈️ AWAY</button>`;
     html += `<button class="${S.poss === 'home' ? 'active' : ''}" onclick="setPossession('home')">🏠 HOME</button>`;
     html += `<button class="td" onclick="quickScore('td')" data-tooltip="Touchdown +6">TD +6</button>`;
@@ -1023,7 +1036,6 @@ function renderGame() {
     html += `<button class="flag-btn" onclick="quickPenalty()" data-tooltip="Flag penalty">🚩 FLAG</button>`;
     html += '</div>';
     html += '<div class="team-cards">';
-    // Away card first, then Home card
     ['away', 'home'].forEach(side => {
         const team = getTeam(side);
         const filter = S[side === 'away' ? 'ua' : 'uh'] || 'all';
@@ -1091,7 +1103,10 @@ function renderRoster() {
     S.cid = selectedTeam.id;
     let html = '<div class="roster-layout">';
     html += '<div class="team-sidebar">';
-    html += '<h4 style="margin-bottom:8px;">TEAMS</h4>';
+    html += '<div class="panel-header" style="flex-direction:column;align-items:stretch;gap:4px;">';
+    html += '<h4 style="margin-bottom:4px;">TEAMS</h4>';
+    html += `<button class="hdr-btn" onclick="fnlCloudLoadRostersOnly()" data-tooltip="Load teams & rosters from cloud (merges with current)">📥 LOAD ROSTERS</button>`;
+    html += '</div>';
     sortedTeams.forEach(t => {
         const badge = (t.id === S.awayId ? ' ✈️' : '') + (t.id === S.homeId ? ' 🏠' : '');
         html += `<div class="team-item ${t.id === S.cid ? 'active' : ''}" onclick="selectTeam('${t.id}')" data-tooltip="${t.players.length} players">${t.name} (${t.players.length})${badge}</div>`;
@@ -1252,7 +1267,11 @@ function uploadRosterFile(teamId, input) {
 
 // Log view
 function renderLog() {
-    let html = '<div class="panel"><h3>📜 GAME LOG</h3>';
+    let html = '<div class="panel"><div class="panel-header">';
+    html += '<h3>📜 GAME LOG</h3>';
+    html += '<div class="panel-actions">';
+    html += `<button class="hdr-btn" onclick="fnlCloudLoadLogsOnly()" data-tooltip="Load logs from cloud (merges with current)">📥 LOAD LOGS</button>`;
+    html += '</div></div>';
     const events = [...S.scoringLog.map(e => ({...e, type: 'score'})), ...S.penaltyLog.map(e => ({...e, type: 'penalty'}))];
     if (events.length === 0) { html += '<p>No events in current game.</p>'; }
     else {
@@ -1294,6 +1313,11 @@ function printGameLog(idx) {
 // Script view
 function renderScript() {
     let html = '<div style="padding:10px;height:100%;display:flex;flex-direction:column;">';
+    html += '<div class="panel-header">';
+    html += '<h3>🎙️ SCRIPT</h3>';
+    html += '<div class="panel-actions">';
+    html += `<button class="hdr-btn" onclick="fnlCloudLoadScriptOnly()" data-tooltip="Load script from cloud (replaces current)">📥 LOAD SCRIPT</button>`;
+    html += '</div></div>';
     html += '<div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;">';
     html += '<button class="hdr-btn" onclick="document.execCommand(\'bold\')" data-tooltip="Bold"><b>B</b></button>';
     html += '<button class="hdr-btn" onclick="document.execCommand(\'italic\')" data-tooltip="Italic"><i>I</i></button>';
@@ -1324,7 +1348,12 @@ function uploadScriptFile(input) {
 function renderAdmin() {
     const tabs = ['theme', 'clock', '7v7', 'colors', 'backup', 'cloud', 'help'];
     const labels = { theme: 'Theme', clock: 'Clock', '7v7': '7v7', colors: 'Colors', backup: 'Backup', cloud: 'Cloud', help: 'Help' };
-    let html = '<div class="panel"><h3>⚙️ ADMIN</h3><div class="admin-tabs">';
+    let html = '<div class="panel"><div class="panel-header">';
+    html += '<h3>⚙️ ADMIN</h3>';
+    html += '<div class="panel-actions">';
+    html += `<button class="hdr-btn" onclick="fnlCloudLoadSettingsOnly()" data-tooltip="Load settings from cloud (merges with current)">📥 LOAD SETTINGS</button>`;
+    html += '</div></div>';
+    html += '<div class="admin-tabs">';
     tabs.forEach(x => { html += `<button class="admin-tab ${S.at === x ? 'active' : ''}" onclick="S.at='${x}';renderAdmin()">${labels[x]}</button>`; });
     html += '</div><div id="ac"></div></div>';
     document.getElementById('main').innerHTML = html;
@@ -1391,18 +1420,28 @@ function renderAdminContent() {
     }
     else if (S.at === 'cloud') { 
         c.innerHTML = `<h4>Cloud Sync</h4>
-            <p style="font-size:0.7rem;opacity:0.7;margin-bottom:8px;">Teams, rosters, and all settings sync across devices.</p>
-            <button class="hdr-btn" onclick="fnlCloudSaveAll()" data-tooltip="Save to cloud">💾 Save</button> 
-            <button class="hdr-btn" onclick="fnlCloudLoadAll()" data-tooltip="Load from cloud">📥 Load</button>`; 
+            <p style="font-size:0.7rem;opacity:0.7;margin-bottom:8px;">All data syncs via cloud. Use the buttons in each tab to load specific data.</p>
+            <button class="hdr-btn" onclick="fnlCloudSaveAll()" data-tooltip="Save all data to cloud" style="background:#16a34a;border-color:#16a34a;">💾 Save All to Cloud</button>
+            <br><br>
+            <h5 style="margin-top:8px;">Load Options:</h5>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;">
+                <button class="hdr-btn" onclick="fnlCloudLoadGameState()">📥 Game State</button>
+                <button class="hdr-btn" onclick="fnlCloudLoadRostersOnly()">📥 Rosters</button>
+                <button class="hdr-btn" onclick="fnlCloudLoadLogsOnly()">📥 Logs</button>
+                <button class="hdr-btn" onclick="fnlCloudLoadScriptOnly()">📥 Script</button>
+                <button class="hdr-btn" onclick="fnlCloudLoadSettingsOnly()">📥 Settings</button>
+                <button class="hdr-btn" onclick="fnlCloudLoadClientsOnly()">📥 Clients</button>
+            </div>`; 
     }
     else if (S.at === 'help') { 
         c.innerHTML = `<h4>📖 Help</h4><ul style="padding-left:18px;line-height:1.8;">
             <li><kbd>Space</kbd> = Start/Stop game clock (when not typing in a field)</li>
-            <li><kbd>Ctrl/Cmd+S</kbd> = Save to cloud</li>
+            <li><kbd>Ctrl/Cmd+S</kbd> = Save all data to cloud</li>
             <li><strong>To set possession:</strong> Click AWAY or HOME button in Game Controls, or click the 🏈 button on a team card</li>
             <li><strong>Clock only runs</strong> when you click the ▶ (play) button - it never auto-starts</li>
             <li><strong>To change quarter length:</strong> Admin → Clock → adjust minutes</li>
-            <li><strong>Teams sync across devices:</strong> Save to cloud on one device, Load on another</li>
+            <li><strong>Teams sync across devices:</strong> Click SAVE ALL, then on another device use the LOAD buttons in each tab</li>
+            <li><strong>Nothing is automatically overwritten</strong> - each LOAD button asks for confirmation and merges data</li>
             <li>Hover any icon button for a tooltip</li>
             <li>TD = red, FG = blue, PAT = green, Safety = amber</li>
             <li>Upload .txt or .md only for scripts and rosters (no .docx)</li>
@@ -1414,7 +1453,11 @@ function importBackup(input) { const f = input.files[0]; if (!f) return; const r
 
 // Clients view
 function renderClients() {
-    let html = '<div class="panel"><h3>👥 CLIENTS</h3>';
+    let html = '<div class="panel"><div class="panel-header">';
+    html += '<h3>👥 CLIENTS</h3>';
+    html += '<div class="panel-actions">';
+    html += `<button class="hdr-btn" onclick="fnlCloudLoadClientsOnly()" data-tooltip="Load clients from cloud (merges with current)">📥 LOAD CLIENTS</button>`;
+    html += '</div></div>';
     html += '<button class="hdr-btn" onclick="addClient()" data-tooltip="Add new client">➕ Add Client</button> ';
     html += '<button class="hdr-btn" onclick="showAllPINs()" data-tooltip="Show all client PINs">🔑 Show PINs</button>';
     const keys = Object.keys(S.cp);
@@ -1437,7 +1480,12 @@ function editClient(pin) { const c = S.cp[pin]; if (!c) return; const name = pro
 function deleteClient(pin) { if (!confirm('Delete client?')) return; delete S.cp[pin]; saveState(); renderClients(); }
 function showAllPINs() { const ks = Object.keys(S.cp); if (!ks.length) return toast('No clients'); let msg = 'Client PINs:\n'; ks.forEach(p => { msg += `${p} → ${S.cp[p].n}\n`; }); alert(msg); }
 
-// Cloud sync – uses /api/sync/ endpoint with PUT
+// =============================================
+// CLOUD SYNC - SAFE MERGE FUNCTIONS
+// Nothing ever overwrites without confirmation
+// =============================================
+
+// Save everything to cloud
 async function fnlCloudSaveAll() {
     try {
         const snap = JSON.parse(JSON.stringify(S));
@@ -1447,14 +1495,16 @@ async function fnlCloudSaveAll() {
             body: JSON.stringify(snap)
         });
         if (!resp.ok) throw new Error(`Server responded with ${resp.status}`);
-        toast('✅ Saved to cloud');
+        toast('✅ All data saved to cloud');
     } catch(e) {
         toast('❌ Cloud save failed: ' + e.message);
         console.error('Save error:', e);
     }
 }
-async function fnlCloudLoadAll() {
-    if (!confirm('Load from cloud? This will overwrite current data.')) return;
+
+// Load game state only (score, clock, quarter, possession, down/distance)
+async function fnlCloudLoadGameState() {
+    if (!confirm('Load game state from cloud? This will update score, clock, quarter, possession, and down/distance. Current game state will be merged.')) return;
     try {
         const resp = await fetch('https://lineup-api.claytongreenberg.workers.dev/api/sync/fnl_full_sync');
         if (!resp.ok) throw new Error(`Server responded with ${resp.status}`);
@@ -1462,14 +1512,213 @@ async function fnlCloudLoadAll() {
         if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {
             throw new Error('No data found');
         }
-        S = { ...S, ...data };
+        // Only update game state fields
+        if (data.as !== undefined) S.as = data.as;
+        if (data.hs !== undefined) S.hs = data.hs;
+        if (data.q !== undefined) S.q = data.q;
+        if (data.down !== undefined) S.down = data.down;
+        if (data.dist !== undefined) S.dist = data.dist;
+        if (data.poss !== undefined) S.poss = data.poss;
+        if (data.gameState !== undefined) S.gameState = data.gameState;
+        if (data.gc) {
+            if (data.gc.rem !== undefined) S.gc.rem = data.gc.rem;
+            if (data.gc.max !== undefined) S.gc.max = data.gc.max;
+            S.gc.run = false; // Always pause clock on load
+        }
+        saveState();
+        renderAll();
+        toast('✅ Game state loaded from cloud (clock paused)');
+    } catch(e) {
+        toast('❌ Load game state failed: ' + e.message);
+        console.error('Load error:', e);
+    }
+}
+
+// Load rosters only (teams, players, logos, colors)
+async function fnlCloudLoadRostersOnly() {
+    if (!confirm('Load teams and rosters from cloud? New teams will be added, existing teams will be updated. NO data will be deleted.')) return;
+    try {
+        const resp = await fetch('https://lineup-api.claytongreenberg.workers.dev/api/sync/fnl_full_sync');
+        if (!resp.ok) throw new Error(`Server responded with ${resp.status}`);
+        const data = await resp.json();
+        if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {
+            throw new Error('No data found');
+        }
+        // Merge teams - add new teams, update existing teams
+        if (data.teams) {
+            data.teams.forEach(cloudTeam => {
+                const existing = S.teams.find(t => t.id === cloudTeam.id);
+                if (existing) {
+                    // Update existing team
+                    existing.name = cloudTeam.name || existing.name;
+                    existing.abbr = cloudTeam.abbr || existing.abbr;
+                    existing.color = cloudTeam.color || existing.color;
+                    existing.logo = cloudTeam.logo || existing.logo;
+                    existing.mascot = cloudTeam.mascot || existing.mascot;
+                    existing.coach = cloudTeam.coach || existing.coach;
+                    // Merge players (add new, update existing)
+                    if (cloudTeam.players) {
+                        cloudTeam.players.forEach(player => {
+                            const existingPlayer = existing.players.find(p => p.id === player.id);
+                            if (existingPlayer) {
+                                // Update existing player
+                                existingPlayer.n = player.n || existingPlayer.n;
+                                existingPlayer.na = player.na || existingPlayer.na;
+                                existingPlayer.po = player.po || existingPlayer.po;
+                                existingPlayer.st = player.st !== undefined ? player.st : existingPlayer.st;
+                                existingPlayer.nt = player.nt || existingPlayer.nt;
+                                existingPlayer.pron = player.pron || existingPlayer.pron;
+                            } else {
+                                // Add new player
+                                existing.players.push({ ...player });
+                            }
+                        });
+                    }
+                } else {
+                    // Add new team
+                    S.teams.push({ ...cloudTeam, players: cloudTeam.players ? cloudTeam.players.map(p => ({...p})) : [] });
+                }
+            });
+        }
+        // Update away/home IDs if they exist
+        if (data.awayId && S.teams.find(t => t.id === data.awayId)) S.awayId = data.awayId;
+        if (data.homeId && S.teams.find(t => t.id === data.homeId)) S.homeId = data.homeId;
+        // Update colors
+        if (data.colors) {
+            S.colors.scorebugBg = data.colors.scorebugBg || S.colors.scorebugBg;
+            S.colors.scorebugText = data.colors.scorebugText || S.colors.scorebugText;
+            S.colors.accent = data.colors.accent || S.colors.accent;
+            S.colors.teamCardAway = data.colors.teamCardAway || S.colors.teamCardAway;
+            S.colors.teamCardHome = data.colors.teamCardHome || S.colors.teamCardHome;
+            S.colors.teamCardBorder = data.colors.teamCardBorder || S.colors.teamCardBorder;
+        }
         normalizeState();
         saveState();
         renderAll();
-        toast('✅ Loaded from cloud');
+        toast('✅ Rosters loaded from cloud (merged with current)');
     } catch(e) {
-        toast('❌ Cloud load failed: ' + e.message);
-        console.error('Load error:', e);
+        toast('❌ Load rosters failed: ' + e.message);
+        console.error('Load rosters error:', e);
+    }
+}
+
+// Load logs only (scoring log, penalty log, game history)
+async function fnlCloudLoadLogsOnly() {
+    if (!confirm('Load game logs from cloud? Logs will be appended to existing logs. NO data will be deleted.')) return;
+    try {
+        const resp = await fetch('https://lineup-api.claytongreenberg.workers.dev/api/sync/fnl_full_sync');
+        if (!resp.ok) throw new Error(`Server responded with ${resp.status}`);
+        const data = await resp.json();
+        if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {
+            throw new Error('No data found');
+        }
+        // Append logs (don't overwrite)
+        if (data.scoringLog && Array.isArray(data.scoringLog)) {
+            S.scoringLog = [...S.scoringLog, ...data.scoringLog];
+        }
+        if (data.penaltyLog && Array.isArray(data.penaltyLog)) {
+            S.penaltyLog = [...S.penaltyLog, ...data.penaltyLog];
+        }
+        if (data.gameHistory && Array.isArray(data.gameHistory)) {
+            // Merge history, avoid duplicates by checking date
+            data.gameHistory.forEach(cloudGame => {
+                const exists = S.gameHistory.some(localGame => localGame.date === cloudGame.date);
+                if (!exists) {
+                    S.gameHistory.push(cloudGame);
+                }
+            });
+        }
+        saveState();
+        renderAll();
+        toast('✅ Logs loaded from cloud (appended to current)');
+    } catch(e) {
+        toast('❌ Load logs failed: ' + e.message);
+        console.error('Load logs error:', e);
+    }
+}
+
+// Load script only (replaces current script)
+async function fnlCloudLoadScriptOnly() {
+    if (!confirm('Load script from cloud? This will replace the current script.')) return;
+    try {
+        const resp = await fetch('https://lineup-api.claytongreenberg.workers.dev/api/sync/fnl_full_sync');
+        if (!resp.ok) throw new Error(`Server responded with ${resp.status}`);
+        const data = await resp.json();
+        if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {
+            throw new Error('No data found');
+        }
+        if (data.script !== undefined) {
+            S.script = data.script;
+            saveState();
+            renderAll();
+            toast('✅ Script loaded from cloud');
+        } else {
+            toast('ℹ️ No script found in cloud');
+        }
+    } catch(e) {
+        toast('❌ Load script failed: ' + e.message);
+        console.error('Load script error:', e);
+    }
+}
+
+// Load settings only (colors, clock format, game mode)
+async function fnlCloudLoadSettingsOnly() {
+    if (!confirm('Load settings from cloud? This will update colors, clock format, and game mode. Current settings will be merged.')) return;
+    try {
+        const resp = await fetch('https://lineup-api.claytongreenberg.workers.dev/api/sync/fnl_full_sync');
+        if (!resp.ok) throw new Error(`Server responded with ${resp.status}`);
+        const data = await resp.json();
+        if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {
+            throw new Error('No data found');
+        }
+        // Update colors
+        if (data.colors) {
+            S.colors.scorebugBg = data.colors.scorebugBg || S.colors.scorebugBg;
+            S.colors.scorebugText = data.colors.scorebugText || S.colors.scorebugText;
+            S.colors.accent = data.colors.accent || S.colors.accent;
+            S.colors.teamCardAway = data.colors.teamCardAway || S.colors.teamCardAway;
+            S.colors.teamCardHome = data.colors.teamCardHome || S.colors.teamCardHome;
+            S.colors.teamCardBorder = data.colors.teamCardBorder || S.colors.teamCardBorder;
+        }
+        // Update clock settings
+        if (data.cf !== undefined) S.cf = data.cf;
+        if (data.cs !== undefined) S.cs = data.cs;
+        if (data.md7 !== undefined) S.md7 = data.md7;
+        if (data.gc && data.gc.max !== undefined) S.gc.max = data.gc.max;
+        saveState();
+        renderAll();
+        applyColors();
+        toast('✅ Settings loaded from cloud (merged with current)');
+    } catch(e) {
+        toast('❌ Load settings failed: ' + e.message);
+        console.error('Load settings error:', e);
+    }
+}
+
+// Load clients only (merges with current)
+async function fnlCloudLoadClientsOnly() {
+    if (!confirm('Load clients from cloud? New clients will be added. NO existing clients will be deleted.')) return;
+    try {
+        const resp = await fetch('https://lineup-api.claytongreenberg.workers.dev/api/sync/fnl_full_sync');
+        if (!resp.ok) throw new Error(`Server responded with ${resp.status}`);
+        const data = await resp.json();
+        if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {
+            throw new Error('No data found');
+        }
+        // Merge clients (add new, don't overwrite existing)
+        if (data.cp) {
+            Object.keys(data.cp).forEach(pin => {
+                if (!S.cp[pin]) {
+                    S.cp[pin] = data.cp[pin];
+                }
+            });
+        }
+        saveState();
+        renderAll();
+        toast('✅ Clients loaded from cloud (merged with current)');
+    } catch(e) {
+        toast('❌ Load clients failed: ' + e.message);
+        console.error('Load clients error:', e);
     }
 }
 
@@ -1494,7 +1743,14 @@ window.quickScore = quickScore; window.quickPenalty = quickPenalty; window.toggl
 window.resetGame = resetGame; window.switchView = switchView; window.toggleStarter = toggleStarter; window.togglePin = togglePin;
 window.deletePlayer = deletePlayer; window.setFilter = setFilter; window.printGameLog = printGameLog; window.printRoster = printRoster;
 window.saveScript = saveScript; window.printScript = printScript; window.clearScript = clearScript; window.uploadScriptFile = uploadScriptFile;
-window.fnlCloudSaveAll = fnlCloudSaveAll; window.fnlCloudLoadAll = fnlCloudLoadAll; window.printLU = printLU;
+window.fnlCloudSaveAll = fnlCloudSaveAll;
+window.fnlCloudLoadGameState = fnlCloudLoadGameState;
+window.fnlCloudLoadRostersOnly = fnlCloudLoadRostersOnly;
+window.fnlCloudLoadLogsOnly = fnlCloudLoadLogsOnly;
+window.fnlCloudLoadScriptOnly = fnlCloudLoadScriptOnly;
+window.fnlCloudLoadSettingsOnly = fnlCloudLoadSettingsOnly;
+window.fnlCloudLoadClientsOnly = fnlCloudLoadClientsOnly;
+window.printLU = printLU;
 window.uploadScorebugLogo = uploadScorebugLogo; window.toggleScorebugDisplay = toggleScorebugDisplay;
 window.previewTeamLogo = previewTeamLogo; window.saveTeam = saveTeam; window.selectTeam = selectTeam; window.newTeam = newTeam;
 window.addPlayerToTeam = addPlayerToTeam; window.updatePlayerField = updatePlayerField; window.deleteTeamById = deleteTeamById;
