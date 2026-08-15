@@ -94,14 +94,14 @@
             gap: 6px;
             border-bottom: 3px solid var(--accent);
             flex-shrink: 0;
-            min-height: 64px;
+            min-height: auto;
             z-index: 10;
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
         }
         .turf-overlay { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
         .hdr-l, .hdr-b, .hdr-c, .hdr-r, .hdr-client { display: flex; align-items: center; gap: 6px; z-index: 1; flex-shrink: 0; }
         .hdr-l, .hdr-r { background: rgba(0,0,0,0.5); border-radius: 8px; padding: 4px 10px; }
-        .hdr-b { background: rgba(0,0,0,0.4); border-radius: 8px; padding: 4px 12px; border-left: 3px solid var(--accent); display: flex; align-items: center; gap: 8px; z-index: 1; flex-shrink: 0; height: 100%; min-height: 48px; }
+        .hdr-b { background: rgba(0,0,0,0.4); border-radius: 8px; padding: 4px 12px; border-left: 3px solid var(--accent); display: flex; align-items: center; gap: 8px; z-index: 1; flex-shrink: 0; height: auto; min-height: 48px; }
         .hdr-client { background: rgba(0,0,0,0.4); border-radius: 6px; padding: 4px 10px; min-height: 38px; gap: 8px; flex-shrink: 0; max-width: 220px; flex-wrap: wrap; align-items: center; border-left: 3px solid var(--accent); }
         .client-branding { display: flex; align-items: center; gap: 8px; flex-shrink: 0; flex-wrap: wrap; }
         .client-logo { height: 40px; width: 40px; object-fit: contain; display: block; border-radius: 4px; flex-shrink: 0; }
@@ -112,8 +112,8 @@
         .brand-text { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
         .brand-text h1 { font-size: 1rem; color: #fff; font-weight: 900; letter-spacing: -0.2px; white-space: nowrap; }
         .brand-text p { font-size: .6rem; color: var(--accent); font-weight: 700; letter-spacing: 0.5px; white-space: nowrap; }
-        .wall-clock { font-size: 1.1rem; font-weight: 700; color: var(--accent); min-width: 80px; text-align: center; background: rgba(0,0,0,0.5); border-radius: 8px; padding: 6px 12px; white-space: nowrap; height: 100%; min-height: 36px; display: flex; align-items: center; justify-content: center; }
-        .weather-pill-header { font-size: .85rem; color: #fff; display: flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.4); border-radius: 16px; padding: 6px 14px; white-space: nowrap; max-width: 240px; overflow: hidden; text-overflow: ellipsis; cursor: help; height: 100%; min-height: 36px; }
+        .wall-clock { font-size: 1.1rem; font-weight: 700; color: var(--accent); min-width: 80px; text-align: center; background: rgba(0,0,0,0.5); border-radius: 8px; padding: 6px 12px; white-space: nowrap; height: auto; min-height: 36px; display: flex; align-items: center; justify-content: center; }
+        .weather-pill-header { font-size: .85rem; color: #fff; display: flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.4); border-radius: 16px; padding: 6px 14px; white-space: nowrap; max-width: 240px; overflow: hidden; text-overflow: ellipsis; cursor: help; height: auto; min-height: 36px; }
 
         /* Scorebug */
         .scorebug-wrapper { display: flex; align-items: center; gap: 8px; background: transparent; padding: 0; }
@@ -306,7 +306,7 @@
             border: 1px solid var(--border); background: transparent; color: inherit; cursor: pointer; min-height: 30px;
         }
         .game-controls .possession button.active { background: var(--accent); color: #000; border-color: var(--accent); }
-        .game-controls .quick-scores, .game-controls .quick-penalties, .game-controls .game-actions, .game-controls .clock-presets {
+        .game-controls .quick-scores, .game-controls .quick-penalties, .game-controls .game-actions, .game-controls .clock-presets, .game-controls .quarter-controls {
             display: flex; gap: 3px; flex-wrap: wrap;
         }
         .game-controls button {
@@ -323,7 +323,7 @@
         .game-controls .quick-scores button.pat:hover { background: #15803d; }
         .game-controls .quick-scores button.safety { background: #f59e0b; color: #000; border-color: #f59e0b; }
         .game-controls .quick-scores button.safety:hover { background: #d97706; }
-        .flag-btn {
+        .game-controls button.flag-btn {
             background: #facc15;
             color: #000;
             border: 2px solid #facc15;
@@ -334,8 +334,9 @@
             cursor: pointer;
             transition: all 0.15s;
         }
-        .flag-btn:hover { background: #eab308; border-color: #eab308; transform: scale(1.05); }
+        .game-controls button.flag-btn:hover { background: #eab308; border-color: #eab308; transform: scale(1.05); }
         .game-controls .clock-presets button { background: var(--surface); font-size: .65rem; padding: 2px 10px; min-height: 26px; }
+        .game-controls .quarter-controls button { background: var(--surface); font-size: .65rem; padding: 4px 10px; min-height: 30px; }
 
         /* Team Cards */
         .team-cards { display: flex; gap: 4px; flex: 1; min-height: 0; }
@@ -414,11 +415,12 @@
 
         /* Footer */
         footer {
+            position: relative;
             background: #0f172a;
             padding: 4px 12px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             gap: 8px;
             flex-wrap: wrap;
             border-top: 1px solid var(--accent);
@@ -430,7 +432,13 @@
         body.light-mode footer { background: #1e293b; }
         .footer-logo { height: 20px; width: auto; object-fit: contain; display: block; }
         .ft-left, .ft-right { flex: 0 0 auto; }
-        .ft-center { flex: 1 1 auto; text-align: center; }
+        .ft-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            white-space: nowrap;
+        }
         .ft-center a { color: #ef4444; text-decoration: underline; font-weight: 800; }
         .ft-right { font-family: monospace; color: var(--accent); }
 
@@ -496,8 +504,8 @@
         .hdr-r .theme-btn { font-size: .6rem; padding: 3px 10px; min-height: 30px; }
         .hdr-r .btn-sm { font-size: .6rem; padding: 3px 10px; min-height: 30px; min-width: 30px; }
         #logoutBtn { font-size: .6rem; padding: 3px 10px; min-height: 30px; min-width: 30px; background: #666; color: #fff; white-space: nowrap; }
-        .clock-warning { animation: pulse-red 0.8s infinite; color: #ff0000 !important; }
-        .clock-expired { animation: pulse-red 0.4s infinite; color: #ff0000 !important; }
+        .clock-warning { color: #f59e0b !important; }
+        .clock-expired { color: #ff0000 !important; animation: pulse-red 0.8s infinite; }
         @keyframes pulse-red { 0% { opacity: 1; } 50% { opacity: .3; } 100% { opacity: 1; } }
 
         @media(max-width:1100px) { .hdr-c { flex-wrap: wrap; gap: 4px; } .scorebug { padding: 4px 8px; } }
@@ -522,7 +530,7 @@
             .hdr-r .btn-sm { font-size: .5rem; padding: 1px 4px; min-height: 20px; min-width: 20px; }
             .player-list-header, .player-row { grid-template-columns: 20px 28px 1fr 60px 40px 26px 26px 24px; gap: 2px; padding: 3px 4px; font-size: .7rem; }
             .game-controls { flex-direction: column; align-items: stretch; gap: 4px; }
-            .game-controls .down-dist, .game-controls .possession, .game-controls .quick-scores, .game-controls .quick-penalties, .game-controls .game-actions, .game-controls .clock-presets { justify-content: center; flex-wrap: wrap; }
+            .game-controls .down-dist, .game-controls .possession, .game-controls .quick-scores, .game-controls .quick-penalties, .game-controls .game-actions, .game-controls .clock-presets, .game-controls .quarter-controls { justify-content: center; flex-wrap: wrap; }
             .player-edit-row { grid-template-columns: 30px 1fr 50px 40px 1fr 50px 40px 30px 26px; gap: 2px; }
         }
         @media(max-width:480px) {
@@ -538,6 +546,8 @@
             .card-head .team-logo { height: 18px; width: 18px; }
             .player-list-header, .player-row { grid-template-columns: 16px 22px 1fr 44px 32px 22px 22px 20px; font-size: .6rem; gap: 1px; padding: 2px 3px; }
             .player-edit-row { grid-template-columns: 26px 1fr 44px 36px 1fr 44px 36px 26px 22px; gap: 1px; font-size: .6rem; }
+            footer { justify-content: center; }
+            .ft-center { position: static; transform: none; flex: 1 1 100%; order: 2; }
         }
     </style>
 </head>
@@ -581,12 +591,12 @@
 <footer>
     <div class="ft-left"><img src="FNL2.png" class="footer-logo" alt="FNL" onerror="this.style.display='none'"></div>
     <div class="ft-center"><span style="display:inline-block;text-align:center;width:100%;">© 2026 Clayton E. Greenberg | <a href="https://voiceofdfw.com">VoiceofDFW.com</a> | 🏈 Digital Pressbox Command Center 🏈</span></div>
-    <div class="ft-right"><span id="ftTicker">v21.1</span> · <span id="ftSaved">Never saved</span></div>
+    <div class="ft-right"><span id="ftTicker">v21.2</span> · <span id="ftSaved">Never saved</span></div>
 </footer>
 
 <script>
 // ═══════════════════════════════════════════════
-// FRIDAY NIGHT LIVE v21.1 – Optimized Console
+// FRIDAY NIGHT LIVE v21.2 – Optimized Console
 // ═══════════════════════════════════════════════
 "use strict";
 const CLOUD = "https://lineup-api.claytongreenberg.workers.dev/api/lineup";
@@ -646,7 +656,7 @@ function uid() { return Date.now().toString(36) + Math.random().toString(36).sub
 function applyTheme() {
     document.body.classList.remove('light-mode', 'dark-mode', 'seven-mode', 'outdoor-mode');
     if (S.md === 'light') document.body.classList.add('light-mode');
-    else document.body.classList.add('dark-mode'); // dark is default style, but we add class for clarity
+    else document.body.classList.add('dark-mode');
     if (g().md === '7v7') document.body.classList.add('seven-mode');
     if (S.outdoor) document.body.classList.add('outdoor-mode');
     document.getElementById('themeBtn').innerHTML = S.md === 'dark' ? '🌙 Dark' : '☀️ Light';
@@ -725,8 +735,11 @@ function updateGameClockDisplay() {
     if (el) {
         el.textContent = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
         el.classList.remove('clock-warning', 'clock-expired');
-        if (r > 0 && r <= 120) { el.classList.add('clock-warning'); }
-        else if (r === 0) { el.classList.add('clock-expired'); }
+        if (r === 0) {
+            el.classList.add('clock-expired');
+        } else if (r <= 120) {
+            el.classList.add('clock-warning');
+        }
     }
 }
 
@@ -883,7 +896,7 @@ function updateScorebug() {
     const ls = sp.md === '7v7' ? ['1st Half', '2nd Half'] : ['Q1', 'Q2', 'Q3', 'Q4'];
     document.getElementById('sbQuarter').textContent = ls[(sp.q || 1) - 1] || 'Q1';
     document.getElementById('sbQLabel').textContent = sp.md === '7v7' ? 'HALF' : 'QTR';
-    document.getElementById('ftTicker').textContent = 'v21.1 • ' + (at ? at.name : '') + ' vs. ' + (ht ? ht.name : '');
+    document.getElementById('ftTicker').textContent = 'v21.2 • ' + (at ? at.name : '') + ' vs. ' + (ht ? ht.name : '');
 }
 
 // ─── HELPERS ───
@@ -1092,9 +1105,7 @@ function playerStatTooltip(side, pid) {
 function renderGame() {
     const sp = g();
     let html = '<div class="game-grid">';
-    // Game controls
     html += `<div class="game-controls">`;
-    // State badge only if not READY
     if (sp.gameState !== 'READY') {
         const stateClass = String(sp.gameState || '').toLowerCase();
         html += `<div class="state-badge ${stateClass}">${esc(sp.gameState)}</div>`;
@@ -1117,6 +1128,10 @@ function renderGame() {
         </div>
         <div class="quick-penalties">
             <button class="flag-btn" onclick="quickPenalty()" data-tooltip="General penalty flag">🚩 FLAG</button>
+        </div>
+        <div class="quarter-controls">
+            <button onclick="chQuarter(-1)" data-tooltip="Previous quarter">◀ QTR</button>
+            <button onclick="chQuarter(1)" data-tooltip="Next quarter">QTR ▶</button>
         </div>
         <div class="game-actions">
             <button onclick="startGame()" data-tooltip="Start new game">▶ Start</button>
@@ -1145,14 +1160,14 @@ function renderGame() {
             <button onclick="customClock()" data-tooltip="Custom minutes">⏱️</button>
         </div>
     </div>`;
-    // Team cards
     html += `<div class="team-cards">`;
     const positions = getPositions();
     ['away', 'home'].forEach(side => {
         const team = getTeam(side);
         const filter = S['u' + side[0]] || 'all';
         const color = team ? team.color : (side === 'away' ? '#1e3a5f' : '#7f1d1d');
-        html += `<div class="team-card ${side}"><div class="card-head" style="background:${color};">
+        const cardBg = `linear-gradient(180deg, ${team?.color || '#1e293b'}33, var(--surface))`;
+        html += `<div class="team-card ${side}" style="background: ${cardBg}; border: 1px solid ${team?.color || 'var(--border)'}55;"><div class="card-head" style="background:${color};">
             <span>${side.toUpperCase()}</span>${team?.logo ? '<img class="team-logo" src="' + esc(team.logo) + '" onerror="this.style.display=\'none\'">' : ''}
             <select onchange="switchTeam('${side}',this.value)" style="flex:1;">${sp.tms.map(x => '<option value="' + esc(x.id) + '" ' + (x.id === (side === 'away' ? sp.aid : sp.hid) ? 'selected' : '') + '>' + esc(x.name) + '</option>').join('')}</select>
             <button class="btn-sm" onclick="setPossession('${side}')" style="background:${sp.poss === side ? 'var(--accent)' : 'transparent'};color:${sp.poss === side ? '#000' : 'inherit'};" data-tooltip="Set possession">🏈</button>
