@@ -140,6 +140,10 @@
             font-size: 22px; font-weight: 900; color: var(--sb-text); letter-spacing: 1px;
             display: flex; align-items: center; gap: 6px;
         }
+        .sb-label {
+            font-size: 0.5rem; color: var(--sb-text); opacity: 0.5; text-transform: uppercase;
+            letter-spacing: 1px; margin-top: -2px;
+        }
         .sb-poss {
             font-size: 20px;
             animation: sbbounce 0.8s infinite;
@@ -286,7 +290,7 @@
         .player-row {
             display: grid; grid-template-columns: 30px 1fr 56px 26px 26px 24px;
             gap: 4px; align-items: center; padding: 4px; 
-            border-bottom: 2px solid #333; /* DARK LINE separating players */
+            border-bottom: 2px solid #333;
         }
         .player-row:last-child { border-bottom: none; }
         .player-row input, .player-row select {
@@ -434,11 +438,12 @@
             <div class="scorebug" id="scorebug">
                 <span class="sb-network-tag">Voice of DFW Live</span>
                 <span class="live-pill" id="livePill"><span class="dot"></span><span id="livePillText">LIVE</span></span>
-                <!-- AWAY BLOCK -->
+                <!-- AWAY BLOCK (matches AWAY button) -->
                 <div class="sb-block score-block">
                     <div class="sb-name-col">
                         <div class="sb-team-chip" id="sbAwayChip" style="background:#334155;"></div>
                         <span class="sb-abbr" id="sbAwayAbbr">AWY</span>
+                        <span class="sb-label">AWAY</span>
                         <span class="sb-fullname" id="sbAwayFull">Away Team</span>
                     </div>
                     <div class="sb-row">
@@ -457,11 +462,12 @@
                         <button class="sb-btn" onclick="chQuarter(1)" data-tooltip="Next quarter">▶</button>
                     </div>
                 </div>
-                <!-- HOME BLOCK -->
+                <!-- HOME BLOCK (matches HOME button) -->
                 <div class="sb-block score-block">
                     <div class="sb-name-col">
                         <div class="sb-team-chip" id="sbHomeChip" style="background:#334155;"></div>
                         <span class="sb-abbr" id="sbHomeAbbr">HME</span>
+                        <span class="sb-label">HOME</span>
                         <span class="sb-fullname" id="sbHomeFull">Home Team</span>
                     </div>
                     <div class="sb-row">
@@ -677,7 +683,7 @@ function updateWeather() {
 }
 updateWeather();
 
-// Colors - APPLIED to scorebug background
+// Colors
 function applyColors() {
     document.documentElement.style.setProperty('--accent', S.colors.accent);
     document.documentElement.style.setProperty('--scorebug-bg', S.colors.scorebugBg);
@@ -753,7 +759,6 @@ function updateGameClockDisplay() {
     const m = Math.floor(S.gc.rem / 60), s = S.gc.rem % 60;
     const el = document.getElementById('gameClockDisplay');
     el.textContent = `${m}:${String(s).padStart(2, '0')}`;
-    // Color the clock based on state
     if (S.gameState === 'FINAL') {
         el.className = 'game-clock clock-warning';
         el.style.color = '#ff6b6b';
@@ -843,7 +848,7 @@ function startGame() {
 function setHalftime() { 
     S.gameState = 'HALFTIME'; 
     S.gc.run = false; 
-    S.q = 2; // Keep it at Q2 for display
+    S.q = 2;
     updateScorebug(); 
     updateGameClockDisplay(); 
     updateGameStateBadge(); 
@@ -902,7 +907,7 @@ function resetGame() {
     updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); renderView(); saveState(); toast('🔄 Game reset');
 }
 
-// Game controls
+// Game controls - order: AWAY then HOME
 function setPossession(side) { 
     S.poss = side; 
     if (S.gameState === 'READY') {
@@ -1004,15 +1009,16 @@ function renderView() {
 }
 function renderAll() { renderNav(); renderView(); updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); }
 
-// Game view
+// Game view - AWAY then HOME (matches scorebug order)
 function renderGame() {
     let html = '';
     html += '<div class="game-controls">';
     html += `Down: <select onchange="setDown(this.value)">${[1,2,3,4].map(d => `<option ${d === S.down ? 'selected' : ''}>${d}</option>`).join('')}</select>`;
     html += ` Yards: <input type="number" value="${S.dist}" min="1" max="99" style="width:45px;" onchange="setDist(this.value)">`;
     html += `<button class="first-down" onclick="firstDown()" data-tooltip="Reset to 1st & 10">🔻 1st Down</button>`;
-    html += `<button class="${S.poss === 'home' ? 'active' : ''}" onclick="setPossession('home')">🏠 HOME</button>`;
+    // AWAY first, then HOME (matches scorebug)
     html += `<button class="${S.poss === 'away' ? 'active' : ''}" onclick="setPossession('away')">✈️ AWAY</button>`;
+    html += `<button class="${S.poss === 'home' ? 'active' : ''}" onclick="setPossession('home')">🏠 HOME</button>`;
     html += `<button class="td" onclick="quickScore('td')" data-tooltip="Touchdown +6">TD +6</button>`;
     html += `<button class="fg" onclick="quickScore('fg')" data-tooltip="Field Goal +3">FG +3</button>`;
     html += `<button class="pat" onclick="quickScore('pat')" data-tooltip="PAT +1">PAT +1</button>`;
@@ -1020,6 +1026,7 @@ function renderGame() {
     html += `<button class="flag-btn" onclick="quickPenalty()" data-tooltip="Flag penalty">🚩 FLAG</button>`;
     html += '</div>';
     html += '<div class="team-cards">';
+    // Away card first, then Home card
     ['away', 'home'].forEach(side => {
         const team = getTeam(side);
         const filter = S[side === 'away' ? 'ua' : 'uh'] || 'all';
@@ -1385,7 +1392,7 @@ function renderAdminContent() {
         c.innerHTML = `<h4>📖 Help</h4><ul style="padding-left:18px;line-height:1.8;">
             <li><kbd>Space</kbd> = Start/Stop game clock (when not typing in a field)</li>
             <li><kbd>Ctrl/Cmd+S</kbd> = Save to cloud</li>
-            <li><strong>To set possession:</strong> Click HOME or AWAY button in Game Controls, or click the 🏈 button on a team card</li>
+            <li><strong>To set possession:</strong> Click AWAY or HOME button in Game Controls, or click the 🏈 button on a team card</li>
             <li><strong>Clock only runs</strong> when you click the ▶ (play) button - it never auto-starts</li>
             <li><strong>To change quarter length:</strong> Admin → Clock → adjust minutes</li>
             <li><strong>Teams sync across devices:</strong> Save to cloud on one device, Load on another</li>
