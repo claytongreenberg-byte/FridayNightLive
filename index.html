@@ -101,23 +101,33 @@
             min-height: auto;
             z-index: 2;
             flex-wrap: wrap;
+            overflow: visible; /* allow tooltips to overflow */
         }
         .turf-overlay { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
-        .hdr-l, .hdr-b, .hdr-c, .hdr-r, .hdr-client { display: flex; align-items: center; gap: 8px; z-index: 1; flex-shrink: 0; }
-        .hdr-l, .hdr-r { background: rgba(0,0,0,0.5); border-radius: 8px; padding: 4px 12px; }
-        .hdr-b { background: rgba(0,0,0,0.4); border-radius: 8px; padding: 6px 16px; border-left: 3px solid var(--accent); display: flex; align-items: center; gap: 10px; z-index: 1; flex-shrink: 0; height: auto; min-height: 56px; }
-        .hdr-client { background: rgba(0,0,0,0.4); border-radius: 6px; padding: 6px 12px; min-height: 44px; gap: 10px; flex-shrink: 0; max-width: 240px; flex-wrap: wrap; align-items: center; border-left: 3px solid var(--accent); }
+        .hdr-b, .hdr-c, .hdr-r, .hdr-client { display: flex; align-items: center; gap: 8px; z-index: 1; flex-shrink: 0; }
+        .hdr-b { background: rgba(0,0,0,0.4); border-radius: 8px; padding: 6px 16px; border-left: 3px solid var(--accent); min-height: 56px; }
+        .hdr-r { background: rgba(0,0,0,0.5); border-radius: 8px; padding: 4px 12px; }
+        .hdr-c { flex: 1; justify-content: center; min-width: 0; }
+        .hdr-client { background: rgba(0,0,0,0.4); border-radius: 6px; padding: 6px 12px; min-height: 44px; max-width: 240px; flex-wrap: wrap; align-items: center; border-left: 3px solid var(--accent); }
         .client-branding { display: flex; align-items: center; gap: 10px; flex-shrink: 0; flex-wrap: wrap; }
         .client-logo { height: 48px; width: 48px; object-fit: contain; display: block; border-radius: 4px; flex-shrink: 0; }
         .client-name { font-family: 'Inter', 'Arial Black', sans-serif; font-size: 0.9rem; font-weight: 900; color: #fff; text-transform: uppercase; letter-spacing: 0.6px; text-shadow: 0 1px 3px rgba(0,0,0,0.5); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 4px; font-style: italic; word-wrap: break-word; white-space: normal; line-height: 1.2; max-width: 140px; flex-shrink: 1; }
-        .back-link { color: #fff; font-size: 0.8rem; font-weight: 600; text-decoration: none; padding: 4px 10px; border-radius: 4px; white-space: nowrap; }
+        .back-link { display: none; } /* removed */
         .brand-logo-wrapper { display: flex; align-items: center; gap: 8px; background: transparent; padding: 0; }
         .brand-logo { height: 50px; width: auto; object-fit: contain; display: block; flex-shrink: 0; }
         .brand-text { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
         .brand-text h1 { font-size: 1.4rem; color: #fff; font-weight: 900; letter-spacing: -0.2px; white-space: nowrap; }
         .brand-text p { font-size: 0.8rem; color: var(--accent); font-weight: 700; letter-spacing: 0.5px; white-space: nowrap; }
-        .wall-clock { font-size: 1.5rem; font-weight: 700; color: var(--accent); min-width: 100px; text-align: center; background: rgba(0,0,0,0.5); border-radius: 8px; padding: 6px 16px; white-space: nowrap; height: auto; min-height: 44px; display: flex; align-items: center; justify-content: center; }
-        .weather-pill-header { font-size: 1rem; color: #fff; display: flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.4); border-radius: 16px; padding: 6px 16px; white-space: nowrap; max-width: 260px; overflow: hidden; text-overflow: ellipsis; cursor: help; height: auto; min-height: 44px; }
+        .wall-clock {
+            font-size: 1.2rem; font-weight: 700; color: var(--accent); min-width: 80px; text-align: center;
+            background: rgba(0,0,0,0.5); border: 2px solid var(--accent); border-radius: 8px; padding: 4px 12px;
+            white-space: nowrap; height: auto; min-height: 36px; display: flex; align-items: center; justify-content: center;
+        }
+        .weather-pill-header {
+            font-size: 0.9rem; color: #fff; display: flex; align-items: center; gap: 6px;
+            background: rgba(0,0,0,0.4); border: 2px solid var(--accent); border-radius: 16px; padding: 4px 12px;
+            white-space: nowrap; max-width: 220px; overflow: hidden; text-overflow: ellipsis; cursor: help; height: auto; min-height: 36px;
+        }
 
         .scorebug-wrapper { display: flex; align-items: center; gap: 10px; background: transparent; padding: 0; }
         .scorebug {
@@ -125,7 +135,7 @@
             align-items: center;
             gap: 12px;
             background: var(--scorebug-bg);
-            border: 2px solid #475569;
+            border: 3px solid var(--accent);
             padding: 10px 20px;
             border-radius: 14px;
             box-shadow: 0 6px 20px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.1);
@@ -146,8 +156,12 @@
             gap: 6px;
             margin-bottom: 4px;
             letter-spacing: 0.8px;
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
-        .sb-logo-sm { width: 20px; height: 20px; object-fit: contain; border-radius: 2px; }
+        .sb-logo-sm { width: 28px; height: 28px; object-fit: contain; border-radius: 4px; }
         .sb-row { display: flex; align-items: center; gap: 8px; }
         .sb-val {
             font-size: var(--scorebug-font-size);
@@ -210,8 +224,29 @@
         .sb-toggle-btn:hover { background: var(--accent); color: #0f172a; border-color: var(--accent); transform: scale(1.1); }
         .sb-clock-controls { display: flex; gap: 4px; align-items: center; }
         .sb-clock-controls button { width: 32px; height: 32px; font-size: 14px; }
-        .sb-state-buttons { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; }
-        .sb-state-buttons button { width: auto; height: 28px; border-radius: 14px; padding: 0 10px; font-size: 0.7rem; }
+        .sb-game-controls {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+        .sb-game-controls button {
+            width: auto;
+            height: 32px;
+            border-radius: 16px;
+            padding: 0 10px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #334155;
+            color: #fff;
+            border: 1px solid #475569;
+            cursor: pointer;
+        }
+        .sb-game-controls button:hover { background: var(--accent); color: #000; border-color: var(--accent); }
 
         .btn, .btn-sm {
             background: var(--btn-bg);
@@ -234,11 +269,7 @@
             color: var(--btn-hover-text);
             transform: scale(0.98);
         }
-        .btn-primary {
-            background: var(--accent);
-            color: #000;
-            border-color: var(--accent);
-        }
+        .btn-primary { background: var(--accent); color: #000; border-color: var(--accent); }
         .btn-primary:hover { background: #eab308; border-color: #eab308; }
         .btn-red { background: #dc2626 !important; color: white !important; border-color: #dc2626 !important; }
         .btn-save-sync { background: #e6a817; color: #0a1c3a; font-weight: 800; border: 2px solid var(--accent); }
@@ -431,6 +462,7 @@
         .ft-center a { color: #ef4444; text-decoration: underline; font-weight: 800; }
         .ft-right { font-family: monospace; color: var(--accent); }
 
+        /* Tooltips */
         [data-tooltip] { position: relative; cursor: help; }
         [data-tooltip]:before {
             content: attr(data-tooltip);
@@ -448,7 +480,7 @@
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.2s;
-            z-index: 9999;
+            z-index: 10000;
             border: 1px solid #334155;
             box-shadow: 0 4px 12px rgba(0,0,0,0.4);
         }
@@ -495,12 +527,22 @@
         .clock-expired { color: #ff0000 !important; animation: pulse-red 0.8s infinite; }
         @keyframes pulse-red { 0% { opacity: 1; } 50% { opacity: .3; } 100% { opacity: 1; } }
 
-        @media(max-width:1100px) { .hdr-c { flex-wrap: wrap; gap: 4px; } .scorebug { padding: 6px 12px; } }
-        @media(max-width:900px) { .team-cards { flex-direction: column; } .roster-layout { grid-template-columns: 1fr; } .hdr-c { order: 2; width: 100%; justify-content: center; } .hdr-b { flex-wrap: wrap; justify-content: center; padding: 2px 6px; } }
+        @media(max-width:1100px) {
+            header { flex-wrap: wrap; }
+            .hdr-c { order: 2; width: 100%; justify-content: center; }
+            .hdr-b { order: 1; }
+            .hdr-r { order: 3; margin-left: auto; }
+            .scorebug { padding: 6px 12px; }
+        }
+        @media(max-width:900px) {
+            .team-cards { flex-direction: column; }
+            .roster-layout { grid-template-columns: 1fr; }
+        }
         @media(max-width:768px) {
             header { flex-wrap: wrap; min-height: auto; padding: 2px 4px; gap: 2px; }
-            .hdr-b { flex-wrap: wrap; justify-content: center; padding: 2px 6px; }
-            .hdr-c { flex-wrap: wrap; justify-content: center; }
+            .hdr-b { padding: 2px 6px; }
+            .hdr-c { padding: 0; }
+            .hdr-r { padding: 2px; }
             .brand-text h1 { font-size: 0.65rem; }
             .brand-text p { font-size: 0.4rem; }
             .brand-logo { height: 28px; }
@@ -524,7 +566,6 @@
             .brand-logo { height: 24px; }
             .brand-text h1 { font-size: 0.55rem; }
             .brand-text p { font-size: 0.35rem; }
-            .hdr-l { display: none; }
             .client-logo { height: 22px; width: 22px; }
             .client-name { font-size: 0.5rem; max-width: 40px; }
             .hdr-client { padding: 1px 4px; min-height: 22px; }
@@ -541,21 +582,34 @@
 <body>
 <header>
     <div class="turf-overlay" aria-hidden="true"><svg viewBox="0 0 1000 60" preserveAspectRatio="none"><rect width="1000" height="60" fill="url(#tg)"/><defs><linearGradient id="tg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2d6a1e"/><stop offset="100%" stop-color="#1f4d14"/></linearGradient></defs><line x1="100" y1="0" x2="100" y2="60" stroke="white" stroke-width="1.5" opacity=".15"/><line x1="200" y1="0" x2="200" y2="60" stroke="white" stroke-width="1.5" opacity=".15"/><line x1="300" y1="0" x2="300" y2="60" stroke="white" stroke-width="1.5" opacity=".15"/><line x1="400" y1="0" x2="400" y2="60" stroke="white" stroke-width="1.5" opacity=".15"/><line x1="500" y1="0" x2="500" y2="60" stroke="white" stroke-width="1.5" opacity=".15"/><text x="495" y="18" fill="white" font-size="5" opacity=".25" text-anchor="middle">50</text></svg></div>
-    <div class="hdr-l"><a href="https://voiceofdfw.com" class="back-link">← VODFW</a></div>
     <div class="hdr-b">
         <div class="brand-logo-wrapper"><img src="FNL.jpg" alt="FNL" class="brand-logo" onerror="this.style.display='none'"></div>
         <div class="brand-text"><h1>🏈 FRIDAY NIGHT LIVE</h1><p>PA CONSOLE</p></div>
     </div>
-    <div class="hdr-client" id="clientLogoContainer">
-        <div class="client-branding"><img id="clientLogoImg" class="client-logo" src="" style="display:none"><span id="clientNameDisplay" class="client-name" style="display:none"></span></div>
-    </div>
     <div class="hdr-c">
-        <div class="wall-clock" id="wallClock">12:00 AM</div>
-        <div class="weather-pill-header" id="weatherHeader" title="Weather information">--°F | 💨 -- | 💧 --</div>
         <div class="scorebug-wrapper">
             <div class="scorebug" id="scorebug">
-                <div class="sb-block"><span class="sb-abbr" id="sbAwayAbbr">AWAY</span><div class="sb-row"><button onclick="chScore('away',-1)" data-tooltip="Subtract point">−</button><span class="sb-val" id="sbAwayScore">0</span><button onclick="chScore('away',1)" data-tooltip="Add point">+</button></div></div>
-                <div class="sb-block"><span class="sb-abbr" id="sbHomeAbbr">HOME</span><div class="sb-row"><button onclick="chScore('home',-1)" data-tooltip="Subtract point">−</button><span class="sb-val" id="sbHomeScore">0</span><button onclick="chScore('home',1)" data-tooltip="Add point">+</button></div></div>
+                <!-- Team away -->
+                <div class="sb-block">
+                    <span class="sb-abbr" id="sbAwayAbbr">AWAY</span>
+                    <div class="sb-row">
+                        <button onclick="chScore('away',-1)" data-tooltip="Subtract point">−</button>
+                        <span class="sb-val" id="sbAwayScore">0</span>
+                        <button onclick="chScore('away',1)" data-tooltip="Add point">+</button>
+                    </div>
+                    <button class="sb-upload-logo" onclick="uploadScorebugLogo('away')" data-tooltip="Upload team logo" style="width:24px;height:24px;font-size:12px;">📷</button>
+                </div>
+                <!-- Team home -->
+                <div class="sb-block">
+                    <span class="sb-abbr" id="sbHomeAbbr">HOME</span>
+                    <div class="sb-row">
+                        <button onclick="chScore('home',-1)" data-tooltip="Subtract point">−</button>
+                        <span class="sb-val" id="sbHomeScore">0</span>
+                        <button onclick="chScore('home',1)" data-tooltip="Add point">+</button>
+                    </div>
+                    <button class="sb-upload-logo" onclick="uploadScorebugLogo('home')" data-tooltip="Upload team logo" style="width:24px;height:24px;font-size:12px;">📷</button>
+                </div>
+                <!-- Quarter -->
                 <div class="sb-block">
                     <span class="sb-abbr" id="sbQLabel">QTR</span>
                     <span class="sb-qtr" id="sbQuarter">Q1</span>
@@ -564,19 +618,20 @@
                         <button onclick="chQuarter(1)" data-tooltip="Next quarter">▶</button>
                     </div>
                 </div>
-                <div class="sb-block">
-                    <span class="sb-abbr">STATE</span>
-                    <span id="sbStateText" style="font-size:0.8rem;font-weight:700;color:#fff;min-width:80px;text-align:center;">READY</span>
-                    <div class="sb-state-buttons">
-                        <button onclick="startGame()" data-tooltip="Start game">▶</button>
-                        <button onclick="startSecondHalf()" data-tooltip="Start 2nd half">⏭</button>
-                        <button onclick="setHalftime()" data-tooltip="Halftime">⏸</button>
-                        <button onclick="setOvertime()" data-tooltip="Overtime">⏱</button>
-                        <button onclick="endGame()" data-tooltip="End game">🏁</button>
-                    </div>
-                </div>
+                <!-- Game controls (no state text) -->
                 <div class="sb-block">
                     <span class="sb-abbr">GAME</span>
+                    <div class="sb-game-controls">
+                        <button onclick="startGame()" data-tooltip="Start game (Q1)"><span>▶</span> Start</button>
+                        <button onclick="startSecondHalf()" data-tooltip="Start 2nd half (Q3)"><span>⏭</span> 2nd</button>
+                        <button onclick="setHalftime()" data-tooltip="Halftime"><span>⏸</span> Half</button>
+                        <button onclick="setOvertime()" data-tooltip="Overtime"><span>⏱</span> OT</button>
+                        <button onclick="endGame()" data-tooltip="End game"><span>🏁</span> Final</button>
+                    </div>
+                </div>
+                <!-- Clock -->
+                <div class="sb-block">
+                    <span class="sb-abbr">CLOCK</span>
                     <span class="game-clock" id="gameClockDisplay">--:--</span>
                     <div class="sb-clock-controls">
                         <button onclick="setGC()" data-tooltip="Set minutes">⏳</button>
@@ -590,13 +645,15 @@
         </div>
     </div>
     <div class="hdr-r">
-        <button class="btn-sm btn-save-sync" onclick="fnlCloudSaveAll()" title="Save entire game to cloud">💾 SAVE ALL</button>
-        <button class="btn-sm btn-load-sync" onclick="fnlCloudLoadAll()" title="Load entire game from cloud">📥 LOAD ALL</button>
-        <button id="themeBtn" class="theme-btn" onclick="toggleTheme()">☀️ Light</button>
-        <button class="btn-sm" onclick="toggleOutdoor()" title="Toggle Outdoor Mode">🌤</button>
-        <button class="btn btn-sm" onclick="printLU()" title="Print lineup cards">🖨️</button>
-        <button class="btn btn-red btn-sm" id="resetBtn" title="Reset game scores and quarters">RESET</button>
-        <button class="btn btn-sm" id="logoutBtn" onclick="logoutAndShowPIN()" style="background:#666;color:#fff;white-space:nowrap;" title="Switch user">🔓 Switch User</button>
+        <div class="wall-clock" id="wallClock">12:00 AM</div>
+        <div class="weather-pill-header" id="weatherHeader" title="Weather information">--°F | 💨 -- | 💧 --</div>
+        <button class="btn-sm btn-save-sync" onclick="fnlCloudSaveAll()" title="Save entire game to cloud" data-tooltip="Save entire game">💾 SAVE ALL</button>
+        <button class="btn-sm btn-load-sync" onclick="fnlCloudLoadAll()" title="Load entire game from cloud" data-tooltip="Load entire game">📥 LOAD ALL</button>
+        <button id="themeBtn" class="theme-btn" onclick="toggleTheme()" data-tooltip="Toggle theme">☀️ Light</button>
+        <button class="btn-sm" onclick="toggleOutdoor()" title="Toggle Outdoor Mode" data-tooltip="Outdoor mode">🌤</button>
+        <button class="btn btn-sm" onclick="printLU()" title="Print lineup cards" data-tooltip="Print lineup">🖨️</button>
+        <button class="btn btn-red btn-sm" id="resetBtn" title="Reset game scores and quarters" data-tooltip="Reset game">RESET</button>
+        <button class="btn btn-sm" id="logoutBtn" onclick="logoutAndShowPIN()" style="background:#666;color:#fff;white-space:nowrap;" title="Switch user" data-tooltip="Switch user">🔓</button>
     </div>
 </header>
 <nav id="mainNav"></nav>
@@ -605,12 +662,12 @@
 <footer>
     <div class="ft-left"><img src="FNL2.png" class="footer-logo" alt="FNL" onerror="this.style.display='none'"></div>
     <div class="ft-center"><span style="display:inline-block;text-align:center;width:100%;">© 2026 Clayton E. Greenberg | <a href="https://voiceofdfw.com">VoiceofDFW.com</a> | 🏈 Digital Pressbox Command Center 🏈</span></div>
-    <div class="ft-right"><span id="ftTicker">v21.4</span> · <span id="ftSaved">Never saved</span></div>
+    <div class="ft-right"><span id="ftTicker">v21.5</span> · <span id="ftSaved">Never saved</span></div>
 </footer>
 
 <script>
 // ═══════════════════════════════════════════════
-// FRIDAY NIGHT LIVE v21.4 – Final Optimized Console
+// FRIDAY NIGHT LIVE v21.5 – Final Optimized Console
 // ═══════════════════════════════════════════════
 "use strict";
 const CLOUD = "https://lineup-api.claytongreenberg.workers.dev/api/lineup";
@@ -640,7 +697,7 @@ function dummyTeams() {
             makePlayer('h7','33','Elijah Jones','DB',true,"5'9\" Jr",'','',false),
             makePlayer('h8','44','Isaiah Taylor','LB',false,"6'0\" So",'','',false)
         ]),
-        makeTeam('s','Dallas Stars','#7f1d1d','','Stars','',[
+        makeTeam('s','Dallas Cowboys','#7f1d1d','','Cowboys','',[
             makePlayer('s1','12','Caleb White','QB',true,"6'3\" Sr",'','',false),
             makePlayer('s2','72','Mason Lee','Center',true,"6'1\" Jr",'','',false),
             makePlayer('s3','1','Adrian Flores','WR',true,"5'10\" Sr",'','',false),
@@ -907,7 +964,6 @@ function chQuarter(delta) {
     const sp = g();
     const max = sp.md === '7v7' ? 2 : 6;
     sp.q = Math.min(max, Math.max(1, sp.q + delta));
-    // Auto-sync gameState based on quarter
     if (sp.q >= 1 && sp.q <= 2) sp.gameState = 'FIRST_HALF';
     else if (sp.q >= 3 && sp.q <= 4) sp.gameState = 'SECOND_HALF';
     else if (sp.q >= 5) sp.gameState = 'OVERTIME';
@@ -916,17 +972,37 @@ function chQuarter(delta) {
 }
 function updateScorebug() {
     const sp = g(); const at = sp.tms.find(t => t.id === sp.aid), ht = sp.tms.find(t => t.id === sp.hid);
-    document.getElementById('sbAwayAbbr').innerHTML = (at?.logo ? '<img class="sb-logo-sm" src="' + esc(at.logo) + '"> ' : '') + (at ? at.name.substring(0, 4).toUpperCase() : 'AWAY');
-    document.getElementById('sbHomeAbbr').innerHTML = (ht?.logo ? '<img class="sb-logo-sm" src="' + esc(ht.logo) + '"> ' : '') + (ht ? ht.name.substring(0, 4).toUpperCase() : 'HOME');
+    document.getElementById('sbAwayAbbr').innerHTML = (at?.logo ? '<img class="sb-logo-sm" src="' + esc(at.logo) + '"> ' : '') + (at ? esc(at.name) : 'AWAY');
+    document.getElementById('sbHomeAbbr').innerHTML = (ht?.logo ? '<img class="sb-logo-sm" src="' + esc(ht.logo) + '"> ' : '') + (ht ? esc(ht.name) : 'HOME');
     document.getElementById('sbAwayScore').textContent = sp.as || 0;
     document.getElementById('sbHomeScore').textContent = sp.hs || 0;
     const ls = sp.md === '7v7' ? ['1st Half', '2nd Half'] : ['Q1', 'Q2', 'Q3', 'Q4'];
     document.getElementById('sbQuarter').textContent = ls[(sp.q || 1) - 1] || 'Q1';
     document.getElementById('sbQLabel').textContent = sp.md === '7v7' ? 'HALF' : 'QTR';
-    // Update state text
-    const stMap = { READY: 'READY', FIRST_HALF: '1st Half', HALFTIME: 'Halftime', SECOND_HALF: '2nd Half', OVERTIME: 'Overtime', FINAL: 'Final' };
-    document.getElementById('sbStateText').textContent = stMap[sp.gameState] || sp.gameState;
-    document.getElementById('ftTicker').textContent = 'v21.4 • ' + (at ? at.name : '') + ' vs. ' + (ht ? ht.name : '');
+    document.getElementById('ftTicker').textContent = 'v21.5 • ' + (at ? at.name : '') + ' vs. ' + (ht ? ht.name : '');
+}
+
+// ─── UPLOAD SCOREBUG LOGO ───
+function uploadScorebugLogo(side) {
+    const team = getTeam(side);
+    if (!team) return toast('No team selected');
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = function() {
+        const f = input.files[0];
+        if (!f || !f.type.startsWith('image/')) return toast('Image required');
+        if (f.size > 2 * 1024 * 1024) return toast('Max 2MB');
+        const r = new FileReader();
+        r.onload = ev => {
+            team.logo = ev.target.result;
+            saveState();
+            updateScorebug();
+            toast('Logo updated');
+        };
+        r.readAsDataURL(f);
+    };
+    input.click();
 }
 
 // ─── HELPERS ───
@@ -1019,7 +1095,6 @@ function endGame() {
         log: [...sp.scoringLog, ...sp.penaltyLog]
     });
     pushUndo(); saveState(); updateScorebug(); updateGameClockDisplay(); toast('🏁 Game ended – archived');
-    // Generate printable log
     printGameLog();
 }
 
@@ -1027,7 +1102,6 @@ function endGame() {
 function setPossession(side) {
     const sp = g(); if (sp.poss === side) return;
     sp.poss = side; pushUndo(); saveState();
-    // Update UI without full render
     document.querySelectorAll('.possession button').forEach(b => b.classList.remove('active'));
     document.querySelector(`.possession button[onclick="setPossession('${side}')"]`).classList.add('active');
     toast('Possession: ' + (side === 'home' ? 'HOME' : 'AWAY'));
@@ -1294,7 +1368,6 @@ function renderLog() {
 function printRoster(tid) {
     const team = g().tms.find(t => t.id === tid);
     if (!team) return;
-    const positions = getPositions();
     let html = `<html><head><title>${esc(team.name)} Roster</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse;margin-bottom:20px}th,td{border:1px solid #000;padding:4px 6px}th{background:#ddd}</style></head><body>`;
     html += `<h2>${esc(team.name)} Roster</h2>`;
     html += `<table><tr><th>#</th><th>Name</th><th>Pos</th><th>Notes</th><th>Starter</th></tr>`;
@@ -1349,7 +1422,7 @@ function renderRoster() {
     const ct = sp.tms.find(t => t.id === sp.cid) || sp.tms[0];
     const pl = ct ? ct.pl : [];
     let sidebar = '<h3>TEAMS</h3>';
-    sp.tms.forEach(t => { sidebar += `<div class="team-item ${t.id === sp.cid ? 'active' : ''}" onclick="selectTeam('${t.id}')">${esc(t.name)} (${t.pl.length}) <button class="btn-sm" onclick="printRoster('${t.id}')" style="margin-left:auto;background:#666;color:#fff;font-size:0.6rem;padding:2px 6px;min-height:24px;">🖨️</button></div>`; });
+    sp.tms.forEach(t => { sidebar += `<div class="team-item ${t.id === sp.cid ? 'active' : ''}" onclick="selectTeam('${t.id}')">${esc(t.name)} (${t.pl.length}) <button class="btn-sm" onclick="printRoster('${t.id}')" style="margin-left:auto;background:#666;color:#fff;font-size:0.6rem;padding:2px 6px;min-height:24px;" data-tooltip="Print roster">🖨️</button></div>`; });
     sidebar += '<button class="btn-sm" style="margin-top:4px;width:100%" onclick="newTeam()">+ New</button>';
     sidebar += `<div style="margin-top:8px;padding-top:8px;border-top:2px solid var(--accent);">
         <p style="font-size:.65rem;margin-bottom:4px;"><strong>☁️ Cloud Sync</strong></p>
@@ -1887,6 +1960,7 @@ window.selectTeam = selectTeam; window.newTeam = newTeam; window.togglePinRoster
 window.uploadClientLogo = uploadClientLogo; window.setClientLogoFromURL = setClientLogoFromURL; window.clearClientLogo = clearClientLogo;
 window.logoutAndShowPIN = logoutAndShowPIN;
 window.printRoster = printRoster;
+window.uploadScorebugLogo = uploadScorebugLogo;
 
 // ─── INIT ───
 loadState();
