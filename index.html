@@ -503,7 +503,7 @@
                 <div class="sb-block game-block">
                     <span class="sb-abbr" style="font-size:0.6rem;color:var(--sb-text);opacity:.6;">GAME</span>
                     <div class="sb-game-btns">
-                        <button onclick="startGame()" data-tooltip="Start game (Q1)">▶ Start</button>
+                        <button onclick="startGame()" data-tooltip="Start a new game (only works when READY)">▶ Start</button>
                         <button onclick="setHalftime()" data-tooltip="Halftime" id="halfBtn">⏸ Half</button>
                         <button onclick="startSecondHalf()" data-tooltip="Start 2nd half (Q3)">⏭ 2nd</button>
                         <button onclick="setOvertime()" data-tooltip="Overtime">⏱ OT</button>
@@ -803,12 +803,12 @@ function updateDDTicker() {
         el.style.background = '#f59e0b'; 
         return; 
     }
-  if (S.gameState === 'READY') { 
-    const team = getTeam(S.poss);
-    el.textContent = `🏈 ${team.name.toUpperCase()} HAS THE BALL • PRESS "▶ START" TO BEGIN`;
-    el.style.background = '#334155'; 
-    return; 
-}
+    if (S.gameState === 'READY') { 
+        const team = getTeam(S.poss);
+        el.textContent = `🏈 ${team.name.toUpperCase()} HAS THE BALL • PRESS "▶ START" TO BEGIN`;
+        el.style.background = '#334155'; 
+        return; 
+    }
     const team = getTeam(S.poss);
     const ord = { 1: '1ST', 2: '2ND', 3: '3RD', 4: '4TH' }[S.down] || (S.down + 'TH');
     el.innerHTML = `🏈 ${team.name.toUpperCase()} BALL &nbsp;•&nbsp; ${ord} &amp; ${S.dist}`;
@@ -839,8 +839,13 @@ function updateGameStateBadge() {
 }
 
 // Game state - clock NEVER auto-starts
+// Start game - ONLY starts when in READY state. If already started, shows toast message.
 function startGame() { 
-    if (S.gameState !== 'READY' && !confirm('Game already started. Reset?')) return; 
+    // Only start if game is READY
+    if (S.gameState !== 'READY') {
+        toast('⏳ Game already in progress. Use RESET to start over.');
+        return;
+    }
     S.gameState = 'FIRST_HALF'; 
     S.gc.rem = S.gc.max || 480; 
     S.gc.run = false; 
@@ -849,7 +854,10 @@ function startGame() {
     S.down = 1; S.dist = 10; 
     S.poss = 'home'; 
     S.scoringLog = []; S.penaltyLog = []; 
-    updateScorebug(); updateGameClockDisplay(); updateGameStateBadge(); saveState(); 
+    updateScorebug(); 
+    updateGameClockDisplay(); 
+    updateGameStateBadge(); 
+    saveState(); 
     toast('🏈 Game started!'); 
 }
 function setHalftime() { 
@@ -915,7 +923,6 @@ function resetGame() {
 }
 
 // Game controls - order: AWAY then HOME
-
 function setPossession(side) { 
     S.poss = side; 
     toast(`🏈 ${side.toUpperCase()} has the ball`);
