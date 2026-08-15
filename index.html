@@ -1347,7 +1347,7 @@ function renderAdminContent() {
             <label><input type="radio" name="cf" value="24h" ${S.cf === '24h' ? 'checked' : ''} onchange="S.cf='24h';saveState();updateWallClock()"> 24h</label><br>
             <label><input type="checkbox" ${S.cs ? 'checked' : ''} onchange="S.cs=this.checked;saveState();updateWallClock()"> Show seconds</label><br><br>
             <label style="font-weight:700;">Quarter Length: <input type="number" value="${Math.floor((S.gc.max || 480)/60)}" min="1" max="15" style="width:50px;padding:4px;border:1px solid var(--border);border-radius:4px;" onchange="S.gc.max=this.value*60;if(S.gc.rem>S.gc.max)S.gc.rem=S.gc.max;saveState();updateGameClockDisplay();"> minutes</label>
-            <p style="font-size:0.65rem;opacity:0.7;margin-top:4px;">Clock only runs when you click ▶ (play) button</p>`;
+            <p style="font-size:0.65rem;opacity:0.7;margin-top:4px;">Clock only runs when you click ▶ (play) button</p>`; 
     }
     else if (S.at === '7v7') { 
         c.innerHTML = `<h4>Game Mode</h4>
@@ -1441,11 +1441,41 @@ function editClient(pin) { const c = S.cp[pin]; if (!c) return; const name = pro
 function deleteClient(pin) { if (!confirm('Delete client?')) return; delete S.cp[pin]; saveState(); renderClients(); }
 function showAllPINs() { const ks = Object.keys(S.cp); if (!ks.length) return toast('No clients'); let msg = 'Client PINs:\n'; ks.forEach(p => { msg += `${p} → ${S.cp[p].n}\n`; }); alert(msg); }
 
-// Cloud sync
+// Cloud sync – UPDATED to use /api/sync/ endpoint with PUT
 async function fnlCloudSaveAll() {
-    try { const snap = JSON.parse(JSON.stringify(S)); await fetch('https://lineup-api.claytongreenberg.workers.dev/api/lineup?id=fnl_full_sync', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(snap) }); toast('✅ Saved to cloud'); } catch(e) { toast('❌ Cloud save failed'); }
+    try {
+        const snap = JSON.parse(JSON.stringify(S));
+        const resp = await fetch('https://lineup-api.claytongreenberg.workers.dev/api/sync/fnl_full_sync', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(snap)
+        });
+        if (!resp.ok) throw new Error(`Server responded with ${resp.status}`);
+        toast('✅ Saved to cloud');
+    } catch(e) {
+        toast('❌ Cloud save failed: ' + e.message);
+        console.error('Save error:', e);
+    }
 }
-async function fnlCloudLoadAll() { if (!confirm('Load from cloud?')) return; try { const r = await fetch('https://lineup-api.claytongreenberg.workers.dev/api/lineup?id=fnl_full_sync'); if (!r.ok) throw new Error('No data'); S = await r.json(); normalizeState(); saveState(); renderAll(); toast('✅ Loaded from cloud'); } catch(e) { toast('❌ Cloud load failed'); } }
+async function fnlCloudLoadAll() {
+    if (!confirm('Load from cloud? This will overwrite current data.')) return;
+    try {
+        const resp = await fetch('https://lineup-api.claytongreenberg.workers.dev/api/sync/fnl_full_sync');
+        if (!resp.ok) throw new Error(`Server responded with ${resp.status}`);
+        const data = await resp.json();
+        if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {
+            throw new Error('No data found');
+        }
+        S = { ...S, ...data };
+        normalizeState();
+        saveState();
+        renderAll();
+        toast('✅ Loaded from cloud');
+    } catch(e) {
+        toast('❌ Cloud load failed: ' + e.message);
+        console.error('Load error:', e);
+    }
+}
 
 // Print starting lineups
 function printLU() {
