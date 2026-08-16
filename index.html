@@ -1911,100 +1911,95 @@
         updateGameStateBadge();
         updateUndoButton(); }
 
-    // ---- GAME VIEW ----
-    function renderGame() {
-        let html = '';
+function renderGame() {
+    let html = '';
 
-        // QUICK CUES - Row 1
-        html += '<div class="quick-cues">';
-        html += '<button onclick="quickCue(\'🔻 FIRST DOWN\',\'info\')" data-tooltip="Announce 1st down">🔻 1st Down</button>';
-        html += '<button onclick="quickCue(\'🏈 PUNT\',\'info\')" data-tooltip="Announce punt">🦵 Punt</button>';
-        html += '<button onclick="quickCue(\'🔄 INTERCEPTION\',\'info\')" data-tooltip="Announce interception">🔄 INT</button>';
-        html += '<button onclick="quickCue(\'😱 FUMBLE\',\'info\')" data-tooltip="Announce fumble">😱 Fumble</button>';
-        html += '<button onclick="quickCue(\'⏱️ END OF QUARTER\',\'info\')" data-tooltip="Announce end of quarter">⏱️ End Qtr</button>';
-        html += `<button class="flag" onclick="quickPenalty()" data-tooltip="Flag penalty">🚩 FLAG</button>`;
+    // QUICK CUES - Row 1
+    html += '<div class="quick-cues">';
+    html += '<button onclick="quickCue(\'🔻 FIRST DOWN\',\'info\')" data-tooltip="Announce 1st down">🔻 1st Down</button>';
+    html += '<button onclick="quickCue(\'🏈 PUNT\',\'info\')" data-tooltip="Announce punt">🦵 Punt</button>';
+    html += '<button onclick="quickCue(\'🔄 INTERCEPTION\',\'info\')" data-tooltip="Announce interception">🔄 INT</button>';
+    html += '<button onclick="quickCue(\'😱 FUMBLE\',\'info\')" data-tooltip="Announce fumble">😱 Fumble</button>';
+    html += '<button onclick="quickCue(\'⏱️ END OF QUARTER\',\'info\')" data-tooltip="Announce end of quarter">⏱️ End Qtr</button>';
+    html += `<button class="flag" onclick="quickPenalty()" data-tooltip="Flag penalty">🚩 FLAG</button>`;
+    html += '</div>';
+
+    // GAME CONTROLS - Row 2 (ALL controls on ONE row - NO separator, NO header)
+    const awayTeam = getTeam('away');
+    const homeTeam = getTeam('home');
+    const awayLogo = awayTeam.logo ? `<img class="team-logo" src="${awayTeam.logo}" alt="">` : '';
+    const homeLogo = homeTeam.logo ? `<img class="team-logo" src="${homeTeam.logo}" alt="">` : '';
+    const awayColor = awayTeam.color || '#475569';
+    const homeColor = homeTeam.color || '#475569';
+
+    html += `<div class="game-controls-row">`;
+    // POSSESSION
+    html += `<span class="label">🏈</span>`;
+    html += `<button class="pos-btn ${S.poss === 'away' ? 'active' : ''}" onclick="setPossession('away')" style="${S.poss === 'away' ? 'background:' + awayColor + ';border-color:' + awayColor + ';' : 'border-color:' + awayColor + ';'}">${awayLogo} ${awayTeam.abbr || 'AWY'}</button>`;
+    html += `<button class="pos-btn ${S.poss === 'home' ? 'active' : ''}" onclick="setPossession('home')" style="${S.poss === 'home' ? 'background:' + homeColor + ';border-color:' + homeColor + ';' : 'border-color:' + homeColor + ';'}">${homeLogo} ${homeTeam.abbr || 'HME'}</button>`;
+    html += `<button class="to-btn" onclick="useTimeout('away')" data-tooltip="Away timeout">⏱ AWAY</button>`;
+    html += `<button class="to-btn" onclick="useTimeout('home')" data-tooltip="Home timeout">⏱ HOME</button>`;
+    html += `<button class="to-btn injury-btn" onclick="injuryTimeout()" data-tooltip="Injury timeout">🆘 INJ</button>`;
+    html += `<span class="clock-status ${S.gc.run ? 'running' : 'paused'}">${S.gc.run ? '▶ LIVE' : '⏸ PAUSED'}</span>`;
+    html += `<span class="divider"></span>`;
+    // DOWN & DISTANCE
+    html += `<span class="label">DOWN</span>`;
+    html += `<select onchange="setDown(this.value)">${[1,2,3,4].map(d => `<option ${d === S.down ? 'selected' : ''}>${d}</option>`).join('')}</select>`;
+    html += `<span class="label">YDS</span>`;
+    html += `<input type="number" value="${S.dist}" min="1" max="99" style="width:32px;" onchange="setDist(this.value)" class="yd-input">`;
+    html += `<button class="gc-btn" onclick="adjustYards(-1)" data-tooltip="-1 yd">-1</button>`;
+    html += `<button class="gc-btn" onclick="adjustYards(1)" data-tooltip="+1 yd">+1</button>`;
+    html += `<span class="divider"></span>`;
+    // SCORING
+    html += `<span class="label">SCORE</span>`;
+    html += `<button class="gc-btn td" onclick="quickScore('td')" data-tooltip="TD +6">TD</button>`;
+    html += `<button class="gc-btn fg" onclick="quickScore('fg')" data-tooltip="FG +3">FG</button>`;
+    html += `<button class="gc-btn twopt" onclick="quickScore('twopt')" data-tooltip="2PT +2">2PT</button>`;
+    html += `<button class="gc-btn pat" onclick="quickScore('pat')" data-tooltip="PAT +1">PAT</button>`;
+    html += `<button class="gc-btn safety" onclick="quickScore('safety')" data-tooltip="Safety +2">Safe</button>`;
+    // LOAD GAME STATE (moved into the row as a small button)
+    html += `<button class="gc-btn" onclick="fnlCloudLoadGameState()" data-tooltip="Load game state from cloud" style="background:#334155;border-color:#475569;">📥LOAD</button>`;
+    html += `</div>`;
+
+    // ---- TEAM CARDS ----
+    html += '<div class="team-cards">';
+    ['away', 'home'].forEach(side => {
+        const team = getTeam(side);
+        const filter = S[side === 'away' ? 'ua' : 'uh'] || 'all';
+        html += `<div class="team-card ${side}-card">`;
+        html += `<div class="card-head" style="background:${team.color};">`;
+        html += `<span>${side.toUpperCase()}</span>`;
+        if (team.logo) html += `<img class="mini-logo" src="${team.logo}" alt="">`;
+        html += `<select onchange="setSideTeam('${side}', this.value)" data-tooltip="Switch team" style="border-color:${team.color};">${S.teams.map(t => `<option value="${t.id}" ${t.id === team.id ? 'selected' : ''}>${t.name}</option>`).join('')}</select>`;
+        html += `<button class="sb-btn" onclick="setPossession('${side}')" data-tooltip="Give ball" style="width:22px;height:22px;">🏈</button>`;
         html += '</div>';
-
-        html += '<div class="panel-header">';
-        html += '<h3>GAME CONTROLS</h3>';
-        html += '<div class="panel-actions">';
-        html += `<button class="hdr-btn" onclick="fnlCloudLoadGameState()" data-tooltip="Load game state from cloud">📥 LOAD GAME STATE</button>`;
-        html += '</div></div>';
-
-        // ---- GAME CONTROLS ROW - Row 2 (ONE SINGLE ROW - no wrapping) ----
-        const awayTeam = getTeam('away');
-        const homeTeam = getTeam('home');
-        const awayLogo = awayTeam.logo ? `<img class="team-logo" src="${awayTeam.logo}" alt="">` : '';
-        const homeLogo = homeTeam.logo ? `<img class="team-logo" src="${homeTeam.logo}" alt="">` : '';
-        const awayColor = awayTeam.color || '#475569';
-        const homeColor = homeTeam.color || '#475569';
-
-        html += `<div class="game-controls-row">`;
-        // POSSESSION
-        html += `<span class="label">🏈</span>`;
-        html += `<button class="pos-btn ${S.poss === 'away' ? 'active' : ''}" onclick="setPossession('away')" style="${S.poss === 'away' ? 'background:' + awayColor + ';border-color:' + awayColor + ';' : 'border-color:' + awayColor + ';'}">${awayLogo} ${awayTeam.abbr || 'AWY'}</button>`;
-        html += `<button class="pos-btn ${S.poss === 'home' ? 'active' : ''}" onclick="setPossession('home')" style="${S.poss === 'home' ? 'background:' + homeColor + ';border-color:' + homeColor + ';' : 'border-color:' + homeColor + ';'}">${homeLogo} ${homeTeam.abbr || 'HME'}</button>`;
-        html += `<button class="to-btn" onclick="useTimeout('away')" data-tooltip="Away timeout">⏱ AWAY</button>`;
-        html += `<button class="to-btn" onclick="useTimeout('home')" data-tooltip="Home timeout">⏱ HOME</button>`;
-        html += `<button class="to-btn injury-btn" onclick="injuryTimeout()" data-tooltip="Injury timeout (clock paused, no TO charged)">🆘 INJ</button>`;
-        html += `<span class="clock-status ${S.gc.run ? 'running' : 'paused'}">${S.gc.run ? '▶ LIVE' : '⏸ PAUSED'}</span>`;
-        html += `<span class="divider"></span>`;
-        // DOWN & DISTANCE
-        html += `<span class="label">DOWN</span>`;
-        html += `<select onchange="setDown(this.value)">${[1,2,3,4].map(d => `<option ${d === S.down ? 'selected' : ''}>${d}</option>`).join('')}</select>`;
-        html += `<span class="label">YDS</span>`;
-        html += `<input type="number" value="${S.dist}" min="1" max="99" style="width:32px;" onchange="setDist(this.value)" class="yd-input">`;
-        html += `<button class="gc-btn" onclick="adjustYards(-1)" data-tooltip="-1 yd">-1</button>`;
-        html += `<button class="gc-btn" onclick="adjustYards(1)" data-tooltip="+1 yd">+1</button>`;
-        html += `<span class="divider"></span>`;
-        // SCORING
-        html += `<span class="label">SCORE</span>`;
-        html += `<button class="gc-btn td" onclick="quickScore('td')" data-tooltip="TD +6">TD</button>`;
-        html += `<button class="gc-btn fg" onclick="quickScore('fg')" data-tooltip="FG +3">FG</button>`;
-        html += `<button class="gc-btn twopt" onclick="quickScore('twopt')" data-tooltip="2PT +2">2PT</button>`;
-        html += `<button class="gc-btn pat" onclick="quickScore('pat')" data-tooltip="PAT +1">PAT</button>`;
-        html += `<button class="gc-btn safety" onclick="quickScore('safety')" data-tooltip="Safety +2">Safe</button>`;
-        html += `</div>`;
-
-        // ---- TEAM CARDS ----
-        html += '<div class="team-cards">';
-        ['away', 'home'].forEach(side => {
-            const team = getTeam(side);
-            const filter = S[side === 'away' ? 'ua' : 'uh'] || 'all';
-            html += `<div class="team-card ${side}-card">`;
-            html += `<div class="card-head" style="background:${team.color};">`;
-            html += `<span>${side.toUpperCase()}</span>`;
-            if (team.logo) html += `<img class="mini-logo" src="${team.logo}" alt="">`;
-            html += `<select onchange="setSideTeam('${side}', this.value)" data-tooltip="Switch team" style="border-color:${team.color};">${S.teams.map(t => `<option value="${t.id}" ${t.id === team.id ? 'selected' : ''}>${t.name}</option>`).join('')}</select>`;
-            html += `<button class="sb-btn" onclick="setPossession('${side}')" data-tooltip="Give ball" style="width:22px;height:22px;">🏈</button>`;
+        html += '<div class="unit-tabs">';
+        html += `<button class="unit-tab ${filter === 'all' ? 'active' : ''}" onclick="setFilter('${side}','all')">ALL</button>`;
+        if (S.md7 === 'tackle') {
+            html += `<button class="unit-tab ${filter === 'offense' ? 'active' : ''}" onclick="setFilter('${side}','offense')">OFF</button>`;
+            html += `<button class="unit-tab ${filter === 'defense' ? 'active' : ''}" onclick="setFilter('${side}','defense')">DEF</button>`;
+            html += `<button class="unit-tab ${filter === 'special' ? 'active' : ''}" onclick="setFilter('${side}','special')">ST</button>`;
+        }
+        html += '</div>';
+        html += '<div class="player-list-body">';
+        getPlayers(side, filter).forEach(p => {
+            html += `<div class="player-row${p.st ? ' starter' : ''}">`;
+            html += `<input value="${p.n}" style="width:28px;color:#0a0a0a;font-weight:700;font-size:0.7rem;" onchange="updateGamePlayerField('${side}','${p.id}','n',this.value)">`;
+            html += `<input value="${p.na}" style="color:#0a0a0a;font-weight:700;font-size:0.7rem;" onchange="updateGamePlayerField('${side}','${p.id}','na',this.value)">`;
+            html += `<select onchange="updateGamePlayerField('${side}','${p.id}','po',this.value)" style="color:#0a0a0a;font-weight:700;font-size:0.7rem;">${getPositions().map(o => `<option ${p.po === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
+            html += `<button class="st-toggle ${p.st ? 'active' : ''}" onclick="toggleStarter('${side}','${p.id}')" data-tooltip="Starter">⭐</button>`;
+            html += `<button class="pin-btn" onclick="togglePin('${side}','${p.id}')" data-tooltip="Pin">📌</button>`;
+            html += `<button class="sb-btn" onclick="deletePlayer('${side}','${p.id}')" data-tooltip="Delete" style="width:18px;height:18px;font-size:9px;">✕</button>`;
             html += '</div>';
-            html += '<div class="unit-tabs">';
-            html += `<button class="unit-tab ${filter === 'all' ? 'active' : ''}" onclick="setFilter('${side}','all')">ALL</button>`;
-            if (S.md7 === 'tackle') {
-                html += `<button class="unit-tab ${filter === 'offense' ? 'active' : ''}" onclick="setFilter('${side}','offense')">OFF</button>`;
-                html += `<button class="unit-tab ${filter === 'defense' ? 'active' : ''}" onclick="setFilter('${side}','defense')">DEF</button>`;
-                html += `<button class="unit-tab ${filter === 'special' ? 'active' : ''}" onclick="setFilter('${side}','special')">ST</button>`;
-            }
-            html += '</div>';
-            html += '<div class="player-list-body">';
-            getPlayers(side, filter).forEach(p => {
-                html += `<div class="player-row${p.st ? ' starter' : ''}">`;
-                html += `<input value="${p.n}" style="width:28px;color:#0a0a0a;font-weight:700;font-size:0.7rem;" onchange="updateGamePlayerField('${side}','${p.id}','n',this.value)">`;
-                html += `<input value="${p.na}" style="color:#0a0a0a;font-weight:700;font-size:0.7rem;" onchange="updateGamePlayerField('${side}','${p.id}','na',this.value)">`;
-                html += `<select onchange="updateGamePlayerField('${side}','${p.id}','po',this.value)" style="color:#0a0a0a;font-weight:700;font-size:0.7rem;">${getPositions().map(o => `<option ${p.po === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
-                html += `<button class="st-toggle ${p.st ? 'active' : ''}" onclick="toggleStarter('${side}','${p.id}')" data-tooltip="Starter">⭐</button>`;
-                html += `<button class="pin-btn" onclick="togglePin('${side}','${p.id}')" data-tooltip="Pin">📌</button>`;
-                html += `<button class="sb-btn" onclick="deletePlayer('${side}','${p.id}')" data-tooltip="Delete" style="width:18px;height:18px;font-size:9px;">✕</button>`;
-                html += '</div>';
-            });
-            html += '</div></div>';
         });
-        html += '</div>';
-        document.getElementById('main').innerHTML = html;
-        applyColors();
-        updateUndoButton();
-        updateTimeoutDisplay();
-    }
+        html += '</div></div>';
+    });
+    html += '</div>';
+    document.getElementById('main').innerHTML = html;
+    applyColors();
+    updateUndoButton();
+    updateTimeoutDisplay();
+}
 
     function setFilter(side, f) { if (side === 'away') S.ua = f;
         else S.uh = f;
