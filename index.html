@@ -449,7 +449,7 @@
             flex-wrap: wrap;
         }
 
-        /* Quick cues */
+        /* QUICK CUES - Row 1 */
         .quick-cues {
             display: flex;
             flex-wrap: wrap;
@@ -490,7 +490,7 @@
             border-color: #dc2626;
         }
 
-        /* SINGLE GAME CONTROLS ROW */
+        /* GAME CONTROLS ROW - Row 2 (ALL controls on ONE row) */
         .game-controls-row {
             display: flex;
             flex-wrap: wrap;
@@ -564,6 +564,12 @@
             transform: scale(1.04);
             background: #ea580c;
         }
+        .game-controls-row .to-btn.injury-btn {
+            background: #dc2626;
+        }
+        .game-controls-row .to-btn.injury-btn:hover {
+            background: #b91c1c;
+        }
         .game-controls-row .clock-status {
             font-size: 0.55rem;
             opacity: 0.6;
@@ -610,11 +616,11 @@
         .game-controls-row .gc-btn.pat { background: #16a34a; border-color: #16a34a; }
         .game-controls-row .gc-btn.safety { background: #f59e0b; color: #000; border-color: #f59e0b; }
 
-        /* Team cards - BIGGER player text */
+        /* Team cards */
         .team-cards {
             display: flex;
             gap: 6px;
-            height: calc(100% - 115px);
+            height: calc(100% - 120px);
             min-height: 200px;
         }
         .team-card {
@@ -1042,7 +1048,9 @@
 </footer>
 
 <script>
+    // ============================================================
     // FULL STATE
+    // ============================================================
     let S = {
         v: 'sport',
         md: 'light',
@@ -1500,12 +1508,11 @@
             document.getElementById('btnFinal').classList.remove('final-active'); }
     }
 
-    // ---- TIMEOUTS - FIXED ----
+    // ---- TIMEOUTS ----
     function updateTimeoutDisplay() {
         const away = S.timeouts.away || 0;
         const home = S.timeouts.home || 0;
 
-        // Update away timeouts
         const awayTO1 = document.getElementById('awayTO1');
         const awayTO2 = document.getElementById('awayTO2');
         const awayTO3 = document.getElementById('awayTO3');
@@ -1513,37 +1520,12 @@
         if (awayTO2) awayTO2.className = 'timeout-dot' + (2 > away ? ' used' : '');
         if (awayTO3) awayTO3.className = 'timeout-dot' + (3 > away ? ' used' : '');
 
-        // Update home timeouts
         const homeTO1 = document.getElementById('homeTO1');
         const homeTO2 = document.getElementById('homeTO2');
         const homeTO3 = document.getElementById('homeTO3');
         if (homeTO1) homeTO1.className = 'timeout-dot' + (1 > home ? ' used' : '');
         if (homeTO2) homeTO2.className = 'timeout-dot' + (2 > home ? ' used' : '');
         if (homeTO3) homeTO3.className = 'timeout-dot' + (3 > home ? ' used' : '');
-
-        // Update the "NONE" text for the displays
-        const awayContainer = document.querySelector('.sb-block.score-block:first-child .timeout-display');
-        const homeContainer = document.querySelector('.sb-block.score-block:last-child .timeout-display');
-
-        if (awayContainer && away === 0) {
-            awayContainer.innerHTML = `<span class="timeout-zero">NONE</span>`;
-        } else if (awayContainer) {
-            let html = `<span class="timeout-label">TO:</span>`;
-            for (let i = 1; i <= 3; i++) {
-                html += `<span class="timeout-dot${i > away ? ' used' : ''}"></span>`;
-            }
-            awayContainer.innerHTML = html;
-        }
-
-        if (homeContainer && home === 0) {
-            homeContainer.innerHTML = `<span class="timeout-zero">NONE</span>`;
-        } else if (homeContainer) {
-            let html = `<span class="timeout-label">TO:</span>`;
-            for (let i = 1; i <= 3; i++) {
-                html += `<span class="timeout-dot${i > home ? ' used' : ''}"></span>`;
-            }
-            homeContainer.innerHTML = html;
-        }
     }
 
     function useTimeout(side) {
@@ -1888,13 +1870,12 @@
     function renderGame() {
         let html = '';
 
-        // QUICK CUES
+        // QUICK CUES - Row 1
         html += '<div class="quick-cues">';
         html += '<button onclick="quickCue(\'🔻 FIRST DOWN\',\'info\')" data-tooltip="Announce 1st down">🔻 1st Down</button>';
         html += '<button onclick="quickCue(\'🏈 PUNT\',\'info\')" data-tooltip="Announce punt">🦵 Punt</button>';
         html += '<button onclick="quickCue(\'🔄 INTERCEPTION\',\'info\')" data-tooltip="Announce interception">🔄 INT</button>';
         html += '<button onclick="quickCue(\'😱 FUMBLE\',\'info\')" data-tooltip="Announce fumble">😱 Fumble</button>';
-        html += `<button class="injury" onclick="injuryTimeout()" data-tooltip="Injury timeout (clock paused, no TO charged)">🆘 Injury</button>`;
         html += '<button onclick="quickCue(\'⏱️ END OF QUARTER\',\'info\')" data-tooltip="Announce end of quarter">⏱️ End Qtr</button>';
         html += `<button class="flag" onclick="quickPenalty()" data-tooltip="Flag penalty">🚩 FLAG</button>`;
         html += '</div>';
@@ -1905,7 +1886,7 @@
         html += `<button class="hdr-btn" onclick="fnlCloudLoadGameState()" data-tooltip="Load game state from cloud">📥 LOAD GAME STATE</button>`;
         html += '</div></div>';
 
-        // ---- SINGLE GAME CONTROLS ROW ----
+        // ---- GAME CONTROLS ROW - Row 2 (ALL controls on ONE row) ----
         const awayTeam = getTeam('away');
         const homeTeam = getTeam('home');
         const awayLogo = awayTeam.logo ? `<img class="team-logo" src="${awayTeam.logo}" alt="">` : '';
@@ -1920,6 +1901,7 @@
         html += `<button class="pos-btn ${S.poss === 'home' ? 'active' : ''}" onclick="setPossession('home')" style="${S.poss === 'home' ? 'background:' + homeColor + ';border-color:' + homeColor + ';' : 'border-color:' + homeColor + ';'}">${homeLogo} ${homeTeam.abbr || 'HME'}</button>`;
         html += `<button class="to-btn" onclick="useTimeout('away')" data-tooltip="Away timeout">⏱ AWAY TO</button>`;
         html += `<button class="to-btn" onclick="useTimeout('home')" data-tooltip="Home timeout">⏱ HOME TO</button>`;
+        html += `<button class="to-btn injury-btn" onclick="injuryTimeout()" data-tooltip="Injury timeout (clock paused, no TO charged)">🆘 INJURY</button>`;
         html += `<span class="clock-status ${S.gc.run ? 'running' : 'paused'}">${S.gc.run ? '▶ LIVE' : '⏸ PAUSED'}</span>`;
         html += `<span class="divider"></span>`;
         // DOWN & DISTANCE
