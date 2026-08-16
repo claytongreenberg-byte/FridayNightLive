@@ -1986,7 +1986,7 @@
         html += `<button class="to-btn" onclick="useTimeout('away')" data-tooltip="Away timeout">⏱ AWAY</button>`;
         html += `<button class="to-btn" onclick="useTimeout('home')" data-tooltip="Home timeout">⏱ HOME</button>`;
         html += `<button class="to-btn injury-btn" onclick="injuryTimeout()" data-tooltip="Injury timeout">🆘 INJ</button>`;
-        html += `<span class="clock-status ${S.gc.run ? 'running' : 'paused'}">${S.gc.run ? '▶ LIVE' : '⏸ PAUSED'}</span>`;
+     html += `<span class="clock-status ${S.gc.run ? 'running' : 'paused'}" id="clockStatusIndicator">${S.gc.run ? '▶ LIVE' : '⏸ PAUSED'}</span>`;
         html += `<span class="divider"></span>`;
         // DOWN & DISTANCE
         html += `<span class="label">DOWN</span>`;
