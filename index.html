@@ -177,7 +177,11 @@
             border-right: 1px solid rgba(255,255,255,0.06);
             flex: 1 1 0;
             min-width: 60px;
+            cursor: pointer;
+            transition: all 0.15s;
         }
+        .sb-block:hover { background: rgba(255,255,255,0.03); }
+        .sb-block:active { transform: scale(0.98); }
         .sb-block:last-child { border-right: none; }
         .sb-block.score-block { flex: 1.3; }
         .sb-block.clock-block { flex: 0.9; }
@@ -485,7 +489,7 @@
             border-color: var(--accent);
         }
 
-        /* ===== GAME CONTROLS ROW - Row 2 (ONE SINGLE ROW) ===== */
+        /* GAME CONTROLS ROW - Row 2 (ONE SINGLE ROW) */
         .game-controls-row {
             display: flex;
             flex-wrap: nowrap;
@@ -574,7 +578,6 @@
         }
         .game-controls-row .clock-status {
             font-size: 0.5rem;
-            opacity: 0.6;
             padding: 2px 8px;
             background: rgba(0,0,0,0.05);
             border-radius: 10px;
@@ -622,6 +625,7 @@
         .game-controls-row .gc-btn.twopt { background: #8b5cf6; border-color: #8b5cf6; }
         .game-controls-row .gc-btn.pat { background: #16a34a; border-color: #16a34a; }
         .game-controls-row .gc-btn.safety { background: #f59e0b; color: #000; border-color: #f59e0b; }
+        .game-controls-row .gc-btn.load-btn { background: #334155; border-color: #475569; }
 
         /* Team cards */
         .team-cards {
@@ -892,6 +896,24 @@
             font-size: 0.7rem;
         }
 
+        /* Client logo styles */
+        .client-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+        }
+        .client-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 4px;
+        }
+
         @media (max-width: 1024px) {
             .scorebug { padding: 8px 10px; min-height: 130px; flex-wrap: wrap; }
             .sb-block { padding: 0 8px; min-width: 40px; }
@@ -975,7 +997,7 @@
                 <span class="sb-network-tag">Voice of DFW Live</span>
                 <span class="live-pill" id="livePill"><span class="dot"></span><span id="livePillText">LIVE</span></span>
                 <!-- AWAY -->
-                <div class="sb-block score-block">
+                <div class="sb-block score-block" onclick="setPossession('away')" data-tooltip="Click to set possession to Away">
                     <div class="sb-name-col">
                         <div class="sb-team-chip" id="sbAwayChip" style="background:#334155;"></div>
                         <span class="sb-abbr" id="sbAwayAbbr">AWY</span>
@@ -983,11 +1005,11 @@
                         <span class="sb-fullname" id="sbAwayFull">Away</span>
                     </div>
                     <div class="sb-row">
-                        <button class="sb-btn" onclick="chScore('away',-1)" data-tooltip="Subtract point">−</button>
+                        <button class="sb-btn" onclick="event.stopPropagation();chScore('away',-1)" data-tooltip="Subtract point">−</button>
                         <span class="sb-val" id="sbAwayScore">0</span>
-                        <button class="sb-btn" onclick="chScore('away',1)" data-tooltip="Add point">+</button>
+                        <button class="sb-btn" onclick="event.stopPropagation();chScore('away',1)" data-tooltip="Add point">+</button>
                     </div>
-                    <button class="sb-btn" onclick="uploadScorebugLogo('away')" data-tooltip="Upload logo" style="width:22px;height:22px;font-size:10px;margin-top:2px;">📷</button>
+                    <button class="sb-btn" onclick="event.stopPropagation();uploadScorebugLogo('away')" data-tooltip="Upload logo" style="width:22px;height:22px;font-size:10px;margin-top:2px;">📷</button>
                     <div class="timeout-display">
                         <span class="timeout-label">TO:</span>
                         <span class="timeout-dot" id="awayTO1"></span>
@@ -1005,7 +1027,7 @@
                     </div>
                 </div>
                 <!-- HOME -->
-                <div class="sb-block score-block">
+                <div class="sb-block score-block" onclick="setPossession('home')" data-tooltip="Click to set possession to Home">
                     <div class="sb-name-col">
                         <div class="sb-team-chip" id="sbHomeChip" style="background:#334155;"></div>
                         <span class="sb-abbr" id="sbHomeAbbr">HME</span>
@@ -1013,11 +1035,11 @@
                         <span class="sb-fullname" id="sbHomeFull">Home</span>
                     </div>
                     <div class="sb-row">
-                        <button class="sb-btn" onclick="chScore('home',-1)" data-tooltip="Subtract point">−</button>
+                        <button class="sb-btn" onclick="event.stopPropagation();chScore('home',-1)" data-tooltip="Subtract point">−</button>
                         <span class="sb-val" id="sbHomeScore">0</span>
-                        <button class="sb-btn" onclick="chScore('home',1)" data-tooltip="Add point">+</button>
+                        <button class="sb-btn" onclick="event.stopPropagation();chScore('home',1)" data-tooltip="Add point">+</button>
                     </div>
-                    <button class="sb-btn" onclick="uploadScorebugLogo('home')" data-tooltip="Upload logo" style="width:22px;height:22px;font-size:10px;margin-top:2px;">📷</button>
+                    <button class="sb-btn" onclick="event.stopPropagation();uploadScorebugLogo('home')" data-tooltip="Upload logo" style="width:22px;height:22px;font-size:10px;margin-top:2px;">📷</button>
                     <div class="timeout-display">
                         <span class="timeout-label">TO:</span>
                         <span class="timeout-dot" id="homeTO1"></span>
@@ -1628,7 +1650,6 @@
         S.gameState = 'HALFTIME';
         S.gc.run = false;
         S.q = 2;
-        // RESET TIMEOUTS FOR SECOND HALF
         const timeoutCount = S.md7 === '7v7' ? (S.timeoutConfig.sevens ? S.timeoutConfig.sevens.perHalf : 0) : (S.timeoutConfig.tackle ? S.timeoutConfig.tackle.perHalf : 3);
         S.timeouts = { away: timeoutCount, home: timeoutCount };
         pushUndo();
@@ -1646,7 +1667,6 @@
         S.gc.rem = S.gc.max || 480;
         S.gc.run = false;
         S.q = 3;
-        // RESET TIMEOUTS FOR SECOND HALF
         const timeoutCount = S.md7 === '7v7' ? (S.timeoutConfig.sevens ? S.timeoutConfig.sevens.perHalf : 0) : (S.timeoutConfig.tackle ? S.timeoutConfig.tackle.perHalf : 3);
         S.timeouts = { away: timeoutCount, home: timeoutCount };
         pushUndo();
@@ -1701,17 +1721,23 @@
         toast('▶️ Clock running');
         updateGameClockDisplay();
         saveState();
+        // Update the clock status in the game controls row
+        renderGame();
     }
 
-    function pauseGC() { S.gc.run = false;
+    function pauseGC() {
+        S.gc.run = false;
         toast('⏸️ Clock paused');
         updateGameClockDisplay();
-        saveState(); }
+        saveState();
+        renderGame();
+    }
 
     function resetGC() { S.gc.run = false;
         S.gc.rem = S.gc.max || 480;
         updateGameClockDisplay();
-        saveState(); }
+        saveState();
+        renderGame(); }
 
     function resetGame() {
         if (!confirm('Reset game? Clears score, clock, logs.')) return;
@@ -1738,6 +1764,7 @@
         saveState();
         setLastEvent('🔄 Game reset', 'info');
         toast('🔄 Game reset');
+        renderGame();
     }
 
     // ---- Game controls ----
@@ -1911,95 +1938,96 @@
         updateGameStateBadge();
         updateUndoButton(); }
 
-function renderGame() {
-    let html = '';
+    // ---- GAME VIEW ----
+    function renderGame() {
+        let html = '';
 
-    // QUICK CUES - Row 1
-    html += '<div class="quick-cues">';
-    html += '<button onclick="quickCue(\'🔻 FIRST DOWN\',\'info\')" data-tooltip="Announce 1st down">🔻 1st Down</button>';
-    html += '<button onclick="quickCue(\'🏈 PUNT\',\'info\')" data-tooltip="Announce punt">🦵 Punt</button>';
-    html += '<button onclick="quickCue(\'🔄 INTERCEPTION\',\'info\')" data-tooltip="Announce interception">🔄 INT</button>';
-    html += '<button onclick="quickCue(\'😱 FUMBLE\',\'info\')" data-tooltip="Announce fumble">😱 Fumble</button>';
-    html += '<button onclick="quickCue(\'⏱️ END OF QUARTER\',\'info\')" data-tooltip="Announce end of quarter">⏱️ End Qtr</button>';
-    html += `<button class="flag" onclick="quickPenalty()" data-tooltip="Flag penalty">🚩 FLAG</button>`;
-    html += '</div>';
-
-    // GAME CONTROLS - Row 2 (ALL controls on ONE row - NO separator, NO header)
-    const awayTeam = getTeam('away');
-    const homeTeam = getTeam('home');
-    const awayLogo = awayTeam.logo ? `<img class="team-logo" src="${awayTeam.logo}" alt="">` : '';
-    const homeLogo = homeTeam.logo ? `<img class="team-logo" src="${homeTeam.logo}" alt="">` : '';
-    const awayColor = awayTeam.color || '#475569';
-    const homeColor = homeTeam.color || '#475569';
-
-    html += `<div class="game-controls-row">`;
-    // POSSESSION
-    html += `<span class="label">🏈</span>`;
-    html += `<button class="pos-btn ${S.poss === 'away' ? 'active' : ''}" onclick="setPossession('away')" style="${S.poss === 'away' ? 'background:' + awayColor + ';border-color:' + awayColor + ';' : 'border-color:' + awayColor + ';'}">${awayLogo} ${awayTeam.abbr || 'AWY'}</button>`;
-    html += `<button class="pos-btn ${S.poss === 'home' ? 'active' : ''}" onclick="setPossession('home')" style="${S.poss === 'home' ? 'background:' + homeColor + ';border-color:' + homeColor + ';' : 'border-color:' + homeColor + ';'}">${homeLogo} ${homeTeam.abbr || 'HME'}</button>`;
-    html += `<button class="to-btn" onclick="useTimeout('away')" data-tooltip="Away timeout">⏱ AWAY</button>`;
-    html += `<button class="to-btn" onclick="useTimeout('home')" data-tooltip="Home timeout">⏱ HOME</button>`;
-    html += `<button class="to-btn injury-btn" onclick="injuryTimeout()" data-tooltip="Injury timeout">🆘 INJ</button>`;
-    html += `<span class="clock-status ${S.gc.run ? 'running' : 'paused'}">${S.gc.run ? '▶ LIVE' : '⏸ PAUSED'}</span>`;
-    html += `<span class="divider"></span>`;
-    // DOWN & DISTANCE
-    html += `<span class="label">DOWN</span>`;
-    html += `<select onchange="setDown(this.value)">${[1,2,3,4].map(d => `<option ${d === S.down ? 'selected' : ''}>${d}</option>`).join('')}</select>`;
-    html += `<span class="label">YDS</span>`;
-    html += `<input type="number" value="${S.dist}" min="1" max="99" style="width:32px;" onchange="setDist(this.value)" class="yd-input">`;
-    html += `<button class="gc-btn" onclick="adjustYards(-1)" data-tooltip="-1 yd">-1</button>`;
-    html += `<button class="gc-btn" onclick="adjustYards(1)" data-tooltip="+1 yd">+1</button>`;
-    html += `<span class="divider"></span>`;
-    // SCORING
-    html += `<span class="label">SCORE</span>`;
-    html += `<button class="gc-btn td" onclick="quickScore('td')" data-tooltip="TD +6">TD</button>`;
-    html += `<button class="gc-btn fg" onclick="quickScore('fg')" data-tooltip="FG +3">FG</button>`;
-    html += `<button class="gc-btn twopt" onclick="quickScore('twopt')" data-tooltip="2PT +2">2PT</button>`;
-    html += `<button class="gc-btn pat" onclick="quickScore('pat')" data-tooltip="PAT +1">PAT</button>`;
-    html += `<button class="gc-btn safety" onclick="quickScore('safety')" data-tooltip="Safety +2">Safe</button>`;
-    // LOAD GAME STATE (moved into the row as a small button)
-    html += `<button class="gc-btn" onclick="fnlCloudLoadGameState()" data-tooltip="Load game state from cloud" style="background:#334155;border-color:#475569;">📥LOAD</button>`;
-    html += `</div>`;
-
-    // ---- TEAM CARDS ----
-    html += '<div class="team-cards">';
-    ['away', 'home'].forEach(side => {
-        const team = getTeam(side);
-        const filter = S[side === 'away' ? 'ua' : 'uh'] || 'all';
-        html += `<div class="team-card ${side}-card">`;
-        html += `<div class="card-head" style="background:${team.color};">`;
-        html += `<span>${side.toUpperCase()}</span>`;
-        if (team.logo) html += `<img class="mini-logo" src="${team.logo}" alt="">`;
-        html += `<select onchange="setSideTeam('${side}', this.value)" data-tooltip="Switch team" style="border-color:${team.color};">${S.teams.map(t => `<option value="${t.id}" ${t.id === team.id ? 'selected' : ''}>${t.name}</option>`).join('')}</select>`;
-        html += `<button class="sb-btn" onclick="setPossession('${side}')" data-tooltip="Give ball" style="width:22px;height:22px;">🏈</button>`;
+        // QUICK CUES - Row 1
+        html += '<div class="quick-cues">';
+        html += '<button onclick="quickCue(\'🔻 FIRST DOWN\',\'info\')" data-tooltip="Announce 1st down">🔻 1st Down</button>';
+        html += '<button onclick="quickCue(\'🏈 PUNT\',\'info\')" data-tooltip="Announce punt">🦵 Punt</button>';
+        html += '<button onclick="quickCue(\'🔄 INTERCEPTION\',\'info\')" data-tooltip="Announce interception">🔄 INT</button>';
+        html += '<button onclick="quickCue(\'😱 FUMBLE\',\'info\')" data-tooltip="Announce fumble">😱 Fumble</button>';
+        html += '<button onclick="quickCue(\'⏱️ END OF QUARTER\',\'info\')" data-tooltip="Announce end of quarter">⏱️ End Qtr</button>';
+        html += `<button class="flag" onclick="quickPenalty()" data-tooltip="Flag penalty">🚩 FLAG</button>`;
         html += '</div>';
-        html += '<div class="unit-tabs">';
-        html += `<button class="unit-tab ${filter === 'all' ? 'active' : ''}" onclick="setFilter('${side}','all')">ALL</button>`;
-        if (S.md7 === 'tackle') {
-            html += `<button class="unit-tab ${filter === 'offense' ? 'active' : ''}" onclick="setFilter('${side}','offense')">OFF</button>`;
-            html += `<button class="unit-tab ${filter === 'defense' ? 'active' : ''}" onclick="setFilter('${side}','defense')">DEF</button>`;
-            html += `<button class="unit-tab ${filter === 'special' ? 'active' : ''}" onclick="setFilter('${side}','special')">ST</button>`;
-        }
-        html += '</div>';
-        html += '<div class="player-list-body">';
-        getPlayers(side, filter).forEach(p => {
-            html += `<div class="player-row${p.st ? ' starter' : ''}">`;
-            html += `<input value="${p.n}" style="width:28px;color:#0a0a0a;font-weight:700;font-size:0.7rem;" onchange="updateGamePlayerField('${side}','${p.id}','n',this.value)">`;
-            html += `<input value="${p.na}" style="color:#0a0a0a;font-weight:700;font-size:0.7rem;" onchange="updateGamePlayerField('${side}','${p.id}','na',this.value)">`;
-            html += `<select onchange="updateGamePlayerField('${side}','${p.id}','po',this.value)" style="color:#0a0a0a;font-weight:700;font-size:0.7rem;">${getPositions().map(o => `<option ${p.po === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
-            html += `<button class="st-toggle ${p.st ? 'active' : ''}" onclick="toggleStarter('${side}','${p.id}')" data-tooltip="Starter">⭐</button>`;
-            html += `<button class="pin-btn" onclick="togglePin('${side}','${p.id}')" data-tooltip="Pin">📌</button>`;
-            html += `<button class="sb-btn" onclick="deletePlayer('${side}','${p.id}')" data-tooltip="Delete" style="width:18px;height:18px;font-size:9px;">✕</button>`;
+
+        // ---- GAME CONTROLS ROW - Row 2 (ALL controls on ONE row) ----
+        const awayTeam = getTeam('away');
+        const homeTeam = getTeam('home');
+        const awayLogo = awayTeam.logo ? `<img class="team-logo" src="${awayTeam.logo}" alt="">` : '';
+        const homeLogo = homeTeam.logo ? `<img class="team-logo" src="${homeTeam.logo}" alt="">` : '';
+        const awayColor = awayTeam.color || '#475569';
+        const homeColor = homeTeam.color || '#475569';
+
+        html += `<div class="game-controls-row">`;
+        // POSSESSION
+        html += `<span class="label">🏈</span>`;
+        html += `<button class="pos-btn ${S.poss === 'away' ? 'active' : ''}" onclick="setPossession('away')" style="${S.poss === 'away' ? 'background:' + awayColor + ';border-color:' + awayColor + ';' : 'border-color:' + awayColor + ';'}">${awayLogo} ${awayTeam.abbr || 'AWY'}</button>`;
+        html += `<button class="pos-btn ${S.poss === 'home' ? 'active' : ''}" onclick="setPossession('home')" style="${S.poss === 'home' ? 'background:' + homeColor + ';border-color:' + homeColor + ';' : 'border-color:' + homeColor + ';'}">${homeLogo} ${homeTeam.abbr || 'HME'}</button>`;
+        html += `<button class="to-btn" onclick="useTimeout('away')" data-tooltip="Away timeout">⏱ AWAY</button>`;
+        html += `<button class="to-btn" onclick="useTimeout('home')" data-tooltip="Home timeout">⏱ HOME</button>`;
+        html += `<button class="to-btn injury-btn" onclick="injuryTimeout()" data-tooltip="Injury timeout">🆘 INJ</button>`;
+        html += `<span class="clock-status ${S.gc.run ? 'running' : 'paused'}">${S.gc.run ? '▶ LIVE' : '⏸ PAUSED'}</span>`;
+        html += `<span class="divider"></span>`;
+        // DOWN & DISTANCE
+        html += `<span class="label">DOWN</span>`;
+        html += `<select onchange="setDown(this.value)">${[1,2,3,4].map(d => `<option ${d === S.down ? 'selected' : ''}>${d}</option>`).join('')}</select>`;
+        html += `<span class="label">YDS</span>`;
+        html += `<input type="number" value="${S.dist}" min="1" max="99" style="width:32px;" onchange="setDist(this.value)" class="yd-input">`;
+        html += `<button class="gc-btn" onclick="adjustYards(-1)" data-tooltip="-1 yd">-1</button>`;
+        html += `<button class="gc-btn" onclick="adjustYards(1)" data-tooltip="+1 yd">+1</button>`;
+        html += `<span class="divider"></span>`;
+        // SCORING
+        html += `<span class="label">SCORE</span>`;
+        html += `<button class="gc-btn td" onclick="quickScore('td')" data-tooltip="TD +6">TD</button>`;
+        html += `<button class="gc-btn fg" onclick="quickScore('fg')" data-tooltip="FG +3">FG</button>`;
+        html += `<button class="gc-btn twopt" onclick="quickScore('twopt')" data-tooltip="2PT +2">2PT</button>`;
+        html += `<button class="gc-btn pat" onclick="quickScore('pat')" data-tooltip="PAT +1">PAT</button>`;
+        html += `<button class="gc-btn safety" onclick="quickScore('safety')" data-tooltip="Safety +2">Safe</button>`;
+        // LOAD GAME STATE - small button in the row
+        html += `<button class="gc-btn load-btn" onclick="fnlCloudLoadGameState()" data-tooltip="Load game state from cloud">📥LOAD</button>`;
+        html += `</div>`;
+
+        // ---- TEAM CARDS ----
+        html += '<div class="team-cards">';
+        ['away', 'home'].forEach(side => {
+            const team = getTeam(side);
+            const filter = S[side === 'away' ? 'ua' : 'uh'] || 'all';
+            html += `<div class="team-card ${side}-card">`;
+            html += `<div class="card-head" style="background:${team.color};">`;
+            html += `<span>${side.toUpperCase()}</span>`;
+            if (team.logo) html += `<img class="mini-logo" src="${team.logo}" alt="">`;
+            html += `<select onchange="setSideTeam('${side}', this.value)" data-tooltip="Switch team" style="border-color:${team.color};">${S.teams.map(t => `<option value="${t.id}" ${t.id === team.id ? 'selected' : ''}>${t.name}</option>`).join('')}</select>`;
+            html += `<button class="sb-btn" onclick="setPossession('${side}')" data-tooltip="Give ball" style="width:22px;height:22px;">🏈</button>`;
             html += '</div>';
+            html += '<div class="unit-tabs">';
+            html += `<button class="unit-tab ${filter === 'all' ? 'active' : ''}" onclick="setFilter('${side}','all')">ALL</button>`;
+            if (S.md7 === 'tackle') {
+                html += `<button class="unit-tab ${filter === 'offense' ? 'active' : ''}" onclick="setFilter('${side}','offense')">OFF</button>`;
+                html += `<button class="unit-tab ${filter === 'defense' ? 'active' : ''}" onclick="setFilter('${side}','defense')">DEF</button>`;
+                html += `<button class="unit-tab ${filter === 'special' ? 'active' : ''}" onclick="setFilter('${side}','special')">ST</button>`;
+            }
+            html += '</div>';
+            html += '<div class="player-list-body">';
+            getPlayers(side, filter).forEach(p => {
+                html += `<div class="player-row${p.st ? ' starter' : ''}">`;
+                html += `<input value="${p.n}" style="width:28px;color:#0a0a0a;font-weight:700;font-size:0.7rem;" onchange="updateGamePlayerField('${side}','${p.id}','n',this.value)">`;
+                html += `<input value="${p.na}" style="color:#0a0a0a;font-weight:700;font-size:0.7rem;" onchange="updateGamePlayerField('${side}','${p.id}','na',this.value)">`;
+                html += `<select onchange="updateGamePlayerField('${side}','${p.id}','po',this.value)" style="color:#0a0a0a;font-weight:700;font-size:0.7rem;">${getPositions().map(o => `<option ${p.po === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
+                html += `<button class="st-toggle ${p.st ? 'active' : ''}" onclick="toggleStarter('${side}','${p.id}')" data-tooltip="Starter">⭐</button>`;
+                html += `<button class="pin-btn" onclick="togglePin('${side}','${p.id}')" data-tooltip="Pin">📌</button>`;
+                html += `<button class="sb-btn" onclick="deletePlayer('${side}','${p.id}')" data-tooltip="Delete" style="width:18px;height:18px;font-size:9px;">✕</button>`;
+                html += '</div>';
+            });
+            html += '</div></div>';
         });
-        html += '</div></div>';
-    });
-    html += '</div>';
-    document.getElementById('main').innerHTML = html;
-    applyColors();
-    updateUndoButton();
-    updateTimeoutDisplay();
-}
+        html += '</div>';
+        document.getElementById('main').innerHTML = html;
+        applyColors();
+        updateUndoButton();
+        updateTimeoutDisplay();
+    }
 
     function setFilter(side, f) { if (side === 'away') S.ua = f;
         else S.uh = f;
@@ -2253,6 +2281,104 @@ function renderGame() {
         r.readAsText(f);
     }
 
+    // ---- CLIENTS VIEW ----
+    function renderClients() {
+        let html = '<div class="panel"><div class="panel-header">';
+        html += '<h3>👥 CLIENTS</h3>';
+        html += '<div class="panel-actions">';
+        html += `<button class="hdr-btn" onclick="fnlCloudLoadClientsOnly()" data-tooltip="Load clients from cloud (merges)">📥 LOAD CLIENTS</button>`;
+        html += '</div></div>';
+
+        const keys = Object.keys(S.cp);
+        if (keys.length === 0) {
+            html += '<p style="opacity:0.6;font-size:0.7rem;margin-top:4px;">No clients yet. Add one below.</p>';
+        } else {
+            keys.forEach(pin => {
+                const client = S.cp[pin];
+                html += `<div class="client-item">`;
+                html += `<div style="position:relative;flex-shrink:0;">`;
+                if (client.logo) {
+                    html += `<img src="${client.logo}" class="client-logo" alt="${client.n}">`;
+                } else {
+                    html += `<div class="client-logo" style="background:#334155;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:1.2rem;">${client.n ? client.n[0].toUpperCase() : '?'}</div>`;
+                }
+                html += `<button class="sb-btn" onclick="uploadClientLogo('${pin}')" style="position:absolute;bottom:-6px;right:-6px;width:18px;height:18px;font-size:8px;" data-tooltip="Upload logo">📷</button>`;
+                html += `</div>`;
+                html += `<span style="font-weight:700;font-size:0.7rem;flex:1;">${pin}</span>`;
+                html += `<span style="flex:2;font-size:0.7rem;">${client.n || 'Unnamed'}</span>`;
+                html += `<button class="hdr-btn" onclick="editClient('${pin}')" data-tooltip="Edit client" style="font-size:0.5rem;padding:2px 6px;">✏️</button>`;
+                html += `<button class="hdr-btn" style="background:#dc2626;font-size:0.5rem;padding:2px 6px;" onclick="deleteClient('${pin}')" data-tooltip="Delete client">🗑️</button>`;
+                html += '</div>';
+            });
+        }
+
+        // Add client form
+        html += '<div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">';
+        html += '<button class="hdr-btn" onclick="addClient()" data-tooltip="Add new client">➕ Add Client</button> ';
+        html += '<button class="hdr-btn" onclick="showAllPINs()" data-tooltip="Show all client PINs">🔑 Show PINs</button>';
+        html += '</div>';
+
+        html += '</div>';
+        document.getElementById('main').innerHTML = html;
+    }
+
+    // Client logo upload
+    function uploadClientLogo(pin) {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.onchange = function() {
+            const f = input.files[0];
+            if (!f || !f.type.startsWith('image/')) return toast('📷 Image required');
+            const r = new FileReader();
+            r.onload = ev => {
+                if (S.cp[pin]) {
+                    S.cp[pin].logo = ev.target.result;
+                    saveState();
+                    renderClients();
+                    toast('✅ Client logo uploaded');
+                }
+            };
+            r.readAsDataURL(f);
+        };
+        input.click();
+    }
+
+    function addClient() {
+        const pin = prompt('Enter PIN (4-6 characters):');
+        if (!pin || pin.length < 4) return toast('PIN must be at least 4 characters');
+        const name = prompt('Client name:');
+        if (!name) return;
+        S.cp[pin.toUpperCase()] = { n: name, l: '', logo: '' };
+        saveState();
+        renderClients();
+        toast('✅ Client added');
+    }
+
+    function editClient(pin) {
+        const c = S.cp[pin];
+        if (!c) return;
+        const name = prompt('Client name:', c.n);
+        if (name) { c.n = name;
+            saveState();
+            renderClients(); }
+    }
+
+    function deleteClient(pin) {
+        if (!confirm('Delete client?')) return;
+        delete S.cp[pin];
+        saveState();
+        renderClients();
+    }
+
+    function showAllPINs() {
+        const ks = Object.keys(S.cp);
+        if (!ks.length) return toast('No clients');
+        let msg = 'Client PINs:\n';
+        ks.forEach(p => { msg += `${p} → ${S.cp[p].n}\n`; });
+        alert(msg);
+    }
+
     // ---- LOG VIEW ----
     function renderLog() {
         let html = '<div class="panel"><div class="panel-header">';
@@ -2494,48 +2620,6 @@ function renderGame() {
                 renderAll();
                 toast('✅ Restored'); } catch (e) { toast('❌ Invalid file'); } };
         r.readAsText(f); }
-
-    // ---- CLIENTS VIEW ----
-    function renderClients() {
-        let html = '<div class="panel"><div class="panel-header">';
-        html += '<h3>👥 CLIENTS</h3>';
-        html += '<div class="panel-actions">';
-        html += `<button class="hdr-btn" onclick="fnlCloudLoadClientsOnly()" data-tooltip="Load clients from cloud (merges)">📥 LOAD CLIENTS</button>`;
-        html += '</div></div>';
-        html += '<button class="hdr-btn" onclick="addClient()" data-tooltip="Add client">➕ Add Client</button> ';
-        html += '<button class="hdr-btn" onclick="showAllPINs()" data-tooltip="Show PINs">🔑 Show PINs</button>';
-        const keys = Object.keys(S.cp);
-        if (keys.length === 0) { html += '<p style="opacity:0.6;font-size:0.7rem;margin-top:4px;">No clients yet.</p>'; } else {
-            keys.forEach(p => {
-                html += `<div style="display:flex;gap:6px;align-items:center;padding:6px;border:1px solid var(--border);border-radius:4px;margin-bottom:4px;">`;
-                html += `<span style="font-weight:700;font-size:0.7rem;">${p}</span>`;
-                html += `<span style="flex:1;font-size:0.7rem;">${S.cp[p].n || 'Unnamed'}</span>`;
-                html += `<button class="hdr-btn" onclick="editClient('${p}')" data-tooltip="Edit" style="font-size:0.5rem;padding:2px 6px;">✏️</button>`;
-                html += `<button class="hdr-btn" style="background:#dc2626;font-size:0.5rem;padding:2px 6px;" onclick="deleteClient('${p}')" data-tooltip="Delete">🗑️</button>`;
-                html += '</div>';
-            });
-        }
-        html += '</div>';
-        document.getElementById('main').innerHTML = html;
-    }
-
-    function addClient() { const pin = prompt('Enter PIN:'); if (!pin) return; const name = prompt('Client name:'); if (!name) return;
-        S.cp[pin.toUpperCase()] = { n: name, l: '' };
-        saveState();
-        renderClients();
-        toast('✅ Client added'); }
-
-    function editClient(pin) { const c = S.cp[pin]; if (!c) return; const name = prompt('Client name:', c.n); if (name) { c.n = name;
-            saveState();
-            renderClients(); } }
-
-    function deleteClient(pin) { if (!confirm('Delete client?')) return; delete S.cp[pin];
-        saveState();
-        renderClients(); }
-
-    function showAllPINs() { const ks = Object.keys(S.cp); if (!ks.length) return toast('No clients'); let msg = 'Client PINs:\n';
-        ks.forEach(p => { msg += `${p} → ${S.cp[p].n}\n`; });
-        alert(msg); }
 
     // ---- CLOUD SYNC ----
     async function fnlCloudSaveAll() {
@@ -2820,6 +2904,7 @@ function renderGame() {
     window.editClient = editClient;
     window.deleteClient = deleteClient;
     window.showAllPINs = showAllPINs;
+    window.uploadClientLogo = uploadClientLogo;
     window.exportBackup = exportBackup;
     window.importBackup = importBackup;
     window.setSideTeam = setSideTeam;
