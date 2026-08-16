@@ -2056,14 +2056,18 @@ function resetGame() {
             html += '</div></div>';
         });
         html += '</div>';
-     document.getElementById('main').innerHTML = html;
-updateClockStatusIndicator();
-applyColors();
-updateUndoButton();
-updateTimeoutDisplay();
-    }
+       document.getElementById('main').innerHTML = html;
+    updateClockStatusIndicator();
+    applyColors();
+    updateUndoButton();
+    updateTimeoutDisplay();
+}
 
-    function setFilter(side, f) { if (side === 'away') S.ua = f;
+function setFilter(side, f) { 
+    if (side === 'away') S.ua = f;
+    else S.uh = f;
+    renderGame(); 
+}
         else S.uh = f;
         renderGame(); }
 
