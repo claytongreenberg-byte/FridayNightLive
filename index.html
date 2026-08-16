@@ -1517,7 +1517,18 @@
             el.style.color = 'var(--sb-text)'; } else { el.className = 'game-clock';
             el.style.color = '#00ff88'; }
     }
-
+function updateClockStatusIndicator() {
+    const el = document.getElementById('clockStatusIndicator');
+    if (el) {
+        if (S.gc.run) {
+            el.textContent = '▶ LIVE';
+            el.className = 'clock-status running';
+        } else {
+            el.textContent = '⏸ PAUSED';
+            el.className = 'clock-status paused';
+        }
+    }
+}
     setInterval(() => {
         if (S.gc.run && S.gc.rem > 0) {
             S.gc.rem--;
@@ -1731,61 +1742,65 @@
         toast('🏁 Game ended');
     }
 
-    function startGC() {
-        if (S.gameState === 'FINAL') { toast('⛔ Game final'); return; }
-        if (S.gameState === 'HALFTIME') { toast('⏸️ Halftime - clock paused'); return; }
-        if (S.gameState === 'READY') { toast('⏳ Start the game first'); return; }
-        S.gc.run = true;
-        toast('▶️ Clock running');
-        updateGameClockDisplay();
-        saveState();
-        // Update the clock status in the game controls row
-        renderGame();
-    }
+   function startGC() {
+    if (S.gameState === 'FINAL') { toast('⛔ Game final'); return; }
+    if (S.gameState === 'HALFTIME') { toast('⏸️ Halftime - clock paused'); return; }
+    if (S.gameState === 'READY') { toast('⏳ Start the game first'); return; }
+    S.gc.run = true;
+    toast('▶️ Clock running');
+    updateGameClockDisplay();
+    updateClockStatusIndicator();
+    saveState();
+    // Update the clock status in the game controls row
+    renderGame();
+}
 
-    function pauseGC() {
-        S.gc.run = false;
-        toast('⏸️ Clock paused');
-        updateGameClockDisplay();
-        saveState();
-        renderGame();
-    }
+function pauseGC() {
+    S.gc.run = false;
+    toast('⏸️ Clock paused');
+    updateGameClockDisplay();
+    updateClockStatusIndicator();
+    saveState();
+    renderGame();
+}
 
-    function resetGC() { S.gc.run = false;
-        S.gc.rem = S.gc.max || 480;
-        updateGameClockDisplay();
-        saveState();
-        renderGame(); }
+function resetGC() { 
+    S.gc.run = false;
+    S.gc.rem = S.gc.max || 480;
+    updateGameClockDisplay();
+    updateClockStatusIndicator();
+    saveState();
+    renderGame(); 
+}
 
-    function resetGame() {
-        if (!confirm('Reset game? Clears score, clock, logs.')) return;
-        S.as = 0;
-        S.hs = 0;
-        S.q = 1;
-        S.down = 1;
-        S.dist = 10;
-        S.poss = 'home';
-        S.gameState = 'READY';
-        S.gc.rem = S.gc.max || 480;
-        S.gc.run = false;
-        S.scoringLog = [];
-        S.penaltyLog = [];
-        const timeoutCount = S.md7 === '7v7' ? (S.timeoutConfig.sevens ? S.timeoutConfig.sevens.perHalf : 0) : (S.timeoutConfig.tackle ? S.timeoutConfig.tackle.perHalf : 3);
-        S.timeouts = { away: timeoutCount, home: timeoutCount };
-        S.undoStack = [];
-        S.sessionId = null;
-        S.lastEvent = { text: '🏈 Ready — Set possession to begin', type: 'info' };
-        updateScorebug();
-        updateGameClockDisplay();
-        updateGameStateBadge();
-        renderView();
-        saveState();
-        setLastEvent('🔄 Game reset', 'info');
-        toast('🔄 Game reset');
-        renderGame();
-    }
-
-    // ---- Game controls ----
+function resetGame() {
+    if (!confirm('Reset game? Clears score, clock, logs.')) return;
+    S.as = 0;
+    S.hs = 0;
+    S.q = 1;
+    S.down = 1;
+    S.dist = 10;
+    S.poss = 'home';
+    S.gameState = 'READY';
+    S.gc.rem = S.gc.max || 480;
+    S.gc.run = false;
+    S.scoringLog = [];
+    S.penaltyLog = [];
+    const timeoutCount = S.md7 === '7v7' ? (S.timeoutConfig.sevens ? S.timeoutConfig.sevens.perHalf : 0) : (S.timeoutConfig.tackle ? S.timeoutConfig.tackle.perHalf : 3);
+    S.timeouts = { away: timeoutCount, home: timeoutCount };
+    S.undoStack = [];
+    S.sessionId = null;
+    S.lastEvent = { text: '🏈 Ready — Set possession to begin', type: 'info' };
+    updateScorebug();
+    updateGameClockDisplay();
+    updateClockStatusIndicator();
+    updateGameStateBadge();
+    renderView();
+    saveState();
+    setLastEvent('🔄 Game reset', 'info');
+    toast('🔄 Game reset');
+    renderGame();
+}----
     function setPossession(side) {
         S.poss = side;
         toast(`🏈 ${side.toUpperCase()} has the ball`);
@@ -2041,10 +2056,11 @@
             html += '</div></div>';
         });
         html += '</div>';
-        document.getElementById('main').innerHTML = html;
-        applyColors();
-        updateUndoButton();
-        updateTimeoutDisplay();
+     document.getElementById('main').innerHTML = html;
+updateClockStatusIndicator();
+applyColors();
+updateUndoButton();
+updateTimeoutDisplay();
     }
 
     function setFilter(side, f) { if (side === 'away') S.ua = f;
