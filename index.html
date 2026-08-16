@@ -115,12 +115,12 @@
             background: linear-gradient(180deg, #0d0d1a, #000000);
             border: 2px solid var(--accent);
             border-radius: 10px;
-            padding: 8px 12px 6px;
+            padding: 10px 14px 8px;
             flex-wrap: nowrap;
             width: 100%;
             box-shadow: 0 4px 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05);
             --sb-text: #ffffff;
-            min-height: 120px;
+            min-height: 150px;
         }
         .sb-network-tag {
             position: absolute;
@@ -129,9 +129,9 @@
             background: var(--accent);
             color: #000;
             font-weight: 900;
-            font-size: 0.55rem;
+            font-size: 0.6rem;
             letter-spacing: 1.5px;
-            padding: 2px 10px;
+            padding: 2px 12px;
             border-radius: 3px;
             text-transform: uppercase;
             box-shadow: 0 2px 8px rgba(0,0,0,0.5);
@@ -143,8 +143,8 @@
             background: #dc2626;
             color: #fff;
             font-weight: 800;
-            font-size: 0.5rem;
-            padding: 2px 10px;
+            font-size: 0.55rem;
+            padding: 2px 12px;
             border-radius: 8px;
             display: none;
             align-items: center;
@@ -156,8 +156,8 @@
         .live-pill.final { background: #334155; }
         .live-pill.halftime { background: #f59e0b; }
         .live-pill .dot {
-            width: 5px;
-            height: 5px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
             background: #fff;
             animation: sbpulse 1s infinite;
@@ -173,26 +173,26 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 0 6px;
+            padding: 0 12px;
             border-right: 1px solid rgba(255,255,255,0.06);
             flex: 1 1 0;
-            min-width: 40px;
+            min-width: 50px;
         }
         .sb-block:last-child { border-right: none; }
-        .sb-block.score-block { flex: 1.2; }
-        .sb-block.clock-block { flex: 0.8; }
-        .sb-block.game-block { flex: 1.6; }
+        .sb-block.score-block { flex: 1.3; }
+        .sb-block.clock-block { flex: 0.9; }
+        .sb-block.game-block { flex: 1.7; }
 
         .sb-team-chip {
-            width: 34px;
-            height: 34px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 900;
-            font-size: 0.9rem;
+            font-size: 1.2rem;
             color: #fff;
             border: 2px solid rgba(255,255,255,0.2);
             flex-shrink: 0;
@@ -205,26 +205,26 @@
         }
         .sb-name-col { display: flex; flex-direction: column; align-items: center; }
         .sb-abbr {
-            font-size: 16px;
+            font-size: 20px;
             font-weight: 900;
             color: var(--sb-text);
             letter-spacing: 0.5px;
             display: flex;
             align-items: center;
-            gap: 3px;
+            gap: 4px;
         }
         .sb-poss {
-            font-size: 20px;
+            font-size: 22px;
             animation: possBounce 0.7s infinite;
             display: inline-block;
-            filter: drop-shadow(0 0 10px rgba(250,204,21,0.4));
+            filter: drop-shadow(0 0 15px rgba(250,204,21,0.5));
         }
         @keyframes possBounce {
             0%,100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-4px) scale(1.2); }
+            50% { transform: translateY(-5px) scale(1.2); }
         }
         .sb-label {
-            font-size: 0.4rem;
+            font-size: 0.45rem;
             color: var(--sb-text);
             opacity: 0.35;
             text-transform: uppercase;
@@ -232,40 +232,40 @@
             margin-top: -2px;
         }
         .sb-fullname {
-            font-size: 0.5rem;
+            font-size: 0.55rem;
             color: var(--sb-text);
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.3px;
-            max-width: 80px;
+            max-width: 100px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
             background: rgba(0,0,0,0.2);
-            padding: 1px 6px;
+            padding: 1px 8px;
             border-radius: 4px;
             margin-top: 1px;
             opacity: 0.7;
         }
-        .sb-row { display: flex; align-items: center; gap: 3px; }
+        .sb-row { display: flex; align-items: center; gap: 4px; }
         .sb-val {
-            font-size: 2.6rem;
+            font-size: 3.2rem;
             font-weight: 900;
             color: var(--sb-text);
-            min-width: 32px;
+            min-width: 40px;
             text-align: center;
             text-shadow: 0 0 30px rgba(255,255,255,0.05);
             line-height: 1;
         }
         .sb-qtr {
-            font-size: 1.4rem;
+            font-size: 1.8rem;
             font-weight: 800;
             color: var(--accent);
             text-shadow: 0 0 20px rgba(250,204,21,0.15);
         }
         .game-clock {
             font-family: 'Courier New', monospace;
-            font-size: 3rem;
+            font-size: 3.4rem;
             font-weight: 900;
             color: #00ff88;
             text-shadow: 0 0 30px rgba(0,255,136,0.15), 0 0 60px rgba(0,255,136,0.05);
@@ -281,10 +281,10 @@
             background: rgba(255,255,255,0.08);
             border: 1px solid rgba(255,255,255,0.1);
             color: #fff;
-            width: 24px;
-            height: 24px;
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
-            font-size: 10px;
+            font-size: 11px;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
@@ -295,7 +295,7 @@
         .sb-btn:active { transform: scale(0.9); }
         .sb-game-btns {
             display: flex;
-            gap: 3px;
+            gap: 4px;
             flex-wrap: wrap;
             justify-content: center;
         }
@@ -304,12 +304,12 @@
             border: 1px solid rgba(255,255,255,0.1);
             color: #fff;
             border-radius: 10px;
-            padding: 3px 8px;
-            font-size: 0.5rem;
+            padding: 4px 10px;
+            font-size: 0.55rem;
             font-weight: 700;
             cursor: pointer;
-            min-height: 22px;
-            min-width: 32px;
+            min-height: 24px;
+            min-width: 36px;
             transition: all 0.15s;
         }
         .sb-game-btns button:hover { background: var(--accent); color: #000; transform: scale(1.04); }
@@ -322,10 +322,10 @@
             background: rgba(255,255,255,0.08);
             border: 1px solid rgba(255,255,255,0.1);
             color: #fff;
-            width: 28px;
-            height: 28px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
-            font-size: 12px;
+            font-size: 13px;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
@@ -333,31 +333,31 @@
             flex-shrink: 0;
         }
         .dd-ticker {
-            padding: 4px 10px;
+            padding: 4px 12px;
             border-radius: 6px;
             font-weight: 800;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             text-align: center;
             color: #fff;
             letter-spacing: 0.3px;
             text-shadow: 0 1px 4px rgba(0,0,0,0.8);
             background: #1a1a2e;
-            min-height: 22px;
+            min-height: 24px;
             border: 1px solid rgba(255,255,255,0.05);
         }
         .timeout-display {
             display: flex;
-            gap: 2px;
+            gap: 3px;
             align-items: center;
-            margin-top: 1px;
+            margin-top: 2px;
         }
         .timeout-dot {
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background: #4ade80;
             transition: all 0.2s;
-            box-shadow: 0 0 6px rgba(74,222,128,0.3);
+            box-shadow: 0 0 8px rgba(74,222,128,0.3);
         }
         .timeout-dot.used {
             background: #334155;
@@ -365,13 +365,13 @@
             box-shadow: none;
         }
         .timeout-zero {
-            font-size: 0.5rem;
+            font-size: 0.55rem;
             font-weight: 800;
             color: #f87171;
             letter-spacing: 0.3px;
         }
         .timeout-label {
-            font-size: 0.4rem;
+            font-size: 0.45rem;
             color: var(--sb-text);
             opacity: 0.4;
             letter-spacing: 0.3px;
@@ -380,18 +380,18 @@
             background: rgba(0,0,0,0.6);
             border: 1px solid var(--accent);
             border-radius: 6px;
-            padding: 3px 10px;
+            padding: 4px 12px;
             text-align: center;
             font-weight: 800;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: #fff;
-            min-height: 26px;
+            min-height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s;
             flex: 1;
-            max-width: 340px;
+            max-width: 400px;
             box-shadow: inset 0 0 30px rgba(250,204,21,0.05);
         }
 
@@ -433,23 +433,26 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 6px;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
         .panel-header h3 {
             margin: 0;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            opacity: 0.7;
         }
         .panel-actions {
             display: flex;
-            gap: 5px;
+            gap: 4px;
             flex-wrap: wrap;
         }
 
+        /* Quick cues – compact */
         .quick-cues {
             display: flex;
             flex-wrap: wrap;
             gap: 3px;
-            padding: 4px 6px;
+            padding: 3px 6px;
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 6px;
@@ -459,12 +462,12 @@
             background: #334155;
             color: #fff;
             border: 1px solid #475569;
-            border-radius: 10px;
-            padding: 3px 8px;
+            border-radius: 8px;
+            padding: 2px 8px;
             font-size: 0.5rem;
             font-weight: 700;
             cursor: pointer;
-            min-height: 22px;
+            min-height: 20px;
             transition: all 0.15s;
             white-space: nowrap;
         }
@@ -485,33 +488,42 @@
             border-color: #dc2626;
         }
 
-        .possession-row {
+        /* SINGLE GAME CONTROLS ROW – combines possession + down/distance + scoring */
+        .game-controls-row {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            gap: 8px;
-            padding: 6px 12px;
+            gap: 6px;
+            padding: 5px 10px;
             background: var(--bg);
             border: 2px solid var(--accent);
             border-radius: 8px;
             margin-bottom: 6px;
-            box-shadow: 0 2px 12px rgba(250,204,21,0.1);
+            box-shadow: 0 2px 12px rgba(250,204,21,0.08);
+            min-height: 44px;
         }
-        .possession-row .label {
+        .game-controls-row .label {
             font-weight: 800;
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             color: var(--text);
-            opacity: 0.6;
-            margin-right: 4px;
+            opacity: 0.5;
+            margin-right: 2px;
         }
-        .possession-row .pos-btn {
-            padding: 6px 18px;
-            font-size: 0.85rem;
+        .game-controls-row .divider {
+            width: 1px;
+            height: 28px;
+            background: var(--border);
+            opacity: 0.3;
+            margin: 0 2px;
+        }
+        .game-controls-row .pos-btn {
+            padding: 4px 14px;
+            font-size: 0.75rem;
             font-weight: 700;
-            min-width: 80px;
-            border-radius: 8px;
+            min-width: 65px;
+            border-radius: 6px;
             border: 2px solid #475569;
             cursor: pointer;
             transition: all 0.15s;
@@ -519,26 +531,25 @@
             color: #fff;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             justify-content: center;
         }
-        .possession-row .pos-btn:hover { transform: scale(1.04); }
-        .possession-row .pos-btn:active { transform: scale(0.95); }
-        .possession-row .pos-btn.active {
-            background: var(--accent);
-            color: #000;
+        .game-controls-row .pos-btn:hover { transform: scale(1.04); }
+        .game-controls-row .pos-btn:active { transform: scale(0.95); }
+        .game-controls-row .pos-btn.active {
+            color: #fff;
             border-color: var(--accent);
-            box-shadow: 0 0 30px rgba(250,204,21,0.2);
+            box-shadow: 0 0 20px rgba(250,204,21,0.15);
         }
-        .possession-row .pos-btn .team-logo {
-            width: 20px;
-            height: 20px;
+        .game-controls-row .pos-btn .team-logo {
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             object-fit: cover;
         }
-        .possession-row .to-btn {
-            padding: 5px 14px;
-            font-size: 0.65rem;
+        .game-controls-row .to-btn {
+            padding: 4px 12px;
+            font-size: 0.6rem;
             font-weight: 700;
             border-radius: 6px;
             border: none;
@@ -547,66 +558,28 @@
             color: #fff;
             transition: all 0.15s;
         }
-        .possession-row .to-btn:hover {
+        .game-controls-row .to-btn:hover {
             transform: scale(1.04);
             background: #ea580c;
         }
-        .possession-row .clock-status {
-            font-size: 0.6rem;
+        .game-controls-row .clock-status {
+            font-size: 0.55rem;
             opacity: 0.6;
-            margin-left: auto;
-            padding: 4px 10px;
+            padding: 3px 10px;
             background: rgba(0,0,0,0.05);
-            border-radius: 12px;
+            border-radius: 10px;
             font-weight: 700;
         }
-        .possession-row .clock-status.running {
+        .game-controls-row .clock-status.running {
             color: #4ade80;
             opacity: 1;
         }
-        .possession-row .clock-status.paused {
+        .game-controls-row .clock-status.paused {
             color: #facc15;
             opacity: 1;
         }
-
-        .game-controls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            align-items: center;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 4px 8px;
-            margin-bottom: 6px;
-        }
-        .game-controls .group-label {
-            font-weight: 700;
-            font-size: 0.6rem;
-            opacity: 0.6;
-            margin-right: 2px;
-        }
-        .game-controls button {
-            background: #334155;
-            color: #fff;
-            border: 1px solid #475569;
-            border-radius: 10px;
-            padding: 4px 8px;
-            font-weight: 700;
-            font-size: 0.55rem;
-            cursor: pointer;
-            min-height: 24px;
-            transition: all 0.15s;
-        }
-        .game-controls button:hover { background: #475569; }
-        .game-controls button.active { background: var(--accent); color: #000; }
-        .game-controls button.td { background: #dc2626; border-color: #dc2626; }
-        .game-controls button.fg { background: #2563eb; border-color: #2563eb; }
-        .game-controls button.twopt { background: #8b5cf6; border-color: #8b5cf6; }
-        .game-controls button.pat { background: #16a34a; border-color: #16a34a; }
-        .game-controls button.safety { background: #f59e0b; color: #000; border-color: #f59e0b; }
-        .game-controls select,
-        .game-controls input {
+        .game-controls-row select,
+        .game-controls-row input {
             padding: 3px 5px;
             border-radius: 4px;
             border: 1px solid var(--border);
@@ -615,13 +588,32 @@
             font-size: 0.55rem;
             min-height: 22px;
         }
-        .game-controls .yd-input { width: 40px; }
+        .game-controls-row .yd-input { width: 38px; }
+        .game-controls-row .gc-btn {
+            background: #334155;
+            color: #fff;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            padding: 3px 8px;
+            font-weight: 700;
+            font-size: 0.55rem;
+            cursor: pointer;
+            min-height: 22px;
+            transition: all 0.15s;
+        }
+        .game-controls-row .gc-btn:hover { background: #475569; }
+        .game-controls-row .gc-btn.td { background: #dc2626; border-color: #dc2626; }
+        .game-controls-row .gc-btn.fg { background: #2563eb; border-color: #2563eb; }
+        .game-controls-row .gc-btn.twopt { background: #8b5cf6; border-color: #8b5cf6; }
+        .game-controls-row .gc-btn.pat { background: #16a34a; border-color: #16a34a; }
+        .game-controls-row .gc-btn.safety { background: #f59e0b; color: #000; border-color: #f59e0b; }
 
+        /* Team cards – more vertical space */
         .team-cards {
             display: flex;
             gap: 6px;
-            height: calc(100% - 180px);
-            min-height: 160px;
+            height: calc(100% - 120px);
+            min-height: 180px;
         }
         .team-card {
             flex: 1;
@@ -654,6 +646,7 @@
             min-height: 20px;
             border: 1px solid rgba(255,255,255,0.3);
         }
+        .card-head select option { color: #000; }
         .card-head .mini-logo {
             width: 18px;
             height: 18px;
@@ -885,38 +878,41 @@
         }
 
         @media (max-width: 1024px) {
-            .scorebug { padding: 6px 6px; min-height: 100px; flex-wrap: wrap; }
-            .sb-block { padding: 0 4px; min-width: 30px; }
-            .sb-val { font-size: 2rem; min-width: 28px; }
-            .sb-abbr { font-size: 14px; }
-            .game-clock { font-size: 2.4rem; }
-            .sb-team-chip { width: 28px; height: 28px; font-size: 0.8rem; }
-            .sb-fullname { font-size: 0.45rem; max-width: 60px; }
-            .sb-btn { width: 20px; height: 20px; font-size: 9px; }
-            .sb-game-btns button { font-size: 0.4rem; padding: 2px 6px; min-height: 18px; }
-            .last-event { font-size: 0.6rem; min-height: 22px; max-width: 200px; }
-            .possession-row .pos-btn { padding: 5px 12px; font-size: 0.75rem; min-width: 60px; }
+            .scorebug { padding: 8px 8px; min-height: 120px; flex-wrap: wrap; }
+            .sb-block { padding: 0 6px; min-width: 35px; }
+            .sb-val { font-size: 2.4rem; min-width: 32px; }
+            .sb-abbr { font-size: 16px; }
+            .game-clock { font-size: 2.6rem; }
+            .sb-team-chip { width: 36px; height: 36px; font-size: 1rem; }
+            .sb-fullname { font-size: 0.5rem; max-width: 70px; }
+            .sb-btn { width: 22px; height: 22px; font-size: 10px; }
+            .sb-game-btns button { font-size: 0.45rem; padding: 3px 6px; min-height: 20px; }
+            .last-event { font-size: 0.6rem; min-height: 24px; max-width: 240px; }
+            .game-controls-row { padding: 4px 8px; gap: 4px; min-height: 38px; }
+            .game-controls-row .pos-btn { padding: 3px 10px; font-size: 0.65rem; min-width: 55px; }
         }
         @media (max-width: 768px) {
-            .scorebug { padding: 4px 3px; min-height: 70px; flex-wrap: wrap; }
-            .sb-block { padding: 0 2px; min-width: 20px; }
-            .sb-val { font-size: 1.6rem; min-width: 22px; }
-            .sb-abbr { font-size: 12px; }
-            .game-clock { font-size: 1.8rem; }
-            .sb-team-chip { width: 22px; height: 22px; font-size: 0.7rem; }
-            .sb-fullname { font-size: 0.4rem; max-width: 40px; }
-            .sb-btn { width: 18px; height: 18px; font-size: 8px; }
-            .sb-game-btns button { font-size: 0.35rem; padding: 2px 4px; min-height: 16px; }
-            .last-event { font-size: 0.5rem; min-height: 18px; max-width: 120px; }
-            .possession-row { padding: 4px 8px; gap: 4px; }
-            .possession-row .pos-btn { padding: 4px 8px; font-size: 0.65rem; min-width: 50px; }
-            .possession-row .to-btn { padding: 3px 8px; font-size: 0.55rem; }
-            .team-cards { flex-direction: column; height: auto; min-height: 100px; }
+            .scorebug { padding: 6px 4px; min-height: 90px; flex-wrap: wrap; }
+            .sb-block { padding: 0 3px; min-width: 25px; }
+            .sb-val { font-size: 1.8rem; min-width: 26px; }
+            .sb-abbr { font-size: 13px; }
+            .game-clock { font-size: 2rem; }
+            .sb-team-chip { width: 28px; height: 28px; font-size: 0.8rem; }
+            .sb-fullname { font-size: 0.45rem; max-width: 50px; }
+            .sb-btn { width: 20px; height: 20px; font-size: 9px; }
+            .sb-game-btns button { font-size: 0.4rem; padding: 2px 5px; min-height: 18px; }
+            .last-event { font-size: 0.5rem; min-height: 20px; max-width: 140px; }
+            .game-controls-row { padding: 4px 6px; gap: 4px; min-height: 34px; flex-wrap: wrap; }
+            .game-controls-row .pos-btn { padding: 3px 8px; font-size: 0.6rem; min-width: 45px; }
+            .game-controls-row .to-btn { padding: 3px 8px; font-size: 0.5rem; }
+            .game-controls-row .gc-btn { font-size: 0.45rem; padding: 2px 6px; min-height: 18px; }
+            .game-controls-row select,
+            .game-controls-row input { font-size: 0.45rem; min-height: 18px; }
+            .team-cards { flex-direction: column; height: auto; min-height: 120px; }
             .roster-layout { flex-direction: column; }
             .team-sidebar { width: 100%; max-height: 100px; }
             .admin-color-grid { grid-template-columns: 1fr; }
             .quick-cues button { font-size: 0.4rem; padding: 2px 5px; min-height: 18px; }
-            .game-controls button { font-size: 0.45rem; padding: 3px 5px; min-height: 20px; }
         }
     </style>
 </head>
@@ -963,7 +959,7 @@
                         <span class="sb-val" id="sbAwayScore">0</span>
                         <button class="sb-btn" onclick="chScore('away',1)" data-tooltip="Add point">+</button>
                     </div>
-                    <button class="sb-btn" onclick="uploadScorebugLogo('away')" data-tooltip="Upload logo" style="width:18px;height:18px;font-size:8px;margin-top:1px;">📷</button>
+                    <button class="sb-btn" onclick="uploadScorebugLogo('away')" data-tooltip="Upload logo" style="width:20px;height:20px;font-size:9px;margin-top:1px;">📷</button>
                     <div class="timeout-display">
                         <span class="timeout-label">TO:</span>
                         <span class="timeout-dot" id="awayTO1"></span>
@@ -973,7 +969,7 @@
                 </div>
                 <!-- QUARTER -->
                 <div class="sb-block">
-                    <span class="sb-abbr" style="font-size:0.45rem;color:var(--sb-text);opacity:.35;">QUARTER</span>
+                    <span class="sb-abbr" style="font-size:0.5rem;color:var(--sb-text);opacity:.35;">QUARTER</span>
                     <span class="sb-qtr" id="sbQuarter">Q1</span>
                     <div class="sb-row">
                         <button class="sb-btn" onclick="chQuarter(-1)" data-tooltip="Previous">◀</button>
@@ -993,7 +989,7 @@
                         <span class="sb-val" id="sbHomeScore">0</span>
                         <button class="sb-btn" onclick="chScore('home',1)" data-tooltip="Add point">+</button>
                     </div>
-                    <button class="sb-btn" onclick="uploadScorebugLogo('home')" data-tooltip="Upload logo" style="width:18px;height:18px;font-size:8px;margin-top:1px;">📷</button>
+                    <button class="sb-btn" onclick="uploadScorebugLogo('home')" data-tooltip="Upload logo" style="width:20px;height:20px;font-size:9px;margin-top:1px;">📷</button>
                     <div class="timeout-display">
                         <span class="timeout-label">TO:</span>
                         <span class="timeout-dot" id="homeTO1"></span>
@@ -1003,7 +999,7 @@
                 </div>
                 <!-- CLOCK -->
                 <div class="sb-block clock-block">
-                    <span class="sb-abbr" style="font-size:0.45rem;color:var(--sb-text);opacity:.35;">CLOCK</span>
+                    <span class="sb-abbr" style="font-size:0.5rem;color:var(--sb-text);opacity:.35;">CLOCK</span>
                     <span class="game-clock" id="gameClockDisplay">8:00</span>
                     <div class="sb-row">
                         <button class="sb-btn" onclick="startGC()" data-tooltip="Start (Space)">▶</button>
@@ -1013,7 +1009,7 @@
                 </div>
                 <!-- GAME -->
                 <div class="sb-block game-block">
-                    <span class="sb-abbr" style="font-size:0.45rem;color:var(--sb-text);opacity:.35;">GAME</span>
+                    <span class="sb-abbr" style="font-size:0.5rem;color:var(--sb-text);opacity:.35;">GAME</span>
                     <div class="sb-game-btns">
                         <button onclick="startGame()" data-tooltip="Start new game" id="btnStart">▶ Start</button>
                         <button onclick="setHalftime()" data-tooltip="Halftime" id="btnHalf">⏸ Half</button>
@@ -1037,7 +1033,9 @@
 </footer>
 
 <script>
+    // ============================================================
     // FULL STATE
+    // ============================================================
     let S = {
         v: 'sport',
         md: 'light',
@@ -1101,7 +1099,7 @@
         }
     };
 
-    const STORAGE_KEY = 'fnl_v24';
+    const STORAGE_KEY = 'fnl_v25';
 
     function g() { return S; }
 
@@ -1880,40 +1878,44 @@
         html += '</div>';
 
         html += '<div class="panel-header">';
-        html += '<h3>🏈 GAME CONTROLS</h3>';
+        html += '<h3>GAME CONTROLS</h3>';
         html += '<div class="panel-actions">';
         html += `<button class="hdr-btn" onclick="fnlCloudLoadGameState()" data-tooltip="Load game state from cloud">📥 LOAD GAME STATE</button>`;
         html += '</div></div>';
 
-        // ---- POSSESSION ROW ----
+        // ---- SINGLE GAME CONTROLS ROW ----
         const awayTeam = getTeam('away');
         const homeTeam = getTeam('home');
         const awayLogo = awayTeam.logo ? `<img class="team-logo" src="${awayTeam.logo}" alt="">` : '';
         const homeLogo = homeTeam.logo ? `<img class="team-logo" src="${homeTeam.logo}" alt="">` : '';
-        html += `<div class="possession-row">`;
-        html += `<span class="label">🏈 POSSESSION</span>`;
-        html += `<button class="pos-btn ${S.poss === 'away' ? 'active' : ''}" onclick="setPossession('away')" style="border-color:${awayTeam.color || '#475569'};">${awayLogo} ${awayTeam.abbr || 'AWY'}</button>`;
-        html += `<button class="pos-btn ${S.poss === 'home' ? 'active' : ''}" onclick="setPossession('home')" style="border-color:${homeTeam.color || '#475569'};">${homeLogo} ${homeTeam.abbr || 'HME'}</button>`;
+        const awayColor = awayTeam.color || '#475569';
+        const homeColor = homeTeam.color || '#475569';
+
+        html += `<div class="game-controls-row">`;
+        // POSSESSION
+        html += `<span class="label">🏈</span>`;
+        html += `<button class="pos-btn ${S.poss === 'away' ? 'active' : ''}" onclick="setPossession('away')" style="${S.poss === 'away' ? 'background:' + awayColor + ';border-color:' + awayColor + ';' : 'border-color:' + awayColor + ';'}">${awayLogo} ${awayTeam.abbr || 'AWY'}</button>`;
+        html += `<button class="pos-btn ${S.poss === 'home' ? 'active' : ''}" onclick="setPossession('home')" style="${S.poss === 'home' ? 'background:' + homeColor + ';border-color:' + homeColor + ';' : 'border-color:' + homeColor + ';'}">${homeLogo} ${homeTeam.abbr || 'HME'}</button>`;
         html += `<button class="to-btn" onclick="useTimeout('away')" data-tooltip="Away timeout">⏱ AWAY TO</button>`;
         html += `<button class="to-btn" onclick="useTimeout('home')" data-tooltip="Home timeout">⏱ HOME TO</button>`;
         html += `<span class="clock-status ${S.gc.run ? 'running' : 'paused'}">${S.gc.run ? '▶ LIVE' : '⏸ PAUSED'}</span>`;
-        html += `</div>`;
-
-        // ---- GAME CONTROLS ----
-        html += '<div class="game-controls">';
-        html += `<span class="group-label">DOWN</span>`;
+        html += `<span class="divider"></span>`;
+        // DOWN & DISTANCE
+        html += `<span class="label">DOWN</span>`;
         html += `<select onchange="setDown(this.value)">${[1,2,3,4].map(d => `<option ${d === S.down ? 'selected' : ''}>${d}</option>`).join('')}</select>`;
-        html += `<span class="group-label">YDS</span>`;
-        html += `<input type="number" value="${S.dist}" min="1" max="99" style="width:40px;" onchange="setDist(this.value)" class="yd-input">`;
-        html += `<button onclick="adjustYards(-1)" data-tooltip="-1 yd">-1</button>`;
-        html += `<button onclick="adjustYards(1)" data-tooltip="+1 yd">+1</button>`;
-        html += `<span style="border-left:2px solid var(--border);padding-left:6px;font-weight:700;font-size:0.6rem;">SCORE</span>`;
-        html += `<button class="td" onclick="quickScore('td')" data-tooltip="TD +6">TD +6</button>`;
-        html += `<button class="fg" onclick="quickScore('fg')" data-tooltip="FG +3">FG +3</button>`;
-        html += `<button class="twopt" onclick="quickScore('twopt')" data-tooltip="2PT +2">2PT +2</button>`;
-        html += `<button class="pat" onclick="quickScore('pat')" data-tooltip="PAT +1">PAT +1</button>`;
-        html += `<button class="safety" onclick="quickScore('safety')" data-tooltip="Safety +2">Safety +2</button>`;
-        html += '</div>';
+        html += `<span class="label">YDS</span>`;
+        html += `<input type="number" value="${S.dist}" min="1" max="99" style="width:38px;" onchange="setDist(this.value)" class="yd-input">`;
+        html += `<button class="gc-btn" onclick="adjustYards(-1)" data-tooltip="-1 yd">-1</button>`;
+        html += `<button class="gc-btn" onclick="adjustYards(1)" data-tooltip="+1 yd">+1</button>`;
+        html += `<span class="divider"></span>`;
+        // SCORING
+        html += `<span class="label">SCORE</span>`;
+        html += `<button class="gc-btn td" onclick="quickScore('td')" data-tooltip="TD +6">TD +6</button>`;
+        html += `<button class="gc-btn fg" onclick="quickScore('fg')" data-tooltip="FG +3">FG +3</button>`;
+        html += `<button class="gc-btn twopt" onclick="quickScore('twopt')" data-tooltip="2PT +2">2PT +2</button>`;
+        html += `<button class="gc-btn pat" onclick="quickScore('pat')" data-tooltip="PAT +1">PAT +1</button>`;
+        html += `<button class="gc-btn safety" onclick="quickScore('safety')" data-tooltip="Safety +2">Safety +2</button>`;
+        html += `</div>`;
 
         // ---- TEAM CARDS ----
         html += '<div class="team-cards">';
@@ -1924,7 +1926,7 @@
             html += `<div class="card-head" style="background:${team.color};">`;
             html += `<span>${side.toUpperCase()}</span>`;
             if (team.logo) html += `<img class="mini-logo" src="${team.logo}" alt="">`;
-            html += `<select onchange="setSideTeam('${side}', this.value)" data-tooltip="Switch team">${S.teams.map(t => `<option value="${t.id}" ${t.id === team.id ? 'selected' : ''}>${t.name}</option>`).join('')}</select>`;
+            html += `<select onchange="setSideTeam('${side}', this.value)" data-tooltip="Switch team" style="border-color:${team.color};">${S.teams.map(t => `<option value="${t.id}" ${t.id === team.id ? 'selected' : ''}>${t.name}</option>`).join('')}</select>`;
             html += `<button class="sb-btn" onclick="setPossession('${side}')" data-tooltip="Give ball" style="width:20px;height:20px;">🏈</button>`;
             html += '</div>';
             html += '<div class="unit-tabs">';
