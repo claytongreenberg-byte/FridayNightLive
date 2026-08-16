@@ -484,47 +484,45 @@
             color: #000;
             border-color: var(--accent);
         }
-        .quick-cues button.injury {
-            background: #dc2626;
-            color: #fff;
-            border-color: #dc2626;
-        }
 
-        /* GAME CONTROLS ROW - Row 2 (ALL controls on ONE row) */
+        /* ===== GAME CONTROLS ROW - Row 2 (ONE SINGLE ROW) ===== */
         .game-controls-row {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             align-items: center;
-            gap: 5px;
-            padding: 5px 12px;
+            gap: 4px;
+            padding: 4px 10px;
             background: var(--bg);
             border: 2px solid var(--accent);
             border-radius: 8px;
             margin-bottom: 6px;
             box-shadow: 0 2px 16px rgba(250,204,21,0.08);
-            min-height: 44px;
+            min-height: 40px;
+            overflow-x: auto;
         }
         .game-controls-row .label {
             font-weight: 800;
-            font-size: 0.6rem;
+            font-size: 0.5rem;
             text-transform: uppercase;
             letter-spacing: 0.3px;
             color: var(--text);
             opacity: 0.4;
             margin-right: 1px;
+            white-space: nowrap;
         }
         .game-controls-row .divider {
             width: 1px;
-            height: 28px;
+            height: 24px;
             background: var(--border);
             opacity: 0.2;
-            margin: 0 3px;
+            margin: 0 2px;
+            flex-shrink: 0;
         }
         .game-controls-row .pos-btn {
-            padding: 4px 14px;
-            font-size: 0.75rem;
+            padding: 2px 10px;
+            font-size: 0.65rem;
             font-weight: 700;
-            min-width: 60px;
+            min-width: 48px;
             border-radius: 6px;
             border: 2px solid #475569;
             cursor: pointer;
@@ -533,25 +531,27 @@
             color: #fff;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 3px;
             justify-content: center;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
         .game-controls-row .pos-btn:hover { transform: scale(1.04); }
         .game-controls-row .pos-btn:active { transform: scale(0.95); }
         .game-controls-row .pos-btn.active {
             color: #fff;
             border-color: var(--accent);
-            box-shadow: 0 0 25px rgba(250,204,21,0.2);
+            box-shadow: 0 0 20px rgba(250,204,21,0.15);
         }
         .game-controls-row .pos-btn .team-logo {
-            width: 18px;
-            height: 18px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             object-fit: cover;
         }
         .game-controls-row .to-btn {
-            padding: 4px 12px;
-            font-size: 0.6rem;
+            padding: 2px 8px;
+            font-size: 0.5rem;
             font-weight: 700;
             border-radius: 6px;
             border: none;
@@ -559,6 +559,8 @@
             background: #f97316;
             color: #fff;
             transition: all 0.15s;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
         .game-controls-row .to-btn:hover {
             transform: scale(1.04);
@@ -571,12 +573,14 @@
             background: #b91c1c;
         }
         .game-controls-row .clock-status {
-            font-size: 0.55rem;
+            font-size: 0.5rem;
             opacity: 0.6;
-            padding: 3px 10px;
+            padding: 2px 8px;
             background: rgba(0,0,0,0.05);
             border-radius: 10px;
             font-weight: 700;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
         .game-controls-row .clock-status.running {
             color: #4ade80;
@@ -588,26 +592,29 @@
         }
         .game-controls-row select,
         .game-controls-row input {
-            padding: 3px 5px;
+            padding: 2px 4px;
             border-radius: 4px;
             border: 1px solid var(--border);
             background: var(--bg);
             color: var(--text);
-            font-size: 0.55rem;
-            min-height: 22px;
+            font-size: 0.5rem;
+            min-height: 20px;
+            flex-shrink: 0;
         }
-        .game-controls-row .yd-input { width: 38px; }
+        .game-controls-row .yd-input { width: 32px; }
         .game-controls-row .gc-btn {
             background: #334155;
             color: #fff;
             border: 1px solid #475569;
             border-radius: 6px;
-            padding: 3px 8px;
+            padding: 2px 5px;
             font-weight: 700;
-            font-size: 0.55rem;
+            font-size: 0.5rem;
             cursor: pointer;
-            min-height: 22px;
+            min-height: 20px;
             transition: all 0.15s;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
         .game-controls-row .gc-btn:hover { background: #475569; }
         .game-controls-row .gc-btn.td { background: #dc2626; border-color: #dc2626; }
@@ -896,8 +903,13 @@
             .sb-btn { width: 24px; height: 24px; font-size: 10px; }
             .sb-game-btns button { font-size: 0.5rem; padding: 3px 8px; min-height: 22px; }
             .last-event { font-size: 0.7rem; min-height: 28px; max-width: 280px; }
-            .game-controls-row { padding: 4px 8px; gap: 4px; min-height: 38px; }
-            .game-controls-row .pos-btn { padding: 3px 10px; font-size: 0.65rem; min-width: 50px; }
+            .game-controls-row { padding: 4px 8px; gap: 3px; min-height: 34px; flex-wrap: nowrap; overflow-x: auto; }
+            .game-controls-row .pos-btn { padding: 2px 8px; font-size: 0.55rem; min-width: 40px; }
+            .game-controls-row .to-btn { padding: 2px 6px; font-size: 0.45rem; }
+            .game-controls-row .gc-btn { font-size: 0.45rem; padding: 2px 4px; min-height: 18px; }
+            .game-controls-row select,
+            .game-controls-row input { font-size: 0.45rem; min-height: 18px; }
+            .game-controls-row .yd-input { width: 28px; }
             .player-row { font-size: 0.6rem; grid-template-columns: 26px 1fr 44px 20px 20px 18px; }
             .player-row input,
             .player-row select { font-size: 0.6rem; padding: 2px; }
@@ -913,13 +925,14 @@
             .sb-btn { width: 20px; height: 20px; font-size: 9px; }
             .sb-game-btns button { font-size: 0.4rem; padding: 2px 6px; min-height: 18px; }
             .last-event { font-size: 0.55rem; min-height: 22px; max-width: 160px; }
-            .game-controls-row { padding: 4px 6px; gap: 3px; min-height: 34px; flex-wrap: wrap; }
-            .game-controls-row .pos-btn { padding: 2px 8px; font-size: 0.55rem; min-width: 40px; }
-            .game-controls-row .to-btn { padding: 2px 8px; font-size: 0.5rem; }
-            .game-controls-row .gc-btn { font-size: 0.45rem; padding: 2px 5px; min-height: 18px; }
+            .game-controls-row { padding: 3px 4px; gap: 2px; min-height: 28px; flex-wrap: nowrap; overflow-x: auto; }
+            .game-controls-row .pos-btn { padding: 2px 6px; font-size: 0.5rem; min-width: 32px; }
+            .game-controls-row .to-btn { padding: 2px 5px; font-size: 0.4rem; }
+            .game-controls-row .gc-btn { font-size: 0.4rem; padding: 2px 4px; min-height: 16px; }
             .game-controls-row select,
-            .game-controls-row input { font-size: 0.45rem; min-height: 18px; }
-            .game-controls-row .yd-input { width: 30px; }
+            .game-controls-row input { font-size: 0.4rem; min-height: 16px; }
+            .game-controls-row .yd-input { width: 24px; }
+            .game-controls-row .label { font-size: 0.4rem; }
             .team-cards { flex-direction: column; height: auto; min-height: 140px; }
             .roster-layout { flex-direction: column; }
             .team-sidebar { width: 100%; max-height: 100px; }
@@ -1114,7 +1127,7 @@
         }
     };
 
-    const STORAGE_KEY = 'fnl_v26';
+    const STORAGE_KEY = 'fnl_v27';
 
     function g() { return S; }
 
@@ -1526,6 +1539,34 @@
         if (homeTO1) homeTO1.className = 'timeout-dot' + (1 > home ? ' used' : '');
         if (homeTO2) homeTO2.className = 'timeout-dot' + (2 > home ? ' used' : '');
         if (homeTO3) homeTO3.className = 'timeout-dot' + (3 > home ? ' used' : '');
+
+        // Update the "NONE" text for the displays
+        const awayContainer = document.querySelector('.sb-block.score-block:first-child .timeout-display');
+        const homeContainer = document.querySelector('.sb-block.score-block:last-child .timeout-display');
+
+        if (awayContainer) {
+            if (away === 0) {
+                awayContainer.innerHTML = `<span class="timeout-zero">NONE</span>`;
+            } else {
+                let html = `<span class="timeout-label">TO:</span>`;
+                for (let i = 1; i <= 3; i++) {
+                    html += `<span class="timeout-dot${i > away ? ' used' : ''}"></span>`;
+                }
+                awayContainer.innerHTML = html;
+            }
+        }
+
+        if (homeContainer) {
+            if (home === 0) {
+                homeContainer.innerHTML = `<span class="timeout-zero">NONE</span>`;
+            } else {
+                let html = `<span class="timeout-label">TO:</span>`;
+                for (let i = 1; i <= 3; i++) {
+                    html += `<span class="timeout-dot${i > home ? ' used' : ''}"></span>`;
+                }
+                homeContainer.innerHTML = html;
+            }
+        }
     }
 
     function useTimeout(side) {
@@ -1587,15 +1628,16 @@
         S.gameState = 'HALFTIME';
         S.gc.run = false;
         S.q = 2;
+        // RESET TIMEOUTS FOR SECOND HALF
         const timeoutCount = S.md7 === '7v7' ? (S.timeoutConfig.sevens ? S.timeoutConfig.sevens.perHalf : 0) : (S.timeoutConfig.tackle ? S.timeoutConfig.tackle.perHalf : 3);
         S.timeouts = { away: timeoutCount, home: timeoutCount };
         pushUndo();
-        setLastEvent('⏸️ HALFTIME', 'info');
+        setLastEvent('⏸️ HALFTIME — Timeouts reset', 'info');
         updateScorebug();
         updateGameClockDisplay();
         updateGameStateBadge();
         saveState();
-        toast('⏸️ Halftime');
+        toast('⏸️ Halftime — Timeouts reset');
     }
 
     function startSecondHalf() {
@@ -1604,13 +1646,16 @@
         S.gc.rem = S.gc.max || 480;
         S.gc.run = false;
         S.q = 3;
+        // RESET TIMEOUTS FOR SECOND HALF
+        const timeoutCount = S.md7 === '7v7' ? (S.timeoutConfig.sevens ? S.timeoutConfig.sevens.perHalf : 0) : (S.timeoutConfig.tackle ? S.timeoutConfig.tackle.perHalf : 3);
+        S.timeouts = { away: timeoutCount, home: timeoutCount };
         pushUndo();
-        setLastEvent('⏭️ SECOND HALF STARTED — Q3', 'info');
+        setLastEvent('⏭️ SECOND HALF STARTED — Q3 — Timeouts reset', 'info');
         updateScorebug();
         updateGameClockDisplay();
         updateGameStateBadge();
         saveState();
-        toast('⏭️ 2nd Half started');
+        toast('⏭️ 2nd Half started — Timeouts reset');
     }
 
     function setOvertime() {
@@ -1886,7 +1931,7 @@
         html += `<button class="hdr-btn" onclick="fnlCloudLoadGameState()" data-tooltip="Load game state from cloud">📥 LOAD GAME STATE</button>`;
         html += '</div></div>';
 
-        // ---- GAME CONTROLS ROW - Row 2 (ALL controls on ONE row) ----
+        // ---- GAME CONTROLS ROW - Row 2 (ONE SINGLE ROW - no wrapping) ----
         const awayTeam = getTeam('away');
         const homeTeam = getTeam('home');
         const awayLogo = awayTeam.logo ? `<img class="team-logo" src="${awayTeam.logo}" alt="">` : '';
@@ -1899,26 +1944,26 @@
         html += `<span class="label">🏈</span>`;
         html += `<button class="pos-btn ${S.poss === 'away' ? 'active' : ''}" onclick="setPossession('away')" style="${S.poss === 'away' ? 'background:' + awayColor + ';border-color:' + awayColor + ';' : 'border-color:' + awayColor + ';'}">${awayLogo} ${awayTeam.abbr || 'AWY'}</button>`;
         html += `<button class="pos-btn ${S.poss === 'home' ? 'active' : ''}" onclick="setPossession('home')" style="${S.poss === 'home' ? 'background:' + homeColor + ';border-color:' + homeColor + ';' : 'border-color:' + homeColor + ';'}">${homeLogo} ${homeTeam.abbr || 'HME'}</button>`;
-        html += `<button class="to-btn" onclick="useTimeout('away')" data-tooltip="Away timeout">⏱ AWAY TO</button>`;
-        html += `<button class="to-btn" onclick="useTimeout('home')" data-tooltip="Home timeout">⏱ HOME TO</button>`;
-        html += `<button class="to-btn injury-btn" onclick="injuryTimeout()" data-tooltip="Injury timeout (clock paused, no TO charged)">🆘 INJURY</button>`;
+        html += `<button class="to-btn" onclick="useTimeout('away')" data-tooltip="Away timeout">⏱ AWAY</button>`;
+        html += `<button class="to-btn" onclick="useTimeout('home')" data-tooltip="Home timeout">⏱ HOME</button>`;
+        html += `<button class="to-btn injury-btn" onclick="injuryTimeout()" data-tooltip="Injury timeout (clock paused, no TO charged)">🆘 INJ</button>`;
         html += `<span class="clock-status ${S.gc.run ? 'running' : 'paused'}">${S.gc.run ? '▶ LIVE' : '⏸ PAUSED'}</span>`;
         html += `<span class="divider"></span>`;
         // DOWN & DISTANCE
         html += `<span class="label">DOWN</span>`;
         html += `<select onchange="setDown(this.value)">${[1,2,3,4].map(d => `<option ${d === S.down ? 'selected' : ''}>${d}</option>`).join('')}</select>`;
         html += `<span class="label">YDS</span>`;
-        html += `<input type="number" value="${S.dist}" min="1" max="99" style="width:38px;" onchange="setDist(this.value)" class="yd-input">`;
+        html += `<input type="number" value="${S.dist}" min="1" max="99" style="width:32px;" onchange="setDist(this.value)" class="yd-input">`;
         html += `<button class="gc-btn" onclick="adjustYards(-1)" data-tooltip="-1 yd">-1</button>`;
         html += `<button class="gc-btn" onclick="adjustYards(1)" data-tooltip="+1 yd">+1</button>`;
         html += `<span class="divider"></span>`;
         // SCORING
         html += `<span class="label">SCORE</span>`;
-        html += `<button class="gc-btn td" onclick="quickScore('td')" data-tooltip="TD +6">TD +6</button>`;
-        html += `<button class="gc-btn fg" onclick="quickScore('fg')" data-tooltip="FG +3">FG +3</button>`;
-        html += `<button class="gc-btn twopt" onclick="quickScore('twopt')" data-tooltip="2PT +2">2PT +2</button>`;
-        html += `<button class="gc-btn pat" onclick="quickScore('pat')" data-tooltip="PAT +1">PAT +1</button>`;
-        html += `<button class="gc-btn safety" onclick="quickScore('safety')" data-tooltip="Safety +2">Safety +2</button>`;
+        html += `<button class="gc-btn td" onclick="quickScore('td')" data-tooltip="TD +6">TD</button>`;
+        html += `<button class="gc-btn fg" onclick="quickScore('fg')" data-tooltip="FG +3">FG</button>`;
+        html += `<button class="gc-btn twopt" onclick="quickScore('twopt')" data-tooltip="2PT +2">2PT</button>`;
+        html += `<button class="gc-btn pat" onclick="quickScore('pat')" data-tooltip="PAT +1">PAT</button>`;
+        html += `<button class="gc-btn safety" onclick="quickScore('safety')" data-tooltip="Safety +2">Safe</button>`;
         html += `</div>`;
 
         // ---- TEAM CARDS ----
