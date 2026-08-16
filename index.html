@@ -914,6 +914,23 @@
             margin-bottom: 4px;
         }
 
+        /* New client header styles */
+        .client-header-logo {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+            margin-left: 8px;
+            flex-shrink: 0;
+        }
+        .client-header-name {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 0.7rem;
+            margin-left: 4px;
+        }
+
         @media (max-width: 1024px) {
             .scorebug { padding: 8px 10px; min-height: 130px; flex-wrap: wrap; }
             .sb-block { padding: 0 8px; min-width: 40px; }
@@ -972,12 +989,13 @@
 
 <header>
     <div class="hdr-top">
-        <div class="hdr-top-left">
+        <div class="hdr-top-left" id="brandContainer">
             <img src="FNL.jpg" alt="FNL" class="brand-logo" id="brandLogo" onerror="this.style.display='none'">
             <div class="brand-text">
-                <h1>🏈 FRIDAY NIGHT LIVE</h1>
-                <p>PA CONSOLE</p>
+                <h1 id="brandTitle">🏈 FRIDAY NIGHT LIVE</h1>
+                <p id="brandSubtitle">PA CONSOLE</p>
             </div>
+            <!-- Client logo will be injected here by JavaScript -->
         </div>
         <div class="hdr-top-right">
             <span class="wall-clock" id="wallClock">12:00 AM</span>
@@ -2295,17 +2313,19 @@
         } else {
             keys.forEach(pin => {
                 const client = S.cp[pin];
-                html += `<div class="client-item">`;
+                const isActive = (pin === S.ap);
+                html += `<div class="client-item" style="${isActive ? 'border-color: var(--accent); background: rgba(250,204,21,0.05);' : ''}">`;
                 html += `<div style="position:relative;flex-shrink:0;">`;
                 if (client.logo) {
                     html += `<img src="${client.logo}" class="client-logo" alt="${client.n}">`;
                 } else {
-                    html += `<div class="client-logo" style="background:#334155;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:1.2rem;">${client.n ? client.n[0].toUpperCase() : '?'}</div>`;
+                    html += `<div class="client-logo" style="background:${isActive ? 'var(--accent)' : '#334155'};display:flex;align-items:center;justify-content:center;font-weight:700;color:${isActive ? '#000' : '#fff'};font-size:1.2rem;">${client.n ? client.n[0].toUpperCase() : '?'}</div>`;
                 }
                 html += `<button class="sb-btn" onclick="uploadClientLogo('${pin}')" style="position:absolute;bottom:-6px;right:-6px;width:18px;height:18px;font-size:8px;" data-tooltip="Upload logo">📷</button>`;
                 html += `</div>`;
                 html += `<span style="font-weight:700;font-size:0.7rem;flex:1;">${pin}</span>`;
                 html += `<span style="flex:2;font-size:0.7rem;">${client.n || 'Unnamed'}</span>`;
+                html += `<button class="hdr-btn" onclick="selectClient('${pin}')" data-tooltip="Select this client" style="font-size:0.5rem;padding:2px 6px;${isActive ? 'background:var(--accent);color:#000;' : ''}">${isActive ? '✅' : 'Select'}</button>`;
                 html += `<button class="hdr-btn" onclick="editClient('${pin}')" data-tooltip="Edit client" style="font-size:0.5rem;padding:2px 6px;">✏️</button>`;
                 html += `<button class="hdr-btn" style="background:#dc2626;font-size:0.5rem;padding:2px 6px;" onclick="deleteClient('${pin}')" data-tooltip="Delete client">🗑️</button>`;
                 html += '</div>';
@@ -2322,7 +2342,103 @@
         document.getElementById('main').innerHTML = html;
     }
 
-    // Client logo upload
+    // ---- Update header with client branding ----
+    function updateHeaderBranding() {
+        const brandContainer = document.getElementById('brandContainer');
+        const brandLogo = document.getElementById('brandLogo');
+        const brandTitle = document.getElementById('brandTitle');
+        const brandSubtitle = document.getElementById('brandSubtitle');
+
+        // Find the active client (the one currently selected)
+        let activeClient = null;
+        let activePin = S.ap;
+
+        if (!activePin || !S.cp[activePin]) {
+            // If no active client, use the first one
+            const keys = Object.keys(S.cp);
+            if (keys.length > 0) {
+                activePin = keys[0];
+                S.ap = activePin;
+            }
+        }
+
+        if (activePin && S.cp[activePin]) {
+            activeClient = S.cp[activePin];
+        }
+
+        // Clear existing client elements (but keep the FNL logo and text)
+        const existingClientLogo = document.getElementById('clientHeaderLogo');
+        const existingClientName = document.getElementById('clientHeaderName');
+        if (existingClientLogo) existingClientLogo.remove();
+        if (existingClientName) existingClientName.remove();
+
+        if (activeClient) {
+            // Update subtitle to show client name
+            brandSubtitle.textContent = activeClient.n || 'PA CONSOLE';
+            brandSubtitle.style.color = 'var(--accent)';
+
+            // Add client logo if available
+            if (activeClient.logo) {
+                const logoImg = document.createElement('img');
+                logoImg.id = 'clientHeaderLogo';
+                logoImg.src = activeClient.logo;
+                logoImg.className = 'client-header-logo';
+                logoImg.alt = activeClient.n || 'Client';
+                brandContainer.appendChild(logoImg);
+            } else {
+                // Show client initial as a circle if no logo
+                const initial = document.createElement('div');
+                initial.id = 'clientHeaderLogo';
+                initial.className = 'client-header-logo';
+                initial.style.cssText = `
+                    background: ${S.colors.accent || '#facc15'};
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: 900;
+                    font-size: 1rem;
+                    color: #000;
+                    width: 36px;
+                    height: 36px;
+                    border-radius: 50%;
+                    border: 2px solid var(--accent);
+                    margin-left: 8px;
+                    flex-shrink: 0;
+                `;
+                initial.textContent = activeClient.n ? activeClient.n[0].toUpperCase() : '?';
+                brandContainer.appendChild(initial);
+            }
+
+            // Add client name next to logo
+            const nameSpan = document.createElement('span');
+            nameSpan.id = 'clientHeaderName';
+            nameSpan.className = 'client-header-name';
+            nameSpan.textContent = activeClient.n || '';
+            brandContainer.appendChild(nameSpan);
+
+            // Hide default FNL logo if client has branding (optional)
+            // brandLogo.style.display = 'none';
+
+        } else {
+            // No client selected - show default branding
+            brandSubtitle.textContent = 'PA CONSOLE';
+            brandSubtitle.style.color = 'var(--accent)';
+            // Show FNL logo
+            brandLogo.style.display = 'inline-block';
+        }
+    }
+
+    // ---- Select which client to show in header ----
+    function selectClient(pin) {
+        if (!S.cp[pin]) return toast('Client not found');
+        S.ap = pin;
+        saveState();
+        updateHeaderBranding();
+        renderClients(); // Refresh clients view to show active state
+        toast(`✅ ${S.cp[pin].n} is now active`);
+    }
+
+    // ---- Client logo upload ----
     function uploadClientLogo(pin) {
         const input = document.createElement('input');
         input.type = 'file';
@@ -2334,6 +2450,10 @@
             r.onload = ev => {
                 if (S.cp[pin]) {
                     S.cp[pin].logo = ev.target.result;
+                    // If this was the active client, update header
+                    if (S.ap === pin) {
+                        updateHeaderBranding();
+                    }
                     saveState();
                     renderClients();
                     toast('✅ Client logo uploaded');
@@ -2350,8 +2470,11 @@
         const name = prompt('Client name:');
         if (!name) return;
         S.cp[pin.toUpperCase()] = { n: name, l: '', logo: '' };
+        // Auto-select this client
+        S.ap = pin.toUpperCase();
         saveState();
         renderClients();
+        updateHeaderBranding();
         toast('✅ Client added');
     }
 
@@ -2359,14 +2482,25 @@
         const c = S.cp[pin];
         if (!c) return;
         const name = prompt('Client name:', c.n);
-        if (name) { c.n = name;
+        if (name) {
+            c.n = name;
+            // If this was the active client, update header
+            if (S.ap === pin) {
+                updateHeaderBranding();
+            }
             saveState();
-            renderClients(); }
+            renderClients();
+        }
     }
 
     function deleteClient(pin) {
         if (!confirm('Delete client?')) return;
         delete S.cp[pin];
+        if (S.ap === pin) {
+            // If the deleted client was active, clear active and update header
+            S.ap = '';
+            updateHeaderBranding();
+        }
         saveState();
         renderClients();
     }
@@ -2905,6 +3039,8 @@
     window.deleteClient = deleteClient;
     window.showAllPINs = showAllPINs;
     window.uploadClientLogo = uploadClientLogo;
+    window.selectClient = selectClient;
+    window.updateHeaderBranding = updateHeaderBranding;
     window.exportBackup = exportBackup;
     window.importBackup = importBackup;
     window.setSideTeam = setSideTeam;
@@ -2928,6 +3064,7 @@
     updateSaveStatus(true);
     S.gc.run = false;
     saveState();
+    updateHeaderBranding(); // Initialize header branding
 </script>
 </body>
 </html>
