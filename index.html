@@ -752,7 +752,7 @@
         }
         .player-row {
             display: grid;
-            grid-template-columns: 30px 1fr 50px 24px 24px 22px;
+            grid-template-columns: 30px 1fr 70px 24px 24px 22px;
             gap: 4px;
             align-items: center;
             padding: 4px 3px;
@@ -1048,7 +1048,7 @@
             .game-controls-row select,
             .game-controls-row input { font-size: 0.45rem; min-height: 18px; }
             .game-controls-row .yd-input { width: 28px; }
-            .player-row { font-size: 0.6rem; grid-template-columns: 26px 1fr 44px 20px 20px 18px; }
+            .player-row { font-size: 0.6rem; grid-template-columns: 26px 1fr 60px 20px 20px 18px; }
             .player-row input,
             .player-row select { font-size: 0.6rem; padding: 2px; }
         }
@@ -1085,7 +1085,7 @@
             .team-sidebar { width: 100%; max-height: 100px; }
             .admin-color-grid { grid-template-columns: 1fr; }
             .quick-cues button { font-size: 0.4rem; padding: 2px 6px; min-height: 18px; }
-            .player-row { font-size: 0.5rem; grid-template-columns: 22px 1fr 38px 18px 18px 16px; gap: 2px; padding: 2px; }
+            .player-row { font-size: 0.5rem; grid-template-columns: 22px 1fr 50px 18px 18px 16px; gap: 2px; padding: 2px; }
             .player-row input,
             .player-row select { font-size: 0.5rem; padding: 1px 2px; }
         }
@@ -1379,7 +1379,6 @@
         S.teams.forEach(team => {
             team.players.forEach(p => {
                 if (p.posFull && p.posFull.trim()) {
-                    // Split and add each individual position, and the combined string
                     const parts = p.posFull.split('/').map(s => s.trim());
                     parts.forEach(part => {
                         if (part) allPosStrings.add(part);
@@ -2215,7 +2214,7 @@
         updateUndoButton(); }
 
     // ============================================================
-    // GAME VIEW with POSITION DROPDOWN + QUICK ADD
+    // GAME VIEW with POSITION DROPDOWN + QUICK ADD (NO VIEW SWITCHING)
     // ============================================================
     function renderGame() {
         let html = '';
@@ -2297,21 +2296,21 @@
                 const currentPos = p.posFull || p.po || 'QB';
                 
                 html += `<div class="player-row${p.st ? ' starter' : ''}">`;
-                html += `<input value="${p.n}" style="width:28px;color:#0a0a0a;font-weight:700;font-size:0.7rem;" onchange="updateGamePlayerField('${side}','${p.id}','n',this.value)">`;
-                html += `<input value="${p.na}" style="color:#0a0a0a;font-weight:700;font-size:0.7rem;" onchange="updateGamePlayerField('${side}','${p.id}','na',this.value)">`;
+                html += `<input value="${p.n}" style="width:28px;color:#0a0a0a;font-weight:700;font-size:0.7rem;" onchange="updateGamePlayerFieldOnly('${side}','${p.id}','n',this.value)">`;
+                html += `<input value="${p.na}" style="color:#0a0a0a;font-weight:700;font-size:0.7rem;" onchange="updateGamePlayerFieldOnly('${side}','${p.id}','na',this.value)">`;
                 html += `<div class="pos-select-wrapper">`;
-                html += `<select onchange="updateGamePlayerFieldWithFull('${side}','${p.id}',this.value)" style="color:#0a0a0a;font-weight:700;font-size:0.7rem;">`;
+                html += `<select onchange="updateGamePlayerPositionOnly('${side}','${p.id}',this.value)" style="color:#0a0a0a;font-weight:700;font-size:0.7rem;">`;
                 allPosOptions.forEach(o => {
                     const selected = (o === currentPos) ? 'selected' : '';
                     html += `<option ${selected} value="${o}">${o}</option>`;
                 });
                 html += `</select>`;
-                html += `<button class="quick-add-btn" onclick="quickAddPosition('${side}','${p.id}')" data-tooltip="Quick add position (add /POSITION)">+</button>`;
+                html += `<button class="quick-add-btn" onclick="quickAddPositionOnly('${side}','${p.id}')" data-tooltip="Quick add position (add /POSITION)">+</button>`;
                 html += `</div>`;
                 html += `<div style="display:flex;align-items:center;gap:2px;font-size:0.5rem;color:#666;white-space:nowrap;">${catBadges}</div>`;
-                html += `<button class="st-toggle ${p.st ? 'active' : ''}" onclick="toggleStarter('${side}','${p.id}')" data-tooltip="Starter">⭐</button>`;
-                html += `<button class="pin-btn" onclick="togglePin('${side}','${p.id}')" data-tooltip="Pin">📌</button>`;
-                html += `<button class="sb-btn" onclick="deletePlayer('${side}','${p.id}')" data-tooltip="Delete" style="width:18px;height:18px;font-size:9px;">✕</button>`;
+                html += `<button class="st-toggle ${p.st ? 'active' : ''}" onclick="toggleStarterOnly('${side}','${p.id}')" data-tooltip="Starter">⭐</button>`;
+                html += `<button class="pin-btn" onclick="togglePinOnly('${side}','${p.id}')" data-tooltip="Pin">📌</button>`;
+                html += `<button class="sb-btn" onclick="deletePlayerOnly('${side}','${p.id}')" data-tooltip="Delete" style="width:18px;height:18px;font-size:9px;">✕</button>`;
                 html += '</div>';
             });
             html += '</div></div>';
@@ -2324,8 +2323,32 @@
         updateTimeoutDisplay();
     }
 
-    // ---- Quick Add Position ----
-    function quickAddPosition(side, pid) {
+    // ---- NEW FUNCTIONS: Update ONLY the game card, NO view switching ----
+    function updateGamePlayerFieldOnly(side, pid, field, val) {
+        const team = getTeam(side);
+        const p = team.players.find(x => x.id === pid);
+        if (!p) return;
+        p[field] = val;
+        saveState();
+        renderGame(); // Re-render game card only
+    }
+
+    function updateGamePlayerPositionOnly(side, pid, val) {
+        const team = getTeam(side);
+        const p = team.players.find(x => x.id === pid);
+        if (!p) return;
+        
+        p.posFull = val;
+        const primaryPos = val.split('/')[0].trim() || val;
+        p.po = primaryPos;
+        p.categories = getPositionCategories(val);
+        
+        saveState();
+        renderGame(); // Re-render game card only
+        toast(`✅ ${p.na} set to ${val}`);
+    }
+
+    function quickAddPositionOnly(side, pid) {
         const team = getTeam(side);
         const p = team.players.find(x => x.id === pid);
         if (!p) return;
@@ -2339,14 +2362,12 @@
         const currentPos = p.posFull || p.po || '';
         let newPosFull = currentPos;
         
-        // If current position already has this position, remove it
         const parts = currentPos.split('/').map(s => s.trim().toUpperCase());
         if (parts.includes(cleanPos)) {
             const newParts = parts.filter(s => s !== cleanPos);
             newPosFull = newParts.join('/');
             toast(`❌ Removed ${cleanPos} from ${p.na}`);
         } else {
-            // Add the new position
             if (currentPos) {
                 newPosFull = currentPos + '/' + cleanPos;
             } else {
@@ -2355,64 +2376,45 @@
             toast(`✅ Added ${cleanPos} to ${p.na}`);
         }
         
-        // Update the player
         p.posFull = newPosFull;
         p.po = newPosFull.split('/')[0].trim() || newPosFull;
         p.categories = getPositionCategories(newPosFull);
         
         saveState();
-        renderGame();
-        renderRoster(); // Also update roster view if visible
+        renderGame(); // Re-render game card only
+    }
+
+    function toggleStarterOnly(side, pid) { 
+        const team = getTeam(side);
+        const p = team.players.find(x => x.id === pid); 
+        if (p) { 
+            p.st = !p.st;
+            saveState();
+            renderGame(); 
+        }
+    }
+
+    function togglePinOnly(side, pid) { 
+        const team = getTeam(side);
+        const p = team.players.find(x => x.id === pid); 
+        if (p) { 
+            p.pinned = !p.pinned;
+            saveState();
+            renderGame(); 
+        }
+    }
+
+    function deletePlayerOnly(side, pid) { 
+        const team = getTeam(side);
+        team.players = team.players.filter(x => x.id !== pid);
+        saveState();
+        renderGame(); 
     }
 
     function setFilter(side, f) { 
         if (side === 'away') S.ua = f;
         else S.uh = f;
         renderGame(); 
-    }
-
-    function toggleStarter(side, pid) { const team = getTeam(side);
-        const p = team.players.find(x => x.id === pid); if (p) { p.st = !p.st;
-            saveState();
-            renderGame(); } }
-
-    function togglePin(side, pid) { const team = getTeam(side);
-        const p = team.players.find(x => x.id === pid); if (p) { p.pinned = !p.pinned;
-            saveState();
-            renderGame(); } }
-
-    function deletePlayer(side, pid) { const team = getTeam(side);
-        team.players = team.players.filter(x => x.id !== pid);
-        saveState();
-        renderGame(); }
-
-    function updateGamePlayerField(side, pid, field, val) {
-        const team = getTeam(side);
-        const p = team.players.find(x => x.id === pid);
-        if (!p) return;
-        p[field] = val;
-        if (field === 'po') {
-            p.posFull = val;
-            p.categories = getPositionCategories(val);
-        }
-        saveState();
-        renderRoster(); // Update roster view
-    }
-
-    function updateGamePlayerFieldWithFull(side, pid, val) {
-        const team = getTeam(side);
-        const p = team.players.find(x => x.id === pid);
-        if (!p) return;
-        
-        p.posFull = val;
-        const primaryPos = val.split('/')[0].trim() || val;
-        p.po = primaryPos;
-        p.categories = getPositionCategories(val);
-        
-        saveState();
-        renderGame();
-        renderRoster(); // Also update roster view
-        toast(`✅ ${p.na} set to ${val}`);
     }
 
     function setSideTeam(side, teamId) {
@@ -3404,9 +3406,9 @@
     window.toggleOutdoor = toggleOutdoor;
     window.resetGame = resetGame;
     window.switchView = switchView;
-    window.toggleStarter = toggleStarter;
-    window.togglePin = togglePin;
-    window.deletePlayer = deletePlayer;
+    window.toggleStarterOnly = toggleStarterOnly;
+    window.togglePinOnly = togglePinOnly;
+    window.deletePlayerOnly = deletePlayerOnly;
     window.setFilter = setFilter;
     window.printGameLog = printGameLog;
     window.printRoster = printRoster;
@@ -3445,9 +3447,9 @@
     window.exportBackup = exportBackup;
     window.importBackup = importBackup;
     window.setSideTeam = setSideTeam;
-    window.updateGamePlayerField = updateGamePlayerField;
-    window.updateGamePlayerFieldWithFull = updateGamePlayerFieldWithFull;
-    window.quickAddPosition = quickAddPosition;
+    window.updateGamePlayerFieldOnly = updateGamePlayerFieldOnly;
+    window.updateGamePlayerPositionOnly = updateGamePlayerPositionOnly;
+    window.quickAddPositionOnly = quickAddPositionOnly;
     window.applyColors = applyColors;
     window.undoLastEvent = undoLastEvent;
     window.quickCue = quickCue;
