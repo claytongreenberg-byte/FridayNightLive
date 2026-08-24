@@ -742,13 +742,22 @@
         .unit-tab {
             background: none;
             border: none;
-            color: var(--text);
             padding: 3px 6px;
             cursor: pointer;
             font-weight: 700;
             font-size: 0.5rem;
+            border-radius: 4px;
+            transition: all 0.15s;
         }
-        .unit-tab.active { background: var(--accent); color: #000; border-radius: 4px; }
+        .unit-tab.active { color: #000; }
+        .unit-tab.all-tab { color: var(--accent); }
+        .unit-tab.all-tab.active { background: var(--accent); color: #000; }
+        .unit-tab.offense-tab { color: var(--badge-offense); }
+        .unit-tab.offense-tab.active { background: var(--badge-offense); color: #fff; }
+        .unit-tab.defense-tab { color: var(--badge-defense); }
+        .unit-tab.defense-tab.active { background: var(--badge-defense); color: #fff; }
+        .unit-tab.special-tab { color: var(--badge-special); }
+        .unit-tab.special-tab.active { background: var(--badge-special); color: #fff; }
 
         .player-list-body {
             flex: 1;
@@ -757,12 +766,12 @@
         }
         .player-row {
             display: grid;
-            grid-template-columns: 30px 1fr 70px 24px 24px 22px;
-            gap: 4px;
+            grid-template-columns: 28px 1fr 55px 28px 20px 20px 20px;
+            gap: 3px;
             align-items: center;
-            padding: 4px 3px;
+            padding: 3px 2px;
             border-bottom: 2px solid #333;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
         }
         .player-row:last-child { border-bottom: none; }
         .player-row input,
@@ -771,9 +780,9 @@
             border: 1px solid var(--border);
             color: #0a0a0a;
             font-weight: 700;
-            padding: 3px 4px;
+            padding: 2px 3px;
             width: 100%;
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             border-radius: 3px;
         }
         .player-row input:focus,
@@ -791,15 +800,17 @@
         .player-row .pos-select-wrapper select {
             flex: 1;
             min-width: 0;
+            font-size: 0.55rem;
+            padding: 2px 3px;
         }
         .player-row .pos-select-wrapper .quick-add-btn {
             background: var(--accent);
             color: #000;
             border: none;
             border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            font-size: 12px;
+            width: 16px;
+            height: 16px;
+            font-size: 9px;
             font-weight: 700;
             cursor: pointer;
             display: flex;
@@ -817,25 +828,48 @@
             background: rgba(251,191,36,0.08);
             border-left: 3px solid var(--accent);
         }
+        .player-row .cat-badge-col {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
         .st-toggle,
         .pin-btn {
             background: none;
             border: 1px solid var(--border);
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             cursor: pointer;
-            font-size: 0.5rem;
+            font-size: 0.45rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
         }
-        .st-toggle.active { background: var(--accent); color: #000; }
+        .st-toggle.active { background: var(--accent); color: #000; border-color: var(--accent); }
+        .delete-btn {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            font-size: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: #dc2626;
+        }
+        .delete-btn:hover { background: #dc2626; color: #fff; border-color: #dc2626; }
 
         /* ===== ENHANCED CATEGORY BADGES ===== */
         .cat-badge {
-            font-size: 0.65rem;
+            font-size: 0.55rem;
             font-weight: 800;
-            padding: 2px 8px;
+            padding: 1px 6px;
             border-radius: 4px;
-            margin-left: 3px;
             white-space: nowrap;
             display: inline-block;
             cursor: help;
@@ -843,6 +877,7 @@
             border: 1px solid rgba(255,255,255,0.2);
             text-shadow: 0 1px 2px rgba(0,0,0,0.2);
             transition: all 0.2s;
+            line-height: 1.3;
         }
         .cat-badge:hover {
             transform: scale(1.1);
@@ -1097,10 +1132,10 @@
             .game-controls-row select,
             .game-controls-row input { font-size: 0.45rem; min-height: 18px; }
             .game-controls-row .yd-input { width: 28px; }
-            .player-row { font-size: 0.6rem; grid-template-columns: 26px 1fr 60px 20px 20px 18px; }
+            .player-row { grid-template-columns: 26px 1fr 50px 26px 18px 18px 18px; font-size: 0.6rem; }
             .player-row input,
-            .player-row select { font-size: 0.6rem; padding: 2px; }
-            .cat-badge { font-size: 0.55rem; padding: 1px 6px; }
+            .player-row select { font-size: 0.55rem; padding: 2px; }
+            .cat-badge { font-size: 0.5rem; padding: 1px 5px; }
         }
         @media (max-width: 768px) {
             .scorebug { padding: 6px 6px; min-height: 100px; flex-wrap: wrap; }
@@ -1135,10 +1170,13 @@
             .team-sidebar { width: 100%; max-height: 100px; }
             .admin-color-grid { grid-template-columns: 1fr; }
             .quick-cues button { font-size: 0.4rem; padding: 2px 6px; min-height: 18px; }
-            .player-row { font-size: 0.5rem; grid-template-columns: 22px 1fr 50px 18px 18px 16px; gap: 2px; padding: 2px; }
+            .player-row { grid-template-columns: 22px 1fr 40px 22px 16px 16px 16px; font-size: 0.5rem; gap: 2px; padding: 2px; }
             .player-row input,
-            .player-row select { font-size: 0.5rem; padding: 1px 2px; }
-            .cat-badge { font-size: 0.45rem; padding: 1px 4px; }
+            .player-row select { font-size: 0.45rem; padding: 1px 2px; }
+            .player-row .pos-select-wrapper select { font-size: 0.45rem; }
+            .player-row .pos-select-wrapper .quick-add-btn { width: 14px; height: 14px; font-size: 8px; }
+            .cat-badge { font-size: 0.4rem; padding: 1px 4px; }
+            .st-toggle, .pin-btn, .delete-btn { width: 16px; height: 16px; font-size: 0.4rem; }
         }
     </style>
 </head>
@@ -1505,7 +1543,6 @@
             });
         });
         
-        // Combine base + custom positions
         const combined = [...basePositions];
         allPosStrings.forEach(pos => {
             if (!combined.includes(pos)) {
@@ -1513,7 +1550,6 @@
             }
         });
         
-        // Build options with category prefixes
         const options = combined.map(pos => {
             const cats = getPositionCategories(pos);
             const label = getCategoryLabel(cats);
@@ -1524,7 +1560,6 @@
             };
         });
         
-        // Sort by category order: Offense -> Defense -> Special -> Both -> Other
         const categoryOrder = {
             'offense': 0,
             'defense': 1,
@@ -2459,11 +2494,21 @@
             html += `<button class="sb-btn" onclick="setPossession('${side}')" data-tooltip="Give ball" style="width:22px;height:22px;">🏈</button>`;
             html += '</div>';
             html += '<div class="unit-tabs">';
-            html += `<button class="unit-tab ${filter === 'all' ? 'active' : ''}" onclick="setFilter('${side}','all')">ALL</button>`;
+            
+            // ALL tab - gold
+            const allActive = filter === 'all' ? 'active' : '';
+            html += `<button class="unit-tab all-tab ${allActive}" onclick="setFilter('${side}','all')">ALL</button>`;
+            
             if (S.md7 === 'tackle') {
-                html += `<button class="unit-tab ${filter === 'offense' ? 'active' : ''}" onclick="setFilter('${side}','offense')">OFF</button>`;
-                html += `<button class="unit-tab ${filter === 'defense' ? 'active' : ''}" onclick="setFilter('${side}','defense')">DEF</button>`;
-                html += `<button class="unit-tab ${filter === 'special' ? 'active' : ''}" onclick="setFilter('${side}','special')">ST</button>`;
+                // OFF tab - blue
+                const offActive = filter === 'offense' ? 'active' : '';
+                html += `<button class="unit-tab offense-tab ${offActive}" onclick="setFilter('${side}','offense')">OFF</button>`;
+                // DEF tab - red
+                const defActive = filter === 'defense' ? 'active' : '';
+                html += `<button class="unit-tab defense-tab ${defActive}" onclick="setFilter('${side}','defense')">DEF</button>`;
+                // ST tab - green
+                const stActive = filter === 'special' ? 'active' : '';
+                html += `<button class="unit-tab special-tab ${stActive}" onclick="setFilter('${side}','special')">ST</button>`;
             }
             html += '</div>';
             html += '<div class="player-list-body">';
@@ -2471,24 +2516,23 @@
             const allPosOptions = getAllPositionOptionsWithLabels();
             
             getPlayers(side, filter).forEach(p => {
-                // Build category badges
-                let catBadges = '';
+                // Build category badge
+                let catBadge = '';
                 if (p.categories && p.categories.length > 0 && p.categories[0] !== 'all') {
                     const catClass = getCategoryClass(p.categories);
                     const tooltipText = getCategoryTooltip(p.categories);
                     const label = getCategoryLabel(p.categories);
-                    // Replace [O/D] with O/D for the badge
                     const badgeText = label.replace(/\[|\]/g, '');
-                    catBadges = `<span class="cat-badge ${catClass}" data-tooltip="${tooltipText}">${badgeText}</span>`;
+                    catBadge = `<span class="cat-badge ${catClass}" data-tooltip="${tooltipText}">${badgeText}</span>`;
                 }
                 
                 const currentPos = p.posFull || p.po || 'QB';
                 
                 html += `<div class="player-row${p.st ? ' starter' : ''}">`;
-                html += `<input value="${p.n}" style="width:28px;color:#0a0a0a;font-weight:700;font-size:0.7rem;" onchange="updateGamePlayerFieldOnly('${side}','${p.id}','n',this.value)">`;
-                html += `<input value="${p.na}" style="color:#0a0a0a;font-weight:700;font-size:0.7rem;" onchange="updateGamePlayerFieldOnly('${side}','${p.id}','na',this.value)">`;
+                html += `<input value="${p.n}" onchange="updateGamePlayerFieldOnly('${side}','${p.id}','n',this.value)" style="width:28px;">`;
+                html += `<input value="${p.na}" onchange="updateGamePlayerFieldOnly('${side}','${p.id}','na',this.value)">`;
                 html += `<div class="pos-select-wrapper">`;
-                html += `<select onchange="updateGamePlayerPositionOnly('${side}','${p.id}',this.value)" style="color:#0a0a0a;font-weight:700;font-size:0.7rem;">`;
+                html += `<select onchange="updateGamePlayerPositionOnly('${side}','${p.id}',this.value)">`;
                 allPosOptions.forEach(opt => {
                     const selected = (opt.value === currentPos) ? 'selected' : '';
                     html += `<option ${selected} value="${opt.value}">${opt.display}</option>`;
@@ -2496,10 +2540,10 @@
                 html += `</select>`;
                 html += `<button class="quick-add-btn" onclick="quickAddPositionOnly('${side}','${p.id}')" data-tooltip="Quick add position (add /POSITION)">+</button>`;
                 html += `</div>`;
-                html += `<div style="display:flex;align-items:center;gap:2px;font-size:0.5rem;color:#666;white-space:nowrap;">${catBadges}</div>`;
+                html += `<div class="cat-badge-col">${catBadge}</div>`;
                 html += `<button class="st-toggle ${p.st ? 'active' : ''}" onclick="toggleStarterOnly('${side}','${p.id}')" data-tooltip="Starter">⭐</button>`;
                 html += `<button class="pin-btn" onclick="togglePinOnly('${side}','${p.id}')" data-tooltip="Pin">📌</button>`;
-                html += `<button class="sb-btn" onclick="deletePlayerOnly('${side}','${p.id}')" data-tooltip="Delete" style="width:18px;height:18px;font-size:9px;">✕</button>`;
+                html += `<button class="delete-btn" onclick="deletePlayerOnly('${side}','${p.id}')" data-tooltip="Delete">✕</button>`;
                 html += '</div>';
             });
             html += '</div></div>';
@@ -2519,7 +2563,7 @@
         if (!p) return;
         p[field] = val;
         saveState();
-        renderGame(); // Re-render game card only
+        renderGame();
     }
 
     function updateGamePlayerPositionOnly(side, pid, val) {
@@ -2533,7 +2577,7 @@
         p.categories = getPositionCategories(val);
         
         saveState();
-        renderGame(); // Re-render game card only
+        renderGame();
         toast(`✅ ${p.na} set to ${val}`);
     }
 
@@ -2570,7 +2614,7 @@
         p.categories = getPositionCategories(newPosFull);
         
         saveState();
-        renderGame(); // Re-render game card only
+        renderGame();
     }
 
     function toggleStarterOnly(side, pid) { 
@@ -2840,7 +2884,7 @@
             p.categories = getPositionCategories(val);
         }
         saveState();
-        renderGame(); // Update game view
+        renderGame();
     }
 
     function addPlayerToTeam(teamId) {
