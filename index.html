@@ -741,6 +741,20 @@
         }
         .st-toggle.active { background: var(--accent); color: #000; }
 
+        /* Category badge styles */
+        .cat-badge {
+            font-size: 0.4rem;
+            background: #334155;
+            color: #fff;
+            padding: 0px 3px;
+            border-radius: 2px;
+            margin-left: 2px;
+            white-space: nowrap;
+        }
+        .cat-badge.offense { background: #2563eb; }
+        .cat-badge.defense { background: #dc2626; }
+        .cat-badge.special { background: #16a34a; }
+
         footer {
             background: var(--footer-bg);
             color: var(--footer-text);
@@ -1133,18 +1147,18 @@
         lastEvent: { text: '🏈 Ready — Set possession to begin', type: 'info' },
         teams: [
             { id: 'h', name: 'Texas Hawks', abbr: 'TXH', color: '#1e3a5f', logo: '', mascot: '', coach: '', players: [
-                { id: 'h1', n: '7', na: 'Marcus Johnson', po: 'QB', st: true, nt: '', pron: '', ph: '', pinned: false },
-                { id: 'h2', n: '55', na: 'Chris Williams', po: 'Center', st: true, nt: '', pron: '', ph: '', pinned: false },
-                { id: 'h3', n: '11', na: 'Jalen Smith', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false },
-                { id: 'h4', n: '88', na: 'Ty Washington', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false },
-                { id: 'h5', n: '15', na: 'Jordan Davis', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false }
+                { id: 'h1', n: '7', na: 'Marcus Johnson', po: 'QB', st: true, nt: '', pron: '', ph: '', pinned: false, categories: ['offense'] },
+                { id: 'h2', n: '55', na: 'Chris Williams', po: 'Center', st: true, nt: '', pron: '', ph: '', pinned: false, categories: ['offense'] },
+                { id: 'h3', n: '11', na: 'Jalen Smith', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false, categories: ['offense'] },
+                { id: 'h4', n: '88', na: 'Ty Washington', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false, categories: ['offense'] },
+                { id: 'h5', n: '15', na: 'Jordan Davis', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false, categories: ['offense'] }
             ] },
             { id: 's', name: 'Dallas Cowboys', abbr: 'DAL', color: '#7f1d1d', logo: '', mascot: '', coach: '', players: [
-                { id: 's1', n: '12', na: 'Caleb White', po: 'QB', st: true, nt: '', pron: '', ph: '', pinned: false },
-                { id: 's2', n: '72', na: 'Mason Lee', po: 'Center', st: true, nt: '', pron: '', ph: '', pinned: false },
-                { id: 's3', n: '1', na: 'Adrian Flores', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false },
-                { id: 's4', n: '5', na: 'Xavier Reed', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false },
-                { id: 's5', n: '18', na: 'Karter Hill', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false }
+                { id: 's1', n: '12', na: 'Caleb White', po: 'QB', st: true, nt: '', pron: '', ph: '', pinned: false, categories: ['offense'] },
+                { id: 's2', n: '72', na: 'Mason Lee', po: 'Center', st: true, nt: '', pron: '', ph: '', pinned: false, categories: ['offense'] },
+                { id: 's3', n: '1', na: 'Adrian Flores', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false, categories: ['offense'] },
+                { id: 's4', n: '5', na: 'Xavier Reed', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false, categories: ['offense'] },
+                { id: 's5', n: '18', na: 'Karter Hill', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false, categories: ['offense'] }
             ] }
         ],
         scoringLog: [],
@@ -1202,7 +1216,18 @@
         if (!Array.isArray(S.teams) || S.teams.length === 0) {
             S.teams = [{ id: 't1', name: 'Away Team', abbr: 'AWY', color: '#334155', logo: '', mascot: '', coach: '', players: [] }];
         }
-        S.teams.forEach(t => { if (t.abbr === undefined) t.abbr = ''; });
+        S.teams.forEach(t => { 
+            if (t.abbr === undefined) t.abbr = '';
+            // Add categories array to players if missing
+            t.players.forEach(p => {
+                if (p.categories === undefined) {
+                    p.categories = getPositionCategories(p.po || '');
+                }
+                if (p.posFull === undefined) {
+                    p.posFull = p.po || '';
+                }
+            });
+        });
         if (!S.teams.find(t => t.id === S.awayId)) S.awayId = S.teams[0].id;
         if (!S.teams.find(t => t.id === S.homeId) || S.homeId === S.awayId) {
             const alt = S.teams.find(t => t.id !== S.awayId);
@@ -1223,6 +1248,61 @@
         S.gc.run = false;
     }
 
+    // ============================================================
+    // POSITION CATEGORIZATION ENGINE
+    // ============================================================
+    function getPositionCategories(posStr) {
+        if (!posStr) return ['all'];
+        
+        const positions = posStr.split('/').map(p => p.trim().toUpperCase());
+        const categories = new Set();
+        
+        const OFFENSE = ['QB', 'RB', 'FB', 'WR', 'TE', 'OL', 'C', 'G', 'T'];
+        const DEFENSE = ['DL', 'DE', 'DT', 'NG', 'LB', 'MLB', 'OLB', 'ILB', 'CB', 'S', 'SS', 'FS', 'DB'];
+        const SPECIAL_TEAMS = ['K', 'P', 'KR', 'PR', 'LS'];
+        
+        positions.forEach(pos => {
+            if (OFFENSE.includes(pos) || pos === 'LS') {
+                categories.add('offense');
+            }
+            if (DEFENSE.includes(pos)) {
+                categories.add('defense');
+            }
+            if (SPECIAL_TEAMS.includes(pos) || pos === 'LS') {
+                categories.add('special');
+            }
+        });
+        
+        // If no category found, add 'all' only
+        if (categories.size === 0) {
+            categories.add('all');
+        }
+        
+        return Array.from(categories);
+    }
+
+    // Recalculate categories for all players in a team
+    function recategorizeTeam(teamId) {
+        const team = S.teams.find(t => t.id === teamId);
+        if (!team) return;
+        
+        let updated = 0;
+        team.players.forEach(p => {
+            const posStr = p.posFull || p.po || '';
+            const newCats = getPositionCategories(posStr);
+            // Compare arrays
+            const oldCats = p.categories || ['all'];
+            if (JSON.stringify(oldCats.sort()) !== JSON.stringify(newCats.sort())) {
+                p.categories = newCats;
+                updated++;
+            }
+        });
+        
+        saveState();
+        return updated;
+    }
+
+    // ---- load state ----
     function loadState() {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (raw) { try { S = { ...S, ...JSON.parse(raw) }; } catch (e) {} }
@@ -1242,14 +1322,36 @@
         const t = getTeam(side);
         if (!t) return [];
         let list = [...t.players];
-        if (S.md7 === 'tackle') {
-            const off = ['QB', 'RB', 'FB', 'WR', 'TE', 'OL', 'C', 'G', 'T'];
-            const def = ['DL', 'DE', 'DT', 'LB', 'OLB', 'ILB', 'CB', 'S', 'SS', 'FS', 'DB'];
-            const st = ['K', 'P', 'LS', 'KR', 'PR'];
-            if (filter === 'offense') list = list.filter(p => off.includes(p.po));
-            else if (filter === 'defense') list = list.filter(p => def.includes(p.po));
-            else if (filter === 'special') list = list.filter(p => st.includes(p.po));
+        
+        if (filter === 'all') {
+            // Show all players
+            list.sort((a, b) => (parseInt(a.n) || 999) - (parseInt(b.n) || 999));
+            return list;
         }
+        
+        // Filter by category using the categories array
+        if (filter === 'offense' || filter === 'defense' || filter === 'special') {
+            list = list.filter(p => {
+                // If player has categories array, check it
+                if (p.categories && p.categories.length > 0) {
+                    return p.categories.includes(filter);
+                }
+                // Fallback: check position
+                const pos = (p.po || '').toUpperCase();
+                const posFull = (p.posFull || p.po || '').toUpperCase();
+                if (filter === 'offense') {
+                    return ['QB','RB','FB','WR','TE','OL','C','G','T','LS'].some(p => pos.includes(p) || posFull.includes(p));
+                }
+                if (filter === 'defense') {
+                    return ['DL','DE','DT','NG','LB','MLB','OLB','ILB','CB','S','SS','FS','DB'].some(p => pos.includes(p) || posFull.includes(p));
+                }
+                if (filter === 'special') {
+                    return ['K','P','KR','PR','LS'].some(p => pos.includes(p) || posFull.includes(p));
+                }
+                return true;
+            });
+        }
+        
         list.sort((a, b) => (parseInt(a.n) || 999) - (parseInt(b.n) || 999));
         return list;
     }
@@ -1593,7 +1695,6 @@
         if (homeTO2) homeTO2.className = 'timeout-dot' + (2 > home ? ' used' : '');
         if (homeTO3) homeTO3.className = 'timeout-dot' + (3 > home ? ' used' : '');
 
-        // Update the "NONE" text for the displays
         const awayContainer = document.querySelector('.sb-block.score-block:first-child .timeout-display');
         const homeContainer = document.querySelector('.sb-block.score-block:last-child .timeout-display');
 
@@ -1638,7 +1739,6 @@
         toast(`⏱️ ${side.toUpperCase()} timeout — ${S.timeouts[key]} remaining — Clock paused`);
     }
 
-    // ---- Injury timeout (no team charged) ----
     function injuryTimeout() {
         if (S.gameState === 'FINAL') { toast('⛔ Game is final'); return; }
         if (S.gameState === 'READY') { toast('⏳ Start the game first'); return; }
@@ -1973,7 +2073,9 @@
         updateGameStateBadge();
         updateUndoButton(); }
 
-    // ---- GAME VIEW ----
+    // ============================================================
+    // GAME VIEW with CATEGORY BADGES
+    // ============================================================
     function renderGame() {
         let html = '';
 
@@ -2020,7 +2122,6 @@
         html += `<button class="gc-btn twopt" onclick="quickScore('twopt')" data-tooltip="2PT +2">2PT</button>`;
         html += `<button class="gc-btn pat" onclick="quickScore('pat')" data-tooltip="PAT +1">PAT</button>`;
         html += `<button class="gc-btn safety" onclick="quickScore('safety')" data-tooltip="Safety +2">Safe</button>`;
-        // LOAD GAME STATE - small button in the row
         html += `<button class="gc-btn load-btn" onclick="fnlCloudLoadGameState()" data-tooltip="Load game state from cloud">📥LOAD</button>`;
         html += `</div>`;
 
@@ -2046,10 +2147,23 @@
             html += '</div>';
             html += '<div class="player-list-body">';
             getPlayers(side, filter).forEach(p => {
+                // Build category badges
+                let catBadges = '';
+                if (p.categories && p.categories.length > 0 && p.categories[0] !== 'all') {
+                    const labels = { offense: 'O', defense: 'D', special: 'ST' };
+                    catBadges = p.categories.map(c => {
+                        if (c === 'all') return '';
+                        return `<span class="cat-badge ${c}">${labels[c] || c}</span>`;
+                    }).join('');
+                }
+                // Show position(s)
+                const posDisplay = p.posFull || p.po || '';
+                
                 html += `<div class="player-row${p.st ? ' starter' : ''}">`;
                 html += `<input value="${p.n}" style="width:28px;color:#0a0a0a;font-weight:700;font-size:0.7rem;" onchange="updateGamePlayerField('${side}','${p.id}','n',this.value)">`;
                 html += `<input value="${p.na}" style="color:#0a0a0a;font-weight:700;font-size:0.7rem;" onchange="updateGamePlayerField('${side}','${p.id}','na',this.value)">`;
                 html += `<select onchange="updateGamePlayerField('${side}','${p.id}','po',this.value)" style="color:#0a0a0a;font-weight:700;font-size:0.7rem;">${getPositions().map(o => `<option ${p.po === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
+                html += `<div style="display:flex;align-items:center;gap:2px;font-size:0.5rem;color:#666;white-space:nowrap;">${catBadges}</div>`;
                 html += `<button class="st-toggle ${p.st ? 'active' : ''}" onclick="toggleStarter('${side}','${p.id}')" data-tooltip="Starter">⭐</button>`;
                 html += `<button class="pin-btn" onclick="togglePin('${side}','${p.id}')" data-tooltip="Pin">📌</button>`;
                 html += `<button class="sb-btn" onclick="deletePlayer('${side}','${p.id}')" data-tooltip="Delete" style="width:18px;height:18px;font-size:9px;">✕</button>`;
@@ -2091,6 +2205,11 @@
         const p = team.players.find(x => x.id === pid);
         if (!p) return;
         p[field] = val;
+        // If position changed, recalculate categories
+        if (field === 'po') {
+            p.posFull = val;
+            p.categories = getPositionCategories(val);
+        }
         saveState();
     }
 
@@ -2112,7 +2231,9 @@
         updateScorebug();
     }
 
-    // ---- ROSTER VIEW ----
+    // ============================================================
+    // ROSTER VIEW with SMART PARSER
+    // ============================================================
     function renderRoster() {
         const sortedTeams = [...S.teams].sort((a, b) => a.name.localeCompare(b.name));
         let selectedTeam = S.teams.find(t => t.id === S.cid) || S.teams[0];
@@ -2148,6 +2269,7 @@
         html += `<button class="hdr-btn" onclick="printRoster('${selectedTeam.id}')" data-tooltip="Print">🖨️</button>`;
         html += `<button class="hdr-btn" onclick="exportTeamCSV('${selectedTeam.id}')" data-tooltip="CSV">📊</button>`;
         html += `<button class="hdr-btn" style="background:#dc2626;" onclick="deleteTeamById('${selectedTeam.id}')" data-tooltip="Delete">🗑️</button>`;
+        html += `<button class="hdr-btn" style="background:#8b5cf6;" onclick="recategorizeTeam('${selectedTeam.id}')" data-tooltip="Recategorize all players">🔄 Recat</button>`;
         html += '</div>';
         html += `<div style="display:flex;gap:4px;margin-bottom:8px;">`;
         html += `<button class="hdr-btn ${selectedTeam.id === S.awayId ? 'active' : ''}" onclick="setSideTeam('away','${selectedTeam.id}')" data-tooltip="Set as away">✈️ Away</button>`;
@@ -2169,13 +2291,122 @@
         });
         html += `<button class="hdr-btn" onclick="addPlayerToTeam('${selectedTeam.id}')" data-tooltip="Add player">➕ Add Player</button>`;
         html += '<div style="margin-top:8px;display:flex;gap:4px;flex-wrap:wrap;">';
-        html += `<textarea id="parseArea" placeholder="Paste roster (Number Name Position)" style="flex:2;min-width:150px;height:40px;padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.6rem;"></textarea>`;
-        html += `<button class="hdr-btn" onclick="parseRosterText('${selectedTeam.id}')" data-tooltip="Parse">📝 Parse</button>`;
+        html += `<textarea id="parseArea" placeholder="Paste roster (Number\tName\tPosition(s))" style="flex:2;min-width:150px;height:40px;padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.6rem;"></textarea>`;
+        html += `<button class="hdr-btn" onclick="parseRosterText('${selectedTeam.id}')" data-tooltip="Parse with smart categorization">📝 Parse</button>`;
         html += `<input type="file" accept=".txt,.csv" onchange="uploadRosterFile('${selectedTeam.id}',this)" data-tooltip="Upload file" style="font-size:0.6rem;">`;
         html += '</div>';
+        html += `<div style="margin-top:6px;font-size:0.5rem;opacity:0.6;">Tip: Format as "Number\tName\tPosition(s)" or "Number Name Position(s)". Use "/" for multiple positions (e.g., "WR/CB").</div>`;
         html += '</div>';
         html += '</div>';
         document.getElementById('main').innerHTML = html;
+    }
+
+    // ---- SMART PARSER ----
+    function parseRosterText(teamId) {
+        const tx = document.getElementById('parseArea').value.trim();
+        const team = S.teams.find(t => t.id === teamId);
+        if (!team) return;
+        if (!tx) return toast('⚠️ Empty input');
+
+        const lines = tx.split('\n');
+        const out = [];
+        const positionMap = {};
+        
+        lines.forEach(l => {
+            if (!l.trim()) return;
+            
+            // Parse: Number\tName\tPosition(s)
+            let parts = l.split('\t').map(s => s.trim());
+            if (parts.length < 3) {
+                // Try space-separated format with positions at end
+                const match = l.match(/^(\d+)\s+(.+?)\s+([A-Z/]+)$/);
+                if (match) {
+                    parts = [match[1], match[2], match[3]];
+                } else {
+                    // Try: "Number Name" only (no position)
+                    const match2 = l.match(/^(\d+)\s+(.+)$/);
+                    if (match2) {
+                        parts = [match2[1], match2[2], ''];
+                    } else {
+                        // Try: just "Name Position"
+                        const match3 = l.match(/^(.+?)\s+([A-Z/]+)$/);
+                        if (match3) {
+                            parts = ['', match3[1], match3[2]];
+                        }
+                    }
+                }
+            }
+            
+            const number = parts[0] || '';
+            const name = parts[1] || 'Unknown Player';
+            const positionStr = parts[2] || '';
+            
+            // Get categories
+            const categories = getPositionCategories(positionStr);
+            
+            // Determine primary position (first one)
+            const primaryPos = positionStr.split('/')[0].trim() || 'QB';
+            
+            // Skip duplicates within same team (by number + name)
+            const key = number + name;
+            if (positionMap[key]) return;
+            positionMap[key] = true;
+            
+            out.push({
+                id: 'p' + Date.now() + Math.random().toString(36).slice(2, 7),
+                n: number,
+                na: name,
+                po: primaryPos,
+                st: false,
+                nt: '',
+                pron: '',
+                ph: '',
+                pinned: false,
+                categories: categories,
+                posFull: positionStr
+            });
+        });
+        
+        // Sort by jersey number
+        out.sort((a, b) => {
+            const numA = parseInt(a.n) || 999;
+            const numB = parseInt(b.n) || 999;
+            return numA - numB;
+        });
+        
+        if (out.length) {
+            team.players = out;
+            saveState();
+            renderRoster();
+            toast(`✅ ${out.length} players parsed with smart categorization`);
+        } else {
+            toast('❌ No players found');
+        }
+    }
+
+    // ---- Recategorize all players in a team ----
+    function recategorizeTeam(teamId) {
+        const team = S.teams.find(t => t.id === teamId);
+        if (!team) return;
+        
+        let updated = 0;
+        team.players.forEach(p => {
+            const posStr = p.posFull || p.po || '';
+            const newCats = getPositionCategories(posStr);
+            const oldCats = p.categories || ['all'];
+            if (JSON.stringify(oldCats.sort()) !== JSON.stringify(newCats.sort())) {
+                p.categories = newCats;
+                updated++;
+            }
+        });
+        
+        saveState();
+        renderRoster();
+        if (updated > 0) {
+            toast(`🔄 Recategorized ${updated} players`);
+        } else {
+            toast('✅ All players already correctly categorized');
+        }
     }
 
     function selectTeam(id) { S.cid = id;
@@ -2236,14 +2467,20 @@
     function updatePlayerField(teamId, pidx, field, val) {
         const team = S.teams.find(t => t.id === teamId);
         if (!team || !team.players[pidx]) return;
-        team.players[pidx][field] = val;
+        const p = team.players[pidx];
+        p[field] = val;
+        // If position changed, update categories
+        if (field === 'po') {
+            p.posFull = val;
+            p.categories = getPositionCategories(val);
+        }
         saveState();
     }
 
     function addPlayerToTeam(teamId) {
         const team = S.teams.find(t => t.id === teamId);
         if (!team) return;
-        team.players.push({ id: 'p' + Date.now(), n: '', na: 'New Player', po: 'QB', st: false, nt: '', pron: '', ph: '', pinned: false });
+        team.players.push({ id: 'p' + Date.now(), n: '', na: 'New Player', po: 'QB', st: false, nt: '', pron: '', ph: '', pinned: false, categories: ['all'], posFull: 'QB' });
         saveState();
         renderRoster();
     }
@@ -2262,9 +2499,10 @@
         if (!team) return;
         let html = `<html><head><title>${team.name} Roster</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #000;padding:4px}</style></head><body>`;
         html += `<h2>${team.name} Roster</h2>`;
-        html += '<table><tr><th>#</th><th>Name</th><th>Pos</th><th>Notes</th><th>Starter</th></tr>';
+        html += '<table><tr><th>#</th><th>Name</th><th>Pos</th><th>Notes</th><th>Starter</th><th>Categories</th></tr>';
         team.players.forEach(p => {
-            html += `<tr><td>${p.n}</td><td>${p.na}</td><td>${p.po}</td><td>${p.nt || ''}</td><td>${p.st ? 'Yes' : 'No'}</td></tr>`;
+            const cats = (p.categories || ['all']).join(', ');
+            html += `<tr><td>${p.n}</td><td>${p.na}</td><td>${p.posFull || p.po}</td><td>${p.nt || ''}</td><td>${p.st ? 'Yes' : 'No'}</td><td>${cats}</td></tr>`;
         });
         html += '</table></body></html>';
         safePrint(html);
@@ -2273,40 +2511,15 @@
     function exportTeamCSV(teamId) {
         const team = S.teams.find(t => t.id === teamId);
         if (!team) return;
-        let csv = 'Number,Name,Position,Starter,Notes,Pronunciation\n';
-        team.players.forEach(p => { csv += `"${p.n}","${p.na}","${p.po}","${p.st ? 'Yes' : 'No'}","${(p.nt || '').replace(/"/g, '""')}","${p.pron || ''}"\n`; });
+        let csv = 'Number,Name,Position,Starter,Notes,Pronunciation,Categories\n';
+        team.players.forEach(p => {
+            const cats = (p.categories || ['all']).join(';');
+            csv += `"${p.n}","${p.na}","${p.posFull || p.po}","${p.st ? 'Yes' : 'No'}","${(p.nt || '').replace(/"/g, '""')}","${p.pron || ''}","${cats}"\n`;
+        });
         const a = document.createElement('a');
         a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
         a.download = team.name + '.csv';
         a.click();
-    }
-
-    function parseRosterText(teamId) {
-        const tx = document.getElementById('parseArea').value.trim();
-        const team = S.teams.find(t => t.id === teamId);
-        if (!team) return;
-        if (!tx) return toast('⚠️ Empty input');
-        const positions = getPositions();
-        const lines = tx.split('\n');
-        const out = [];
-        lines.forEach(l => {
-            if (!l.trim()) return;
-            let n = '',
-                rest = l.trim();
-            const m = rest.match(/^(\d{1,3})\s+/);
-            if (m) { n = m[1];
-                rest = rest.slice(m[0].length).trim(); }
-            let po = '',
-                name = rest;
-            const words = rest.split(/\s+/);
-            if (words.length && positions.includes(words[words.length - 1].toUpperCase())) { po = words.pop().toUpperCase();
-                name = words.join(' '); }
-            if (name) out.push({ id: 'p' + Date.now() + Math.random().toString(36).slice(2, 7), n, na: name, po: po || 'QB', st: false, nt: '', pron: '', ph: '', pinned: false });
-        });
-        if (out.length) { team.players = out;
-            saveState();
-            renderRoster();
-            toast(`✅ ${out.length} players parsed`); } else toast('❌ No players found');
     }
 
     function uploadRosterFile(teamId, input) {
@@ -2352,7 +2565,6 @@
             });
         }
 
-        // Add client form
         html += '<div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">';
         html += '<button class="hdr-btn" onclick="addClient()" data-tooltip="Add new client">➕ Add Client</button> ';
         html += '<button class="hdr-btn" onclick="showAllPINs()" data-tooltip="Show all client PINs">🔑 Show PINs</button>';
@@ -2362,19 +2574,16 @@
         document.getElementById('main').innerHTML = html;
     }
 
-    // ---- Update header with client branding ----
     function updateHeaderBranding() {
         const brandContainer = document.getElementById('brandContainer');
         const brandLogo = document.getElementById('brandLogo');
         const brandTitle = document.getElementById('brandTitle');
         const brandSubtitle = document.getElementById('brandSubtitle');
 
-        // Find the active client (the one currently selected)
         let activeClient = null;
         let activePin = S.ap;
 
         if (!activePin || !S.cp[activePin]) {
-            // If no active client, use the first one
             const keys = Object.keys(S.cp);
             if (keys.length > 0) {
                 activePin = keys[0];
@@ -2386,18 +2595,15 @@
             activeClient = S.cp[activePin];
         }
 
-        // Clear existing client elements (but keep the FNL logo and text)
         const existingClientLogo = document.getElementById('clientHeaderLogo');
         const existingClientName = document.getElementById('clientHeaderName');
         if (existingClientLogo) existingClientLogo.remove();
         if (existingClientName) existingClientName.remove();
 
         if (activeClient) {
-            // Update subtitle to show client name
             brandSubtitle.textContent = activeClient.n || 'PA CONSOLE';
             brandSubtitle.style.color = 'var(--accent)';
 
-            // Add client logo if available
             if (activeClient.logo) {
                 const logoImg = document.createElement('img');
                 logoImg.id = 'clientHeaderLogo';
@@ -2406,7 +2612,6 @@
                 logoImg.alt = activeClient.n || 'Client';
                 brandContainer.appendChild(logoImg);
             } else {
-                // Show client initial as a circle if no logo
                 const initial = document.createElement('div');
                 initial.id = 'clientHeaderLogo';
                 initial.className = 'client-header-logo';
@@ -2429,36 +2634,28 @@
                 brandContainer.appendChild(initial);
             }
 
-            // Add client name next to logo
             const nameSpan = document.createElement('span');
             nameSpan.id = 'clientHeaderName';
             nameSpan.className = 'client-header-name';
             nameSpan.textContent = activeClient.n || '';
             brandContainer.appendChild(nameSpan);
 
-            // Hide default FNL logo if client has branding (optional)
-            // brandLogo.style.display = 'none';
-
         } else {
-            // No client selected - show default branding
             brandSubtitle.textContent = 'PA CONSOLE';
             brandSubtitle.style.color = 'var(--accent)';
-            // Show FNL logo
             brandLogo.style.display = 'inline-block';
         }
     }
 
-    // ---- Select which client to show in header ----
     function selectClient(pin) {
         if (!S.cp[pin]) return toast('Client not found');
         S.ap = pin;
         saveState();
         updateHeaderBranding();
-        renderClients(); // Refresh clients view to show active state
+        renderClients();
         toast(`✅ ${S.cp[pin].n} is now active`);
     }
 
-    // ---- Client logo upload ----
     function uploadClientLogo(pin) {
         const input = document.createElement('input');
         input.type = 'file';
@@ -2470,7 +2667,6 @@
             r.onload = ev => {
                 if (S.cp[pin]) {
                     S.cp[pin].logo = ev.target.result;
-                    // If this was the active client, update header
                     if (S.ap === pin) {
                         updateHeaderBranding();
                     }
@@ -2490,7 +2686,6 @@
         const name = prompt('Client name:');
         if (!name) return;
         S.cp[pin.toUpperCase()] = { n: name, l: '', logo: '' };
-        // Auto-select this client
         S.ap = pin.toUpperCase();
         saveState();
         renderClients();
@@ -2504,7 +2699,6 @@
         const name = prompt('Client name:', c.n);
         if (name) {
             c.n = name;
-            // If this was the active client, update header
             if (S.ap === pin) {
                 updateHeaderBranding();
             }
@@ -2517,7 +2711,6 @@
         if (!confirm('Delete client?')) return;
         delete S.cp[pin];
         if (S.ap === pin) {
-            // If the deleted client was active, clear active and update header
             S.ap = '';
             updateHeaderBranding();
         }
@@ -2845,13 +3038,32 @@
                                     existingPlayer.st = player.st !== undefined ? player.st : existingPlayer.st;
                                     existingPlayer.nt = player.nt || existingPlayer.nt;
                                     existingPlayer.pron = player.pron || existingPlayer.pron;
+                                    existingPlayer.posFull = player.posFull || player.po || existingPlayer.posFull;
+                                    if (player.categories) existingPlayer.categories = player.categories;
+                                    else if (player.posFull || player.po) existingPlayer.categories = getPositionCategories(player.posFull || player.po);
                                 } else {
-                                    existing.players.push({ ...player });
+                                    // Add new player with categories
+                                    const newPlayer = { ...player };
+                                    if (!newPlayer.categories && (newPlayer.posFull || newPlayer.po)) {
+                                        newPlayer.categories = getPositionCategories(newPlayer.posFull || newPlayer.po);
+                                    }
+                                    if (!newPlayer.categories) newPlayer.categories = ['all'];
+                                    existing.players.push(newPlayer);
                                 }
                             });
                         }
                     } else {
-                        S.teams.push({ ...cloudTeam, players: cloudTeam.players ? cloudTeam.players.map(p => ({ ...p })) : [] });
+                        // Add new team with all players
+                        const newTeam = { ...cloudTeam };
+                        newTeam.players = (cloudTeam.players || []).map(p => {
+                            const player = { ...p };
+                            if (!player.categories && (player.posFull || player.po)) {
+                                player.categories = getPositionCategories(player.posFull || player.po);
+                            }
+                            if (!player.categories) player.categories = ['all'];
+                            return player;
+                        });
+                        S.teams.push(newTeam);
                     }
                 });
             }
@@ -2995,7 +3207,7 @@
         ['away', 'home'].forEach(side => {
             const t = getTeam(side);
             html += `<h2>${side === 'away' ? 'Away' : 'Home'}: ${t.name}</h2><table><tr><th>#</th><th>Name</th><th>Pos</th></tr>`;
-            t.players.filter(p => p.st).forEach(p => { html += `<tr><td>${p.n}</td><td>${p.na}</td><td>${p.po}</td></tr>`; });
+            t.players.filter(p => p.st).forEach(p => { html += `<tr><td>${p.n}</td><td>${p.na}</td><td>${p.posFull || p.po}</td></tr>`; });
             html += '</table>';
         });
         html += '</body></html>';
@@ -3072,6 +3284,7 @@
     window.clearLogs = clearLogs;
     window.applyTimeoutConfig = applyTimeoutConfig;
     window.injuryTimeout = injuryTimeout;
+    window.recategorizeTeam = recategorizeTeam;
 
     // ---- Init ----
     loadState();
@@ -3084,7 +3297,7 @@
     updateSaveStatus(true);
     S.gc.run = false;
     saveState();
-    updateHeaderBranding(); // Initialize header branding
+    updateHeaderBranding();
 </script>
 </body>
 </html>
