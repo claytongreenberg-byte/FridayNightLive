@@ -18,6 +18,11 @@
             --scorebug-text: #ffffff;
             --team-card-away: #e2e8f0;
             --team-card-home: #e2e8f0;
+            --badge-offense: #2563eb;
+            --badge-defense: #dc2626;
+            --badge-special: #16a34a;
+            --badge-both: #8b5cf6;
+            --badge-other: #6b7280;
         }
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -824,18 +829,62 @@
         }
         .st-toggle.active { background: var(--accent); color: #000; }
 
+        /* ===== ENHANCED CATEGORY BADGES ===== */
         .cat-badge {
-            font-size: 0.4rem;
-            background: #334155;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 3px;
+            white-space: nowrap;
+            display: inline-block;
+            cursor: help;
+            letter-spacing: 0.3px;
+            border: 1px solid rgba(255,255,255,0.2);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            transition: all 0.2s;
+        }
+        .cat-badge:hover {
+            transform: scale(1.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .cat-badge.offense {
+            background: var(--badge-offense);
             color: #fff;
-            padding: 0px 3px;
-            border-radius: 2px;
-            margin-left: 2px;
+        }
+        .cat-badge.defense {
+            background: var(--badge-defense);
+            color: #fff;
+        }
+        .cat-badge.special {
+            background: var(--badge-special);
+            color: #fff;
+        }
+        .cat-badge.both {
+            background: var(--badge-both);
+            color: #fff;
+        }
+        .cat-badge.other {
+            background: var(--badge-other);
+            color: #fff;
+        }
+
+        /* Badge tooltip - positioned above the badge */
+        .cat-badge-tooltip {
+            position: fixed;
+            z-index: 10000;
+            background: #1e293b;
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.6rem;
+            pointer-events: none;
+            display: none;
+            max-width: 180px;
+            border: 1px solid #475569;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
             white-space: nowrap;
         }
-        .cat-badge.offense { background: #2563eb; }
-        .cat-badge.defense { background: #dc2626; }
-        .cat-badge.special { background: #16a34a; }
 
         footer {
             background: var(--footer-bg);
@@ -1051,6 +1100,7 @@
             .player-row { font-size: 0.6rem; grid-template-columns: 26px 1fr 60px 20px 20px 18px; }
             .player-row input,
             .player-row select { font-size: 0.6rem; padding: 2px; }
+            .cat-badge { font-size: 0.55rem; padding: 1px 6px; }
         }
         @media (max-width: 768px) {
             .scorebug { padding: 6px 6px; min-height: 100px; flex-wrap: wrap; }
@@ -1088,12 +1138,14 @@
             .player-row { font-size: 0.5rem; grid-template-columns: 22px 1fr 50px 18px 18px 16px; gap: 2px; padding: 2px; }
             .player-row input,
             .player-row select { font-size: 0.5rem; padding: 1px 2px; }
+            .cat-badge { font-size: 0.45rem; padding: 1px 4px; }
         }
     </style>
 </head>
 <body>
 <div class="toast" id="toast"></div>
 <div class="tooltip-js" id="tooltip"></div>
+<div class="cat-badge-tooltip" id="badgeTooltip"></div>
 
 <header>
     <div class="hdr-top">
@@ -1370,9 +1422,71 @@
     }
 
     // ============================================================
-    // GET ALL POSITION OPTIONS (Base + All from Rosters)
+    // GET CATEGORY LABEL FOR DISPLAY
     // ============================================================
-    function getAllPositionOptions() {
+    function getCategoryLabel(categories) {
+        if (!categories || categories.length === 0 || categories[0] === 'all') {
+            return '[?]';
+        }
+        const hasOffense = categories.includes('offense');
+        const hasDefense = categories.includes('defense');
+        const hasSpecial = categories.includes('special');
+        
+        if (hasOffense && hasDefense) {
+            return '[O/D]';
+        } else if (hasOffense) {
+            return '[O]';
+        } else if (hasDefense) {
+            return '[D]';
+        } else if (hasSpecial) {
+            return '[ST]';
+        } else {
+            return '[?]';
+        }
+    }
+
+    // ============================================================
+    // GET CATEGORY CSS CLASS FOR BADGE
+    // ============================================================
+    function getCategoryClass(categories) {
+        if (!categories || categories.length === 0 || categories[0] === 'all') {
+            return 'other';
+        }
+        const hasOffense = categories.includes('offense');
+        const hasDefense = categories.includes('defense');
+        const hasSpecial = categories.includes('special');
+        
+        if (hasOffense && hasDefense) {
+            return 'both';
+        } else if (hasOffense) {
+            return 'offense';
+        } else if (hasDefense) {
+            return 'defense';
+        } else if (hasSpecial) {
+            return 'special';
+        } else {
+            return 'other';
+        }
+    }
+
+    // ============================================================
+    // GET CATEGORY TOOLTIP TEXT
+    // ============================================================
+    function getCategoryTooltip(categories) {
+        if (!categories || categories.length === 0 || categories[0] === 'all') {
+            return 'Unknown Position';
+        }
+        const labels = [];
+        if (categories.includes('offense')) labels.push('Offense');
+        if (categories.includes('defense')) labels.push('Defense');
+        if (categories.includes('special')) labels.push('Special Teams');
+        return labels.join(' + ') || 'Unknown';
+    }
+
+    // ============================================================
+    // GET ALL POSITION OPTIONS WITH CATEGORY PREFIXES
+    // ============================================================
+    function getAllPositionOptionsWithLabels() {
         const basePositions = S.md7 === '7v7' ? S.p7 : ['QB', 'RB', 'FB', 'WR', 'TE', 'OL', 'C', 'G', 'T', 'DL', 'DE', 'DT', 'NG', 'LB', 'MLB', 'OLB', 'ILB', 'CB', 'S', 'SS', 'FS', 'DB', 'K', 'P', 'LS', 'KR', 'PR'];
         
         const allPosStrings = new Set();
@@ -1391,6 +1505,7 @@
             });
         });
         
+        // Combine base + custom positions
         const combined = [...basePositions];
         allPosStrings.forEach(pos => {
             if (!combined.includes(pos)) {
@@ -1398,7 +1513,51 @@
             }
         });
         
-        return combined.sort();
+        // Build options with category prefixes
+        const options = combined.map(pos => {
+            const cats = getPositionCategories(pos);
+            const label = getCategoryLabel(cats);
+            return {
+                value: pos,
+                display: `${label} ${pos}`,
+                categories: cats
+            };
+        });
+        
+        // Sort by category order: Offense -> Defense -> Special -> Both -> Other
+        const categoryOrder = {
+            'offense': 0,
+            'defense': 1,
+            'special': 2,
+            'both': 3,
+            'other': 4
+        };
+        
+        options.sort((a, b) => {
+            const catsA = a.categories;
+            const catsB = b.categories;
+            
+            let catA = 'other';
+            let catB = 'other';
+            
+            if (catsA.includes('offense') && catsA.includes('defense')) catA = 'both';
+            else if (catsA.includes('offense')) catA = 'offense';
+            else if (catsA.includes('defense')) catA = 'defense';
+            else if (catsA.includes('special')) catA = 'special';
+            
+            if (catsB.includes('offense') && catsB.includes('defense')) catB = 'both';
+            else if (catsB.includes('offense')) catB = 'offense';
+            else if (catsB.includes('defense')) catB = 'defense';
+            else if (catsB.includes('special')) catB = 'special';
+            
+            const orderA = categoryOrder[catA] || 4;
+            const orderB = categoryOrder[catB] || 4;
+            
+            if (orderA !== orderB) return orderA - orderB;
+            return a.value.localeCompare(b.value);
+        });
+        
+        return options;
     }
 
     // ============================================================
@@ -1600,6 +1759,34 @@
         tooltipEl.style.left = left + 'px';
         tooltipEl.style.top = top + 'px';
     }
+
+    // ---- Badge Tooltips (positioned above badge) ----
+    const badgeTooltip = document.getElementById('badgeTooltip');
+    document.addEventListener('mouseover', e => {
+        const badge = e.target.closest('.cat-badge');
+        if (badge) {
+            const tooltipText = badge.getAttribute('data-tooltip');
+            if (tooltipText) {
+                badgeTooltip.textContent = tooltipText;
+                badgeTooltip.style.display = 'block';
+                const rect = badge.getBoundingClientRect();
+                let top = rect.top - 30;
+                let left = rect.left + (rect.width / 2) - (badgeTooltip.offsetWidth / 2);
+                if (top < 10) top = rect.bottom + 5;
+                if (left < 10) left = 10;
+                if (left + badgeTooltip.offsetWidth > window.innerWidth - 10) {
+                    left = window.innerWidth - badgeTooltip.offsetWidth - 10;
+                }
+                badgeTooltip.style.top = top + 'px';
+                badgeTooltip.style.left = left + 'px';
+            }
+        }
+    });
+    document.addEventListener('mouseout', e => {
+        if (!e.target.closest('.cat-badge')) {
+            badgeTooltip.style.display = 'none';
+        }
+    });
 
     // ---- Keyboard shortcuts ----
     document.addEventListener('keydown', e => {
@@ -2214,7 +2401,7 @@
         updateUndoButton(); }
 
     // ============================================================
-    // GAME VIEW with POSITION DROPDOWN + QUICK ADD (NO VIEW SWITCHING)
+    // GAME VIEW with CATEGORY PREFIXES IN DROPDOWN + ENHANCED BADGES
     // ============================================================
     function renderGame() {
         let html = '';
@@ -2281,16 +2468,18 @@
             html += '</div>';
             html += '<div class="player-list-body">';
             
-            const allPosOptions = getAllPositionOptions();
+            const allPosOptions = getAllPositionOptionsWithLabels();
             
             getPlayers(side, filter).forEach(p => {
+                // Build category badges
                 let catBadges = '';
                 if (p.categories && p.categories.length > 0 && p.categories[0] !== 'all') {
-                    const labels = { offense: 'O', defense: 'D', special: 'ST' };
-                    catBadges = p.categories.map(c => {
-                        if (c === 'all') return '';
-                        return `<span class="cat-badge ${c}">${labels[c] || c}</span>`;
-                    }).join('');
+                    const catClass = getCategoryClass(p.categories);
+                    const tooltipText = getCategoryTooltip(p.categories);
+                    const label = getCategoryLabel(p.categories);
+                    // Replace [O/D] with O/D for the badge
+                    const badgeText = label.replace(/\[|\]/g, '');
+                    catBadges = `<span class="cat-badge ${catClass}" data-tooltip="${tooltipText}">${badgeText}</span>`;
                 }
                 
                 const currentPos = p.posFull || p.po || 'QB';
@@ -2300,9 +2489,9 @@
                 html += `<input value="${p.na}" style="color:#0a0a0a;font-weight:700;font-size:0.7rem;" onchange="updateGamePlayerFieldOnly('${side}','${p.id}','na',this.value)">`;
                 html += `<div class="pos-select-wrapper">`;
                 html += `<select onchange="updateGamePlayerPositionOnly('${side}','${p.id}',this.value)" style="color:#0a0a0a;font-weight:700;font-size:0.7rem;">`;
-                allPosOptions.forEach(o => {
-                    const selected = (o === currentPos) ? 'selected' : '';
-                    html += `<option ${selected} value="${o}">${o}</option>`;
+                allPosOptions.forEach(opt => {
+                    const selected = (opt.value === currentPos) ? 'selected' : '';
+                    html += `<option ${selected} value="${opt.value}">${opt.display}</option>`;
                 });
                 html += `</select>`;
                 html += `<button class="quick-add-btn" onclick="quickAddPositionOnly('${side}','${p.id}')" data-tooltip="Quick add position (add /POSITION)">+</button>`;
@@ -2483,13 +2672,20 @@
         html += '<span>#</span><span>Name</span><span>Pos</span><span>Role</span><span>Notes</span><span>Pron</span><span></span>';
         html += '</div>';
         selectedTeam.players.forEach((p, pidx) => {
+            const cats = p.categories || ['all'];
+            const catLabel = getCategoryLabel(cats);
+            const badgeText = catLabel.replace(/\[|\]/g, '');
+            const catClass = getCategoryClass(cats);
+            const tooltipText = getCategoryTooltip(cats);
+            
             html += `<div style="display:grid;grid-template-columns:32px 1fr 70px 50px 70px 70px 26px;gap:3px;margin-bottom:2px;align-items:center;">`;
             html += `<input value="${p.n}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'n',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">`;
             html += `<input value="${p.na}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'na',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">`;
-            html += `<select onchange="updatePlayerField('${selectedTeam.id}',${pidx},'posFull',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">${getAllPositionOptions().map(o => `<option ${(p.posFull || p.po) === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
+            html += `<select onchange="updatePlayerField('${selectedTeam.id}',${pidx},'posFull',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">${getAllPositionOptionsWithLabels().map(o => `<option ${(p.posFull || p.po) === o.value ? 'selected' : ''} value="${o.value}">${o.display}</option>`).join('')}</select>`;
             html += `<select onchange="updatePlayerField('${selectedTeam.id}',${pidx},'st',this.value === 'true')" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;"><option value="false" ${!p.st ? 'selected' : ''}>Bench</option><option value="true" ${p.st ? 'selected' : ''}>Starter</option></select>`;
             html += `<input value="${p.nt || ''}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'nt',this.value)" placeholder="Notes" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">`;
             html += `<input value="${p.pron || ''}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'pron',this.value)" placeholder="Pron" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">`;
+            html += `<div><span class="cat-badge ${catClass}" data-tooltip="${tooltipText}" style="font-size:0.5rem;padding:1px 5px;">${badgeText}</span></div>`;
             html += `<button class="sb-btn" style="width:20px;height:20px;font-size:9px;" onclick="S.teams.find(t=>t.id==='${selectedTeam.id}').players.splice(${pidx},1);saveState();renderRoster();" data-tooltip="Delete">✕</button>`;
             html += '</div>';
         });
@@ -3109,6 +3305,7 @@
                 <li>Hover any icon for a tooltip</li>
                 <li><strong>📏 / 📐:</strong> Toggle compact scorebug mode to see more players</li>
                 <li><strong>+ button:</strong> Quick add a position to any player (e.g., add /CB to make WR/CB)</li>
+                <li><strong>Category Badges:</strong> Hover over O, D, ST, or O/D badges to see full category name</li>
             </ul>`;
         }
     }
@@ -3458,7 +3655,10 @@
     window.applyTimeoutConfig = applyTimeoutConfig;
     window.injuryTimeout = injuryTimeout;
     window.recategorizeTeam = recategorizeTeam;
-    window.getAllPositionOptions = getAllPositionOptions;
+    window.getAllPositionOptionsWithLabels = getAllPositionOptionsWithLabels;
+    window.getCategoryLabel = getCategoryLabel;
+    window.getCategoryClass = getCategoryClass;
+    window.getCategoryTooltip = getCategoryTooltip;
 
     // ---- Init ----
     loadState();
