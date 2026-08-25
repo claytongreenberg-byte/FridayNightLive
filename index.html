@@ -3192,12 +3192,12 @@
         if (existingClientBrand) existingClientBrand.remove();
 
         if (activeClient) {
-            // Create client branding container
+            // Create client branding container with divider
             const clientBrand = document.createElement('div');
             clientBrand.id = 'clientHeaderBrand';
             clientBrand.style.cssText = 'display:flex;align-items:center;gap:6px;margin-left:8px;padding-left:8px;border-left:1px solid rgba(255,255,255,0.15);flex-shrink:0;';
             
-            // Client logo
+            // Client logo (32px)
             if (activeClient.logo && activeClient.logo.startsWith('data:')) {
                 const logoImg = document.createElement('img');
                 logoImg.id = 'clientHeaderLogo';
@@ -3226,7 +3226,7 @@
                 clientBrand.appendChild(initialDiv);
             }
             
-            // Client name - only once
+            // Client name - ONLY ONCE
             const nameSpan = document.createElement('span');
             nameSpan.id = 'clientHeaderName';
             nameSpan.textContent = activeClient.n || '';
@@ -3235,8 +3235,8 @@
             
             brandContainer.appendChild(clientBrand);
             
-            // Update subtitle to show client name instead of "PA CONSOLE"
-            brandSubtitle.textContent = activeClient.n || 'PA CONSOLE';
+            // Subtitle stays "PA CONSOLE" - NO duplicate client name
+            brandSubtitle.textContent = 'PA CONSOLE';
             brandSubtitle.style.color = 'var(--accent)';
             brandSubtitle.style.fontSize = '0.5rem';
 
