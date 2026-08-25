@@ -2953,10 +2953,12 @@ function saveState() {
         html += `<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:8px;">`;
         html += `<input id="etn" value="${selectedTeam.name}" placeholder="Team Name" style="flex:1;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.7rem;">`;
         html += `<input id="eta" value="${selectedTeam.abbr || ''}" placeholder="ABBR" maxlength="4" style="width:55px;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);text-transform:uppercase;font-size:0.7rem;">`;
-        html += `<input type="color" id="etc" value="${selectedTeam.color}" style="width:35px;height:28px;">`;
-        
-html += `<span style="font-size:0.5rem;font-weight:700;margin-left:4px;">Text</span>`;
+       
+ html += `<input type="color" id="etc" value="${selectedTeam.color}" style="width:35px;height:28px;" onchange="syncTextColor()">`;
 html += `<input type="color" id="ettc" value="${selectedTeam.textColor || '#ffffff'}" style="width:35px;height:28px;" data-tooltip="Text color">`;
+html += `<label style="font-size:0.55rem;display:flex;align-items:center;gap:3px;cursor:pointer;">`;
+html += `<input type="checkbox" id="syncColors" ${selectedTeam.textColor === selectedTeam.color ? 'checked' : ''} onchange="toggleSyncColors()"> Sync Text Color`;
+html += `</label>`;
         
         html += `<input id="etm" value="${selectedTeam.mascot || ''}" placeholder="Mascot" style="width:80px;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.7rem;">`;
         html += `<input id="etco" value="${selectedTeam.coach || ''}" placeholder="Coach" style="width:80px;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.7rem;">`;
@@ -3120,21 +3122,20 @@ html += `<input type="color" id="ettc" value="${selectedTeam.textColor || '#ffff
         renderRoster();
     }
 
-    function saveTeam() {
-        const team = S.teams.find(t => t.id === S.cid);
-        if (!team) return;
-        team.name = document.getElementById('etn').value;
-        team.abbr = document.getElementById('eta').value.toUpperCase();
-        team.color = document.getElementById('etc').value;
-        team.textColor = document.getElementById('ettc').value || '#ffffff';
-        team.mascot = document.getElementById('etm').value;
-        team.coach = document.getElementById('etco').value;
-        saveState();
-        renderRoster();
-        updateScorebug();
-        toast('✅ Team saved');
-    }
-
+  function saveTeam() {
+    const team = S.teams.find(t => t.id === S.cid);
+    if (!team) return;
+    team.name = document.getElementById('etn').value;
+    team.abbr = document.getElementById('eta').value.toUpperCase();
+    team.color = document.getElementById('etc').value;
+    team.textColor = document.getElementById('ettc').value || '#ffffff';
+    team.mascot = document.getElementById('etm').value;
+    team.coach = document.getElementById('etco').value;
+    saveState();
+    renderRoster();
+    updateScorebug();
+    toast(`✅ ${team.name} saved - Color: ${team.color}`);
+}
     function previewTeamLogo(input) {
         const f = input.files[0];
         if (!f) return;
@@ -3949,7 +3950,26 @@ function updateTeamColor(side, color) {
     renderGame();
     toast(`✅ ${team.name} color updated`);
 }
+// ============================================================
+// SYNC COLORS FUNCTIONS
+// ============================================================
+function syncTextColor() {
+    const syncChecked = document.getElementById('syncColors');
+    const colorPicker = document.getElementById('etc');
+    const textPicker = document.getElementById('ettc');
+    if (syncChecked && syncChecked.checked) {
+        textPicker.value = colorPicker.value;
+    }
+}
 
+function toggleSyncColors() {
+    const syncChecked = document.getElementById('syncColors');
+    const colorPicker = document.getElementById('etc');
+    const textPicker = document.getElementById('ettc');
+    if (syncChecked.checked) {
+        textPicker.value = colorPicker.value;
+    }
+}
     // ---- Expose globals ----
     window.chScore = chScore;
     window.chQuarter = chQuarter;
@@ -4032,6 +4052,8 @@ function updateTeamColor(side, color) {
     window.normalizePosition = normalizePosition;
     window.updateTeamColor = updateTeamColor;
     window.getTeamMascot = getTeamMascot;
+    window.syncTextColor = syncTextColor;
+window.toggleSyncColors = toggleSyncColors;
 
     // ---- Init ----
     loadState();
