@@ -1484,10 +1484,93 @@
         setTimeout(() => x.classList.remove('show'), 2000);
     }
 
-    function saveState() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(S));
-        updateSaveStatus(true);
+    // ============================================================
+// AUTO-SAVE TO CLOUD
+// ============================================================
+let autoSaveTimer = null;
+let isCloudSyncing = false;
+let pendingSync = false;
+
+function autoSaveToCloud() {
+    // Debounce: wait 500ms after last change before syncing
+    if (autoSaveTimer) {
+        clearTimeout(autoSaveTimer);
     }
+    
+    // Update local status immediately
+    updateSyncStatus('saving');
+    
+    autoSaveTimer = setTimeout(async () => {
+        if (isCloudSyncing) {
+            pendingSync = true;
+            return;
+        }
+        
+        try {
+            isCloudSyncing = true;
+            pendingSync = false;
+            
+            const snap = JSON.parse(JSON.stringify(S));
+            const resp = await fetch('https://lineup-api.claytongreenberg.workers.dev/api/sync/fnl_full_sync', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(snap)
+            });
+            
+            if (!resp.ok) throw new Error(`Server responded with ${resp.status}`);
+            
+            updateSyncStatus('saved');
+            updateSaveStatus(true);
+            
+        } catch (e) {
+            console.error('Auto-save error:', e);
+            updateSyncStatus('offline');
+            updateSaveStatus(false);
+        } finally {
+            isCloudSyncing = false;
+            // If there was a pending sync during the last one, trigger it
+            if (pendingSync) {
+                pendingSync = false;
+                autoSaveToCloud();
+            }
+        }
+    }, 500);
+}
+
+function updateSyncStatus(status) {
+    const el = document.getElementById('saveStatus');
+    if (!el) return;
+    
+    const now = new Date();
+    const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    
+    switch(status) {
+        case 'saving':
+            el.textContent = `🔄 Syncing...`;
+            el.className = 'save-status';
+            break;
+        case 'saved':
+            el.textContent = `✅ Synced ${time}`;
+            el.className = 'save-status saved';
+            break;
+        case 'offline':
+            el.textContent = `⚠️ Offline — ${time}`;
+            el.className = 'save-status offline';
+            break;
+        default:
+            el.textContent = `💾 Auto-saved`;
+            el.className = 'save-status';
+    }
+}
+
+// Override saveState to trigger auto-save
+function saveState() {
+    // First save to localStorage (always)
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(S));
+    
+    // Then trigger auto-save to cloud
+    autoSaveToCloud();
+}
 
     function updateSaveStatus(success) {
         const el = document.getElementById('saveStatus');
