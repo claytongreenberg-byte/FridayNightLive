@@ -48,10 +48,35 @@
             gap: 8px;
             flex-wrap: wrap;
         }
-        .hdr-top-left { display: flex; align-items: center; gap: 8px; }
-        .brand-logo { height: 36px; width: auto; max-width: 80px; object-fit: contain; }
-        .brand-text h1 { font-size: 1rem; color: #fff; }
-        .brand-text p { font-size: 0.6rem; color: var(--accent); }
+        .hdr-top-left { 
+            display: flex; 
+            align-items: center; 
+            gap: 6px; 
+            flex-wrap: wrap;
+            min-width: 0;
+        }
+        .brand-logo { 
+            height: 32px; 
+            width: auto; 
+            max-width: 60px; 
+            object-fit: contain; 
+            flex-shrink: 0;
+        }
+        .brand-text { 
+            display: flex; 
+            flex-direction: column; 
+            line-height: 1.1;
+        }
+        .brand-text h1 { 
+            font-size: 0.85rem; 
+            color: #fff; 
+            white-space: nowrap;
+        }
+        .brand-text p { 
+            font-size: 0.5rem; 
+            color: var(--accent); 
+            opacity: 0.9;
+        }
         .hdr-top-right {
             display: flex;
             align-items: center;
@@ -61,11 +86,11 @@
         .wall-clock, .weather-pill {
             color: var(--accent);
             font-weight: 700;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             background: rgba(0,0,0,0.4);
             border: 1px solid var(--accent);
             border-radius: 5px;
-            padding: 3px 6px;
+            padding: 2px 6px;
             white-space: nowrap;
         }
         .hdr-btn {
@@ -73,11 +98,11 @@
             color: #fff;
             border: 1px solid #475569;
             border-radius: 16px;
-            padding: 5px 9px;
-            font-size: 0.62rem;
+            padding: 4px 8px;
+            font-size: 0.58rem;
             cursor: pointer;
             white-space: nowrap;
-            min-height: 26px;
+            min-height: 24px;
             transition: all 0.15s;
         }
         .hdr-btn:hover { background: #475569; }
@@ -98,7 +123,7 @@
             margin-top: 6px;
         }
         .save-status {
-            font-size: 0.55rem;
+            font-size: 0.5rem;
             color: var(--accent);
             background: rgba(0,0,0,0.4);
             padding: 2px 8px;
@@ -865,7 +890,6 @@
         }
         .delete-btn:hover { background: #dc2626; color: #fff; border-color: #dc2626; }
 
-        /* ===== ENHANCED CATEGORY BADGES ===== */
         .cat-badge {
             font-size: 0.55rem;
             font-weight: 800;
@@ -905,7 +929,6 @@
             color: #fff;
         }
 
-        /* Badge tooltip - positioned above the badge */
         .cat-badge-tooltip {
             position: fixed;
             z-index: 10000;
@@ -922,7 +945,6 @@
             white-space: nowrap;
         }
 
-        /* Category Legend in Roster View */
         .cat-legend {
             display: flex;
             gap: 12px;
@@ -941,7 +963,6 @@
             gap: 4px;
         }
 
-        /* Parser help details */
         .parser-help details {
             font-size: 0.55rem;
             opacity: 0.7;
@@ -1132,21 +1153,6 @@
             border-radius: 6px;
             margin-bottom: 4px;
         }
-        .client-header-logo {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--accent);
-            margin-left: 8px;
-            flex-shrink: 0;
-        }
-        .client-header-name {
-            color: var(--accent);
-            font-weight: 700;
-            font-size: 0.7rem;
-            margin-left: 4px;
-        }
 
         @media (max-width: 1024px) {
             .scorebug { padding: 8px 10px; min-height: 130px; flex-wrap: wrap; }
@@ -1177,6 +1183,11 @@
             .player-row select { font-size: 0.55rem; padding: 2px; }
             .cat-badge { font-size: 0.5rem; padding: 1px 5px; }
             .cat-legend { font-size: 0.5rem; gap: 8px; }
+            .brand-logo { height: 28px; max-width: 50px; }
+            .brand-text h1 { font-size: 0.75rem; }
+            .brand-text p { font-size: 0.45rem; }
+            .hdr-btn { font-size: 0.5rem; padding: 3px 6px; min-height: 20px; }
+            .wall-clock, .weather-pill { font-size: 0.5rem; padding: 2px 4px; }
         }
         @media (max-width: 768px) {
             .scorebug { padding: 6px 6px; min-height: 100px; flex-wrap: wrap; }
@@ -1219,6 +1230,11 @@
             .cat-badge { font-size: 0.4rem; padding: 1px 4px; }
             .st-toggle, .pin-btn, .delete-btn { width: 16px; height: 16px; font-size: 0.4rem; }
             .cat-legend { font-size: 0.4rem; gap: 4px; }
+            .brand-logo { height: 24px; max-width: 40px; }
+            .brand-text h1 { font-size: 0.65rem; }
+            .brand-text p { font-size: 0.4rem; }
+            .hdr-btn { font-size: 0.45rem; padding: 2px 5px; min-height: 18px; }
+            .wall-clock, .weather-pill { font-size: 0.45rem; padding: 2px 4px; }
         }
     </style>
 </head>
@@ -1347,7 +1363,6 @@
         SPECIAL: ['K', 'P', 'KR', 'PR']
     };
 
-    // Normalize common abbreviations to full names
     function normalizePosition(pos) {
         if (!pos) return '';
         const map = {
@@ -1503,7 +1518,6 @@
                 }
             });
         });
-        // Ensure away and home are different
         if (!S.teams.find(t => t.id === S.awayId)) S.awayId = S.teams[0].id;
         if (!S.teams.find(t => t.id === S.homeId) || S.homeId === S.awayId) {
             const alt = S.teams.find(t => t.id !== S.awayId);
@@ -1534,7 +1548,6 @@
         const positions = posStr.split('/').map(p => p.trim().toUpperCase());
         const categories = new Set();
         
-        // Normalize each position for comparison
         const normPositions = positions.map(p => normalizePosition(p).toUpperCase());
         
         const OFFENSE_NORM = POSITION_CATEGORIES.OFFENSE.map(p => p.toUpperCase());
@@ -1626,7 +1639,6 @@
     // GET ALL POSITION OPTIONS WITH CATEGORY PREFIXES
     // ============================================================
     function getAllPositionOptionsWithLabels() {
-        // Use normalized positions from constants
         const basePositions = S.md7 === '7v7' ? S.p7 : getAllPositions();
         
         const allPosStrings = new Set();
@@ -1902,7 +1914,7 @@
         tooltipEl.style.top = top + 'px';
     }
 
-    // ---- Badge Tooltips (positioned above badge) ----
+    // ---- Badge Tooltips ----
     const badgeTooltip = document.getElementById('badgeTooltip');
     document.addEventListener('mouseover', e => {
         const badge = e.target.closest('.cat-badge');
@@ -1992,19 +2004,16 @@
         const m = String(n.getMinutes()).padStart(2, '0');
         const s = String(n.getSeconds()).padStart(2, '0');
         let x = '';
+        const tz = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' })
+            .formatToParts(n)
+            .find(p => p.type === 'timeZoneName')?.value || '';
+        
         if (S.cf === '12h') { 
             const a = h >= 12 ? 'PM' : 'AM';
             h = h % 12 || 12;
-            // Add timezone abbreviation
-            const tz = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' })
-                .formatToParts(n)
-                .find(p => p.type === 'timeZoneName')?.value || '';
             x = `${h}:${m}${S.cs ? ':' + s : ''} ${a} ${tz}`.trim();
         } else { 
             h = String(h).padStart(2, '0');
-            const tz = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' })
-                .formatToParts(n)
-                .find(p => p.type === 'timeZoneName')?.value || '';
             x = `${h}:${m}${S.cs ? ':' + s : ''} ${tz}`.trim();
         }
         document.getElementById('wallClock').textContent = x;
@@ -2383,7 +2392,6 @@
         renderGame();
     }
 
-    // ---- setPossession with validation ----
     function setPossession(side) {
         if (!['away', 'home'].includes(side)) {
             toast('❌ Invalid possession side');
@@ -2559,7 +2567,7 @@
         updateUndoButton(); }
 
     // ============================================================
-    // GAME VIEW with CATEGORY PREFIXES IN DROPDOWN + ENHANCED BADGES
+    // GAME VIEW
     // ============================================================
     function renderGame() {
         let html = '';
@@ -2632,7 +2640,6 @@
             html += '</div>';
             html += '<div class="player-list-body">';
             
-            // Build position options once outside the loop
             const allPosOptions = getAllPositionOptionsWithLabels();
             
             getPlayers(side, filter).forEach(p => {
@@ -2675,7 +2682,6 @@
         updateTimeoutDisplay();
     }
 
-    // ---- NEW FUNCTIONS: Update ONLY the game card, NO view switching ----
     function updateGamePlayerFieldOnly(side, pid, field, val) {
         const team = getTeam(side);
         const p = team.players.find(x => x.id === pid);
@@ -2715,7 +2721,6 @@
         let newPosFull = currentPos;
         
         const parts = currentPos.split('/').map(s => s.trim());
-        // Normalize each part for comparison
         const normParts = parts.map(s => normalizePosition(s));
         if (normParts.includes(cleanPos)) {
             const newParts = parts.filter((s, i) => normParts[i] !== cleanPos);
@@ -2775,9 +2780,7 @@
         renderGame(); 
     }
 
-    // ---- setSideTeam with duplicate prevention ----
     function setSideTeam(side, teamId) {
-        // Prevent setting both to the same team
         if (S.awayId === teamId && S.homeId === teamId) {
             toast('⚠️ Teams must be different');
             return;
@@ -2787,9 +2790,7 @@
         const otherId = otherSide === 'away' ? S.awayId : S.homeId;
         
         if (teamId === otherId) {
-            // Swap
             if (side === 'away') { 
-                // Away becomes the team, Home becomes the old Away
                 const oldAway = S.awayId;
                 S.awayId = teamId;
                 S.homeId = oldAway;
@@ -2804,9 +2805,7 @@
             else S.homeId = teamId;
         }
         
-        // Double-check they're different
         if (S.awayId === S.homeId) {
-            // Fix by swapping with the other team
             const otherTeam = S.teams.find(t => t.id !== S.awayId);
             if (otherTeam) {
                 if (side === 'away') S.homeId = otherTeam.id;
@@ -2821,7 +2820,7 @@
     }
 
     // ============================================================
-    // ROSTER VIEW with SMART PARSER + Category Legend + Help
+    // ROSTER VIEW
     // ============================================================
     function renderRoster() {
         const sortedTeams = [...S.teams].sort((a, b) => a.name.localeCompare(b.name));
@@ -2865,7 +2864,6 @@
         html += `<button class="hdr-btn ${selectedTeam.id === S.homeId ? 'active' : ''}" onclick="setSideTeam('home','${selectedTeam.id}')" data-tooltip="Set as home">🏠 Home</button>`;
         html += '</div>';
         
-        // Category Legend
         html += `<div class="cat-legend">
             <span class="legend-item"><span class="cat-badge offense">O</span> Offense</span>
             <span class="legend-item"><span class="cat-badge defense">D</span> Defense</span>
@@ -2878,7 +2876,6 @@
         html += '<span>#</span><span>Name</span><span>Pos</span><span>Role</span><span>Notes</span><span>Pron</span><span></span>';
         html += '</div>';
         
-        // Build position options once outside the player loop
         const allPosOptions = getAllPositionOptionsWithLabels();
         
         selectedTeam.players.forEach((p, pidx) => {
@@ -2910,7 +2907,6 @@
         html += `<button class="hdr-btn" onclick="parseRosterText('${selectedTeam.id}')" data-tooltip="Parse with smart categorization">📝 Parse</button>`;
         html += `<input type="file" accept=".txt,.csv" onchange="uploadRosterFile('${selectedTeam.id}',this)" data-tooltip="Upload file" style="font-size:0.6rem;">`;
         html += '</div>';
-        // Enhanced parser help with example
         html += `<div class="parser-help">
             <details>
                 <summary>📝 How to format roster data</summary>
@@ -2962,12 +2958,9 @@
             const name = parts[1] || 'Unknown Player';
             let positionStr = parts[2] || '';
             
-            // Normalize position: replace common abbreviations with full names
-            // But keep the original string for display; we'll normalize for categorization
             const categories = getPositionCategories(positionStr);
             const primaryPos = positionStr.split('/')[0].trim() || 'QB';
             
-            // Use case-insensitive duplicate check
             const key = (number + name).toLowerCase();
             if (positionMap[key]) return;
             positionMap[key] = true;
@@ -3144,9 +3137,9 @@
                 html += `<div class="client-item" style="${isActive ? 'border-color: var(--accent); background: rgba(250,204,21,0.05);' : ''}">`;
                 html += `<div style="position:relative;flex-shrink:0;">`;
                 if (client.logo) {
-                    html += `<img src="${client.logo}" class="client-logo" alt="${client.n}">`;
+                    html += `<img src="${client.logo}" class="client-logo" alt="${client.n}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid ${isActive ? 'var(--accent)' : 'var(--border)'};">`;
                 } else {
-                    html += `<div class="client-logo" style="background:${isActive ? 'var(--accent)' : '#334155'};display:flex;align-items:center;justify-content:center;font-weight:700;color:${isActive ? '#000' : '#fff'};font-size:1.2rem;">${client.n ? client.n[0].toUpperCase() : '?'}</div>`;
+                    html += `<div class="client-logo" style="background:${isActive ? 'var(--accent)' : '#334155'};display:flex;align-items:center;justify-content:center;font-weight:700;color:${isActive ? '#000' : '#fff'};font-size:1.2rem;width:40px;height:40px;border-radius:50%;">${client.n ? client.n[0].toUpperCase() : '?'}</div>`;
                 }
                 html += `<button class="sb-btn" onclick="uploadClientLogo('${pin}')" style="position:absolute;bottom:-6px;right:-6px;width:18px;height:18px;font-size:8px;" data-tooltip="Upload logo">📷</button>`;
                 html += `</div>`;
@@ -3168,6 +3161,7 @@
         document.getElementById('main').innerHTML = html;
     }
 
+    // ---- UPDATE HEADER BRANDING - FIXED ----
     function updateHeaderBranding() {
         const brandContainer = document.getElementById('brandContainer');
         const brandLogo = document.getElementById('brandLogo');
@@ -3189,54 +3183,68 @@
             activeClient = S.cp[activePin];
         }
 
+        // Remove existing client elements
         const existingClientLogo = document.getElementById('clientHeaderLogo');
         const existingClientName = document.getElementById('clientHeaderName');
+        const existingClientBrand = document.getElementById('clientHeaderBrand');
         if (existingClientLogo) existingClientLogo.remove();
         if (existingClientName) existingClientName.remove();
+        if (existingClientBrand) existingClientBrand.remove();
 
         if (activeClient) {
-            brandSubtitle.textContent = activeClient.n || 'PA CONSOLE';
-            brandSubtitle.style.color = 'var(--accent)';
-
-            if (activeClient.logo) {
+            // Create client branding container
+            const clientBrand = document.createElement('div');
+            clientBrand.id = 'clientHeaderBrand';
+            clientBrand.style.cssText = 'display:flex;align-items:center;gap:6px;margin-left:8px;padding-left:8px;border-left:1px solid rgba(255,255,255,0.15);flex-shrink:0;';
+            
+            // Client logo
+            if (activeClient.logo && activeClient.logo.startsWith('data:')) {
                 const logoImg = document.createElement('img');
                 logoImg.id = 'clientHeaderLogo';
                 logoImg.src = activeClient.logo;
-                logoImg.className = 'client-header-logo';
                 logoImg.alt = activeClient.n || 'Client';
-                brandContainer.appendChild(logoImg);
+                logoImg.style.cssText = 'width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid var(--accent);flex-shrink:0;';
+                clientBrand.appendChild(logoImg);
             } else {
-                const initial = document.createElement('div');
-                initial.id = 'clientHeaderLogo';
-                initial.className = 'client-header-logo';
-                initial.style.cssText = `
+                const initialDiv = document.createElement('div');
+                initialDiv.id = 'clientHeaderLogo';
+                initialDiv.style.cssText = `
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 50%;
                     background: ${S.colors.accent || '#facc15'};
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     font-weight: 900;
-                    font-size: 1rem;
+                    font-size: 14px;
                     color: #000;
-                    width: 36px;
-                    height: 36px;
-                    border-radius: 50%;
-                    border: 2px solid var(--accent);
-                    margin-left: 8px;
                     flex-shrink: 0;
+                    border: 2px solid var(--accent);
                 `;
-                initial.textContent = activeClient.n ? activeClient.n[0].toUpperCase() : '?';
-                brandContainer.appendChild(initial);
+                initialDiv.textContent = activeClient.n ? activeClient.n[0].toUpperCase() : '?';
+                clientBrand.appendChild(initialDiv);
             }
-
+            
+            // Client name - only once
             const nameSpan = document.createElement('span');
             nameSpan.id = 'clientHeaderName';
-            nameSpan.className = 'client-header-name';
             nameSpan.textContent = activeClient.n || '';
-            brandContainer.appendChild(nameSpan);
+            nameSpan.style.cssText = 'color:var(--accent);font-weight:700;font-size:0.65rem;white-space:nowrap;';
+            clientBrand.appendChild(nameSpan);
+            
+            brandContainer.appendChild(clientBrand);
+            
+            // Update subtitle to show client name instead of "PA CONSOLE"
+            brandSubtitle.textContent = activeClient.n || 'PA CONSOLE';
+            brandSubtitle.style.color = 'var(--accent)';
+            brandSubtitle.style.fontSize = '0.5rem';
 
         } else {
+            // No client - show default
             brandSubtitle.textContent = 'PA CONSOLE';
             brandSubtitle.style.color = 'var(--accent)';
+            brandSubtitle.style.fontSize = '0.5rem';
             brandLogo.style.display = 'inline-block';
         }
     }
