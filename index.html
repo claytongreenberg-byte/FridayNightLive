@@ -2179,34 +2179,40 @@ function saveState() {
         saveState();
     }
 
-    function updateScorebug() {
-        const away = getTeam('away'),
-            home = getTeam('home');
-        document.getElementById('sbAwayAbbr').innerHTML = teamAbbr(away) + (S.poss === 'away' ? ' <span class="sb-poss">🏈</span>' : '');
-        document.getElementById('sbHomeAbbr').innerHTML = teamAbbr(home) + (S.poss === 'home' ? ' <span class="sb-poss">🏈</span>' : '');
-        document.getElementById('sbAwayFull').textContent = away.name;
-        document.getElementById('sbHomeFull').textContent = home.name;
-        const awayChip = document.getElementById('sbAwayChip');
-        const homeChip = document.getElementById('sbHomeChip');
-        awayChip.style.background = away.color || '#334155';
-        awayChip.innerHTML = away.logo ? `<img src="${away.logo}" alt="">` : teamAbbr(away)[0];
-        homeChip.style.background = home.color || '#334155';
-        homeChip.innerHTML = home.logo ? `<img src="${home.logo}" alt="">` : teamAbbr(home)[0];
-        document.getElementById('sbAwayScore').textContent = S.as;
-        document.getElementById('sbHomeScore').textContent = S.hs;
-        let qLabel;
-        if (S.gameState === 'HALFTIME') qLabel = 'HALF';
-        else if (S.gameState === 'FINAL') qLabel = 'FINAL';
-        else if (S.md7 === '7v7') qLabel = S.q === 1 ? '1st Half' : '2nd Half';
-        else qLabel = S.q >= 5 ? 'OT' : `Q${S.q}`;
-        document.getElementById('sbQuarter').textContent = qLabel;
-        updateTimeoutDisplay();
-        applyColors();
-        updateDDTicker();
-        updateGameClockDisplay();
-        updateGameStateBadge();
-        updateUndoButton();
-    }
+  function updateScorebug() {
+    const away = getTeam('away'),
+        home = getTeam('home');
+    document.getElementById('sbAwayAbbr').innerHTML = teamAbbr(away) + (S.poss === 'away' ? ' <span class="sb-poss">🏈</span>' : '');
+    document.getElementById('sbHomeAbbr').innerHTML = teamAbbr(home) + (S.poss === 'home' ? ' <span class="sb-poss">🏈</span>' : '');
+    document.getElementById('sbAwayFull').textContent = away.name;
+    document.getElementById('sbHomeFull').textContent = home.name;
+    const awayChip = document.getElementById('sbAwayChip');
+    const homeChip = document.getElementById('sbHomeChip');
+    awayChip.style.background = away.color || '#334155';
+    awayChip.innerHTML = away.logo ? `<img src="${away.logo}" alt="">` : teamAbbr(away)[0];
+    homeChip.style.background = home.color || '#334155';
+    homeChip.innerHTML = home.logo ? `<img src="${home.logo}" alt="">` : teamAbbr(home)[0];
+    document.getElementById('sbAwayScore').textContent = S.as;
+    document.getElementById('sbHomeScore').textContent = S.hs;
+    let qLabel;
+    if (S.gameState === 'HALFTIME') qLabel = 'HALF';
+    else if (S.gameState === 'FINAL') qLabel = 'FINAL';
+    else if (S.md7 === '7v7') qLabel = S.q === 1 ? '1st Half' : '2nd Half';
+    else qLabel = S.q >= 5 ? 'OT' : `Q${S.q}`;
+    document.getElementById('sbQuarter').textContent = qLabel;
+    updateTimeoutDisplay();
+    applyColors();
+    updateDDTicker();
+    updateGameClockDisplay();
+    updateGameStateBadge();
+    updateUndoButton();
+    
+    // Update color pickers
+    const awayPicker = document.getElementById('awayColorPicker');
+    const homePicker = document.getElementById('homeColorPicker');
+    if (awayPicker) awayPicker.value = away.color || '#334155';
+    if (homePicker) homePicker.value = home.color || '#334155';
+}
 
     function updateGameClockDisplay() {
         const m = Math.floor(S.gc.rem / 60),
@@ -3931,6 +3937,19 @@ function saveState() {
         html += '</body></html>';
         safePrint(html);
     }
+// ============================================================
+// UPDATE TEAM COLOR FROM SCOREBUG
+// ============================================================
+function updateTeamColor(side, color) {
+    const team = getTeam(side);
+    if (!team) return;
+    
+    team.color = color;
+    saveState();
+    updateScorebug();
+    renderGame();
+    toast(`✅ ${team.name} color updated`);
+}
 
     // ---- Expose globals ----
     window.chScore = chScore;
@@ -4012,6 +4031,7 @@ function saveState() {
     window.getCategoryTooltip = getCategoryTooltip;
     window.POSITION_CATEGORIES = POSITION_CATEGORIES;
     window.normalizePosition = normalizePosition;
+    window.updateTeamColor = updateTeamColor;
 
     // ---- Init ----
     loadState();
