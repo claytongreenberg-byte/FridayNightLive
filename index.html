@@ -288,12 +288,13 @@
             text-shadow: 0 0 40px rgba(255,255,255,0.05);
             line-height: 1;
         }
-        .sb-qtr {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--accent);
-            text-shadow: 0 0 30px rgba(250,204,21,0.2);
-        }
+      .sb-qtr {
+    font-size: 3.2rem;
+    font-weight: 900;
+    color: var(--accent);
+    text-shadow: 0 0 30px rgba(250,204,21,0.2);
+    letter-spacing: 1px;
+}
         .game-clock {
             font-family: 'Courier New', monospace;
             font-size: 3.6rem;
@@ -1271,8 +1272,8 @@
                 
                 <!-- QUARTER BLOCK -->
                 <div class="sb-block">
-                    <span class="sb-abbr" style="font-size:0.5rem;color:var(--sb-text);opacity:.35;">QUARTER</span>
-                    <span class="sb-qtr" id="sbQuarter">Q1</span>
+            <span class="sb-abbr" style="font-size:0.7rem;color:var(--sb-text);opacity:.8;font-weight:800;">QUARTER</span>
+<span class="sb-qtr" id="sbQuarter">Q1</span>
                     <div class="sb-row">
                         <button class="sb-btn" onclick="chQuarter(-1)" data-tooltip="Previous">◀</button>
                         <button class="sb-btn" onclick="chQuarter(1)" data-tooltip="Next">▶</button>
