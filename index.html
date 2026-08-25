@@ -2159,12 +2159,17 @@ function saveState() {
     const awayMascot = getTeamMascot(away);
     const homeMascot = getTeamMascot(home);
     
-    // Update team name display (mascot)
+    // Update team name display (mascot) with logo + name
     const awayNameEl = document.getElementById('sbAwayName');
     const homeNameEl = document.getElementById('sbHomeName');
-    awayNameEl.textContent = awayMascot;
+    
+    // Build logo + name HTML
+    const awayLogoHtml = away.logo ? `<img src="${away.logo}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:6px;border:2px solid rgba(255,255,255,0.2);">` : '';
+    const homeLogoHtml = home.logo ? `<img src="${home.logo}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:6px;border:2px solid rgba(255,255,255,0.2);">` : '';
+    
+    awayNameEl.innerHTML = awayLogoHtml + awayMascot;
     awayNameEl.style.color = away.textColor || '#ffffff';
-    homeNameEl.textContent = homeMascot;
+    homeNameEl.innerHTML = homeLogoHtml + homeMascot;
     homeNameEl.style.color = home.textColor || '#ffffff';
     
     // Debug: Log the text colors being applied
