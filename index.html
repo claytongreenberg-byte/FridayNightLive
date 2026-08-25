@@ -160,13 +160,11 @@
             flex-wrap: nowrap;
         }
         .scorebug.compact .sb-block { padding: 0 6px; }
-        .scorebug.compact .sb-team-chip { width: 28px; height: 28px; font-size: 0.8rem; }
-        .scorebug.compact .sb-abbr { font-size: 14px; }
+        .scorebug.compact .sb-team-name { font-size: 1.2rem !important; }
         .scorebug.compact .sb-val { font-size: 2rem; min-width: 30px; }
         .scorebug.compact .game-clock { font-size: 2rem; }
         .scorebug.compact .sb-qtr { font-size: 1.2rem; }
-        .scorebug.compact .sb-label { display: none; }
-        .scorebug.compact .sb-fullname { display: none; }
+        .scorebug.compact .sb-label { font-size: 0.5rem; }
         .scorebug.compact .sb-btn { width: 20px; height: 20px; font-size: 8px; }
         .scorebug.compact .sb-game-btns button { font-size: 0.4rem; padding: 2px 6px; min-height: 18px; min-width: 28px; }
         .scorebug.compact .last-event { font-size: 0.55rem; min-height: 22px; padding: 2px 8px; max-width: 200px; }
@@ -240,78 +238,32 @@
         .sb-block:hover { background: rgba(255,255,255,0.03); }
         .sb-block:active { transform: scale(0.98); }
         .sb-block:last-child { border-right: none; }
-        .sb-block.score-block { flex: 1.3; }
+        .sb-block.score-block { flex: 1.5; }
         .sb-block.clock-block { flex: 0.9; }
         .sb-block.game-block { flex: 1.8; }
 
-        .sb-team-chip {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            font-size: 1.3rem;
-            color: #fff;
-            border: 2px solid rgba(255,255,255,0.25);
-            flex-shrink: 0;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.4);
-        }
-        /* Team color picker in scorebug */
-.scorebug .team-color-picker {
-    width: 16px;
-    height: 16px;
-    border: 2px solid rgba(255,255,255,0.3);
-    border-radius: 50%;
-    cursor: pointer;
-    padding: 0;
-    background: transparent;
-    flex-shrink: 0;
-}
-.scorebug .team-color-picker::-webkit-color-swatch-wrapper {
-    padding: 0;
-}
-.scorebug .team-color-picker::-webkit-color-swatch {
-    border: none;
-    border-radius: 50%;
-}
-        .sb-team-chip img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .sb-name-col { display: flex; flex-direction: column; align-items: center; }
-        .sb-abbr {
-            font-size: 22px;
+        .sb-team-name {
+            font-size: 2.2rem;
             font-weight: 900;
             color: var(--sb-text);
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .sb-poss {
-            font-size: 24px;
-            animation: possBounce 0.7s infinite;
-            display: inline-block;
-            filter: drop-shadow(0 0 20px rgba(250,204,21,0.6));
-        }
-        @keyframes possBounce {
-            0%,100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-6px) scale(1.2); }
+            letter-spacing: 1px;
+            text-align: center;
+            line-height: 1.1;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+            word-wrap: break-word;
+            max-width: 140px;
         }
         .sb-label {
-            font-size: 0.5rem;
-            color: var(--sb-text);
-            opacity: 0.35;
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: rgba(255,255,255,0.9);
             text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-top: -2px;
+            letter-spacing: 2px;
+            margin-top: 0px;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.8);
         }
         .sb-fullname {
-            font-size: 0.6rem;
+            font-size: 0.5rem;
             color: var(--sb-text);
             font-weight: 600;
             text-transform: uppercase;
@@ -324,9 +276,9 @@
             padding: 2px 10px;
             border-radius: 6px;
             margin-top: 2px;
-            opacity: 0.8;
+            opacity: 0.6;
         }
-        .sb-row { display: flex; align-items: center; gap: 5px; }
+        .sb-row { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; justify-content: center; }
         .sb-val {
             font-size: 3.6rem;
             font-weight: 900;
@@ -427,6 +379,12 @@
             transition: all 0.15s;
         }
         .sb-mode-btn:hover { background: var(--accent); color: #000; }
+        .sb-color-picker-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 2px;
+        }
 
         .dd-ticker {
             padding: 5px 14px;
@@ -1177,16 +1135,16 @@
             .scorebug { padding: 8px 10px; min-height: 130px; flex-wrap: wrap; }
             .scorebug.compact { min-height: 50px; padding: 4px 6px; }
             .scorebug.compact .sb-block { padding: 0 4px; min-width: 30px; }
+            .scorebug.compact .sb-team-name { font-size: 1rem !important; }
             .scorebug.compact .sb-val { font-size: 1.5rem; min-width: 24px; }
-            .scorebug.compact .sb-abbr { font-size: 11px; }
             .scorebug.compact .game-clock { font-size: 1.5rem; }
-            .scorebug.compact .sb-team-chip { width: 22px; height: 22px; font-size: 0.6rem; }
+            .scorebug.compact .sb-qtr { font-size: 1rem; }
+            .scorebug.compact .sb-label { font-size: 0.45rem; }
             .sb-block { padding: 0 8px; min-width: 40px; }
+            .sb-team-name { font-size: 1.6rem; }
             .sb-val { font-size: 2.8rem; min-width: 38px; }
             .sb-abbr { font-size: 18px; }
             .game-clock { font-size: 2.8rem; }
-            .sb-team-chip { width: 40px; height: 40px; font-size: 1.1rem; }
-            .sb-fullname { font-size: 0.5rem; max-width: 80px; }
             .sb-btn { width: 24px; height: 24px; font-size: 10px; }
             .sb-game-btns button { font-size: 0.5rem; padding: 3px 8px; min-height: 22px; }
             .last-event { font-size: 0.7rem; min-height: 28px; max-width: 280px; }
@@ -1212,19 +1170,18 @@
             .scorebug { padding: 6px 6px; min-height: 100px; flex-wrap: wrap; }
             .scorebug.compact { min-height: 40px; padding: 3px 4px; }
             .scorebug.compact .sb-block { padding: 0 3px; min-width: 24px; }
+            .scorebug.compact .sb-team-name { font-size: 0.8rem !important; }
             .scorebug.compact .sb-val { font-size: 1.2rem; min-width: 20px; }
-            .scorebug.compact .sb-abbr { font-size: 9px; }
             .scorebug.compact .game-clock { font-size: 1.2rem; }
-            .scorebug.compact .sb-team-chip { width: 18px; height: 18px; font-size: 0.5rem; }
+            .scorebug.compact .sb-qtr { font-size: 0.8rem; }
+            .scorebug.compact .sb-label { font-size: 0.4rem; }
             .scorebug.compact .sb-btn { width: 16px; height: 16px; font-size: 7px; }
             .scorebug.compact .sb-game-btns button { font-size: 0.3rem; padding: 1px 3px; min-height: 14px; min-width: 20px; }
             .scorebug.compact .last-event { font-size: 0.4rem; min-height: 16px; padding: 1px 4px; max-width: 100px; }
             .sb-block { padding: 0 4px; min-width: 30px; }
+            .sb-team-name { font-size: 1.2rem; max-width: 80px; }
             .sb-val { font-size: 2rem; min-width: 30px; }
-            .sb-abbr { font-size: 14px; }
             .game-clock { font-size: 2.2rem; }
-            .sb-team-chip { width: 32px; height: 32px; font-size: 0.9rem; }
-            .sb-fullname { font-size: 0.45rem; max-width: 60px; }
             .sb-btn { width: 20px; height: 20px; font-size: 9px; }
             .sb-game-btns button { font-size: 0.4rem; padding: 2px 6px; min-height: 18px; }
             .last-event { font-size: 0.55rem; min-height: 22px; max-width: 160px; }
@@ -1289,30 +1246,30 @@
                 <span class="sb-network-tag">Voice of DFW Live</span>
                 <span class="live-pill" id="livePill"><span class="dot"></span><span id="livePillText">LIVE</span></span>
                 
-              <div class="sb-block score-block" onclick="setPossession('away')" data-tooltip="Click to set possession to Away">
-    <div class="sb-name-col">
-        <div class="sb-team-chip" id="sbAwayChip" style="background:#334155;"></div>
-        <span class="sb-abbr" id="sbAwayAbbr">AWY</span>
-        <span class="sb-label">AWAY</span>
-        <span class="sb-fullname" id="sbAwayFull">Away</span>
-    </div>
-    <div class="sb-row">
-        <button class="sb-btn" onclick="event.stopPropagation();chScore('away',-1)" data-tooltip="Subtract point">−</button>
-        <span class="sb-val" id="sbAwayScore">0</span>
-        <button class="sb-btn" onclick="event.stopPropagation();chScore('away',1)" data-tooltip="Add point">+</button>
-    </div>
-    <div class="sb-row">
-        <button class="sb-btn" onclick="event.stopPropagation();uploadScorebugLogo('away')" data-tooltip="Upload logo" style="width:22px;height:22px;font-size:10px;">📷</button>
-        <input type="color" class="team-color-picker" id="awayColorPicker" onchange="event.stopPropagation();updateTeamColor('away',this.value)" value="#334155" data-tooltip="Team color">
-    </div>
-    <div class="timeout-display">
-        <span class="timeout-label">TO:</span>
-        <span class="timeout-dot" id="awayTO1"></span>
-        <span class="timeout-dot" id="awayTO2"></span>
-        <span class="timeout-dot" id="awayTO3"></span>
-    </div>
-</div>
+                <!-- AWAY BLOCK -->
+                <div class="sb-block score-block" onclick="setPossession('away')" data-tooltip="Click to set possession to Away">
+                    <div class="sb-name-col">
+                        <span class="sb-label">AWAY</span>
+                        <span class="sb-team-name" id="sbAwayName" style="color:#ffffff;">AWAY</span>
+                    </div>
+                    <div class="sb-row">
+                        <button class="sb-btn" onclick="event.stopPropagation();chScore('away',-1)" data-tooltip="Subtract point">−</button>
+                        <span class="sb-val" id="sbAwayScore">0</span>
+                        <button class="sb-btn" onclick="event.stopPropagation();chScore('away',1)" data-tooltip="Add point">+</button>
+                    </div>
+                    <div class="sb-color-picker-wrapper">
+                        <button class="sb-btn" onclick="event.stopPropagation();uploadScorebugLogo('away')" data-tooltip="Upload logo" style="width:22px;height:22px;font-size:10px;">📷</button>
+                        <input type="color" class="team-color-picker" id="awayColorPicker" onchange="event.stopPropagation();updateTeamColor('away',this.value)" value="#334155" data-tooltip="Team color">
+                    </div>
+                    <div class="timeout-display">
+                        <span class="timeout-label">TO:</span>
+                        <span class="timeout-dot" id="awayTO1"></span>
+                        <span class="timeout-dot" id="awayTO2"></span>
+                        <span class="timeout-dot" id="awayTO3"></span>
+                    </div>
+                </div>
                 
+                <!-- QUARTER BLOCK -->
                 <div class="sb-block">
                     <span class="sb-abbr" style="font-size:0.5rem;color:var(--sb-text);opacity:.35;">QUARTER</span>
                     <span class="sb-qtr" id="sbQuarter">Q1</span>
@@ -1321,31 +1278,31 @@
                         <button class="sb-btn" onclick="chQuarter(1)" data-tooltip="Next">▶</button>
                     </div>
                 </div>
-              
-       <div class="sb-block score-block" onclick="setPossession('home')" data-tooltip="Click to set possession to Home">
-    <div class="sb-name-col">
-        <div class="sb-team-chip" id="sbHomeChip" style="background:#334155;"></div>
-        <span class="sb-abbr" id="sbHomeAbbr">HME</span>
-        <span class="sb-label">HOME</span>
-        <span class="sb-fullname" id="sbHomeFull">Home</span>
-    </div>
-    <div class="sb-row">
-        <button class="sb-btn" onclick="event.stopPropagation();chScore('home',-1)" data-tooltip="Subtract point">−</button>
-        <span class="sb-val" id="sbHomeScore">0</span>
-        <button class="sb-btn" onclick="event.stopPropagation();chScore('home',1)" data-tooltip="Add point">+</button>
-    </div>
-    <div class="sb-row">
-        <button class="sb-btn" onclick="event.stopPropagation();uploadScorebugLogo('home')" data-tooltip="Upload logo" style="width:22px;height:22px;font-size:10px;">📷</button>
-        <input type="color" class="team-color-picker" id="homeColorPicker" onchange="event.stopPropagation();updateTeamColor('home',this.value)" value="#334155" data-tooltip="Team color">
-    </div>
-    <div class="timeout-display">
-        <span class="timeout-label">TO:</span>
-        <span class="timeout-dot" id="homeTO1"></span>
-        <span class="timeout-dot" id="homeTO2"></span>
-        <span class="timeout-dot" id="homeTO3"></span>
-    </div>
-</div>
                 
+                <!-- HOME BLOCK -->
+                <div class="sb-block score-block" onclick="setPossession('home')" data-tooltip="Click to set possession to Home">
+                    <div class="sb-name-col">
+                        <span class="sb-label">HOME</span>
+                        <span class="sb-team-name" id="sbHomeName" style="color:#ffffff;">HOME</span>
+                    </div>
+                    <div class="sb-row">
+                        <button class="sb-btn" onclick="event.stopPropagation();chScore('home',-1)" data-tooltip="Subtract point">−</button>
+                        <span class="sb-val" id="sbHomeScore">0</span>
+                        <button class="sb-btn" onclick="event.stopPropagation();chScore('home',1)" data-tooltip="Add point">+</button>
+                    </div>
+                    <div class="sb-color-picker-wrapper">
+                        <button class="sb-btn" onclick="event.stopPropagation();uploadScorebugLogo('home')" data-tooltip="Upload logo" style="width:22px;height:22px;font-size:10px;">📷</button>
+                        <input type="color" class="team-color-picker" id="homeColorPicker" onchange="event.stopPropagation();updateTeamColor('home',this.value)" value="#334155" data-tooltip="Team color">
+                    </div>
+                    <div class="timeout-display">
+                        <span class="timeout-label">TO:</span>
+                        <span class="timeout-dot" id="homeTO1"></span>
+                        <span class="timeout-dot" id="homeTO2"></span>
+                        <span class="timeout-dot" id="homeTO3"></span>
+                    </div>
+                </div>
+                
+                <!-- CLOCK BLOCK -->
                 <div class="sb-block clock-block">
                     <span class="sb-abbr" style="font-size:0.5rem;color:var(--sb-text);opacity:.35;">CLOCK</span>
                     <span class="game-clock" id="gameClockDisplay">8:00</span>
@@ -1355,6 +1312,8 @@
                         <button class="sb-btn" onclick="resetGC()" data-tooltip="Reset">↺</button>
                     </div>
                 </div>
+                
+                <!-- GAME BLOCK -->
                 <div class="sb-block game-block">
                     <span class="sb-abbr" style="font-size:0.5rem;color:var(--sb-text);opacity:.35;">GAME</span>
                     <div class="sb-game-btns">
@@ -1436,6 +1395,15 @@
     }
 
     // ============================================================
+    // HELPER: Get last word of team name (mascot)
+    // ============================================================
+    function getTeamMascot(team) {
+        if (!team || !team.name) return 'TEAM';
+        const words = team.name.trim().split(/\s+/);
+        return words[words.length - 1].toUpperCase();
+    }
+
+    // ============================================================
     // FULL STATE
     // ============================================================
     let S = {
@@ -1467,14 +1435,14 @@
         lastEvent: { text: '🏈 Ready — Set possession to begin', type: 'info' },
         scorebugMode: 'full',
         teams: [
-            { id: 'h', name: 'Texas Hawks', abbr: 'TXH', color: '#1e3a5f', textColor: '#ffffff', logo: '', mascot: '', coach: '', players: [
+            { id: 'h', name: 'Euless Trinity Trojans', abbr: 'ETT', color: '#1e3a5f', textColor: '#ffffff', logo: '', mascot: 'Trojans', coach: '', players: [
                 { id: 'h1', n: '7', na: 'Marcus Johnson', po: 'QB', st: true, nt: '', pron: '', ph: '', pinned: false, categories: ['offense'], posFull: 'QB' },
                 { id: 'h2', n: '55', na: 'Chris Williams', po: 'Center', st: true, nt: '', pron: '', ph: '', pinned: false, categories: ['offense'], posFull: 'Center' },
                 { id: 'h3', n: '11', na: 'Jalen Smith', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false, categories: ['offense'], posFull: 'WR' },
                 { id: 'h4', n: '88', na: 'Ty Washington', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false, categories: ['offense'], posFull: 'WR' },
                 { id: 'h5', n: '15', na: 'Jordan Davis', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false, categories: ['offense'], posFull: 'WR' }
             ] },
-            { id: 's', name: 'Dallas Cowboys', abbr: 'DAL', color: '#7f1d1d', textColor: '#ffffff', logo: '', mascot: '', coach: '', players: [
+            { id: 's', name: 'Mansfield Tigers', abbr: 'MHS', color: '#7f1d1d', textColor: '#ffffff', logo: '', mascot: 'Tigers', coach: '', players: [
                 { id: 's1', n: '12', na: 'Caleb White', po: 'QB', st: true, nt: '', pron: '', ph: '', pinned: false, categories: ['offense'], posFull: 'QB' },
                 { id: 's2', n: '72', na: 'Mason Lee', po: 'Center', st: true, nt: '', pron: '', ph: '', pinned: false, categories: ['offense'], posFull: 'Center' },
                 { id: 's3', n: '1', na: 'Adrian Flores', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false, categories: ['offense'], posFull: 'WR' },
@@ -1622,6 +1590,7 @@ function saveState() {
         S.teams.forEach(t => { 
             if (t.abbr === undefined) t.abbr = '';
             if (t.textColor === undefined) t.textColor = '#ffffff';
+            if (t.mascot === undefined) t.mascot = '';
             t.players.forEach(p => {
                 if (p.categories === undefined) {
                     p.categories = getPositionCategories(p.po || '');
@@ -1855,7 +1824,7 @@ function saveState() {
         const id = side === 'away' ? S.awayId : S.homeId;
         let t = S.teams.find(x => x.id === id);
         if (!t) t = side === 'home' ? (S.teams[1] || S.teams[0]) : S.teams[0];
-        return t || { name: 'TBD', abbr: 'TBD', color: '#334155', textColor: '#ffffff', players: [], id: '' };
+        return t || { name: 'TBD', abbr: 'TBD', color: '#334155', textColor: '#ffffff', mascot: '', players: [], id: '' };
     }
 
     function getPositions() { 
@@ -2185,32 +2154,35 @@ function saveState() {
     const away = getTeam('away'),
         home = getTeam('home');
     
-    // Update away abbreviation with color
-    const awayAbbr = document.getElementById('sbAwayAbbr');
-    awayAbbr.innerHTML = teamAbbr(away) + (S.poss === 'away' ? ' <span class="sb-poss">🏈</span>' : '');
-    awayAbbr.style.color = away.textColor || '#ffffff';
+    // Get mascot names
+    const awayMascot = getTeamMascot(away);
+    const homeMascot = getTeamMascot(home);
     
-    // Update home abbreviation with color
-    const homeAbbr = document.getElementById('sbHomeAbbr');
-    homeAbbr.innerHTML = teamAbbr(home) + (S.poss === 'home' ? ' <span class="sb-poss">🏈</span>' : '');
-    homeAbbr.style.color = home.textColor || '#ffffff';
+    // Update team name display (mascot)
+    const awayNameEl = document.getElementById('sbAwayName');
+    const homeNameEl = document.getElementById('sbHomeName');
+    awayNameEl.textContent = awayMascot;
+    awayNameEl.style.color = away.textColor || '#ffffff';
+    homeNameEl.textContent = homeMascot;
+    homeNameEl.style.color = home.textColor || '#ffffff';
+    
+    // Add possession indicator
+    awayNameEl.innerHTML = awayMascot + (S.poss === 'away' ? ' <span class="sb-poss">🏈</span>' : '');
+    homeNameEl.innerHTML = homeMascot + (S.poss === 'home' ? ' <span class="sb-poss">🏈</span>' : '');
     
     document.getElementById('sbAwayFull').textContent = away.name;
     document.getElementById('sbHomeFull').textContent = home.name;
-    const awayChip = document.getElementById('sbAwayChip');
-    const homeChip = document.getElementById('sbHomeChip');
-    awayChip.style.background = away.color || '#334155';
-    awayChip.innerHTML = away.logo ? `<img src="${away.logo}" alt="">` : teamAbbr(away)[0];
-    homeChip.style.background = home.color || '#334155';
-    homeChip.innerHTML = home.logo ? `<img src="${home.logo}" alt="">` : teamAbbr(home)[0];
+    
     document.getElementById('sbAwayScore').textContent = S.as;
     document.getElementById('sbHomeScore').textContent = S.hs;
+    
     let qLabel;
     if (S.gameState === 'HALFTIME') qLabel = 'HALF';
     else if (S.gameState === 'FINAL') qLabel = 'FINAL';
     else if (S.md7 === '7v7') qLabel = S.q === 1 ? '1st Half' : '2nd Half';
     else qLabel = S.q >= 5 ? 'OT' : `Q${S.q}`;
     document.getElementById('sbQuarter').textContent = qLabel;
+    
     updateTimeoutDisplay();
     applyColors();
     updateDDTicker();
@@ -2268,11 +2240,11 @@ function saveState() {
         if (S.gameState === 'HALFTIME') { el.textContent = '⏸️ HALFTIME';
             el.style.background = '#f59e0b'; return; }
         if (S.gameState === 'READY') { const team = getTeam(S.poss);
-            el.textContent = `🏈 ${team.name.toUpperCase()} HAS THE BALL • PRESS "▶ START" TO BEGIN`;
+            el.textContent = `🏈 ${getTeamMascot(team)} HAS THE BALL • PRESS "▶ START" TO BEGIN`;
             el.style.background = '#334155'; return; }
         const team = getTeam(S.poss);
         const ord = { 1: '1ST', 2: '2ND', 3: '3RD', 4: '4TH' }[S.down] || (S.down + 'TH');
-        el.innerHTML = `🏈 ${team.name.toUpperCase()} BALL &nbsp;•&nbsp; ${ord} &amp; ${S.dist}`;
+        el.innerHTML = `🏈 ${getTeamMascot(team)} BALL &nbsp;•&nbsp; ${ord} &amp; ${S.dist}`;
         el.style.background = team.color || '#334155';
     }
 
@@ -2453,7 +2425,7 @@ function saveState() {
             home = getTeam('home');
         S.gameHistory.push({ date: new Date().toISOString(), sessionId: S.sessionId, away: away.name, home: home.name, awayScore: S.as, homeScore: S.hs, log: [...S.scoringLog, ...S.penaltyLog] });
         pushUndo();
-        setLastEvent(`🏁 GAME FINAL — ${away.name} ${S.as} - ${S.hs} ${home.name}`, 'info');
+        setLastEvent(`🏁 GAME FINAL — ${getTeamMascot(away)} ${S.as} - ${S.hs} ${getTeamMascot(home)}`, 'info');
         updateScorebug();
         updateGameClockDisplay();
         updateGameStateBadge();
@@ -2526,7 +2498,8 @@ function saveState() {
             return;
         }
         S.poss = side;
-        toast(`🏈 ${side.toUpperCase()} has the ball`);
+        const team = getTeam(side);
+        toast(`🏈 ${getTeamMascot(team)} has the ball`);
         renderGame();
         updateScorebug();
         saveState();
@@ -2565,10 +2538,10 @@ function saveState() {
         const team = getTeam(teamSide);
         const emoji = type === 'td' ? '🏈' : type === 'fg' ? '🎯' : type === 'twopt' ? '➕' : type === 'pat' ? '🎯' : '⚡';
         const label = type === 'td' ? 'TOUCHDOWN' : type === 'fg' ? 'FIELD GOAL' : type === 'twopt' ? '2-POINT CONVERSION' : type === 'pat' ? 'PAT' : 'SAFETY';
-        setLastEvent(`${emoji} ${label} — ${playerName || team.name} (+${pts})`, type);
+        setLastEvent(`${emoji} ${label} — ${playerName || getTeamMascot(team)} (+${pts})`, type);
         updateScorebug();
         saveState();
-        toast(`${label} +${pts} - ${playerName || team.name}`);
+        toast(`${label} +${pts} - ${playerName || getTeamMascot(team)}`);
     }
 
     // ---- Player picker ----
@@ -2578,7 +2551,7 @@ function saveState() {
         overlay.className = 'pp-overlay';
         const box = document.createElement('div');
         box.className = 'pp-box';
-        let html = `<h3>${title} — ${team.name}</h3>`;
+        let html = `<h3>${title} — ${getTeamMascot(team)}</h3>`;
         const sorted = [...team.players].sort((a, b) => (parseInt(a.n) || 999) - (parseInt(b.n) || 999));
         if (sorted.length) {
             html += '<div class="pp-grid">';
@@ -2600,16 +2573,16 @@ function saveState() {
         box.querySelectorAll('button[data-pid]').forEach(btn => {
             btn.onclick = () => { const p = team.players.find(x => x.id === btn.dataset.pid);
                 close();
-                callback(p ? p.na : team.name); };
+                callback(p ? p.na : getTeamMascot(team)); };
         });
         box.querySelector('#ppSkip').onclick = () => { close();
-            callback(team.name); };
+            callback(getTeamMascot(team)); };
         box.querySelector('#ppCancel').onclick = () => { close(); };
         const manual = box.querySelector('#ppManual');
         manual.focus();
         manual.addEventListener('keydown', e => { if (e.key === 'Enter') { const v = e.target.value.trim();
                 close();
-                callback(v || team.name); } });
+                callback(v || getTeamMascot(team)); } });
     }
 
     function quickScore(type) {
@@ -2718,8 +2691,8 @@ function saveState() {
 
         html += `<div class="game-controls-row">`;
         html += `<span class="label">🏈</span>`;
-        html += `<button class="pos-btn ${S.poss === 'away' ? 'active' : ''}" onclick="setPossession('away')" style="${S.poss === 'away' ? 'background:' + awayColor + ';border-color:' + awayColor + ';' : 'border-color:' + awayColor + ';'}">${awayLogo} ${awayTeam.abbr || 'AWY'}</button>`;
-        html += `<button class="pos-btn ${S.poss === 'home' ? 'active' : ''}" onclick="setPossession('home')" style="${S.poss === 'home' ? 'background:' + homeColor + ';border-color:' + homeColor + ';' : 'border-color:' + homeColor + ';'}">${homeLogo} ${homeTeam.abbr || 'HME'}</button>`;
+        html += `<button class="pos-btn ${S.poss === 'away' ? 'active' : ''}" onclick="setPossession('away')" style="${S.poss === 'away' ? 'background:' + awayColor + ';border-color:' + awayColor + ';' : 'border-color:' + awayColor + ';'}">${awayLogo} ${getTeamMascot(awayTeam)}</button>`;
+        html += `<button class="pos-btn ${S.poss === 'home' ? 'active' : ''}" onclick="setPossession('home')" style="${S.poss === 'home' ? 'background:' + homeColor + ';border-color:' + homeColor + ';' : 'border-color:' + homeColor + ';'}">${homeLogo} ${getTeamMascot(homeTeam)}</button>`;
         html += `<button class="to-btn" onclick="useTimeout('away')" data-tooltip="Away timeout">⏱ AWAY</button>`;
         html += `<button class="to-btn" onclick="useTimeout('home')" data-tooltip="Home timeout">⏱ HOME</button>`;
         html += `<button class="to-btn injury-btn" onclick="injuryTimeout()" data-tooltip="Injury timeout">🆘 INJ</button>`;
@@ -3131,7 +3104,9 @@ function saveState() {
     function newTeam() {
         const name = prompt('Team name:');
         if (!name) return;
-        S.teams.push({ id: 't' + Date.now(), name, abbr: '', color: '#1e3a5f', textColor: '#ffffff', logo: '', mascot: '', coach: '', players: [] });
+        const words = name.trim().split(/\s+/);
+        const mascot = words[words.length - 1] || '';
+        S.teams.push({ id: 't' + Date.now(), name, abbr: '', color: '#1e3a5f', textColor: '#ffffff', logo: '', mascot: mascot, coach: '', players: [] });
         S.cid = S.teams[S.teams.length - 1].id;
         saveState();
         renderRoster();
@@ -3488,7 +3463,7 @@ function saveState() {
                 const d = new Date(game.date).toLocaleDateString();
                 const realIdx = S.gameHistory.length - 1 - idx;
                 html += `<div style="padding:4px;border-bottom:1px solid var(--border);font-size:0.65rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">`;
-                html += `<span>${d} - ${game.away} vs ${game.home} - ${game.awayScore}-${game.homeScore}`;
+                html += `<span>${d} - ${getTeamMascot({name: game.away})} vs ${getTeamMascot({name: game.home})} - ${game.awayScore}-${game.homeScore}`;
                 if (game.sessionId) html += ` <span style="opacity:0.4;font-size:0.5rem;">ID:${game.sessionId}</span>`;
                 html += `</span>`;
                 html += `<button class="hdr-btn" onclick="printGameLog(${realIdx})" data-tooltip="Print" style="font-size:0.5rem;padding:2px 6px;">🖨️</button>`;
@@ -3945,13 +3920,14 @@ function saveState() {
         let html = '<html><head><title>Starting Lineups</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse;margin-bottom:16px}th,td{border:1px solid #000;padding:4px}</style></head><body>';
         ['away', 'home'].forEach(side => {
             const t = getTeam(side);
-            html += `<h2>${side === 'away' ? 'Away' : 'Home'}: ${t.name}</h2><table><tr><th>#</th><th>Name</th><th>Pos</th></tr>`;
+            html += `<h2>${side === 'away' ? 'Away' : 'Home'}: ${getTeamMascot(t)}</h2><table><tr><th>#</th><th>Name</th><th>Pos</th></tr>`;
             t.players.filter(p => p.st).forEach(p => { html += `<tr><td>${p.n}</td><td>${p.na}</td><td>${p.posFull || p.po}</td></tr>`; });
             html += '</table>';
         });
         html += '</body></html>';
         safePrint(html);
     }
+
 // ============================================================
 // UPDATE TEAM COLOR FROM SCOREBUG
 // ============================================================
@@ -4047,6 +4023,7 @@ function updateTeamColor(side, color) {
     window.POSITION_CATEGORIES = POSITION_CATEGORIES;
     window.normalizePosition = normalizePosition;
     window.updateTeamColor = updateTeamColor;
+    window.getTeamMascot = getTeamMascot;
 
     // ---- Init ----
     loadState();
