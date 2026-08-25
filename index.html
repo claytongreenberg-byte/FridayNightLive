@@ -258,6 +258,24 @@
             flex-shrink: 0;
             box-shadow: 0 2px 12px rgba(0,0,0,0.4);
         }
+        /* Team color picker in scorebug */
+.scorebug .team-color-picker {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 0;
+    background: transparent;
+    flex-shrink: 0;
+}
+.scorebug .team-color-picker::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+.scorebug .team-color-picker::-webkit-color-swatch {
+    border: none;
+    border-radius: 50%;
+}
         .sb-team-chip img {
             width: 100%;
             height: 100%;
@@ -1269,26 +1287,31 @@
             <div class="scorebug" id="scorebug">
                 <span class="sb-network-tag">Voice of DFW Live</span>
                 <span class="live-pill" id="livePill"><span class="dot"></span><span id="livePillText">LIVE</span></span>
-                <div class="sb-block score-block" onclick="setPossession('away')" data-tooltip="Click to set possession to Away">
-                    <div class="sb-name-col">
-                        <div class="sb-team-chip" id="sbAwayChip" style="background:#334155;"></div>
-                        <span class="sb-abbr" id="sbAwayAbbr">AWY</span>
-                        <span class="sb-label">AWAY</span>
-                        <span class="sb-fullname" id="sbAwayFull">Away</span>
-                    </div>
-                    <div class="sb-row">
-                        <button class="sb-btn" onclick="event.stopPropagation();chScore('away',-1)" data-tooltip="Subtract point">−</button>
-                        <span class="sb-val" id="sbAwayScore">0</span>
-                        <button class="sb-btn" onclick="event.stopPropagation();chScore('away',1)" data-tooltip="Add point">+</button>
-                    </div>
-                    <button class="sb-btn" onclick="event.stopPropagation();uploadScorebugLogo('away')" data-tooltip="Upload logo" style="width:22px;height:22px;font-size:10px;margin-top:2px;">📷</button>
-                    <div class="timeout-display">
-                        <span class="timeout-label">TO:</span>
-                        <span class="timeout-dot" id="awayTO1"></span>
-                        <span class="timeout-dot" id="awayTO2"></span>
-                        <span class="timeout-dot" id="awayTO3"></span>
-                    </div>
-                </div>
+                
+              <div class="sb-block score-block" onclick="setPossession('away')" data-tooltip="Click to set possession to Away">
+    <div class="sb-name-col">
+        <div class="sb-team-chip" id="sbAwayChip" style="background:#334155;"></div>
+        <span class="sb-abbr" id="sbAwayAbbr">AWY</span>
+        <span class="sb-label">AWAY</span>
+        <span class="sb-fullname" id="sbAwayFull">Away</span>
+    </div>
+    <div class="sb-row">
+        <button class="sb-btn" onclick="event.stopPropagation();chScore('away',-1)" data-tooltip="Subtract point">−</button>
+        <span class="sb-val" id="sbAwayScore">0</span>
+        <button class="sb-btn" onclick="event.stopPropagation();chScore('away',1)" data-tooltip="Add point">+</button>
+    </div>
+    <div class="sb-row">
+        <button class="sb-btn" onclick="event.stopPropagation();uploadScorebugLogo('away')" data-tooltip="Upload logo" style="width:22px;height:22px;font-size:10px;">📷</button>
+        <input type="color" class="team-color-picker" id="awayColorPicker" onchange="event.stopPropagation();updateTeamColor('away',this.value)" value="#334155" data-tooltip="Team color">
+    </div>
+    <div class="timeout-display">
+        <span class="timeout-label">TO:</span>
+        <span class="timeout-dot" id="awayTO1"></span>
+        <span class="timeout-dot" id="awayTO2"></span>
+        <span class="timeout-dot" id="awayTO3"></span>
+    </div>
+</div>
+                
                 <div class="sb-block">
                     <span class="sb-abbr" style="font-size:0.5rem;color:var(--sb-text);opacity:.35;">QUARTER</span>
                     <span class="sb-qtr" id="sbQuarter">Q1</span>
@@ -1297,26 +1320,31 @@
                         <button class="sb-btn" onclick="chQuarter(1)" data-tooltip="Next">▶</button>
                     </div>
                 </div>
-                <div class="sb-block score-block" onclick="setPossession('home')" data-tooltip="Click to set possession to Home">
-                    <div class="sb-name-col">
-                        <div class="sb-team-chip" id="sbHomeChip" style="background:#334155;"></div>
-                        <span class="sb-abbr" id="sbHomeAbbr">HME</span>
-                        <span class="sb-label">HOME</span>
-                        <span class="sb-fullname" id="sbHomeFull">Home</span>
-                    </div>
-                    <div class="sb-row">
-                        <button class="sb-btn" onclick="event.stopPropagation();chScore('home',-1)" data-tooltip="Subtract point">−</button>
-                        <span class="sb-val" id="sbHomeScore">0</span>
-                        <button class="sb-btn" onclick="event.stopPropagation();chScore('home',1)" data-tooltip="Add point">+</button>
-                    </div>
-                    <button class="sb-btn" onclick="event.stopPropagation();uploadScorebugLogo('home')" data-tooltip="Upload logo" style="width:22px;height:22px;font-size:10px;margin-top:2px;">📷</button>
-                    <div class="timeout-display">
-                        <span class="timeout-label">TO:</span>
-                        <span class="timeout-dot" id="homeTO1"></span>
-                        <span class="timeout-dot" id="homeTO2"></span>
-                        <span class="timeout-dot" id="homeTO3"></span>
-                    </div>
-                </div>
+              
+       <div class="sb-block score-block" onclick="setPossession('home')" data-tooltip="Click to set possession to Home">
+    <div class="sb-name-col">
+        <div class="sb-team-chip" id="sbHomeChip" style="background:#334155;"></div>
+        <span class="sb-abbr" id="sbHomeAbbr">HME</span>
+        <span class="sb-label">HOME</span>
+        <span class="sb-fullname" id="sbHomeFull">Home</span>
+    </div>
+    <div class="sb-row">
+        <button class="sb-btn" onclick="event.stopPropagation();chScore('home',-1)" data-tooltip="Subtract point">−</button>
+        <span class="sb-val" id="sbHomeScore">0</span>
+        <button class="sb-btn" onclick="event.stopPropagation();chScore('home',1)" data-tooltip="Add point">+</button>
+    </div>
+    <div class="sb-row">
+        <button class="sb-btn" onclick="event.stopPropagation();uploadScorebugLogo('home')" data-tooltip="Upload logo" style="width:22px;height:22px;font-size:10px;">📷</button>
+        <input type="color" class="team-color-picker" id="homeColorPicker" onchange="event.stopPropagation();updateTeamColor('home',this.value)" value="#334155" data-tooltip="Team color">
+    </div>
+    <div class="timeout-display">
+        <span class="timeout-label">TO:</span>
+        <span class="timeout-dot" id="homeTO1"></span>
+        <span class="timeout-dot" id="homeTO2"></span>
+        <span class="timeout-dot" id="homeTO3"></span>
+    </div>
+</div>
+                
                 <div class="sb-block clock-block">
                     <span class="sb-abbr" style="font-size:0.5rem;color:var(--sb-text);opacity:.35;">CLOCK</span>
                     <span class="game-clock" id="gameClockDisplay">8:00</span>
