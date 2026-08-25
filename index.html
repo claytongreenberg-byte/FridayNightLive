@@ -135,23 +135,24 @@
         .save-status.error { color: #f87171; }
 
         .scorebug-wrap { width: 100%; display: flex; flex-direction: column; gap: 4px; }
-        .scorebug {
-            position: relative;
-            display: flex;
-            align-items: stretch;
-            justify-content: center;
-            gap: 0;
-            background: linear-gradient(180deg, #0d0d1a 0%, #1a1a2e 100%);
-            border: 3px solid var(--accent);
-            border-radius: 12px;
-            padding: 12px 18px 10px;
-            flex-wrap: nowrap;
-            width: 100%;
-            box-shadow: 0 4px 30px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08);
-            --sb-text: #ffffff;
-            min-height: 160px;
-            transition: all 0.3s ease;
-        }
+        
+      .scorebug {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 0;
+    background: var(--scorebug-bg);
+    border: 3px solid var(--accent);
+    border-radius: 12px;
+    padding: 12px 18px 10px;
+    flex-wrap: nowrap;
+    width: 100%;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08);
+    --sb-text: #ffffff;
+    min-height: 160px;
+    transition: all 0.3s ease;
+}
         .scorebug.compact {
             padding: 6px 10px 4px;
             min-height: 60px;
@@ -1466,14 +1467,14 @@
         lastEvent: { text: '🏈 Ready — Set possession to begin', type: 'info' },
         scorebugMode: 'full',
         teams: [
-            { id: 'h', name: 'Texas Hawks', abbr: 'TXH', color: '#1e3a5f', logo: '', mascot: '', coach: '', players: [
+            { id: 'h', name: 'Texas Hawks', abbr: 'TXH', color: '#1e3a5f', textColor: '#ffffff', logo: '', mascot: '', coach: '', players: [
                 { id: 'h1', n: '7', na: 'Marcus Johnson', po: 'QB', st: true, nt: '', pron: '', ph: '', pinned: false, categories: ['offense'], posFull: 'QB' },
                 { id: 'h2', n: '55', na: 'Chris Williams', po: 'Center', st: true, nt: '', pron: '', ph: '', pinned: false, categories: ['offense'], posFull: 'Center' },
                 { id: 'h3', n: '11', na: 'Jalen Smith', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false, categories: ['offense'], posFull: 'WR' },
                 { id: 'h4', n: '88', na: 'Ty Washington', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false, categories: ['offense'], posFull: 'WR' },
                 { id: 'h5', n: '15', na: 'Jordan Davis', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false, categories: ['offense'], posFull: 'WR' }
             ] },
-            { id: 's', name: 'Dallas Cowboys', abbr: 'DAL', color: '#7f1d1d', logo: '', mascot: '', coach: '', players: [
+            { id: 's', name: 'Dallas Cowboys', abbr: 'DAL', color: '#7f1d1d', textColor: '#ffffff', logo: '', mascot: '', coach: '', players: [
                 { id: 's1', n: '12', na: 'Caleb White', po: 'QB', st: true, nt: '', pron: '', ph: '', pinned: false, categories: ['offense'], posFull: 'QB' },
                 { id: 's2', n: '72', na: 'Mason Lee', po: 'Center', st: true, nt: '', pron: '', ph: '', pinned: false, categories: ['offense'], posFull: 'Center' },
                 { id: 's3', n: '1', na: 'Adrian Flores', po: 'WR', st: true, nt: '', pron: '', ph: '', pinned: false, categories: ['offense'], posFull: 'WR' },
@@ -1616,10 +1617,11 @@ function saveState() {
 
     function normalizeState() {
         if (!Array.isArray(S.teams) || S.teams.length === 0) {
-            S.teams = [{ id: 't1', name: 'Away Team', abbr: 'AWY', color: '#334155', logo: '', mascot: '', coach: '', players: [] }];
+            S.teams = [{ id: 't1', name: 'Away Team', abbr: 'AWY', color: '#334155', textColor: '#ffffff', logo: '', mascot: '', coach: '', players: [] }];
         }
         S.teams.forEach(t => { 
             if (t.abbr === undefined) t.abbr = '';
+            if (t.textColor === undefined) t.textColor = '#ffffff';
             t.players.forEach(p => {
                 if (p.categories === undefined) {
                     p.categories = getPositionCategories(p.po || '');
@@ -1853,7 +1855,7 @@ function saveState() {
         const id = side === 'away' ? S.awayId : S.homeId;
         let t = S.teams.find(x => x.id === id);
         if (!t) t = side === 'home' ? (S.teams[1] || S.teams[0]) : S.teams[0];
-        return t || { name: 'TBD', abbr: 'TBD', color: '#334155', players: [], id: '' };
+        return t || { name: 'TBD', abbr: 'TBD', color: '#334155', textColor: '#ffffff', players: [], id: '' };
     }
 
     function getPositions() { 
@@ -2182,8 +2184,17 @@ function saveState() {
   function updateScorebug() {
     const away = getTeam('away'),
         home = getTeam('home');
-    document.getElementById('sbAwayAbbr').innerHTML = teamAbbr(away) + (S.poss === 'away' ? ' <span class="sb-poss">🏈</span>' : '');
-    document.getElementById('sbHomeAbbr').innerHTML = teamAbbr(home) + (S.poss === 'home' ? ' <span class="sb-poss">🏈</span>' : '');
+    
+    // Update away abbreviation with color
+    const awayAbbr = document.getElementById('sbAwayAbbr');
+    awayAbbr.innerHTML = teamAbbr(away) + (S.poss === 'away' ? ' <span class="sb-poss">🏈</span>' : '');
+    awayAbbr.style.color = away.textColor || '#ffffff';
+    
+    // Update home abbreviation with color
+    const homeAbbr = document.getElementById('sbHomeAbbr');
+    homeAbbr.innerHTML = teamAbbr(home) + (S.poss === 'home' ? ' <span class="sb-poss">🏈</span>' : '');
+    homeAbbr.style.color = home.textColor || '#ffffff';
+    
     document.getElementById('sbAwayFull').textContent = away.name;
     document.getElementById('sbHomeFull').textContent = home.name;
     const awayChip = document.getElementById('sbAwayChip');
@@ -2942,7 +2953,7 @@ function saveState() {
     function renderRoster() {
         const sortedTeams = [...S.teams].sort((a, b) => a.name.localeCompare(b.name));
         let selectedTeam = S.teams.find(t => t.id === S.cid) || S.teams[0];
-        if (!selectedTeam) { S.teams.push({ id: 't' + Date.now(), name: 'New Team', abbr: '', color: '#1e3a5f', logo: '', mascot: '', coach: '', players: [] });
+        if (!selectedTeam) { S.teams.push({ id: 't' + Date.now(), name: 'New Team', abbr: '', color: '#1e3a5f', textColor: '#ffffff', logo: '', mascot: '', coach: '', players: [] });
             normalizeState();
             saveState();
             return renderRoster(); }
@@ -2965,6 +2976,7 @@ function saveState() {
         html += `<input id="etn" value="${selectedTeam.name}" placeholder="Team Name" style="flex:1;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.7rem;">`;
         html += `<input id="eta" value="${selectedTeam.abbr || ''}" placeholder="ABBR" maxlength="4" style="width:55px;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);text-transform:uppercase;font-size:0.7rem;">`;
         html += `<input type="color" id="etc" value="${selectedTeam.color}" style="width:35px;height:28px;">`;
+        html += `<input type="color" id="ettc" value="${selectedTeam.textColor || '#ffffff'}" style="width:35px;height:28px;" data-tooltip="Text color">`;
         html += `<input id="etm" value="${selectedTeam.mascot || ''}" placeholder="Mascot" style="width:80px;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.7rem;">`;
         html += `<input id="etco" value="${selectedTeam.coach || ''}" placeholder="Coach" style="width:80px;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.7rem;">`;
         html += `<img id="etl" src="${selectedTeam.logo}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;${selectedTeam.logo ? '' : 'display:none'}">`;
@@ -3119,7 +3131,7 @@ function saveState() {
     function newTeam() {
         const name = prompt('Team name:');
         if (!name) return;
-        S.teams.push({ id: 't' + Date.now(), name, abbr: '', color: '#1e3a5f', logo: '', mascot: '', coach: '', players: [] });
+        S.teams.push({ id: 't' + Date.now(), name, abbr: '', color: '#1e3a5f', textColor: '#ffffff', logo: '', mascot: '', coach: '', players: [] });
         S.cid = S.teams[S.teams.length - 1].id;
         saveState();
         renderRoster();
@@ -3131,6 +3143,7 @@ function saveState() {
         team.name = document.getElementById('etn').value;
         team.abbr = document.getElementById('eta').value.toUpperCase();
         team.color = document.getElementById('etc').value;
+        team.textColor = document.getElementById('ettc').value || '#ffffff';
         team.mascot = document.getElementById('etm').value;
         team.coach = document.getElementById('etco').value;
         saveState();
@@ -3160,7 +3173,7 @@ function saveState() {
     function deleteTeamById(id) {
         if (!confirm('Delete team?')) return;
         S.teams = S.teams.filter(t => t.id !== id);
-        if (S.teams.length === 0) S.teams.push({ id: 't' + Date.now(), name: 'New Team', abbr: '', color: '#1e3a5f', logo: '', mascot: '', coach: '', players: [] });
+        if (S.teams.length === 0) S.teams.push({ id: 't' + Date.now(), name: 'New Team', abbr: '', color: '#1e3a5f', textColor: '#ffffff', logo: '', mascot: '', coach: '', players: [] });
         normalizeState();
         S.cid = S.teams[0].id;
         saveState();
@@ -3751,6 +3764,7 @@ function saveState() {
                         existing.name = cloudTeam.name || existing.name;
                         existing.abbr = cloudTeam.abbr || existing.abbr;
                         existing.color = cloudTeam.color || existing.color;
+                        existing.textColor = cloudTeam.textColor || existing.textColor || '#ffffff';
                         existing.logo = cloudTeam.logo || existing.logo;
                         existing.mascot = cloudTeam.mascot || existing.mascot;
                         existing.coach = cloudTeam.coach || existing.coach;
@@ -3779,6 +3793,7 @@ function saveState() {
                         }
                     } else {
                         const newTeam = { ...cloudTeam };
+                        if (!newTeam.textColor) newTeam.textColor = '#ffffff';
                         newTeam.players = (cloudTeam.players || []).map(p => {
                             const player = { ...p };
                             if (!player.categories && (player.posFull || player.po)) {
