@@ -764,7 +764,6 @@
             overflow-y: auto;
             padding: 4px 5px;
         }
-        /* FIX: wider dropdown column */
         .player-row {
             display: grid;
             grid-template-columns: 28px 1fr 80px 28px 20px 20px 20px;
@@ -785,7 +784,7 @@
             width: 100%;
             font-size: 0.6rem;
             border-radius: 3px;
-            min-width: 0; /* allow shrinking */
+            min-width: 0;
         }
         .player-row input:focus,
         .player-row select:focus {
@@ -921,6 +920,45 @@
             border: 1px solid #475569;
             box-shadow: 0 4px 12px rgba(0,0,0,0.4);
             white-space: nowrap;
+        }
+
+        /* Category Legend in Roster View */
+        .cat-legend {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding: 6px 8px;
+            background: var(--bg);
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            margin-bottom: 8px;
+            font-size: 0.55rem;
+            font-weight: 600;
+        }
+        .cat-legend .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Parser help details */
+        .parser-help details {
+            font-size: 0.55rem;
+            opacity: 0.7;
+            cursor: pointer;
+        }
+        .parser-help details summary {
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .parser-help pre {
+            background: var(--surface);
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            font-size: 0.5rem;
+            margin: 4px 0;
+            overflow-x: auto;
         }
 
         footer {
@@ -1138,6 +1176,7 @@
             .player-row input,
             .player-row select { font-size: 0.55rem; padding: 2px; }
             .cat-badge { font-size: 0.5rem; padding: 1px 5px; }
+            .cat-legend { font-size: 0.5rem; gap: 8px; }
         }
         @media (max-width: 768px) {
             .scorebug { padding: 6px 6px; min-height: 100px; flex-wrap: wrap; }
@@ -1179,6 +1218,7 @@
             .player-row .pos-select-wrapper .quick-add-btn { width: 14px; height: 14px; font-size: 8px; }
             .cat-badge { font-size: 0.4rem; padding: 1px 4px; }
             .st-toggle, .pin-btn, .delete-btn { width: 16px; height: 16px; font-size: 0.4rem; }
+            .cat-legend { font-size: 0.4rem; gap: 4px; }
         }
     </style>
 </head>
@@ -1297,6 +1337,61 @@
 
 <script>
     // ============================================================
+    // CONSTANTS
+    // ============================================================
+    const MAX_UNDO = 50;
+
+    const POSITION_CATEGORIES = {
+        OFFENSE: ['QB', 'RB', 'FB', 'WR', 'TE', 'OL', 'Center', 'Guard', 'Tackle', 'LS'],
+        DEFENSE: ['DL', 'DE', 'DT', 'NG', 'LB', 'MLB', 'OLB', 'ILB', 'CB', 'S', 'SS', 'FS', 'DB'],
+        SPECIAL: ['K', 'P', 'KR', 'PR']
+    };
+
+    // Normalize common abbreviations to full names
+    function normalizePosition(pos) {
+        if (!pos) return '';
+        const map = {
+            'C': 'Center',
+            'G': 'Guard',
+            'T': 'Tackle',
+            'DT': 'DT',
+            'DE': 'DE',
+            'LB': 'LB',
+            'CB': 'CB',
+            'S': 'S',
+            'QB': 'QB',
+            'RB': 'RB',
+            'FB': 'FB',
+            'WR': 'WR',
+            'TE': 'TE',
+            'OL': 'OL',
+            'DL': 'DL',
+            'NG': 'NG',
+            'MLB': 'MLB',
+            'OLB': 'OLB',
+            'ILB': 'ILB',
+            'SS': 'SS',
+            'FS': 'FS',
+            'DB': 'DB',
+            'K': 'K',
+            'P': 'P',
+            'KR': 'KR',
+            'PR': 'PR',
+            'LS': 'LS'
+        };
+        const upper = pos.toUpperCase();
+        return map[upper] || pos;
+    }
+
+    function getAllPositions() {
+        return [
+            ...POSITION_CATEGORIES.OFFENSE,
+            ...POSITION_CATEGORIES.DEFENSE,
+            ...POSITION_CATEGORIES.SPECIAL
+        ];
+    }
+
+    // ============================================================
     // FULL STATE
     // ============================================================
     let S = {
@@ -1408,6 +1503,7 @@
                 }
             });
         });
+        // Ensure away and home are different
         if (!S.teams.find(t => t.id === S.awayId)) S.awayId = S.teams[0].id;
         if (!S.teams.find(t => t.id === S.homeId) || S.homeId === S.awayId) {
             const alt = S.teams.find(t => t.id !== S.awayId);
@@ -1430,7 +1526,7 @@
     }
 
     // ============================================================
-    // POSITION CATEGORIZATION ENGINE - FIXED with "Center" and "C"
+    // POSITION CATEGORIZATION ENGINE (using constants)
     // ============================================================
     function getPositionCategories(posStr) {
         if (!posStr) return ['all'];
@@ -1438,19 +1534,21 @@
         const positions = posStr.split('/').map(p => p.trim().toUpperCase());
         const categories = new Set();
         
-        // Added "CENTER" to OFFENSE list
-        const OFFENSE = ['QB', 'RB', 'FB', 'WR', 'TE', 'OL', 'C', 'G', 'T', 'CENTER'];
-        const DEFENSE = ['DL', 'DE', 'DT', 'NG', 'LB', 'MLB', 'OLB', 'ILB', 'CB', 'S', 'SS', 'FS', 'DB'];
-        const SPECIAL_TEAMS = ['K', 'P', 'KR', 'PR', 'LS'];
+        // Normalize each position for comparison
+        const normPositions = positions.map(p => normalizePosition(p).toUpperCase());
         
-        positions.forEach(pos => {
-            if (OFFENSE.includes(pos) || pos === 'LS') {
+        const OFFENSE_NORM = POSITION_CATEGORIES.OFFENSE.map(p => p.toUpperCase());
+        const DEFENSE_NORM = POSITION_CATEGORIES.DEFENSE.map(p => p.toUpperCase());
+        const SPECIAL_NORM = POSITION_CATEGORIES.SPECIAL.map(p => p.toUpperCase());
+        
+        normPositions.forEach(pos => {
+            if (OFFENSE_NORM.includes(pos) || pos === 'LS') {
                 categories.add('offense');
             }
-            if (DEFENSE.includes(pos)) {
+            if (DEFENSE_NORM.includes(pos)) {
                 categories.add('defense');
             }
-            if (SPECIAL_TEAMS.includes(pos) || pos === 'LS') {
+            if (SPECIAL_NORM.includes(pos) || pos === 'LS') {
                 categories.add('special');
             }
         });
@@ -1528,8 +1626,8 @@
     // GET ALL POSITION OPTIONS WITH CATEGORY PREFIXES
     // ============================================================
     function getAllPositionOptionsWithLabels() {
-        // Base positions include "Center" now
-        const basePositions = S.md7 === '7v7' ? S.p7 : ['QB', 'RB', 'FB', 'WR', 'TE', 'OL', 'C', 'G', 'T', 'Center', 'DL', 'DE', 'DT', 'NG', 'LB', 'MLB', 'OLB', 'ILB', 'CB', 'S', 'SS', 'FS', 'DB', 'K', 'P', 'LS', 'KR', 'PR'];
+        // Use normalized positions from constants
+        const basePositions = S.md7 === '7v7' ? S.p7 : getAllPositions();
         
         const allPosStrings = new Set();
         S.teams.forEach(team => {
@@ -1635,7 +1733,9 @@
         return t || { name: 'TBD', abbr: 'TBD', color: '#334155', players: [], id: '' };
     }
 
-    function getPositions() { return S.md7 === '7v7' ? S.p7 : ['QB', 'RB', 'FB', 'WR', 'TE', 'OL', 'C', 'G', 'T', 'DL', 'DE', 'DT', 'LB', 'OLB', 'ILB', 'CB', 'S', 'SS', 'FS', 'DB', 'K', 'P', 'LS', 'KR', 'PR']; }
+    function getPositions() { 
+        return S.md7 === '7v7' ? S.p7 : getAllPositions(); 
+    }
 
     function getPlayers(side, filter) {
         const t = getTeam(side);
@@ -1654,14 +1754,17 @@
                 }
                 const pos = (p.po || '').toUpperCase();
                 const posFull = (p.posFull || p.po || '').toUpperCase();
+                const OFFENSE_NORM = POSITION_CATEGORIES.OFFENSE.map(p => p.toUpperCase());
+                const DEFENSE_NORM = POSITION_CATEGORIES.DEFENSE.map(p => p.toUpperCase());
+                const SPECIAL_NORM = POSITION_CATEGORIES.SPECIAL.map(p => p.toUpperCase());
                 if (filter === 'offense') {
-                    return ['QB','RB','FB','WR','TE','OL','C','G','T','LS','CENTER'].some(p => pos.includes(p) || posFull.includes(p));
+                    return OFFENSE_NORM.some(p => pos.includes(p) || posFull.includes(p)) || pos === 'LS' || posFull === 'LS';
                 }
                 if (filter === 'defense') {
-                    return ['DL','DE','DT','NG','LB','MLB','OLB','ILB','CB','S','SS','FS','DB'].some(p => pos.includes(p) || posFull.includes(p));
+                    return DEFENSE_NORM.some(p => pos.includes(p) || posFull.includes(p));
                 }
                 if (filter === 'special') {
-                    return ['K','P','KR','PR','LS'].some(p => pos.includes(p) || posFull.includes(p));
+                    return SPECIAL_NORM.some(p => pos.includes(p) || posFull.includes(p)) || pos === 'LS' || posFull === 'LS';
                 }
                 return true;
             });
@@ -1717,7 +1820,7 @@
             timeouts: { away: S.timeouts.away, home: S.timeouts.home }
         };
         S.undoStack.push(snapshot);
-        if (S.undoStack.length > 20) S.undoStack.shift();
+        if (S.undoStack.length > MAX_UNDO) S.undoStack.shift();
         updateUndoButton();
         saveState();
     }
@@ -1889,10 +1992,21 @@
         const m = String(n.getMinutes()).padStart(2, '0');
         const s = String(n.getSeconds()).padStart(2, '0');
         let x = '';
-        if (S.cf === '12h') { const a = h >= 12 ? 'PM' : 'AM';
+        if (S.cf === '12h') { 
+            const a = h >= 12 ? 'PM' : 'AM';
             h = h % 12 || 12;
-            x = `${h}:${m}${S.cs ? ':' + s : ''} ${a}`; } else { h = String(h).padStart(2, '0');
-            x = `${h}:${m}${S.cs ? ':' + s : ''}`; }
+            // Add timezone abbreviation
+            const tz = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' })
+                .formatToParts(n)
+                .find(p => p.type === 'timeZoneName')?.value || '';
+            x = `${h}:${m}${S.cs ? ':' + s : ''} ${a} ${tz}`.trim();
+        } else { 
+            h = String(h).padStart(2, '0');
+            const tz = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' })
+                .formatToParts(n)
+                .find(p => p.type === 'timeZoneName')?.value || '';
+            x = `${h}:${m}${S.cs ? ':' + s : ''} ${tz}`.trim();
+        }
         document.getElementById('wallClock').textContent = x;
     }
     setInterval(updateWallClock, 1000);
@@ -2233,7 +2347,7 @@
 
     function resetGC() { 
         S.gc.run = false;
-        S.gc.rem = S.gc.max || 480;
+        S.gc.rem = Math.max(0, S.gc.max || 480);
         updateGameClockDisplay();
         updateClockStatusIndicator();
         saveState();
@@ -2269,7 +2383,12 @@
         renderGame();
     }
 
+    // ---- setPossession with validation ----
     function setPossession(side) {
+        if (!['away', 'home'].includes(side)) {
+            toast('❌ Invalid possession side');
+            return;
+        }
         S.poss = side;
         toast(`🏈 ${side.toUpperCase()} has the ball`);
         renderGame();
@@ -2499,28 +2618,24 @@
             html += '</div>';
             html += '<div class="unit-tabs">';
             
-            // ALL tab - gold
             const allActive = filter === 'all' ? 'active' : '';
             html += `<button class="unit-tab all-tab ${allActive}" onclick="setFilter('${side}','all')">ALL</button>`;
             
             if (S.md7 === 'tackle') {
-                // OFF tab - blue
                 const offActive = filter === 'offense' ? 'active' : '';
                 html += `<button class="unit-tab offense-tab ${offActive}" onclick="setFilter('${side}','offense')">OFF</button>`;
-                // DEF tab - red
                 const defActive = filter === 'defense' ? 'active' : '';
                 html += `<button class="unit-tab defense-tab ${defActive}" onclick="setFilter('${side}','defense')">DEF</button>`;
-                // ST tab - green
                 const stActive = filter === 'special' ? 'active' : '';
                 html += `<button class="unit-tab special-tab ${stActive}" onclick="setFilter('${side}','special')">ST</button>`;
             }
             html += '</div>';
             html += '<div class="player-list-body">';
             
+            // Build position options once outside the loop
             const allPosOptions = getAllPositionOptionsWithLabels();
             
             getPlayers(side, filter).forEach(p => {
-                // Build category badge
                 let catBadge = '';
                 if (p.categories && p.categories.length > 0 && p.categories[0] !== 'all') {
                     const catClass = getCategoryClass(p.categories);
@@ -2593,15 +2708,17 @@
         const newPos = prompt('Enter position to add (e.g., CB, DE, SS):', '');
         if (!newPos) return;
         
-        const cleanPos = newPos.trim().toUpperCase();
+        const cleanPos = normalizePosition(newPos.trim());
         if (!cleanPos) return;
         
         const currentPos = p.posFull || p.po || '';
         let newPosFull = currentPos;
         
-        const parts = currentPos.split('/').map(s => s.trim().toUpperCase());
-        if (parts.includes(cleanPos)) {
-            const newParts = parts.filter(s => s !== cleanPos);
+        const parts = currentPos.split('/').map(s => s.trim());
+        // Normalize each part for comparison
+        const normParts = parts.map(s => normalizePosition(s));
+        if (normParts.includes(cleanPos)) {
+            const newParts = parts.filter((s, i) => normParts[i] !== cleanPos);
             newPosFull = newParts.join('/');
             toast(`❌ Removed ${cleanPos} from ${p.na}`);
         } else {
@@ -2643,9 +2760,13 @@
 
     function deletePlayerOnly(side, pid) { 
         const team = getTeam(side);
+        const p = team.players.find(x => x.id === pid);
+        if (!p) return;
+        if (!confirm(`Delete ${p.na} (#${p.n})?`)) return;
         team.players = team.players.filter(x => x.id !== pid);
         saveState();
-        renderGame(); 
+        renderGame();
+        toast(`🗑️ ${p.na} deleted`);
     }
 
     function setFilter(side, f) { 
@@ -2654,26 +2775,53 @@
         renderGame(); 
     }
 
+    // ---- setSideTeam with duplicate prevention ----
     function setSideTeam(side, teamId) {
+        // Prevent setting both to the same team
+        if (S.awayId === teamId && S.homeId === teamId) {
+            toast('⚠️ Teams must be different');
+            return;
+        }
+        
         const otherSide = side === 'away' ? 'home' : 'away';
         const otherId = otherSide === 'away' ? S.awayId : S.homeId;
-        const thisId = side === 'away' ? S.awayId : S.homeId;
+        
         if (teamId === otherId) {
-            if (side === 'away') { S.awayId = teamId;
-                S.homeId = thisId; } else { S.homeId = teamId;
-                S.awayId = thisId; }
+            // Swap
+            if (side === 'away') { 
+                // Away becomes the team, Home becomes the old Away
+                const oldAway = S.awayId;
+                S.awayId = teamId;
+                S.homeId = oldAway;
+            } else { 
+                const oldHome = S.homeId;
+                S.homeId = teamId;
+                S.awayId = oldHome;
+            }
             toast('🔄 Teams swapped');
         } else {
             if (side === 'away') S.awayId = teamId;
             else S.homeId = teamId;
         }
+        
+        // Double-check they're different
+        if (S.awayId === S.homeId) {
+            // Fix by swapping with the other team
+            const otherTeam = S.teams.find(t => t.id !== S.awayId);
+            if (otherTeam) {
+                if (side === 'away') S.homeId = otherTeam.id;
+                else S.awayId = otherTeam.id;
+                toast('⚠️ Fixed duplicate teams');
+            }
+        }
+        
         saveState();
         renderGame();
         updateScorebug();
     }
 
     // ============================================================
-    // ROSTER VIEW with SMART PARSER
+    // ROSTER VIEW with SMART PARSER + Category Legend + Help
     // ============================================================
     function renderRoster() {
         const sortedTeams = [...S.teams].sort((a, b) => a.name.localeCompare(b.name));
@@ -2716,9 +2864,23 @@
         html += `<button class="hdr-btn ${selectedTeam.id === S.awayId ? 'active' : ''}" onclick="setSideTeam('away','${selectedTeam.id}')" data-tooltip="Set as away">✈️ Away</button>`;
         html += `<button class="hdr-btn ${selectedTeam.id === S.homeId ? 'active' : ''}" onclick="setSideTeam('home','${selectedTeam.id}')" data-tooltip="Set as home">🏠 Home</button>`;
         html += '</div>';
+        
+        // Category Legend
+        html += `<div class="cat-legend">
+            <span class="legend-item"><span class="cat-badge offense">O</span> Offense</span>
+            <span class="legend-item"><span class="cat-badge defense">D</span> Defense</span>
+            <span class="legend-item"><span class="cat-badge special">ST</span> Special Teams</span>
+            <span class="legend-item"><span class="cat-badge both">O/D</span> Both</span>
+            <span class="legend-item"><span class="cat-badge other">?</span> Unknown</span>
+        </div>`;
+        
         html += '<div style="display:grid;grid-template-columns:32px 1fr 70px 50px 70px 70px 26px;gap:3px;font-size:0.5rem;font-weight:700;margin-bottom:3px;opacity:0.6;">';
         html += '<span>#</span><span>Name</span><span>Pos</span><span>Role</span><span>Notes</span><span>Pron</span><span></span>';
         html += '</div>';
+        
+        // Build position options once outside the player loop
+        const allPosOptions = getAllPositionOptionsWithLabels();
+        
         selectedTeam.players.forEach((p, pidx) => {
             const cats = p.categories || ['all'];
             const catLabel = getCategoryLabel(cats);
@@ -2729,7 +2891,12 @@
             html += `<div style="display:grid;grid-template-columns:32px 1fr 70px 50px 70px 70px 26px;gap:3px;margin-bottom:2px;align-items:center;">`;
             html += `<input value="${p.n}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'n',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">`;
             html += `<input value="${p.na}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'na',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">`;
-            html += `<select onchange="updatePlayerField('${selectedTeam.id}',${pidx},'posFull',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">${getAllPositionOptionsWithLabels().map(o => `<option ${(p.posFull || p.po) === o.value ? 'selected' : ''} value="${o.value}">${o.display}</option>`).join('')}</select>`;
+            html += `<select onchange="updatePlayerField('${selectedTeam.id}',${pidx},'posFull',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">`;
+            allPosOptions.forEach(o => {
+                const selected = (p.posFull || p.po) === o.value ? 'selected' : '';
+                html += `<option ${selected} value="${o.value}">${o.display}</option>`;
+            });
+            html += `</select>`;
             html += `<select onchange="updatePlayerField('${selectedTeam.id}',${pidx},'st',this.value === 'true')" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;"><option value="false" ${!p.st ? 'selected' : ''}>Bench</option><option value="true" ${p.st ? 'selected' : ''}>Starter</option></select>`;
             html += `<input value="${p.nt || ''}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'nt',this.value)" placeholder="Notes" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">`;
             html += `<input value="${p.pron || ''}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'pron',this.value)" placeholder="Pron" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">`;
@@ -2743,7 +2910,17 @@
         html += `<button class="hdr-btn" onclick="parseRosterText('${selectedTeam.id}')" data-tooltip="Parse with smart categorization">📝 Parse</button>`;
         html += `<input type="file" accept=".txt,.csv" onchange="uploadRosterFile('${selectedTeam.id}',this)" data-tooltip="Upload file" style="font-size:0.6rem;">`;
         html += '</div>';
-        html += `<div style="margin-top:6px;font-size:0.5rem;opacity:0.6;">Tip: Format as "Number\tName\tPosition(s)" or "Number Name Position(s)". Use "/" for multiple positions (e.g., "WR/CB").</div>`;
+        // Enhanced parser help with example
+        html += `<div class="parser-help">
+            <details>
+                <summary>📝 How to format roster data</summary>
+                <p>Use one player per line. Separate fields with Tab or space.</p>
+                <pre>7    Marcus Johnson    QB
+55   Chris Williams    Center
+11   Jalen Smith       WR</pre>
+                <p>Use "/" for multiple positions: <code>WR/CB</code> or <code>TE/DE</code></p>
+            </details>
+        </div>`;
         html += '</div>';
         html += '</div>';
         document.getElementById('main').innerHTML = html;
@@ -2783,12 +2960,15 @@
             
             const number = parts[0] || '';
             const name = parts[1] || 'Unknown Player';
-            const positionStr = parts[2] || '';
+            let positionStr = parts[2] || '';
             
+            // Normalize position: replace common abbreviations with full names
+            // But keep the original string for display; we'll normalize for categorization
             const categories = getPositionCategories(positionStr);
             const primaryPos = positionStr.split('/')[0].trim() || 'QB';
             
-            const key = number + name;
+            // Use case-insensitive duplicate check
+            const key = (number + name).toLowerCase();
             if (positionMap[key]) return;
             positionMap[key] = true;
             
@@ -3707,6 +3887,8 @@
     window.getCategoryLabel = getCategoryLabel;
     window.getCategoryClass = getCategoryClass;
     window.getCategoryTooltip = getCategoryTooltip;
+    window.POSITION_CATEGORIES = POSITION_CATEGORIES;
+    window.normalizePosition = normalizePosition;
 
     // ---- Init ----
     loadState();
