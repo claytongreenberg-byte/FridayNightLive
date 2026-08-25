@@ -764,9 +764,10 @@
             overflow-y: auto;
             padding: 4px 5px;
         }
+        /* FIX: wider dropdown column */
         .player-row {
             display: grid;
-            grid-template-columns: 28px 1fr 55px 28px 20px 20px 20px;
+            grid-template-columns: 28px 1fr 80px 28px 20px 20px 20px;
             gap: 3px;
             align-items: center;
             padding: 3px 2px;
@@ -784,6 +785,7 @@
             width: 100%;
             font-size: 0.6rem;
             border-radius: 3px;
+            min-width: 0; /* allow shrinking */
         }
         .player-row input:focus,
         .player-row select:focus {
@@ -1132,7 +1134,7 @@
             .game-controls-row select,
             .game-controls-row input { font-size: 0.45rem; min-height: 18px; }
             .game-controls-row .yd-input { width: 28px; }
-            .player-row { grid-template-columns: 26px 1fr 50px 26px 18px 18px 18px; font-size: 0.6rem; }
+            .player-row { grid-template-columns: 26px 1fr 70px 26px 18px 18px 18px; font-size: 0.6rem; }
             .player-row input,
             .player-row select { font-size: 0.55rem; padding: 2px; }
             .cat-badge { font-size: 0.5rem; padding: 1px 5px; }
@@ -1170,7 +1172,7 @@
             .team-sidebar { width: 100%; max-height: 100px; }
             .admin-color-grid { grid-template-columns: 1fr; }
             .quick-cues button { font-size: 0.4rem; padding: 2px 6px; min-height: 18px; }
-            .player-row { grid-template-columns: 22px 1fr 40px 22px 16px 16px 16px; font-size: 0.5rem; gap: 2px; padding: 2px; }
+            .player-row { grid-template-columns: 22px 1fr 50px 22px 16px 16px 16px; font-size: 0.5rem; gap: 2px; padding: 2px; }
             .player-row input,
             .player-row select { font-size: 0.45rem; padding: 1px 2px; }
             .player-row .pos-select-wrapper select { font-size: 0.45rem; }
@@ -1428,7 +1430,7 @@
     }
 
     // ============================================================
-    // POSITION CATEGORIZATION ENGINE
+    // POSITION CATEGORIZATION ENGINE - FIXED with "Center" and "C"
     // ============================================================
     function getPositionCategories(posStr) {
         if (!posStr) return ['all'];
@@ -1436,7 +1438,8 @@
         const positions = posStr.split('/').map(p => p.trim().toUpperCase());
         const categories = new Set();
         
-        const OFFENSE = ['QB', 'RB', 'FB', 'WR', 'TE', 'OL', 'C', 'G', 'T'];
+        // Added "CENTER" to OFFENSE list
+        const OFFENSE = ['QB', 'RB', 'FB', 'WR', 'TE', 'OL', 'C', 'G', 'T', 'CENTER'];
         const DEFENSE = ['DL', 'DE', 'DT', 'NG', 'LB', 'MLB', 'OLB', 'ILB', 'CB', 'S', 'SS', 'FS', 'DB'];
         const SPECIAL_TEAMS = ['K', 'P', 'KR', 'PR', 'LS'];
         
@@ -1525,7 +1528,8 @@
     // GET ALL POSITION OPTIONS WITH CATEGORY PREFIXES
     // ============================================================
     function getAllPositionOptionsWithLabels() {
-        const basePositions = S.md7 === '7v7' ? S.p7 : ['QB', 'RB', 'FB', 'WR', 'TE', 'OL', 'C', 'G', 'T', 'DL', 'DE', 'DT', 'NG', 'LB', 'MLB', 'OLB', 'ILB', 'CB', 'S', 'SS', 'FS', 'DB', 'K', 'P', 'LS', 'KR', 'PR'];
+        // Base positions include "Center" now
+        const basePositions = S.md7 === '7v7' ? S.p7 : ['QB', 'RB', 'FB', 'WR', 'TE', 'OL', 'C', 'G', 'T', 'Center', 'DL', 'DE', 'DT', 'NG', 'LB', 'MLB', 'OLB', 'ILB', 'CB', 'S', 'SS', 'FS', 'DB', 'K', 'P', 'LS', 'KR', 'PR'];
         
         const allPosStrings = new Set();
         S.teams.forEach(team => {
@@ -1651,7 +1655,7 @@
                 const pos = (p.po || '').toUpperCase();
                 const posFull = (p.posFull || p.po || '').toUpperCase();
                 if (filter === 'offense') {
-                    return ['QB','RB','FB','WR','TE','OL','C','G','T','LS'].some(p => pos.includes(p) || posFull.includes(p));
+                    return ['QB','RB','FB','WR','TE','OL','C','G','T','LS','CENTER'].some(p => pos.includes(p) || posFull.includes(p));
                 }
                 if (filter === 'defense') {
                     return ['DL','DE','DT','NG','LB','MLB','OLB','ILB','CB','S','SS','FS','DB'].some(p => pos.includes(p) || posFull.includes(p));
