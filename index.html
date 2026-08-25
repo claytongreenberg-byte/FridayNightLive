@@ -3657,20 +3657,24 @@ function saveState() {
         r.readAsText(f); }
 
     // ---- CLOUD SYNC ----
-    async function fnlCloudSaveAll() {
-        try {
-            const snap = JSON.parse(JSON.stringify(S));
-            const resp = await fetch('https://lineup-api.claytongreenberg.workers.dev/api/sync/fnl_full_sync', { method: 'PUT', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(snap) });
-            if (!resp.ok) throw new Error(`Server responded with ${resp.status}`);
-            toast('✅ All data saved to cloud');
-            updateSaveStatus(true);
-        } catch (e) {
-            toast('❌ Cloud save failed: ' + e.message);
-            updateSaveStatus(false);
-            console.error('Save error:', e);
-        }
+  async function fnlCloudSaveAll() {
+    try {
+        updateSyncStatus('saving');
+        const snap = JSON.parse(JSON.stringify(S));
+        const resp = await fetch('https://lineup-api.claytongreenberg.workers.dev/api/sync/fnl_full_sync', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(snap)
+        });
+        if (!resp.ok) throw new Error(`Server responded with ${resp.status}`);
+        updateSyncStatus('saved');
+        toast('✅ All data synced to cloud');
+    } catch (e) {
+        updateSyncStatus('offline');
+        toast('❌ Cloud sync failed: ' + e.message);
+        console.error('Save error:', e);
     }
+}
 
     async function fnlCloudLoadGameState() {
         if (!confirm('Load game state from cloud?')) return;
