@@ -2167,18 +2167,18 @@ function saveState() {
     const awayLogoHtml = away.logo ? `<img src="${away.logo}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:6px;border:2px solid rgba(255,255,255,0.2);">` : '';
     const homeLogoHtml = home.logo ? `<img src="${home.logo}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:6px;border:2px solid rgba(255,255,255,0.2);">` : '';
     
-    awayNameEl.innerHTML = awayLogoHtml + awayMascot;
-    awayNameEl.style.color = away.textColor || '#ffffff';
-    homeNameEl.innerHTML = homeLogoHtml + homeMascot;
-    homeNameEl.style.color = home.textColor || '#ffffff';
-    
-    // Debug: Log the text colors being applied
-    console.log('Away textColor:', away.textColor, '| Away name:', awayMascot);
-    console.log('Home textColor:', home.textColor, '| Home name:', homeMascot);
-    
-    // Add possession indicator
-    awayNameEl.innerHTML = awayMascot + (S.poss === 'away' ? ' <span class="sb-poss">🏈</span>' : '');
-    homeNameEl.innerHTML = homeMascot + (S.poss === 'home' ? ' <span class="sb-poss">🏈</span>' : '');
+// Build logo + name + possession indicator
+const awayPossession = S.poss === 'away' ? ' <span class="sb-poss">🏈</span>' : '';
+const homePossession = S.poss === 'home' ? ' <span class="sb-poss">🏈</span>' : '';
+
+awayNameEl.innerHTML = awayLogoHtml + awayMascot + awayPossession;
+awayNameEl.style.color = away.textColor || '#ffffff';
+homeNameEl.innerHTML = homeLogoHtml + homeMascot + homePossession;
+homeNameEl.style.color = home.textColor || '#ffffff';
+
+// Debug: Log the text colors being applied
+console.log('Away textColor:', away.textColor, '| Away name:', awayMascot);
+console.log('Home textColor:', home.textColor, '| Home name:', homeMascot);
     
     document.getElementById('sbAwayFull').textContent = away.name;
     document.getElementById('sbHomeFull').textContent = home.name;
