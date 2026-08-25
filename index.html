@@ -2167,6 +2167,10 @@ function saveState() {
     homeNameEl.textContent = homeMascot;
     homeNameEl.style.color = home.textColor || '#ffffff';
     
+    // Debug: Log the text colors being applied
+    console.log('Away textColor:', away.textColor, '| Away name:', awayMascot);
+    console.log('Home textColor:', home.textColor, '| Home name:', homeMascot);
+    
     // Add possession indicator
     awayNameEl.innerHTML = awayMascot + (S.poss === 'away' ? ' <span class="sb-poss">🏈</span>' : '');
     homeNameEl.innerHTML = homeMascot + (S.poss === 'home' ? ' <span class="sb-poss">🏈</span>' : '');
@@ -2950,7 +2954,10 @@ function saveState() {
         html += `<input id="etn" value="${selectedTeam.name}" placeholder="Team Name" style="flex:1;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.7rem;">`;
         html += `<input id="eta" value="${selectedTeam.abbr || ''}" placeholder="ABBR" maxlength="4" style="width:55px;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);text-transform:uppercase;font-size:0.7rem;">`;
         html += `<input type="color" id="etc" value="${selectedTeam.color}" style="width:35px;height:28px;">`;
-        html += `<input type="color" id="ettc" value="${selectedTeam.textColor || '#ffffff'}" style="width:35px;height:28px;" data-tooltip="Text color">`;
+        
+html += `<span style="font-size:0.5rem;font-weight:700;margin-left:4px;">Text</span>`;
+html += `<input type="color" id="ettc" value="${selectedTeam.textColor || '#ffffff'}" style="width:35px;height:28px;" data-tooltip="Text color">`;
+        
         html += `<input id="etm" value="${selectedTeam.mascot || ''}" placeholder="Mascot" style="width:80px;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.7rem;">`;
         html += `<input id="etco" value="${selectedTeam.coach || ''}" placeholder="Coach" style="width:80px;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.7rem;">`;
         html += `<img id="etl" src="${selectedTeam.logo}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;${selectedTeam.logo ? '' : 'display:none'}">`;
