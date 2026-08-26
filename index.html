@@ -111,15 +111,34 @@
         .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:#fff;padding:6px 14px;border-radius:16px;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;font-size:.75rem;backdrop-filter:blur(10px)}
         .toast.show{opacity:1}
         .player-list-body{flex:1;overflow-y:auto;padding:4px 5px}
-        .player-row{display:grid;grid-template-columns:28px 1fr 80px 28px 20px 20px 20px;gap:3px;align-items:center;padding:3px 2px;border-bottom:2px solid #333;font-size:.65rem}
+        .player-row{display:grid;grid-template-columns:4px 28px 1fr 60px 26px 20px;gap:3px;align-items:center;padding:4px 4px;border-bottom:1px solid rgba(0,0,0,.1);font-size:.65rem;border-left:4px solid transparent}
         .player-row:last-child{border-bottom:none}
+        .player-row.category-offense{border-left-color:var(--badge-offense)}
+        .player-row.category-defense{border-left-color:var(--badge-defense)}
+        .player-row.category-special{border-left-color:var(--badge-special)}
+        .player-row.category-both{border-left-color:var(--badge-both)}
+        .player-row.category-other{border-left-color:#c9a227}
+        .player-row.pinned{background:rgba(250,204,21,.08);border-left-color:var(--accent)!important}
         .player-row input,.player-row select{background:transparent;border:1px solid var(--border);color:#0a0a0a;font-weight:700;padding:2px 3px;width:100%;font-size:.6rem;border-radius:3px;min-width:0}
         .player-row input:focus,.player-row select:focus{border-color:var(--accent);outline:0;background:rgba(255,255,255,.5)}
-        .player-row.starter{background:rgba(251,191,36,.08);border-left:3px solid var(--accent)}
-        .st-toggle,.pin-btn{background:0 0;border:1px solid var(--border);border-radius:50%;width:18px;height:18px;cursor:pointer;font-size:.45rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .player-row.starter{font-weight:700}
+        .cat-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+        .cat-dot.offense{background:var(--badge-offense)}
+        .cat-dot.defense{background:var(--badge-defense)}
+        .cat-dot.special{background:var(--badge-special)}
+        .cat-dot.both{background:var(--badge-both)}
+        .cat-dot.other{background:#c9a227}
+        .st-toggle,.pin-btn{background:0 0;border:1px solid var(--border);border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:.45rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
         .st-toggle.active{background:var(--accent);color:#000;border-color:var(--accent)}
-        .delete-btn{background:0 0;border:1px solid var(--border);border-radius:50%;width:18px;height:18px;cursor:pointer;font-size:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#dc2626}
+        .pin-btn.active{background:var(--accent);color:#000;border-color:var(--accent)}
+        .delete-btn{background:0 0;border:1px solid var(--border);border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#dc2626}
         .delete-btn:hover{background:#dc2626;color:#fff;border-color:#dc2626}
+        .quick-cues{display:flex;gap:8px;flex-wrap:wrap;padding:8px;background:rgba(250,204,21,.08);border:2px solid var(--accent);border-radius:8px;margin-bottom:8px}
+        .quick-cues button{font-size:.7rem;padding:7px 14px;min-height:32px;border-radius:6px;background:#334155;color:#fff;border:2px solid #475569;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}
+        .quick-cues button:hover{transform:scale(1.05);border-color:var(--accent);background:#475569}
+        .quick-cues button:active{transform:scale(.95)}
+        .quick-cues button.flag{background:#dc2626;border-color:#b91c1c}
+        .quick-cues button.flag:hover{background:#b91c1c}
         .game-controls-row{display:flex;flex-wrap:nowrap;align-items:center;gap:4px;padding:4px 10px;background:var(--bg);border:2px solid var(--accent);border-radius:8px;margin-bottom:6px;box-shadow:0 2px 16px rgba(250,204,21,.08);min-height:40px;overflow-x:auto}
         .game-controls-row .label{font-weight:800;font-size:.5rem;text-transform:uppercase;letter-spacing:.3px;color:var(--text);opacity:.4;margin-right:1px;white-space:nowrap}
         .game-controls-row .divider{width:1px;height:24px;background:var(--border);opacity:.2;margin:0 2px;flex-shrink:0}
@@ -164,8 +183,8 @@
         .unit-tab.defense-tab.active{background:var(--badge-defense);color:#fff}
         .unit-tab.special-tab{color:var(--badge-special)}
         .unit-tab.special-tab.active{background:var(--badge-special);color:#fff}
-        @media(max-width:1024px){.scorebug{padding:8px 10px;min-height:130px;flex-wrap:wrap}.scorebug.compact{min-height:50px;padding:4px 6px}.scorebug.compact .sb-block{padding:0 4px;min-width:30px}.scorebug.compact .sb-team-name{font-size:1rem!important}.scorebug.compact .sb-val{font-size:1.5rem;min-width:24px}.scorebug.compact .game-clock{font-size:1.5rem}.scorebug.compact .sb-qtr{font-size:1.5rem}.scorebug.compact .sb-label{font-size:.45rem}.sb-block{padding:0 8px;min-width:40px}.sb-team-name{font-size:1.6rem}.sb-val{font-size:2.8rem;min-width:38px}.sb-qtr{font-size:2.4rem}.game-clock{font-size:2.8rem}.sb-btn{width:24px;height:24px;font-size:10px}.sb-game-btns button{font-size:.5rem;padding:3px 8px;min-height:22px}.last-event{font-size:.7rem;min-height:28px;max-width:280px}.game-controls-row{padding:4px 8px;gap:3px;min-height:34px;flex-wrap:nowrap;overflow-x:auto}.game-controls-row .pos-btn{padding:2px 8px;font-size:.55rem;min-width:40px}.game-controls-row .to-btn{padding:2px 6px;font-size:.45rem}.game-controls-row .gc-btn{font-size:.45rem;padding:2px 4px;min-height:18px}.game-controls-row select,.game-controls-row input{font-size:.45rem;min-height:18px}.game-controls-row .yd-input{width:28px}.player-row{grid-template-columns:26px 1fr 70px 26px 18px 18px 18px;font-size:.6rem}.player-row input,.player-row select{font-size:.55rem;padding:2px}.cat-badge{font-size:.5rem;padding:1px 5px}.cat-legend{font-size:.5rem;gap:8px}.brand-logo{height:28px;max-width:50px}.brand-text h1{font-size:.75rem}.brand-text p{font-size:.45rem}.hdr-btn{font-size:.5rem;padding:3px 6px;min-height:20px}.wall-clock,.weather-pill{font-size:.5rem;padding:2px 4px}}
-        @media(max-width:768px){.scorebug{padding:6px 6px;min-height:100px;flex-wrap:wrap}.scorebug.compact{min-height:40px;padding:3px 4px}.scorebug.compact .sb-block{padding:0 3px;min-width:24px}.scorebug.compact .sb-team-name{font-size:.8rem!important}.scorebug.compact .sb-val{font-size:1.2rem;min-width:20px}.scorebug.compact .game-clock{font-size:1.2rem}.scorebug.compact .sb-qtr{font-size:1.2rem}.scorebug.compact .sb-label{font-size:.4rem}.scorebug.compact .sb-btn{width:16px;height:16px;font-size:7px}.scorebug.compact .sb-game-btns button{font-size:.3rem;padding:1px 3px;min-height:14px;min-width:20px}.scorebug.compact .last-event{font-size:.4rem;min-height:16px;padding:1px 4px;max-width:100px}.sb-block{padding:0 4px;min-width:30px}.sb-team-name{font-size:1.2rem;max-width:80px}.sb-val{font-size:2rem;min-width:30px}.sb-qtr{font-size:1.8rem}.game-clock{font-size:2.2rem}.sb-btn{width:20px;height:20px;font-size:9px}.sb-game-btns button{font-size:.4rem;padding:2px 6px;min-height:18px}.last-event{font-size:.55rem;min-height:22px;max-width:160px}.game-controls-row{padding:3px 4px;gap:2px;min-height:28px;flex-wrap:nowrap;overflow-x:auto}.game-controls-row .pos-btn{padding:2px 6px;font-size:.5rem;min-width:32px}.game-controls-row .to-btn{padding:2px 5px;font-size:.4rem}.game-controls-row .gc-btn{font-size:.4rem;padding:2px 4px;min-height:16px}.game-controls-row select,.game-controls-row input{font-size:.4rem;min-height:16px}.game-controls-row .yd-input{width:24px}.game-controls-row .label{font-size:.4rem}.team-cards{flex-direction:column;height:auto;min-height:140px}.roster-layout{flex-direction:column}.team-sidebar{width:100%;max-height:100px}.admin-color-grid{grid-template-columns:1fr}.quick-cues button{font-size:.4rem;padding:2px 6px;min-height:18px}.player-row{grid-template-columns:22px 1fr 50px 22px 16px 16px 16px;font-size:.5rem;gap:2px;padding:2px}.player-row input,.player-row select{font-size:.45rem;padding:1px 2px}.player-row .pos-select-wrapper select{font-size:.45rem}.player-row .pos-select-wrapper .quick-add-btn{width:14px;height:14px;font-size:8px}.cat-badge{font-size:.4rem;padding:1px 4px}.st-toggle,.pin-btn,.delete-btn{width:16px;height:16px;font-size:.4rem}.cat-legend{font-size:.4rem;gap:4px}.brand-logo{height:24px;max-width:40px}.brand-text h1{font-size:.65rem}.brand-text p{font-size:.4rem}.hdr-btn{font-size:.45rem;padding:2px 5px;min-height:18px}.wall-clock,.weather-pill{font-size:.45rem;padding:2px 4px}}
+        @media(max-width:1024px){.scorebug{padding:8px 10px;min-height:130px;flex-wrap:wrap}.scorebug.compact{min-height:50px;padding:4px 6px}.scorebug.compact .sb-block{padding:0 4px;min-width:30px}.scorebug.compact .sb-team-name{font-size:1rem!important}.scorebug.compact .sb-val{font-size:1.5rem;min-width:24px}.scorebug.compact .game-clock{font-size:1.5rem}.scorebug.compact .sb-qtr{font-size:1.5rem}.scorebug.compact .sb-label{font-size:.45rem}.sb-block{padding:0 8px;min-width:40px}.sb-team-name{font-size:1.6rem}.sb-val{font-size:2.8rem;min-width:38px}.sb-qtr{font-size:2.4rem}.game-clock{font-size:2.8rem}.sb-btn{width:24px;height:24px;font-size:10px}.sb-game-btns button{font-size:.5rem;padding:3px 8px;min-height:22px}.last-event{font-size:.7rem;min-height:28px;max-width:280px}.game-controls-row{padding:4px 8px;gap:3px;min-height:34px;flex-wrap:nowrap;overflow-x:auto}.game-controls-row .pos-btn{padding:2px 8px;font-size:.55rem;min-width:40px}.game-controls-row .to-btn{padding:2px 6px;font-size:.45rem}.game-controls-row .gc-btn{font-size:.45rem;padding:2px 4px;min-height:18px}.game-controls-row select,.game-controls-row input{font-size:.45rem;min-height:18px}.game-controls-row .yd-input{width:28px}.player-row{grid-template-columns:4px 24px 1fr 50px 24px 18px;font-size:.6rem}.player-row input,.player-row select{font-size:.55rem;padding:2px}.cat-badge{font-size:.5rem;padding:1px 5px}.cat-legend{font-size:.5rem;gap:8px}.brand-logo{height:28px;max-width:50px}.brand-text h1{font-size:.75rem}.brand-text p{font-size:.45rem}.hdr-btn{font-size:.5rem;padding:3px 6px;min-height:20px}.wall-clock,.weather-pill{font-size:.5rem;padding:2px 4px}.quick-cues{gap:4px;padding:4px}.quick-cues button{font-size:.6rem;padding:4px 8px;min-height:24px}}
+        @media(max-width:768px){.scorebug{padding:6px 6px;min-height:100px;flex-wrap:wrap}.scorebug.compact{min-height:40px;padding:3px 4px}.scorebug.compact .sb-block{padding:0 3px;min-width:24px}.scorebug.compact .sb-team-name{font-size:.8rem!important}.scorebug.compact .sb-val{font-size:1.2rem;min-width:20px}.scorebug.compact .game-clock{font-size:1.2rem}.scorebug.compact .sb-qtr{font-size:1.2rem}.scorebug.compact .sb-label{font-size:.4rem}.scorebug.compact .sb-btn{width:16px;height:16px;font-size:7px}.scorebug.compact .sb-game-btns button{font-size:.3rem;padding:1px 3px;min-height:14px;min-width:20px}.scorebug.compact .last-event{font-size:.4rem;min-height:16px;padding:1px 4px;max-width:100px}.sb-block{padding:0 4px;min-width:30px}.sb-team-name{font-size:1.2rem;max-width:80px}.sb-val{font-size:2rem;min-width:30px}.sb-qtr{font-size:1.8rem}.game-clock{font-size:2.2rem}.sb-btn{width:20px;height:20px;font-size:9px}.sb-game-btns button{font-size:.4rem;padding:2px 6px;min-height:18px}.last-event{font-size:.55rem;min-height:22px;max-width:160px}.game-controls-row{padding:3px 4px;gap:2px;min-height:28px;flex-wrap:nowrap;overflow-x:auto}.game-controls-row .pos-btn{padding:2px 6px;font-size:.5rem;min-width:32px}.game-controls-row .to-btn{padding:2px 5px;font-size:.4rem}.game-controls-row .gc-btn{font-size:.4rem;padding:2px 4px;min-height:16px}.game-controls-row select,.game-controls-row input{font-size:.4rem;min-height:16px}.game-controls-row .yd-input{width:24px}.game-controls-row .label{font-size:.4rem}.team-cards{flex-direction:column;height:auto;min-height:140px}.roster-layout{flex-direction:column}.team-sidebar{width:100%;max-height:100px}.admin-color-grid{grid-template-columns:1fr}.quick-cues button{font-size:.6rem;padding:4px 8px;min-height:24px}.player-row{grid-template-columns:4px 20px 1fr 40px 20px 16px;font-size:.5rem;gap:2px;padding:2px}.player-row input,.player-row select{font-size:.45rem;padding:1px 2px}.player-row .pos-select-wrapper select{font-size:.45rem}.cat-badge{font-size:.4rem;padding:1px 4px}.st-toggle,.pin-btn,.delete-btn{width:16px;height:16px;font-size:.4rem}.cat-legend{font-size:.4rem;gap:4px}.brand-logo{height:24px;max-width:40px}.brand-text h1{font-size:.65rem}.brand-text p{font-size:.4rem}.hdr-btn{font-size:.45rem;padding:2px 5px;min-height:18px}.wall-clock,.weather-pill{font-size:.45rem;padding:2px 4px}}
     </style>
 </head>
 <body>
@@ -329,14 +348,14 @@ let S = {
     scorebugMode: 'full',
     teams: [
         { id: 'h', name: 'Euless Trinity Trojans', abbr: 'ETT', color: '#1e3a5f', textColor: '#ffffff', logo: '', mascot: 'Trojans', coach: '', players: [] },
-        { id: 's', name: 'Mansfield Tigers', abbr: 'MHS', color: '#7f1d1d', textColor: '#ffffff', logo: '', mascot: 'Tigers', coach: '', players: [] }
+        { id: 's', name: 'Mansfield Berkner Rams', abbr: 'MBR', color: '#7f1d1d', textColor: '#ffffff', logo: '', mascot: 'Rams', coach: '', players: [] }
     ],
     scoringLog: [], penaltyLog: [], gameHistory: [], script: '', cp: {}, ap: '', im: true,
     ua: 'all', uh: 'all', cid: 'h',
     colors: { scorebugBg: '#0d0d1a', scorebugText: '#ffffff', accent: '#facc15', teamCardAway: '#e2e8f0', teamCardHome: '#e2e8f0', teamCardBorder: '#94a3b8' }
 };
 
-const STORAGE_KEY = 'fnl_v27';
+const STORAGE_KEY = 'fnl_v28';
 
 function toast(m) {
     const x = document.getElementById('toast');
@@ -384,6 +403,7 @@ function normalizeState() {
             if (!p.categories) p.categories = getPositionCategories(p.po || '');
             if (!p.posFull) p.posFull = p.po || '';
             if (p.st === undefined) p.st = false;
+            if (p.pinned === undefined) p.pinned = false;
         });
     });
     if (!S.teams.find(function(t) { return t.id === S.awayId; })) S.awayId = S.teams[0].id;
@@ -427,15 +447,15 @@ function getPositionCategories(posStr) {
 }
 
 function getCategoryLabel(categories) {
-    if (!categories || categories.length === 0 || categories[0] === 'all') return '[?]';
+    if (!categories || categories.length === 0 || categories[0] === 'all') return 'O';
     var hasOffense = categories.indexOf('offense') !== -1;
     var hasDefense = categories.indexOf('defense') !== -1;
     var hasSpecial = categories.indexOf('special') !== -1;
-    if (hasOffense && hasDefense) return '[O/D]';
-    if (hasOffense) return '[O]';
-    if (hasDefense) return '[D]';
-    if (hasSpecial) return '[ST]';
-    return '[?]';
+    if (hasOffense && hasDefense) return 'O/D';
+    if (hasOffense) return 'O';
+    if (hasDefense) return 'D';
+    if (hasSpecial) return 'ST';
+    return '?';
 }
 
 function getCategoryClass(categories) {
@@ -474,8 +494,9 @@ function getAllPositionOptionsWithLabels() {
     });
     var options = combined.map(function(pos) {
         var cats = getPositionCategories(pos);
-        var label = getCategoryLabel(cats);
-        return { value: pos, display: label + ' ' + pos, categories: cats };
+        var catClass = getCategoryClass(cats);
+        var dotHtml = '<span class="cat-dot ' + catClass + '"></span>';
+        return { value: pos, display: dotHtml + ' ' + pos, categories: cats };
     });
     options.sort(function(a, b) { return a.value.localeCompare(b.value); });
     return options;
@@ -485,8 +506,12 @@ function getPlayers(side, filter) {
     var t = getTeam(side);
     if (!t) return [];
     var list = t.players.slice();
+    // Sort: pinned first, then by number
+    list.sort(function(a, b) {
+        if ((a.pinned || false) !== (b.pinned || false)) return (b.pinned || false) - (a.pinned || false);
+        return (parseInt(a.n) || 999) - (parseInt(b.n) || 999);
+    });
     if (filter === 'all') {
-        list.sort(function(a, b) { return (parseInt(a.n) || 999) - (parseInt(b.n) || 999); });
         return list;
     }
     if (filter === 'offense' || filter === 'defense' || filter === 'special') {
@@ -497,7 +522,6 @@ function getPlayers(side, filter) {
             return true;
         });
     }
-    list.sort(function(a, b) { return (parseInt(a.n) || 999) - (parseInt(b.n) || 999); });
     return list;
 }
 
@@ -889,8 +913,8 @@ function setPossession(side) {
 function renderGame() {
     var html = '';
     html += '<div class="quick-cues">';
-    html += '<button onclick="quickCue(\'🔻 FIRST DOWN\')">🔻 1st Down</button>';
-    html += '<button onclick="quickCue(\'🏈 PUNT\')">🦵 Punt</button>';
+    html += '<button onclick="quickCue(\'🔻 FIRST DOWN\')">🔻 First Down</button>';
+    html += '<button onclick="quickCue(\'🦵 PUNT\')">🦵 Punt</button>';
     html += '<button onclick="quickCue(\'🔄 INTERCEPTION\')">🔄 INT</button>';
     html += '<button onclick="quickCue(\'😱 FUMBLE\')">😱 Fumble</button>';
     html += '<button onclick="quickCue(\'⏱️ END OF QUARTER\')">⏱️ End Qtr</button>';
@@ -955,31 +979,21 @@ function renderGame() {
         html += '<div class="player-list-body">';
         var allPosOptions = getAllPositionOptionsWithLabels();
         getPlayers(side, filter).forEach(function(p) {
-            var catBadge = '';
-            if (p.categories && p.categories.length > 0 && p.categories[0] !== 'all') {
-                var catClass = getCategoryClass(p.categories);
-                var tooltipText = getCategoryTooltip(p.categories);
-                var label = getCategoryLabel(p.categories);
-                var badgeText = label.replace(/\[|\]/g, '');
-                catBadge = '<span class="cat-badge ' + catClass + '" data-tooltip="' + tooltipText + '">' + badgeText + '</span>';
-            }
-            var currentPos = p.posFull || p.po || 'QB';
-            html += '<div class="player-row' + (p.st ? ' starter' : '') + '">';
-            html += '<input value="' + p.n + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'n\',this.value)" style="width:28px;">';
-            html += '<input value="' + p.na + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'na\',this.value)">';
-            html += '<div class="pos-select-wrapper">';
+            var cats = p.categories || ['all'];
+            var catClass = getCategoryClass(cats);
+            var isPinned = p.pinned || false;
+            html += '<div class="player-row category-' + catClass + (isPinned ? ' pinned' : '') + (p.st ? ' starter' : '') + '">';
+            html += '<div style="width:4px;border-radius:2px;" title="Category bar"></div>';
+            html += '<input value="' + p.n + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'n\',this.value)" style="width:28px;" placeholder="#">';
+            html += '<input value="' + p.na + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'na\',this.value)" placeholder="Name">';
             html += '<select onchange="updateGamePlayerPositionOnly(\'' + side + '\',\'' + p.id + '\',this.value)">';
             allPosOptions.forEach(function(opt) {
-                var selected = (opt.value === currentPos) ? 'selected' : '';
+                var selected = (opt.value === (p.posFull || p.po)) ? 'selected' : '';
                 html += '<option ' + selected + ' value="' + opt.value + '">' + opt.display + '</option>';
             });
             html += '</select>';
-            html += '<button class="quick-add-btn" onclick="quickAddPositionOnly(\'' + side + '\',\'' + p.id + '\')">+</button>';
-            html += '</div>';
-            html += '<div class="cat-badge-col">' + catBadge + '</div>';
-            html += '<button class="st-toggle ' + (p.st ? 'active' : '') + '" onclick="toggleStarterOnly(\'' + side + '\',\'' + p.id + '\')">⭐</button>';
-            html += '<button class="pin-btn" onclick="togglePinOnly(\'' + side + '\',\'' + p.id + '\')">📌</button>';
-            html += '<button class="delete-btn" onclick="deletePlayerOnly(\'' + side + '\',\'' + p.id + '\')">✕</button>';
+            html += '<button class="st-toggle ' + (p.st ? 'active' : '') + '" onclick="toggleStarterOnly(\'' + side + '\',\'' + p.id + '\')" title="Starter">⭐</button>';
+            html += '<button class="pin-btn ' + (isPinned ? 'active' : '') + '" onclick="togglePinOnly(\'' + side + '\',\'' + p.id + '\')" title="Pin to top">📌</button>';
             html += '</div>';
         });
         html += '</div></div>';
@@ -1013,32 +1027,6 @@ function updateGamePlayerPositionOnly(side, pid, val) {
     toast('✅ ' + p.na + ' set to ' + val);
 }
 
-function quickAddPositionOnly(side, pid) {
-    var team = getTeam(side);
-    var p = team.players.find(function(x) { return x.id === pid; });
-    if (!p) return;
-    var newPos = prompt('Enter position to add (e.g., CB, DE, SS):', '');
-    if (!newPos) return;
-    var cleanPos = normalizePosition(newPos.trim());
-    if (!cleanPos) return;
-    var currentPos = p.posFull || p.po || '';
-    var newPosFull = currentPos;
-    var parts = currentPos.split('/').map(function(s) { return s.trim(); });
-    var normParts = parts.map(function(s) { return normalizePosition(s); });
-    if (normParts.indexOf(cleanPos) !== -1) {
-        newPosFull = parts.filter(function(s, i) { return normParts[i] !== cleanPos; }).join('/');
-        toast('❌ Removed ' + cleanPos + ' from ' + p.na);
-    } else {
-        newPosFull = currentPos ? currentPos + '/' + cleanPos : cleanPos;
-        toast('✅ Added ' + cleanPos + ' to ' + p.na);
-    }
-    p.posFull = newPosFull;
-    p.po = newPosFull.split('/')[0].trim() || newPosFull;
-    p.categories = getPositionCategories(newPosFull);
-    saveState();
-    renderGame();
-}
-
 function toggleStarterOnly(side, pid) {
     var team = getTeam(side);
     var p = team.players.find(function(x) { return x.id === pid; });
@@ -1056,18 +1044,7 @@ function togglePinOnly(side, pid) {
     p.pinned = !p.pinned;
     saveState();
     renderGame();
-    toast(p.pinned ? '📌 ' + p.na + ' pinned' : '📌 ' + p.na + ' unpinned');
-}
-
-function deletePlayerOnly(side, pid) {
-    var team = getTeam(side);
-    var p = team.players.find(function(x) { return x.id === pid; });
-    if (!p) return;
-    if (!confirm('Delete ' + p.na + ' (#' + p.n + ')?')) return;
-    team.players = team.players.filter(function(x) { return x.id !== pid; });
-    saveState();
-    renderGame();
-    toast('🗑️ ' + p.na + ' deleted');
+    toast(p.pinned ? '📌 ' + p.na + ' pinned to top' : '📌 ' + p.na + ' unpinned');
 }
 
 function setFilter(side, f) {
@@ -1406,19 +1383,19 @@ function renderRoster() {
     html += '<button class="hdr-btn" onclick="saveTeam()">💾 Save</button>';
     html += '<button class="hdr-btn" onclick="printRoster(\'' + selectedTeam.id + '\')">🖨️</button>';
     html += '<button class="hdr-btn" onclick="exportTeamCSV(\'' + selectedTeam.id + '\')">📊</button>';
-    html += '<button class="hdr-btn" style="background:#dc2626;" onclick="deleteTeamById(\'' + selectedTeam.id + '\')">🗑️</button>';
-    html += '<button class="hdr-btn" style="background:#8b5cf6;" onclick="recategorizeTeam(\'' + selectedTeam.id + '\')">🔄 Recat</button>';
+    html += '<button class="hdr-btn" onclick="deleteTeamById(\'' + selectedTeam.id + '\')">🗑️</button>';
+    html += '<button class="hdr-btn" onclick="recategorizeTeam(\'' + selectedTeam.id + '\')">🔄 Recat</button>';
     html += '</div>';
     html += '<div style="display:flex;gap:4px;margin-bottom:8px;">';
     html += '<button class="hdr-btn ' + (selectedTeam.id === S.awayId ? 'active' : '') + '" onclick="setSideTeam(\'away\',\'' + selectedTeam.id + '\')">✈️ Away</button>';
     html += '<button class="hdr-btn ' + (selectedTeam.id === S.homeId ? 'active' : '') + '" onclick="setSideTeam(\'home\',\'' + selectedTeam.id + '\')">🏠 Home</button>';
     html += '</div>';
     html += '<div class="cat-legend">';
-    html += '<span class="legend-item"><span class="cat-badge offense">O</span> Offense</span>';
-    html += '<span class="legend-item"><span class="cat-badge defense">D</span> Defense</span>';
-    html += '<span class="legend-item"><span class="cat-badge special">ST</span> Special Teams</span>';
-    html += '<span class="legend-item"><span class="cat-badge both">O/D</span> Both</span>';
-    html += '<span class="legend-item"><span class="cat-badge other">?</span> Unknown</span>';
+    html += '<span class="legend-item"><span class="cat-dot offense"></span> Offense</span>';
+    html += '<span class="legend-item"><span class="cat-dot defense"></span> Defense</span>';
+    html += '<span class="legend-item"><span class="cat-dot special"></span> Special Teams</span>';
+    html += '<span class="legend-item"><span class="cat-dot both"></span> Both</span>';
+    html += '<span class="legend-item"><span class="cat-dot other"></span> Unknown</span>';
     html += '</div>';
     html += '<div style="display:grid;grid-template-columns:32px 1fr 70px 50px 70px 70px 26px;gap:3px;font-size:0.5rem;font-weight:700;margin-bottom:3px;opacity:0.6;">';
     html += '<span>#</span><span>Name</span><span>Pos</span><span>⭐</span><span>Notes</span><span>Pron</span><span></span>';
@@ -1426,10 +1403,7 @@ function renderRoster() {
     var allPosOptions = getAllPositionOptionsWithLabels();
     selectedTeam.players.forEach(function(p, pidx) {
         var cats = p.categories || ['all'];
-        var catLabel = getCategoryLabel(cats);
-        var badgeText = catLabel.replace(/\[|\]/g, '');
         var catClass = getCategoryClass(cats);
-        var tooltipText = getCategoryTooltip(cats);
         html += '<div style="display:grid;grid-template-columns:32px 1fr 70px 50px 70px 70px 26px;gap:3px;margin-bottom:2px;align-items:center;' + (p.st ? 'border-left:3px solid #facc15;padding-left:2px;' : '') + '">';
         html += '<input value="' + p.n + '" onchange="updatePlayerField(\'' + selectedTeam.id + '\',' + pidx + ',\'n\',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">';
         html += '<input value="' + p.na + '" onchange="updatePlayerField(\'' + selectedTeam.id + '\',' + pidx + ',\'na\',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">';
@@ -1442,7 +1416,7 @@ function renderRoster() {
         html += '<button class="st-toggle ' + (p.st ? 'active' : '') + '" onclick="toggleRosterStarter(\'' + selectedTeam.id + '\',' + pidx + ')" style="background:none;border:2px solid ' + (p.st ? '#facc15' : 'var(--border)') + ';border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:0.7rem;display:flex;align-items:center;justify-content:center;">⭐</button>';
         html += '<input value="' + (p.nt || '') + '" onchange="updatePlayerField(\'' + selectedTeam.id + '\',' + pidx + ',\'nt\',this.value)" placeholder="Notes" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">';
         html += '<input value="' + (p.pron || '') + '" onchange="updatePlayerField(\'' + selectedTeam.id + '\',' + pidx + ',\'pron\',this.value)" placeholder="Pron" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">';
-        html += '<div><span class="cat-badge ' + catClass + '" data-tooltip="' + tooltipText + '" style="font-size:0.5rem;padding:1px 5px;">' + badgeText + '</span></div>';
+        html += '<div><span class="cat-dot ' + catClass + '" title="' + getCategoryTooltip(cats) + '"></span></div>';
         html += '<button class="sb-btn" style="width:20px;height:20px;font-size:9px;" onclick="S.teams.find(function(t){return t.id===\'' + selectedTeam.id + '\'}).players.splice(' + pidx + ',1);saveState();renderRoster();">✕</button>';
         html += '</div>';
     });
@@ -2002,7 +1976,7 @@ updateWeather();
 document.addEventListener('keydown', function(e) {
     var typing = ['input','select','textarea'].indexOf((e.target.tagName||'').toLowerCase()) !== -1 || e.target.isContentEditable;
     if (e.code === 'Space' && !typing) { e.preventDefault(); if (S.gc.run) pauseGC(); else startGC(); }
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') { e.preventDefault(); fnlCloudSaveAll(); }
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's' && !typing) { e.preventDefault(); fnlCloudSaveAll(); }
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z' && !typing) { e.preventDefault(); undoLastEvent(); }
 });
 
@@ -2024,7 +1998,7 @@ if (sb && S.scorebugMode === 'compact') {
     sb.classList.add('compact');
 }
 
-console.log('FNL started successfully!');
+console.log('FNL v28 started successfully!');
 </script>
 </body>
 </html>
