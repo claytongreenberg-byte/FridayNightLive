@@ -343,7 +343,7 @@ function toast(m) {
     if (!x) return;
     x.textContent = m;
     x.classList.add('show');
-    setTimeout(() => x.classList.remove('show'), 2000);
+    setTimeout(function() { x.classList.remove('show'); }, 2000);
 }
 
 // ============================================================
@@ -352,10 +352,10 @@ function toast(m) {
 function saveState() {
     try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(S));
-        const el = document.getElementById('saveStatus');
+        var el = document.getElementById('saveStatus');
         if (el) {
-            const now = new Date();
-            el.textContent = `💾 Saved ${now.toLocaleTimeString()}`;
+            var now = new Date();
+            el.textContent = '💾 Saved ' + now.toLocaleTimeString();
             el.className = 'save-status saved';
         }
     } catch(e) { console.error('Save error:', e); }
@@ -363,9 +363,9 @@ function saveState() {
 
 function loadState() {
     try {
-        const raw = localStorage.getItem(STORAGE_KEY);
+        var raw = localStorage.getItem(STORAGE_KEY);
         if (raw) {
-            const parsed = JSON.parse(raw);
+            var parsed = JSON.parse(raw);
             S = { ...S, ...parsed };
         }
     } catch(e) { console.error('Load error:', e); }
@@ -376,19 +376,19 @@ function normalizeState() {
     if (!Array.isArray(S.teams) || S.teams.length === 0) {
         S.teams = [{ id: 't1', name: 'Away Team', abbr: 'AWY', color: '#334155', textColor: '#ffffff', logo: '', mascot: '', coach: '', players: [] }];
     }
-    S.teams.forEach(t => {
+    S.teams.forEach(function(t) {
         if (!t.abbr) t.abbr = '';
         if (!t.textColor) t.textColor = '#ffffff';
         if (!t.mascot) t.mascot = '';
-        t.players.forEach(p => {
+        t.players.forEach(function(p) {
             if (!p.categories) p.categories = getPositionCategories(p.po || '');
             if (!p.posFull) p.posFull = p.po || '';
             if (p.st === undefined) p.st = false;
         });
     });
-    if (!S.teams.find(t => t.id === S.awayId)) S.awayId = S.teams[0].id;
-    if (!S.teams.find(t => t.id === S.homeId) || S.homeId === S.awayId) {
-        const alt = S.teams.find(t => t.id !== S.awayId);
+    if (!S.teams.find(function(t) { return t.id === S.awayId; })) S.awayId = S.teams[0].id;
+    if (!S.teams.find(function(t) { return t.id === S.homeId; }) || S.homeId === S.awayId) {
+        var alt = S.teams.find(function(t) { return t.id !== S.awayId; });
         S.homeId = alt ? alt.id : S.awayId;
     }
     if (!S.colors) S.colors = { scorebugBg: '#0d0d1a', scorebugText: '#ffffff', accent: '#facc15', teamCardAway: '#e2e8f0', teamCardHome: '#e2e8f0', teamCardBorder: '#94a3b8' };
@@ -404,23 +404,23 @@ function normalizeState() {
 }
 
 function getTeam(side) {
-    const id = side === 'away' ? S.awayId : S.homeId;
-    let t = S.teams.find(x => x.id === id);
+    var id = side === 'away' ? S.awayId : S.homeId;
+    var t = S.teams.find(function(x) { return x.id === id; });
     if (!t) t = S.teams[0];
     return t || { name: 'TBD', abbr: 'TBD', color: '#334155', textColor: '#ffffff', mascot: '', players: [], id: '' };
 }
 
 function getPositionCategories(posStr) {
     if (!posStr) return ['all'];
-    const positions = posStr.split('/').map(p => p.trim().toUpperCase());
-    const categories = new Set();
-    const OFFENSE_NORM = POSITION_CATEGORIES.OFFENSE.map(p => p.toUpperCase());
-    const DEFENSE_NORM = POSITION_CATEGORIES.DEFENSE.map(p => p.toUpperCase());
-    const SPECIAL_NORM = POSITION_CATEGORIES.SPECIAL.map(p => p.toUpperCase());
-    positions.forEach(pos => {
-        if (OFFENSE_NORM.includes(pos) || pos === 'LS') categories.add('offense');
-        if (DEFENSE_NORM.includes(pos)) categories.add('defense');
-        if (SPECIAL_NORM.includes(pos) || pos === 'LS') categories.add('special');
+    var positions = posStr.split('/').map(function(p) { return p.trim().toUpperCase(); });
+    var categories = new Set();
+    var OFFENSE_NORM = POSITION_CATEGORIES.OFFENSE.map(function(p) { return p.toUpperCase(); });
+    var DEFENSE_NORM = POSITION_CATEGORIES.DEFENSE.map(function(p) { return p.toUpperCase(); });
+    var SPECIAL_NORM = POSITION_CATEGORIES.SPECIAL.map(function(p) { return p.toUpperCase(); });
+    positions.forEach(function(pos) {
+        if (OFFENSE_NORM.indexOf(pos) !== -1 || pos === 'LS') categories.add('offense');
+        if (DEFENSE_NORM.indexOf(pos) !== -1) categories.add('defense');
+        if (SPECIAL_NORM.indexOf(pos) !== -1 || pos === 'LS') categories.add('special');
     });
     if (categories.size === 0) categories.add('all');
     return Array.from(categories);
@@ -428,9 +428,9 @@ function getPositionCategories(posStr) {
 
 function getCategoryLabel(categories) {
     if (!categories || categories.length === 0 || categories[0] === 'all') return '[?]';
-    const hasOffense = categories.includes('offense');
-    const hasDefense = categories.includes('defense');
-    const hasSpecial = categories.includes('special');
+    var hasOffense = categories.indexOf('offense') !== -1;
+    var hasDefense = categories.indexOf('defense') !== -1;
+    var hasSpecial = categories.indexOf('special') !== -1;
     if (hasOffense && hasDefense) return '[O/D]';
     if (hasOffense) return '[O]';
     if (hasDefense) return '[D]';
@@ -440,9 +440,9 @@ function getCategoryLabel(categories) {
 
 function getCategoryClass(categories) {
     if (!categories || categories.length === 0 || categories[0] === 'all') return 'other';
-    const hasOffense = categories.includes('offense');
-    const hasDefense = categories.includes('defense');
-    const hasSpecial = categories.includes('special');
+    var hasOffense = categories.indexOf('offense') !== -1;
+    var hasDefense = categories.indexOf('defense') !== -1;
+    var hasSpecial = categories.indexOf('special') !== -1;
     if (hasOffense && hasDefense) return 'both';
     if (hasOffense) return 'offense';
     if (hasDefense) return 'defense';
@@ -452,178 +452,262 @@ function getCategoryClass(categories) {
 
 function getCategoryTooltip(categories) {
     if (!categories || categories.length === 0 || categories[0] === 'all') return 'Unknown Position';
-    const labels = [];
-    if (categories.includes('offense')) labels.push('Offense');
-    if (categories.includes('defense')) labels.push('Defense');
-    if (categories.includes('special')) labels.push('Special Teams');
+    var labels = [];
+    if (categories.indexOf('offense') !== -1) labels.push('Offense');
+    if (categories.indexOf('defense') !== -1) labels.push('Defense');
+    if (categories.indexOf('special') !== -1) labels.push('Special Teams');
     return labels.join(' + ') || 'Unknown';
 }
 
 function getAllPositionOptionsWithLabels() {
-    const basePositions = S.md7 === '7v7' ? S.p7 : getAllPositions();
-    const allPosStrings = new Set();
-    S.teams.forEach(team => {
-        team.players.forEach(p => {
+    var basePositions = S.md7 === '7v7' ? S.p7 : getAllPositions();
+    var allPosStrings = new Set();
+    S.teams.forEach(function(team) {
+        team.players.forEach(function(p) {
             if (p.posFull) allPosStrings.add(p.posFull);
             if (p.po) allPosStrings.add(p.po);
         });
     });
-    const combined = [...basePositions];
-    allPosStrings.forEach(pos => {
-        if (!combined.includes(pos)) combined.push(pos);
+    var combined = basePositions.slice();
+    allPosStrings.forEach(function(pos) {
+        if (combined.indexOf(pos) === -1) combined.push(pos);
     });
-    return combined.map(pos => {
-        const cats = getPositionCategories(pos);
-        const label = getCategoryLabel(cats);
-        return { value: pos, display: `${label} ${pos}`, categories: cats };
-    }).sort((a, b) => a.value.localeCompare(b.value));
+    var options = combined.map(function(pos) {
+        var cats = getPositionCategories(pos);
+        var label = getCategoryLabel(cats);
+        return { value: pos, display: label + ' ' + pos, categories: cats };
+    });
+    options.sort(function(a, b) { return a.value.localeCompare(b.value); });
+    return options;
 }
 
 function getPlayers(side, filter) {
-    const t = getTeam(side);
+    var t = getTeam(side);
     if (!t) return [];
-    let list = [...t.players];
+    var list = t.players.slice();
     if (filter === 'all') {
-        list.sort((a, b) => (parseInt(a.n) || 999) - (parseInt(b.n) || 999));
+        list.sort(function(a, b) { return (parseInt(a.n) || 999) - (parseInt(b.n) || 999); });
         return list;
     }
     if (filter === 'offense' || filter === 'defense' || filter === 'special') {
-        list = list.filter(p => {
+        list = list.filter(function(p) {
             if (p.categories && p.categories.length > 0) {
-                return p.categories.includes(filter);
+                return p.categories.indexOf(filter) !== -1;
             }
             return true;
         });
     }
-    list.sort((a, b) => (parseInt(a.n) || 999) - (parseInt(b.n) || 999));
+    list.sort(function(a, b) { return (parseInt(a.n) || 999) - (parseInt(b.n) || 999); });
     return list;
 }
 
 // ============================================================
-// CLOUD SYNC
+// CLOUD SYNC - FIXED (no async/await)
 // ============================================================
-async function fnlCloudSaveAll() {
+function fnlCloudSaveAll() {
     try {
-        const snap = JSON.parse(JSON.stringify(S));
-        const resp = await fetch('https://lineup-api.claytongreenberg.workers.dev/api/sync/fnl_full_sync', {
+        var snap = JSON.parse(JSON.stringify(S));
+        fetch('https://lineup-api.claytongreenberg.workers.dev/api/sync/fnl_full_sync', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(snap)
-        });
-        if (resp.ok) {
-            toast('✅ All data synced to cloud');
-            const el = document.getElementById('saveStatus');
-            if (el) {
-                el.textContent = `✅ Synced ${new Date().toLocaleTimeString()}`;
-                el.className = 'save-status saved';
+        })
+        .then(function(resp) {
+            if (resp.ok) {
+                toast('✅ All data synced to cloud');
+                var el = document.getElementById('saveStatus');
+                if (el) {
+                    el.textContent = '✅ Synced ' + new Date().toLocaleTimeString();
+                    el.className = 'save-status saved';
+                }
+            } else {
+                toast('❌ Cloud sync failed');
             }
-        } else {
-            toast('❌ Cloud sync failed');
-        }
+        })
+        .catch(function(e) {
+            toast('⚠️ Cloud unavailable - saved locally');
+            console.error('Save error:', e);
+        });
     } catch(e) {
-        toast('⚠️ Cloud unavailable - saved locally');
         console.error('Save error:', e);
     }
 }
 
-async function fnlCloudLoadGameState() {
+function fnlCloudLoadGameState() {
     if (!confirm('Load game state from cloud?')) return;
-    try {
-        const resp = await fetch('https://lineup-api.claytongreenberg.workers.dev/api/sync/fnl_full_sync');
-        if (!resp.ok) throw new Error('Load failed');
-        const data = await resp.json();
-        if (!data || Object.keys(data).length === 0) throw new Error('No data');
-        if (data.as !== undefined) S.as = data.as;
-        if (data.hs !== undefined) S.hs = data.hs;
-        if (data.q !== undefined) S.q = data.q;
-        if (data.down !== undefined) S.down = data.down;
-        if (data.dist !== undefined) S.dist = data.dist;
-        if (data.poss !== undefined) S.poss = data.poss;
-        if (data.gameState !== undefined) S.gameState = data.gameState;
-        if (data.gc) {
-            if (data.gc.rem !== undefined) S.gc.rem = data.gc.rem;
-            if (data.gc.max !== undefined) S.gc.max = data.gc.max;
-            S.gc.run = false;
-        }
-        if (data.timeouts) {
-            if (data.timeouts.away !== undefined) S.timeouts.away = data.timeouts.away;
-            if (data.timeouts.home !== undefined) S.timeouts.home = data.timeouts.home;
-        }
-        saveState();
-        renderAll();
-        toast('✅ Game state loaded');
-    } catch(e) {
-        toast('❌ Load failed: ' + e.message);
-    }
+    fetch('https://lineup-api.claytongreenberg.workers.dev/api/sync/fnl_full_sync')
+        .then(function(resp) {
+            if (!resp.ok) throw new Error('Load failed');
+            return resp.json();
+        })
+        .then(function(data) {
+            if (!data || Object.keys(data).length === 0) throw new Error('No data');
+            if (data.as !== undefined) S.as = data.as;
+            if (data.hs !== undefined) S.hs = data.hs;
+            if (data.q !== undefined) S.q = data.q;
+            if (data.down !== undefined) S.down = data.down;
+            if (data.dist !== undefined) S.dist = data.dist;
+            if (data.poss !== undefined) S.poss = data.poss;
+            if (data.gameState !== undefined) S.gameState = data.gameState;
+            if (data.gc) {
+                if (data.gc.rem !== undefined) S.gc.rem = data.gc.rem;
+                if (data.gc.max !== undefined) S.gc.max = data.gc.max;
+                S.gc.run = false;
+            }
+            if (data.timeouts) {
+                if (data.timeouts.away !== undefined) S.timeouts.away = data.timeouts.away;
+                if (data.timeouts.home !== undefined) S.timeouts.home = data.timeouts.home;
+            }
+            saveState();
+            renderAll();
+            toast('✅ Game state loaded');
+        })
+        .catch(function(e) {
+            toast('❌ Load failed: ' + e.message);
+        });
 }
 
-async function fnlCloudLoadRostersOnly() {
+function fnlCloudLoadRostersOnly() {
     if (!confirm('Load rosters from cloud? (merges)')) return;
-    try {
-        const resp = await fetch('https://lineup-api.claytongreenberg.workers.dev/api/sync/fnl_full_sync');
-        if (!resp.ok) throw new Error('Load failed');
-        const data = await resp.json();
-        if (!data || Object.keys(data).length === 0) throw new Error('No data');
-        if (data.teams) {
-            data.teams.forEach(cloudTeam => {
-                const existing = S.teams.find(t => t.id === cloudTeam.id);
-                if (existing) {
-                    existing.name = cloudTeam.name || existing.name;
-                    existing.abbr = cloudTeam.abbr || existing.abbr;
-                    existing.color = cloudTeam.color || existing.color;
-                    existing.textColor = cloudTeam.textColor || '#ffffff';
-                    existing.logo = cloudTeam.logo || existing.logo;
-                    existing.mascot = cloudTeam.mascot || existing.mascot;
-                    existing.coach = cloudTeam.coach || existing.coach;
-                    if (cloudTeam.players) {
-                        cloudTeam.players.forEach(player => {
-                            const existingPlayer = existing.players.find(p => p.id === player.id);
-                            if (existingPlayer) {
-                                existingPlayer.n = player.n || existingPlayer.n;
-                                existingPlayer.na = player.na || existingPlayer.na;
-                                existingPlayer.po = player.po || existingPlayer.po;
-                                existingPlayer.st = player.st !== undefined ? player.st : existingPlayer.st;
-                                existingPlayer.posFull = player.posFull || player.po || existingPlayer.posFull;
-                                if (player.categories) existingPlayer.categories = player.categories;
-                                else if (player.posFull || player.po) existingPlayer.categories = getPositionCategories(player.posFull || player.po);
-                            } else {
-                                const newPlayer = { ...player };
-                                if (!newPlayer.categories && (newPlayer.posFull || newPlayer.po)) {
-                                    newPlayer.categories = getPositionCategories(newPlayer.posFull || newPlayer.po);
+    fetch('https://lineup-api.claytongreenberg.workers.dev/api/sync/fnl_full_sync')
+        .then(function(resp) {
+            if (!resp.ok) throw new Error('Load failed');
+            return resp.json();
+        })
+        .then(function(data) {
+            if (!data || Object.keys(data).length === 0) throw new Error('No data');
+            if (data.teams) {
+                data.teams.forEach(function(cloudTeam) {
+                    var existing = S.teams.find(function(t) { return t.id === cloudTeam.id; });
+                    if (existing) {
+                        existing.name = cloudTeam.name || existing.name;
+                        existing.abbr = cloudTeam.abbr || existing.abbr;
+                        existing.color = cloudTeam.color || existing.color;
+                        existing.textColor = cloudTeam.textColor || '#ffffff';
+                        existing.logo = cloudTeam.logo || existing.logo;
+                        existing.mascot = cloudTeam.mascot || existing.mascot;
+                        existing.coach = cloudTeam.coach || existing.coach;
+                        if (cloudTeam.players) {
+                            cloudTeam.players.forEach(function(player) {
+                                var existingPlayer = existing.players.find(function(p) { return p.id === player.id; });
+                                if (existingPlayer) {
+                                    existingPlayer.n = player.n || existingPlayer.n;
+                                    existingPlayer.na = player.na || existingPlayer.na;
+                                    existingPlayer.po = player.po || existingPlayer.po;
+                                    existingPlayer.st = player.st !== undefined ? player.st : existingPlayer.st;
+                                    existingPlayer.posFull = player.posFull || player.po || existingPlayer.posFull;
+                                    if (player.categories) existingPlayer.categories = player.categories;
+                                    else if (player.posFull || player.po) existingPlayer.categories = getPositionCategories(player.posFull || player.po);
+                                } else {
+                                    var newPlayer = { ...player };
+                                    if (!newPlayer.categories && (newPlayer.posFull || newPlayer.po)) {
+                                        newPlayer.categories = getPositionCategories(newPlayer.posFull || newPlayer.po);
+                                    }
+                                    if (!newPlayer.categories) newPlayer.categories = ['all'];
+                                    existing.players.push(newPlayer);
                                 }
-                                if (!newPlayer.categories) newPlayer.categories = ['all'];
-                                existing.players.push(newPlayer);
-                            }
-                        });
-                    }
-                } else {
-                    const newTeam = { ...cloudTeam };
-                    if (!newTeam.textColor) newTeam.textColor = '#ffffff';
-                    newTeam.players = (cloudTeam.players || []).map(p => {
-                        const player = { ...p };
-                        if (!player.categories && (player.posFull || player.po)) {
-                            player.categories = getPositionCategories(player.posFull || player.po);
+                            });
                         }
-                        if (!player.categories) player.categories = ['all'];
-                        return player;
-                    });
-                    S.teams.push(newTeam);
-                }
-            });
-        }
-        saveState();
-        renderAll();
-        toast('✅ Rosters loaded');
-    } catch(e) {
-        toast('❌ Load failed: ' + e.message);
-    }
+                    } else {
+                        var newTeam = { ...cloudTeam };
+                        if (!newTeam.textColor) newTeam.textColor = '#ffffff';
+                        newTeam.players = (cloudTeam.players || []).map(function(p) {
+                            var player = { ...p };
+                            if (!player.categories && (player.posFull || player.po)) {
+                                player.categories = getPositionCategories(player.posFull || player.po);
+                            }
+                            if (!player.categories) player.categories = ['all'];
+                            return player;
+                        });
+                        S.teams.push(newTeam);
+                    }
+                });
+            }
+            saveState();
+            renderAll();
+            toast('✅ Rosters loaded');
+        })
+        .catch(function(e) {
+            toast('❌ Load failed: ' + e.message);
+        });
+}
+
+function fnlCloudLoadScriptOnly() {
+    if (!confirm('Load script from cloud?')) return;
+    fetch('https://lineup-api.claytongreenberg.workers.dev/api/sync/fnl_full_sync')
+        .then(function(resp) {
+            if (!resp.ok) throw new Error('Load failed');
+            return resp.json();
+        })
+        .then(function(data) {
+            if (data.script !== undefined) {
+                S.script = data.script;
+                saveState();
+                renderAll();
+                toast('✅ Script loaded');
+            } else {
+                toast('ℹ️ No script found');
+            }
+        })
+        .catch(function(e) {
+            toast('❌ Load failed: ' + e.message);
+        });
+}
+
+function fnlCloudLoadSettingsOnly() {
+    if (!confirm('Load settings from cloud?')) return;
+    fetch('https://lineup-api.claytongreenberg.workers.dev/api/sync/fnl_full_sync')
+        .then(function(resp) {
+            if (!resp.ok) throw new Error('Load failed');
+            return resp.json();
+        })
+        .then(function(data) {
+            if (data.colors) {
+                S.colors.scorebugBg = data.colors.scorebugBg || S.colors.scorebugBg;
+                S.colors.scorebugText = data.colors.scorebugText || S.colors.scorebugText;
+                S.colors.accent = data.colors.accent || S.colors.accent;
+                S.colors.teamCardAway = data.colors.teamCardAway || S.colors.teamCardAway;
+                S.colors.teamCardHome = data.colors.teamCardHome || S.colors.teamCardHome;
+            }
+            if (data.md7 !== undefined) S.md7 = data.md7;
+            if (data.gc && data.gc.max !== undefined) S.gc.max = data.gc.max;
+            saveState();
+            renderAll();
+            applyColors();
+            toast('✅ Settings loaded');
+        })
+        .catch(function(e) {
+            toast('❌ Load failed: ' + e.message);
+        });
+}
+
+function fnlCloudLoadClientsOnly() {
+    if (!confirm('Load clients from cloud?')) return;
+    fetch('https://lineup-api.claytongreenberg.workers.dev/api/sync/fnl_full_sync')
+        .then(function(resp) {
+            if (!resp.ok) throw new Error('Load failed');
+            return resp.json();
+        })
+        .then(function(data) {
+            if (data.cp) {
+                Object.keys(data.cp).forEach(function(pin) {
+                    if (!S.cp[pin]) S.cp[pin] = data.cp[pin];
+                });
+            }
+            saveState();
+            renderAll();
+            toast('✅ Clients loaded');
+        })
+        .catch(function(e) {
+            toast('❌ Load failed: ' + e.message);
+        });
 }
 
 // ============================================================
 // NAVIGATION
 // ============================================================
 function renderNav() {
-    const views = [
+    var views = [
         { id: 'sport', label: '🏈 GAME' },
         { id: 'roster', label: '📋 ROSTERS' },
         { id: 'log', label: '📜 LOG' },
@@ -631,11 +715,11 @@ function renderNav() {
         { id: 'admin', label: '⚙️ ADMIN' },
         { id: 'clients', label: '👥 CLIENTS' }
     ];
-    let html = '';
-    views.forEach(v => {
-        html += `<button class="nav-link ${S.v === v.id ? 'active' : ''}" onclick="switchView('${v.id}')">${v.label}</button>`;
+    var html = '';
+    views.forEach(function(v) {
+        html += '<button class="nav-link ' + (S.v === v.id ? 'active' : '') + '" onclick="switchView(\'' + v.id + '\')">' + v.label + '</button>';
     });
-    const nav = document.getElementById('mainNav');
+    var nav = document.getElementById('mainNav');
     if (nav) nav.innerHTML = html;
 }
 
@@ -667,9 +751,9 @@ function renderAll() {
 // SCOREBUG FUNCTIONS
 // ============================================================
 function updateScorebug() {
-    const away = getTeam('away'), home = getTeam('home');
-    const awayNameEl = document.getElementById('sbAwayName');
-    const homeNameEl = document.getElementById('sbHomeName');
+    var away = getTeam('away'), home = getTeam('home');
+    var awayNameEl = document.getElementById('sbAwayName');
+    var homeNameEl = document.getElementById('sbHomeName');
     if (awayNameEl) {
         awayNameEl.textContent = getTeamMascot(away);
         awayNameEl.style.color = away.textColor || '#ffffff';
@@ -678,8 +762,8 @@ function updateScorebug() {
         homeNameEl.textContent = getTeamMascot(home);
         homeNameEl.style.color = home.textColor || '#ffffff';
     }
-    const awayScoreEl = document.getElementById('sbAwayScore');
-    const homeScoreEl = document.getElementById('sbHomeScore');
+    var awayScoreEl = document.getElementById('sbAwayScore');
+    var homeScoreEl = document.getElementById('sbHomeScore');
     if (awayScoreEl) awayScoreEl.textContent = S.as;
     if (homeScoreEl) homeScoreEl.textContent = S.hs;
     updateTimeoutDisplay();
@@ -690,32 +774,32 @@ function updateScorebug() {
 }
 
 function updateGameClockDisplay() {
-    const el = document.getElementById('gameClockDisplay');
+    var el = document.getElementById('gameClockDisplay');
     if (!el) return;
-    const m = Math.floor(S.gc.rem / 60);
-    const s = S.gc.rem % 60;
-    el.textContent = `${m}:${String(s).padStart(2, '0')}`;
+    var m = Math.floor(S.gc.rem / 60);
+    var s = S.gc.rem % 60;
+    el.textContent = m + ':' + String(s).padStart(2, '0');
 }
 
 function updateDDTicker() {
-    const el = document.getElementById('ddTicker');
+    var el = document.getElementById('ddTicker');
     if (!el) return;
     if (S.gameState === 'FINAL') { el.textContent = '🏁 GAME FINAL'; el.style.background = '#dc2626'; return; }
     if (S.gameState === 'HALFTIME') { el.textContent = '⏸️ HALFTIME'; el.style.background = '#f59e0b'; return; }
     if (S.gameState === 'READY') {
-        const team = getTeam(S.poss);
-        el.textContent = `🏈 ${getTeamMascot(team)} HAS THE BALL • PRESS "▶ START" TO BEGIN`;
+        var team = getTeam(S.poss);
+        el.textContent = '🏈 ' + getTeamMascot(team) + ' HAS THE BALL • PRESS "▶ START" TO BEGIN';
         el.style.background = '#334155'; return;
     }
-    const team = getTeam(S.poss);
-    const ord = { 1: '1ST', 2: '2ND', 3: '3RD', 4: '4TH' }[S.down] || (S.down + 'TH');
-    el.innerHTML = `🏈 ${getTeamMascot(team)} BALL • ${ord} & ${S.dist}`;
+    var team = getTeam(S.poss);
+    var ord = { 1: '1ST', 2: '2ND', 3: '3RD', 4: '4TH' }[S.down] || (S.down + 'TH');
+    el.innerHTML = '🏈 ' + getTeamMascot(team) + ' BALL • ' + ord + ' & ' + S.dist;
     el.style.background = team.color || '#334155';
 }
 
 function updateGameStateBadge() {
-    const pill = document.getElementById('livePill');
-    const txt = document.getElementById('livePillText');
+    var pill = document.getElementById('livePill');
+    var txt = document.getElementById('livePillText');
     if (!pill || !txt) return;
     pill.classList.remove('final', 'halftime');
     if (S.gameState === 'FINAL') { pill.classList.add('show', 'final'); txt.textContent = 'FINAL'; }
@@ -726,20 +810,20 @@ function updateGameStateBadge() {
 }
 
 function updateUndoButton() {
-    const btn = document.getElementById('undoBtn');
+    var btn = document.getElementById('undoBtn');
     if (btn) {
         btn.disabled = S.undoStack.length === 0;
-        btn.textContent = S.undoStack.length > 0 ? `↩ Undo (${S.undoStack.length})` : '↩ Undo';
+        btn.textContent = S.undoStack.length > 0 ? '↩ Undo (' + S.undoStack.length + ')' : '↩ Undo';
     }
 }
 
 function updateTimeoutDisplay() {
-    const away = S.timeouts.away || 0;
-    const home = S.timeouts.home || 0;
-    for (let i = 1; i <= 3; i++) {
-        const awayDot = document.getElementById('awayTO' + i);
+    var away = S.timeouts.away || 0;
+    var home = S.timeouts.home || 0;
+    for (var i = 1; i <= 3; i++) {
+        var awayDot = document.getElementById('awayTO' + i);
         if (awayDot) awayDot.className = 'timeout-dot' + (i > away ? ' used' : '');
-        const homeDot = document.getElementById('homeTO' + i);
+        var homeDot = document.getElementById('homeTO' + i);
         if (homeDot) homeDot.className = 'timeout-dot' + (i > home ? ' used' : '');
     }
 }
@@ -752,13 +836,13 @@ function chScore(side, delta) {
 }
 
 function chQuarter(delta) {
-    const maxQ = S.md7 === '7v7' ? 2 : (S.gameState === 'OVERTIME' ? 5 : 4);
+    var maxQ = S.md7 === '7v7' ? 2 : (S.gameState === 'OVERTIME' ? 5 : 4);
     S.q = Math.min(maxQ, Math.max(1, S.q + delta));
     if (delta !== 0) {
         S.gc.rem = S.gc.max || 480;
         S.gc.run = false;
         updateGameClockDisplay();
-        toast(`⏱️ Qtr changed — Clock reset`);
+        toast('⏱️ Qtr changed — Clock reset');
     }
     updateScorebug();
     saveState();
@@ -790,10 +874,10 @@ function resetGC() {
 }
 
 function setPossession(side) {
-    if (!['away','home'].includes(side)) { toast('❌ Invalid possession side'); return; }
+    if (side !== 'away' && side !== 'home') { toast('❌ Invalid possession side'); return; }
     S.poss = side;
-    const team = getTeam(side);
-    toast(`🏈 ${getTeamMascot(team)} has the ball`);
+    var team = getTeam(side);
+    toast('🏈 ' + getTeamMascot(team) + ' has the ball');
     renderGame();
     updateScorebug();
     saveState();
@@ -803,99 +887,99 @@ function setPossession(side) {
 // GAME VIEW
 // ============================================================
 function renderGame() {
-    let html = '';
+    var html = '';
     html += '<div class="quick-cues">';
     html += '<button onclick="quickCue(\'🔻 FIRST DOWN\')">🔻 1st Down</button>';
     html += '<button onclick="quickCue(\'🏈 PUNT\')">🦵 Punt</button>';
     html += '<button onclick="quickCue(\'🔄 INTERCEPTION\')">🔄 INT</button>';
     html += '<button onclick="quickCue(\'😱 FUMBLE\')">😱 Fumble</button>';
     html += '<button onclick="quickCue(\'⏱️ END OF QUARTER\')">⏱️ End Qtr</button>';
-    html += `<button class="flag" onclick="quickPenalty()">🚩 FLAG</button>`;
+    html += '<button class="flag" onclick="quickPenalty()">🚩 FLAG</button>';
     html += '</div>';
 
-    const awayTeam = getTeam('away');
-    const homeTeam = getTeam('home');
-    const awayLogo = awayTeam.logo ? `<img class="team-logo" src="${awayTeam.logo}" alt="">` : '';
-    const homeLogo = homeTeam.logo ? `<img class="team-logo" src="${homeTeam.logo}" alt="">` : '';
-    const awayColor = awayTeam.color || '#475569';
-    const homeColor = homeTeam.color || '#475569';
+    var awayTeam = getTeam('away');
+    var homeTeam = getTeam('home');
+    var awayLogo = awayTeam.logo ? '<img class="team-logo" src="' + awayTeam.logo + '" alt="">' : '';
+    var homeLogo = homeTeam.logo ? '<img class="team-logo" src="' + homeTeam.logo + '" alt="">' : '';
+    var awayColor = awayTeam.color || '#475569';
+    var homeColor = homeTeam.color || '#475569';
 
-    html += `<div class="game-controls-row">`;
-    html += `<span class="label">🏈</span>`;
-    html += `<button class="pos-btn ${S.poss === 'away' ? 'active' : ''}" onclick="setPossession('away')" style="${S.poss === 'away' ? 'background:' + awayColor + ';border-color:' + awayColor + ';' : 'border-color:' + awayColor + ';'}">${awayLogo} ${getTeamMascot(awayTeam)}</button>`;
-    html += `<button class="pos-btn ${S.poss === 'home' ? 'active' : ''}" onclick="setPossession('home')" style="${S.poss === 'home' ? 'background:' + homeColor + ';border-color:' + homeColor + ';' : 'border-color:' + homeColor + ';'}">${homeLogo} ${getTeamMascot(homeTeam)}</button>`;
-    html += `<button class="to-btn" onclick="useTimeout('away')">⏱ AWAY</button>`;
-    html += `<button class="to-btn" onclick="useTimeout('home')">⏱ HOME</button>`;
-    html += `<button class="to-btn injury-btn" onclick="injuryTimeout()">🆘 INJ</button>`;
-    html += `<span class="clock-status ${S.gc.run ? 'running' : 'paused'}" id="clockStatusIndicator">${S.gc.run ? '▶ LIVE' : '⏸ PAUSED'}</span>`;
-    html += `<span class="divider"></span>`;
-    html += `<span class="label">DOWN</span>`;
-    html += `<select onchange="setDown(this.value)">${[1,2,3,4].map(d => `<option ${d === S.down ? 'selected' : ''}>${d}</option>`).join('')}</select>`;
-    html += `<span class="label">YDS</span>`;
-    html += `<input type="number" value="${S.dist}" min="1" max="99" style="width:32px;" onchange="setDist(this.value)" class="yd-input">`;
-    html += `<button class="gc-btn" onclick="adjustYards(-1)">-1</button>`;
-    html += `<button class="gc-btn" onclick="adjustYards(1)">+1</button>`;
-    html += `<span class="divider"></span>`;
-    html += `<span class="label">SCORE</span>`;
-    html += `<button class="gc-btn td" onclick="quickScore('td')">TD</button>`;
-    html += `<button class="gc-btn fg" onclick="quickScore('fg')">FG</button>`;
-    html += `<button class="gc-btn twopt" onclick="quickScore('twopt')">2PT</button>`;
-    html += `<button class="gc-btn pat" onclick="quickScore('pat')">PAT</button>`;
-    html += `<button class="gc-btn safety" onclick="quickScore('safety')">Safe</button>`;
-    html += `<button class="gc-btn load-btn" onclick="fnlCloudLoadGameState()">📥LOAD</button>`;
-    html += `</div>`;
+    html += '<div class="game-controls-row">';
+    html += '<span class="label">🏈</span>';
+    html += '<button class="pos-btn ' + (S.poss === 'away' ? 'active' : '') + '" onclick="setPossession(\'away\')" style="' + (S.poss === 'away' ? 'background:' + awayColor + ';border-color:' + awayColor + ';' : 'border-color:' + awayColor + ';') + '">' + awayLogo + ' ' + getTeamMascot(awayTeam) + '</button>';
+    html += '<button class="pos-btn ' + (S.poss === 'home' ? 'active' : '') + '" onclick="setPossession(\'home\')" style="' + (S.poss === 'home' ? 'background:' + homeColor + ';border-color:' + homeColor + ';' : 'border-color:' + homeColor + ';') + '">' + homeLogo + ' ' + getTeamMascot(homeTeam) + '</button>';
+    html += '<button class="to-btn" onclick="useTimeout(\'away\')">⏱ AWAY</button>';
+    html += '<button class="to-btn" onclick="useTimeout(\'home\')">⏱ HOME</button>';
+    html += '<button class="to-btn injury-btn" onclick="injuryTimeout()">🆘 INJ</button>';
+    html += '<span class="clock-status ' + (S.gc.run ? 'running' : 'paused') + '" id="clockStatusIndicator">' + (S.gc.run ? '▶ LIVE' : '⏸ PAUSED') + '</span>';
+    html += '<span class="divider"></span>';
+    html += '<span class="label">DOWN</span>';
+    html += '<select onchange="setDown(this.value)">' + [1,2,3,4].map(function(d) { return '<option ' + (d === S.down ? 'selected' : '') + '>' + d + '</option>'; }).join('') + '</select>';
+    html += '<span class="label">YDS</span>';
+    html += '<input type="number" value="' + S.dist + '" min="1" max="99" style="width:32px;" onchange="setDist(this.value)" class="yd-input">';
+    html += '<button class="gc-btn" onclick="adjustYards(-1)">-1</button>';
+    html += '<button class="gc-btn" onclick="adjustYards(1)">+1</button>';
+    html += '<span class="divider"></span>';
+    html += '<span class="label">SCORE</span>';
+    html += '<button class="gc-btn td" onclick="quickScore(\'td\')">TD</button>';
+    html += '<button class="gc-btn fg" onclick="quickScore(\'fg\')">FG</button>';
+    html += '<button class="gc-btn twopt" onclick="quickScore(\'twopt\')">2PT</button>';
+    html += '<button class="gc-btn pat" onclick="quickScore(\'pat\')">PAT</button>';
+    html += '<button class="gc-btn safety" onclick="quickScore(\'safety\')">Safe</button>';
+    html += '<button class="gc-btn load-btn" onclick="fnlCloudLoadGameState()">📥LOAD</button>';
+    html += '</div>';
 
     html += '<div class="team-cards">';
-    ['away','home'].forEach(side => {
-        const team = getTeam(side);
-        const filter = S[side === 'away' ? 'ua' : 'uh'] || 'all';
-        html += `<div class="team-card ${side}-card">`;
-        html += `<div class="card-head" style="background:${team.color};">`;
-        html += `<span>${side.toUpperCase()}</span>`;
-        if (team.logo) html += `<img class="mini-logo" src="${team.logo}" alt="">`;
-        html += `<select onchange="setSideTeam('${side}', this.value)" style="border-color:${team.color};">${S.teams.map(t => `<option value="${t.id}" ${t.id === team.id ? 'selected' : ''}>${t.name}</option>`).join('')}</select>`;
-        html += `<button class="sb-btn" onclick="setPossession('${side}')" style="width:22px;height:22px;">🏈</button>`;
+    ['away','home'].forEach(function(side) {
+        var team = getTeam(side);
+        var filter = S[side === 'away' ? 'ua' : 'uh'] || 'all';
+        html += '<div class="team-card ' + side + '-card">';
+        html += '<div class="card-head" style="background:' + team.color + ';">';
+        html += '<span>' + side.toUpperCase() + '</span>';
+        if (team.logo) html += '<img class="mini-logo" src="' + team.logo + '" alt="">';
+        html += '<select onchange="setSideTeam(\'' + side + '\', this.value)" style="border-color:' + team.color + ';">' + S.teams.map(function(t) { return '<option value="' + t.id + '" ' + (t.id === team.id ? 'selected' : '') + '>' + t.name + '</option>'; }).join('') + '</select>';
+        html += '<button class="sb-btn" onclick="setPossession(\'' + side + '\')" style="width:22px;height:22px;">🏈</button>';
         html += '</div>';
         html += '<div class="unit-tabs">';
-        const allActive = filter === 'all' ? 'active' : '';
-        html += `<button class="unit-tab all-tab ${allActive}" onclick="setFilter('${side}','all')">ALL</button>`;
+        var allActive = filter === 'all' ? 'active' : '';
+        html += '<button class="unit-tab all-tab ' + allActive + '" onclick="setFilter(\'' + side + '\',\'all\')">ALL</button>';
         if (S.md7 === 'tackle') {
-            const offActive = filter === 'offense' ? 'active' : '';
-            html += `<button class="unit-tab offense-tab ${offActive}" onclick="setFilter('${side}','offense')">OFF</button>`;
-            const defActive = filter === 'defense' ? 'active' : '';
-            html += `<button class="unit-tab defense-tab ${defActive}" onclick="setFilter('${side}','defense')">DEF</button>`;
-            const stActive = filter === 'special' ? 'active' : '';
-            html += `<button class="unit-tab special-tab ${stActive}" onclick="setFilter('${side}','special')">ST</button>`;
+            var offActive = filter === 'offense' ? 'active' : '';
+            html += '<button class="unit-tab offense-tab ' + offActive + '" onclick="setFilter(\'' + side + '\',\'offense\')">OFF</button>';
+            var defActive = filter === 'defense' ? 'active' : '';
+            html += '<button class="unit-tab defense-tab ' + defActive + '" onclick="setFilter(\'' + side + '\',\'defense\')">DEF</button>';
+            var stActive = filter === 'special' ? 'active' : '';
+            html += '<button class="unit-tab special-tab ' + stActive + '" onclick="setFilter(\'' + side + '\',\'special\')">ST</button>';
         }
         html += '</div>';
         html += '<div class="player-list-body">';
-        const allPosOptions = getAllPositionOptionsWithLabels();
-        getPlayers(side, filter).forEach(p => {
-            let catBadge = '';
+        var allPosOptions = getAllPositionOptionsWithLabels();
+        getPlayers(side, filter).forEach(function(p) {
+            var catBadge = '';
             if (p.categories && p.categories.length > 0 && p.categories[0] !== 'all') {
-                const catClass = getCategoryClass(p.categories);
-                const tooltipText = getCategoryTooltip(p.categories);
-                const label = getCategoryLabel(p.categories);
-                const badgeText = label.replace(/\[|\]/g, '');
-                catBadge = `<span class="cat-badge ${catClass}" data-tooltip="${tooltipText}">${badgeText}</span>`;
+                var catClass = getCategoryClass(p.categories);
+                var tooltipText = getCategoryTooltip(p.categories);
+                var label = getCategoryLabel(p.categories);
+                var badgeText = label.replace(/\[|\]/g, '');
+                catBadge = '<span class="cat-badge ' + catClass + '" data-tooltip="' + tooltipText + '">' + badgeText + '</span>';
             }
-            const currentPos = p.posFull || p.po || 'QB';
-            html += `<div class="player-row${p.st ? ' starter' : ''}">`;
-            html += `<input value="${p.n}" onchange="updateGamePlayerFieldOnly('${side}','${p.id}','n',this.value)" style="width:28px;">`;
-            html += `<input value="${p.na}" onchange="updateGamePlayerFieldOnly('${side}','${p.id}','na',this.value)">`;
-            html += `<div class="pos-select-wrapper">`;
-            html += `<select onchange="updateGamePlayerPositionOnly('${side}','${p.id}',this.value)">`;
-            allPosOptions.forEach(opt => {
-                const selected = (opt.value === currentPos) ? 'selected' : '';
-                html += `<option ${selected} value="${opt.value}">${opt.display}</option>`;
+            var currentPos = p.posFull || p.po || 'QB';
+            html += '<div class="player-row' + (p.st ? ' starter' : '') + '">';
+            html += '<input value="' + p.n + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'n\',this.value)" style="width:28px;">';
+            html += '<input value="' + p.na + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'na\',this.value)">';
+            html += '<div class="pos-select-wrapper">';
+            html += '<select onchange="updateGamePlayerPositionOnly(\'' + side + '\',\'' + p.id + '\',this.value)">';
+            allPosOptions.forEach(function(opt) {
+                var selected = (opt.value === currentPos) ? 'selected' : '';
+                html += '<option ' + selected + ' value="' + opt.value + '">' + opt.display + '</option>';
             });
-            html += `</select>`;
-            html += `<button class="quick-add-btn" onclick="quickAddPositionOnly('${side}','${p.id}')">+</button>`;
-            html += `</div>`;
-            html += `<div class="cat-badge-col">${catBadge}</div>`;
-            html += `<button class="st-toggle ${p.st ? 'active' : ''}" onclick="toggleStarterOnly('${side}','${p.id}')">⭐</button>`;
-            html += `<button class="pin-btn" onclick="togglePinOnly('${side}','${p.id}')">📌</button>`;
-            html += `<button class="delete-btn" onclick="deletePlayerOnly('${side}','${p.id}')">✕</button>`;
+            html += '</select>';
+            html += '<button class="quick-add-btn" onclick="quickAddPositionOnly(\'' + side + '\',\'' + p.id + '\')">+</button>';
+            html += '</div>';
+            html += '<div class="cat-badge-col">' + catBadge + '</div>';
+            html += '<button class="st-toggle ' + (p.st ? 'active' : '') + '" onclick="toggleStarterOnly(\'' + side + '\',\'' + p.id + '\')">⭐</button>';
+            html += '<button class="pin-btn" onclick="togglePinOnly(\'' + side + '\',\'' + p.id + '\')">📌</button>';
+            html += '<button class="delete-btn" onclick="deletePlayerOnly(\'' + side + '\',\'' + p.id + '\')">✕</button>';
             html += '</div>';
         });
         html += '</div></div>';
@@ -909,8 +993,8 @@ function renderGame() {
 }
 
 function updateGamePlayerFieldOnly(side, pid, field, val) {
-    const team = getTeam(side);
-    const p = team.players.find(x => x.id === pid);
+    var team = getTeam(side);
+    var p = team.players.find(function(x) { return x.id === pid; });
     if (!p) return;
     p[field] = val;
     saveState();
@@ -918,35 +1002,35 @@ function updateGamePlayerFieldOnly(side, pid, field, val) {
 }
 
 function updateGamePlayerPositionOnly(side, pid, val) {
-    const team = getTeam(side);
-    const p = team.players.find(x => x.id === pid);
+    var team = getTeam(side);
+    var p = team.players.find(function(x) { return x.id === pid; });
     if (!p) return;
     p.posFull = val;
     p.po = val.split('/')[0].trim() || val;
     p.categories = getPositionCategories(val);
     saveState();
     renderGame();
-    toast(`✅ ${p.na} set to ${val}`);
+    toast('✅ ' + p.na + ' set to ' + val);
 }
 
 function quickAddPositionOnly(side, pid) {
-    const team = getTeam(side);
-    const p = team.players.find(x => x.id === pid);
+    var team = getTeam(side);
+    var p = team.players.find(function(x) { return x.id === pid; });
     if (!p) return;
-    const newPos = prompt('Enter position to add (e.g., CB, DE, SS):', '');
+    var newPos = prompt('Enter position to add (e.g., CB, DE, SS):', '');
     if (!newPos) return;
-    const cleanPos = normalizePosition(newPos.trim());
+    var cleanPos = normalizePosition(newPos.trim());
     if (!cleanPos) return;
-    const currentPos = p.posFull || p.po || '';
-    let newPosFull = currentPos;
-    const parts = currentPos.split('/').map(s => s.trim());
-    const normParts = parts.map(s => normalizePosition(s));
-    if (normParts.includes(cleanPos)) {
-        newPosFull = parts.filter((s, i) => normParts[i] !== cleanPos).join('/');
-        toast(`❌ Removed ${cleanPos} from ${p.na}`);
+    var currentPos = p.posFull || p.po || '';
+    var newPosFull = currentPos;
+    var parts = currentPos.split('/').map(function(s) { return s.trim(); });
+    var normParts = parts.map(function(s) { return normalizePosition(s); });
+    if (normParts.indexOf(cleanPos) !== -1) {
+        newPosFull = parts.filter(function(s, i) { return normParts[i] !== cleanPos; }).join('/');
+        toast('❌ Removed ' + cleanPos + ' from ' + p.na);
     } else {
         newPosFull = currentPos ? currentPos + '/' + cleanPos : cleanPos;
-        toast(`✅ Added ${cleanPos} to ${p.na}`);
+        toast('✅ Added ' + cleanPos + ' to ' + p.na);
     }
     p.posFull = newPosFull;
     p.po = newPosFull.split('/')[0].trim() || newPosFull;
@@ -956,34 +1040,34 @@ function quickAddPositionOnly(side, pid) {
 }
 
 function toggleStarterOnly(side, pid) {
-    const team = getTeam(side);
-    const p = team.players.find(x => x.id === pid);
+    var team = getTeam(side);
+    var p = team.players.find(function(x) { return x.id === pid; });
     if (!p) return;
     p.st = !p.st;
     saveState();
     renderGame();
-    toast(p.st ? `⭐ ${p.na} is now a starter` : `📋 ${p.na} is now on bench`);
+    toast(p.st ? '⭐ ' + p.na + ' is now a starter' : '📋 ' + p.na + ' is now on bench');
 }
 
 function togglePinOnly(side, pid) {
-    const team = getTeam(side);
-    const p = team.players.find(x => x.id === pid);
+    var team = getTeam(side);
+    var p = team.players.find(function(x) { return x.id === pid; });
     if (!p) return;
     p.pinned = !p.pinned;
     saveState();
     renderGame();
-    toast(p.pinned ? `📌 ${p.na} pinned` : `📌 ${p.na} unpinned`);
+    toast(p.pinned ? '📌 ' + p.na + ' pinned' : '📌 ' + p.na + ' unpinned');
 }
 
 function deletePlayerOnly(side, pid) {
-    const team = getTeam(side);
-    const p = team.players.find(x => x.id === pid);
+    var team = getTeam(side);
+    var p = team.players.find(function(x) { return x.id === pid; });
     if (!p) return;
-    if (!confirm(`Delete ${p.na} (#${p.n})?`)) return;
-    team.players = team.players.filter(x => x.id !== pid);
+    if (!confirm('Delete ' + p.na + ' (#' + p.n + ')?')) return;
+    team.players = team.players.filter(function(x) { return x.id !== pid; });
     saveState();
     renderGame();
-    toast(`🗑️ ${p.na} deleted`);
+    toast('🗑️ ' + p.na + ' deleted');
 }
 
 function setFilter(side, f) {
@@ -993,7 +1077,7 @@ function setFilter(side, f) {
 }
 
 function updateClockStatusIndicator() {
-    const el = document.getElementById('clockStatusIndicator');
+    var el = document.getElementById('clockStatusIndicator');
     if (el) {
         el.textContent = S.gc.run ? '▶ LIVE' : '⏸ PAUSED';
         el.className = 'clock-status ' + (S.gc.run ? 'running' : 'paused');
@@ -1001,7 +1085,7 @@ function updateClockStatusIndicator() {
 }
 
 function applyColors() {
-    const el = document.getElementById('scorebug');
+    var el = document.getElementById('scorebug');
     if (el) {
         el.style.setProperty('--accent', S.colors.accent);
         el.style.setProperty('--scorebug-bg', S.colors.scorebugBg);
@@ -1014,16 +1098,16 @@ function applyColors() {
 // ============================================================
 function useTimeout(side) {
     if (S.gameState === 'FINAL') { toast('⛔ Game is final'); return; }
-    const key = side === 'away' ? 'away' : 'home';
-    if (S.timeouts[key] <= 0) { toast(`⚠️ ${side.toUpperCase()} has no timeouts`); return; }
+    var key = side === 'away' ? 'away' : 'home';
+    if (S.timeouts[key] <= 0) { toast('⚠️ ' + side.toUpperCase() + ' has no timeouts'); return; }
     S.timeouts[key]--;
     S.gc.run = false;
     pushUndo();
-    setLastEvent(`⏱️ ${side.toUpperCase()} TIMEOUT — ${S.timeouts[key]} remaining`, 'timeout');
+    setLastEvent('⏱️ ' + side.toUpperCase() + ' TIMEOUT — ' + S.timeouts[key] + ' remaining', 'timeout');
     updateTimeoutDisplay();
     updateGameClockDisplay();
     saveState();
-    toast(`⏱️ ${side.toUpperCase()} timeout — ${S.timeouts[key]} remaining`);
+    toast('⏱️ ' + side.toUpperCase() + ' timeout — ' + S.timeouts[key] + ' remaining');
 }
 
 function injuryTimeout() {
@@ -1045,7 +1129,7 @@ function startGame() {
     S.as = 0; S.hs = 0;
     S.down = 1; S.dist = 10; S.poss = 'home';
     S.scoringLog = []; S.penaltyLog = [];
-    const timeoutCount = S.md7 === '7v7' ? 0 : 3;
+    var timeoutCount = S.md7 === '7v7' ? 0 : 3;
     S.timeouts = { away: timeoutCount, home: timeoutCount };
     S.undoStack = [];
     pushUndo();
@@ -1062,7 +1146,7 @@ function setHalftime() {
     S.gameState = 'HALFTIME';
     S.gc.run = false;
     S.q = 2;
-    const timeoutCount = S.md7 === '7v7' ? 0 : 3;
+    var timeoutCount = S.md7 === '7v7' ? 0 : 3;
     S.timeouts = { away: timeoutCount, home: timeoutCount };
     pushUndo();
     setLastEvent('⏸️ HALFTIME — Timeouts reset', 'info');
@@ -1079,7 +1163,7 @@ function startSecondHalf() {
     S.gc.rem = S.gc.max || 480;
     S.gc.run = false;
     S.q = 3;
-    const timeoutCount = S.md7 === '7v7' ? 0 : 3;
+    var timeoutCount = S.md7 === '7v7' ? 0 : 3;
     S.timeouts = { away: timeoutCount, home: timeoutCount };
     pushUndo();
     setLastEvent('⏭️ SECOND HALF STARTED — Q3', 'info');
@@ -1112,10 +1196,10 @@ function endGame() {
     if (!confirm('End game?')) return;
     S.gameState = 'FINAL';
     S.gc.run = false;
-    const away = getTeam('away'), home = getTeam('home');
-    S.gameHistory.push({ date: new Date().toISOString(), sessionId: S.sessionId, away: away.name, home: home.name, awayScore: S.as, homeScore: S.hs, log: [...S.scoringLog, ...S.penaltyLog] });
+    var away = getTeam('away'), home = getTeam('home');
+    S.gameHistory.push({ date: new Date().toISOString(), sessionId: S.sessionId, away: away.name, home: home.name, awayScore: S.as, homeScore: S.hs, log: S.scoringLog.concat(S.penaltyLog) });
     pushUndo();
-    setLastEvent(`🏁 GAME FINAL — ${getTeamMascot(away)} ${S.as} - ${S.hs} ${getTeamMascot(home)}`, 'info');
+    setLastEvent('🏁 GAME FINAL — ' + getTeamMascot(away) + ' ' + S.as + ' - ' + S.hs + ' ' + getTeamMascot(home), 'info');
     updateScorebug();
     updateGameClockDisplay();
     updateGameStateBadge();
@@ -1150,10 +1234,10 @@ function adjustYards(delta) { S.dist = Math.max(1, Math.min(99, S.dist + delta))
 // SCORING & QUICK ACTIONS
 // ============================================================
 function pushUndo() {
-    const snapshot = {
+    var snapshot = {
         as: S.as, hs: S.hs,
-        scoringLog: [...S.scoringLog],
-        penaltyLog: [...S.penaltyLog],
+        scoringLog: S.scoringLog.slice(),
+        penaltyLog: S.penaltyLog.slice(),
         gameState: S.gameState,
         q: S.q, down: S.down, dist: S.dist, poss: S.poss,
         gc: { rem: S.gc.rem, run: S.gc.run },
@@ -1166,7 +1250,7 @@ function pushUndo() {
 
 function undoLastEvent() {
     if (S.undoStack.length === 0) { toast('ℹ️ Nothing to undo'); return; }
-    const prev = S.undoStack.pop();
+    var prev = S.undoStack.pop();
     S.as = prev.as; S.hs = prev.hs;
     S.scoringLog = prev.scoringLog;
     S.penaltyLog = prev.penaltyLog;
@@ -1185,11 +1269,12 @@ function undoLastEvent() {
 }
 
 function setLastEvent(text, type) {
-    S.lastEvent = { text, type: type || 'info' };
-    const el = document.getElementById('lastEvent');
+    S.lastEvent = { text: text, type: type || 'info' };
+    var el = document.getElementById('lastEvent');
     if (el) {
         el.innerHTML = text;
-        el.style.borderColor = { td: '#dc2626', fg: '#2563eb', penalty: '#facc15', timeout: '#f97316', injury: '#dc2626' }[type] || 'var(--accent)';
+        var colors = { td: '#dc2626', fg: '#2563eb', penalty: '#facc15', timeout: '#f97316', injury: '#dc2626' };
+        el.style.borderColor = colors[type] || 'var(--accent)';
     }
 }
 
@@ -1199,57 +1284,57 @@ function recordScore(type, pts, teamSide, playerName) {
     pushUndo();
     if (teamSide === 'home') S.hs += pts;
     else S.as += pts;
-    S.scoringLog.push({ type, team: teamSide, player: playerName, points: pts, time: S.gc.rem, quarter: S.q, id: Date.now() + '_' + Math.random().toString(36).slice(2,5) });
-    const team = getTeam(teamSide);
-    const emoji = type === 'td' ? '🏈' : type === 'fg' ? '🎯' : type === 'twopt' ? '➕' : type === 'pat' ? '🎯' : '⚡';
-    const label = type === 'td' ? 'TOUCHDOWN' : type === 'fg' ? 'FIELD GOAL' : type === 'twopt' ? '2-POINT CONVERSION' : type === 'pat' ? 'PAT' : 'SAFETY';
-    setLastEvent(`${emoji} ${label} — ${playerName || getTeamMascot(team)} (+${pts})`, type);
+    S.scoringLog.push({ type: type, team: teamSide, player: playerName, points: pts, time: S.gc.rem, quarter: S.q, id: Date.now() + '_' + Math.random().toString(36).slice(2,5) });
+    var team = getTeam(teamSide);
+    var emoji = type === 'td' ? '🏈' : type === 'fg' ? '🎯' : type === 'twopt' ? '➕' : type === 'pat' ? '🎯' : '⚡';
+    var label = type === 'td' ? 'TOUCHDOWN' : type === 'fg' ? 'FIELD GOAL' : type === 'twopt' ? '2-POINT CONVERSION' : type === 'pat' ? 'PAT' : 'SAFETY';
+    setLastEvent(emoji + ' ' + label + ' — ' + (playerName || getTeamMascot(team)) + ' (+' + pts + ')', type);
     updateScorebug();
     saveState();
-    toast(`${label} +${pts} - ${playerName || getTeamMascot(team)}`);
+    toast(label + ' +' + pts + ' - ' + (playerName || getTeamMascot(team)));
 }
 
 function openPlayerPicker(title, callback) {
-    const team = getTeam(S.poss);
-    const overlay = document.createElement('div');
+    var team = getTeam(S.poss);
+    var overlay = document.createElement('div');
     overlay.className = 'pp-overlay';
     overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:10001;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px);';
-    const box = document.createElement('div');
+    var box = document.createElement('div');
     box.className = 'pp-box';
     box.style.cssText = 'background:var(--bg);color:var(--text);border-radius:10px;padding:14px;max-width:320px;width:100%;max-height:80vh;overflow-y:auto;border:2px solid var(--accent);box-shadow:0 8px 32px rgba(0,0,0,.5);';
-    let html = `<h3>${title} — ${getTeamMascot(team)}</h3>`;
-    const sorted = [...team.players].sort((a,b) => (parseInt(a.n)||999) - (parseInt(b.n)||999));
+    var html = '<h3>' + title + ' — ' + getTeamMascot(team) + '</h3>';
+    var sorted = team.players.slice().sort(function(a,b) { return (parseInt(a.n)||999) - (parseInt(b.n)||999); });
     if (sorted.length) {
         html += '<div class="pp-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:8px;">';
-        sorted.forEach(p => { html += `<button type="button" data-pid="${p.id}" style="background:#334155;color:#fff;border:1px solid #475569;border-radius:4px;padding:6px 3px;font-size:.6rem;cursor:pointer;line-height:1.2;">#${p.n || '-'}<br>${p.na}</button>`; });
+        sorted.forEach(function(p) { html += '<button type="button" data-pid="' + p.id + '" style="background:#334155;color:#fff;border:1px solid #475569;border-radius:4px;padding:6px 3px;font-size:.6rem;cursor:pointer;line-height:1.2;">#' + (p.n || '-') + '<br>' + p.na + '</button>'; });
         html += '</div>';
     } else {
         html += '<p style="margin-bottom:8px;opacity:.6;">No players on this roster yet.</p>';
     }
-    html += `<div class="pp-actions" style="display:flex;gap:4px;">
-        <input id="ppManual" placeholder="Or type a name / number" style="flex:1;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:.7rem;">
-        <button type="button" class="hdr-btn" id="ppSkip" style="background:#334155;color:#fff;border:1px solid #475569;border-radius:16px;padding:4px 8px;font-size:.58rem;cursor:pointer;">Skip</button>
-        <button type="button" class="hdr-btn" id="ppCancel" style="background:#dc2626;color:#fff;border:1px solid #dc2626;border-radius:16px;padding:4px 8px;font-size:.58rem;cursor:pointer;">Cancel</button>
-    </div>`;
+    html += '<div class="pp-actions" style="display:flex;gap:4px;">';
+    html += '<input id="ppManual" placeholder="Or type a name / number" style="flex:1;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:.7rem;">';
+    html += '<button type="button" class="hdr-btn" id="ppSkip" style="background:#334155;color:#fff;border:1px solid #475569;border-radius:16px;padding:4px 8px;font-size:.58rem;cursor:pointer;">Skip</button>';
+    html += '<button type="button" class="hdr-btn" id="ppCancel" style="background:#dc2626;color:#fff;border:1px solid #dc2626;border-radius:16px;padding:4px 8px;font-size:.58rem;cursor:pointer;">Cancel</button>';
+    html += '</div>';
     box.innerHTML = html;
     overlay.appendChild(box);
     document.body.appendChild(overlay);
 
     function close() { document.body.removeChild(overlay); }
-    box.querySelectorAll('button[data-pid]').forEach(btn => {
-        btn.onclick = () => {
-            const p = team.players.find(x => x.id === btn.dataset.pid);
+    box.querySelectorAll('button[data-pid]').forEach(function(btn) {
+        btn.onclick = function() {
+            var p = team.players.find(function(x) { return x.id === btn.dataset.pid; });
             close();
             callback(p ? p.na : getTeamMascot(team));
         };
     });
-    box.querySelector('#ppSkip').onclick = () => { close(); callback(getTeamMascot(team)); };
-    box.querySelector('#ppCancel').onclick = () => { close(); };
-    const manual = box.querySelector('#ppManual');
+    box.querySelector('#ppSkip').onclick = function() { close(); callback(getTeamMascot(team)); };
+    box.querySelector('#ppCancel').onclick = function() { close(); };
+    var manual = box.querySelector('#ppManual');
     manual.focus();
-    manual.addEventListener('keydown', e => {
+    manual.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
-            const v = e.target.value.trim();
+            var v = e.target.value.trim();
             close();
             callback(v || getTeamMascot(team));
         }
@@ -1257,27 +1342,27 @@ function openPlayerPicker(title, callback) {
 }
 
 function quickScore(type) {
-    const pts = type === 'td' ? 6 : type === 'fg' ? 3 : type === 'twopt' ? 2 : type === 'pat' ? 1 : 2;
-    const label = type === 'td' ? 'Touchdown' : type === 'fg' ? 'Field Goal' : type === 'twopt' ? '2-Point Conversion' : type === 'pat' ? 'PAT' : 'Safety';
-    openPlayerPicker(`${label} (+${pts})`, (playerName) => { recordScore(type, pts, S.poss, playerName); });
+    var pts = type === 'td' ? 6 : type === 'fg' ? 3 : type === 'twopt' ? 2 : type === 'pat' ? 1 : 2;
+    var label = type === 'td' ? 'Touchdown' : type === 'fg' ? 'Field Goal' : type === 'twopt' ? '2-Point Conversion' : type === 'pat' ? 'PAT' : 'Safety';
+    openPlayerPicker(label + ' (+' + pts + ')', function(playerName) { recordScore(type, pts, S.poss, playerName); });
 }
 
 function quickCue(text, type) {
     setLastEvent(text, type || 'info');
     S.scoringLog.push({ type: 'note', team: S.poss, player: text, points: 0, time: S.gc.rem, quarter: S.q, id: Date.now() + '_note' });
     saveState();
-    toast(`📢 ${text}`);
+    toast('📢 ' + text);
 }
 
 function quickPenalty() {
     if (S.gameState === 'FINAL') { toast('⛔ Game final'); return; }
     if (S.gameState === 'READY') { toast('⏳ Start the game first'); return; }
-    openPlayerPicker('🚩 Penalty on', (playerName) => {
+    openPlayerPicker('🚩 Penalty on', function(playerName) {
         pushUndo();
         S.penaltyLog.push({ type: 'flag', team: S.poss, player: playerName, time: S.gc.rem, quarter: S.q, id: Date.now() + '_penalty' });
-        setLastEvent(`🚩 PENALTY — ${playerName}`, 'penalty');
+        setLastEvent('🚩 PENALTY — ' + playerName, 'penalty');
         saveState();
-        toast(`🚩 Penalty on ${playerName}`);
+        toast('🚩 Penalty on ' + playerName);
     });
 }
 
@@ -1285,8 +1370,8 @@ function quickPenalty() {
 // ROSTER VIEW
 // ============================================================
 function renderRoster() {
-    const sortedTeams = [...S.teams].sort((a,b) => a.name.localeCompare(b.name));
-    let selectedTeam = S.teams.find(t => t.id === S.cid) || S.teams[0];
+    var sortedTeams = S.teams.slice().sort(function(a,b) { return a.name.localeCompare(b.name); });
+    var selectedTeam = S.teams.find(function(t) { return t.id === S.cid; }) || S.teams[0];
     if (!selectedTeam) {
         S.teams.push({ id: 't' + Date.now(), name: 'New Team', abbr: '', color: '#1e3a5f', textColor: '#ffffff', logo: '', mascot: '', coach: '', players: [] });
         normalizeState();
@@ -1294,92 +1379,90 @@ function renderRoster() {
         return renderRoster();
     }
     S.cid = selectedTeam.id;
-    let html = '<div class="roster-layout">';
+    var html = '<div class="roster-layout">';
     html += '<div class="team-sidebar">';
     html += '<div class="panel-header" style="flex-direction:column;align-items:stretch;gap:4px;">';
     html += '<h4 style="margin-bottom:4px;font-size:0.8rem;">TEAMS</h4>';
-    html += `<button class="hdr-btn" onclick="fnlCloudLoadRostersOnly()">📥 LOAD ROSTERS</button>`;
+    html += '<button class="hdr-btn" onclick="fnlCloudLoadRostersOnly()">📥 LOAD ROSTERS</button>';
     html += '</div>';
-    sortedTeams.forEach(t => {
-        const badge = (t.id === S.awayId ? ' ✈️' : '') + (t.id === S.homeId ? ' 🏠' : '');
-        html += `<div class="team-item ${t.id === S.cid ? 'active' : ''}" onclick="selectTeam('${t.id}')" data-tooltip="${t.players.length} players">${t.name} (${t.players.length})${badge}</div>`;
+    sortedTeams.forEach(function(t) {
+        var badge = (t.id === S.awayId ? ' ✈️' : '') + (t.id === S.homeId ? ' 🏠' : '');
+        html += '<div class="team-item ' + (t.id === S.cid ? 'active' : '') + '" onclick="selectTeam(\'' + t.id + '\')" data-tooltip="' + t.players.length + ' players">' + t.name + ' (' + t.players.length + ')' + badge + '</div>';
     });
     html += '<button class="hdr-btn" style="margin-top:8px;width:100%;" onclick="newTeam()">➕ New Team</button>';
     html += '<div style="margin-top:8px;font-size:0.5rem;opacity:0.6;text-align:center;">Teams sync via cloud — Save All then Load Rosters</div>';
     html += '</div>';
     html += '<div class="roster-workspace">';
-    html += `<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:8px;">`;
-    html += `<input id="etn" value="${selectedTeam.name}" placeholder="Team Name" style="flex:1;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.7rem;">`;
-    html += `<input id="eta" value="${selectedTeam.abbr || ''}" placeholder="ABBR" maxlength="4" style="width:55px;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);text-transform:uppercase;font-size:0.7rem;">`;
-    html += `<input type="color" id="etc" value="${selectedTeam.color}" style="width:35px;height:28px;">`;
-    html += `<input type="color" id="ettc" value="${selectedTeam.textColor || '#ffffff'}" style="width:35px;height:28px;">`;
-    html += `<input id="etm" value="${selectedTeam.mascot || ''}" placeholder="Mascot" style="width:80px;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.7rem;">`;
-    html += `<input id="etco" value="${selectedTeam.coach || ''}" placeholder="Coach" style="width:80px;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.7rem;">`;
-    html += `<img id="etl" src="${selectedTeam.logo}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;${selectedTeam.logo ? '' : 'display:none'}">`;
-    html += `<input type="file" id="etlf" accept="image/*" style="display:none;" onchange="previewTeamLogo(this)">`;
-    html += `<button class="hdr-btn" onclick="document.getElementById('etlf').click()">📷</button>`;
-    html += `<button class="hdr-btn" onclick="saveTeam()">💾 Save</button>`;
-    html += `<button class="hdr-btn" onclick="printRoster('${selectedTeam.id}')">🖨️</button>`;
-    html += `<button class="hdr-btn" onclick="exportTeamCSV('${selectedTeam.id}')">📊</button>`;
-    html += `<button class="hdr-btn" style="background:#dc2626;" onclick="deleteTeamById('${selectedTeam.id}')">🗑️</button>`;
-    html += `<button class="hdr-btn" style="background:#8b5cf6;" onclick="recategorizeTeam('${selectedTeam.id}')">🔄 Recat</button>`;
+    html += '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:8px;">';
+    html += '<input id="etn" value="' + selectedTeam.name + '" placeholder="Team Name" style="flex:1;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.7rem;">';
+    html += '<input id="eta" value="' + (selectedTeam.abbr || '') + '" placeholder="ABBR" maxlength="4" style="width:55px;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);text-transform:uppercase;font-size:0.7rem;">';
+    html += '<input type="color" id="etc" value="' + selectedTeam.color + '" style="width:35px;height:28px;">';
+    html += '<input type="color" id="ettc" value="' + (selectedTeam.textColor || '#ffffff') + '" style="width:35px;height:28px;">';
+    html += '<input id="etm" value="' + (selectedTeam.mascot || '') + '" placeholder="Mascot" style="width:80px;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.7rem;">';
+    html += '<input id="etco" value="' + (selectedTeam.coach || '') + '" placeholder="Coach" style="width:80px;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.7rem;">';
+    html += '<img id="etl" src="' + selectedTeam.logo + '" style="width:28px;height:28px;border-radius:50%;object-fit:cover;' + (selectedTeam.logo ? '' : 'display:none') + '">';
+    html += '<input type="file" id="etlf" accept="image/*" style="display:none;" onchange="previewTeamLogo(this)">';
+    html += '<button class="hdr-btn" onclick="document.getElementById(\'etlf\').click()">📷</button>';
+    html += '<button class="hdr-btn" onclick="saveTeam()">💾 Save</button>';
+    html += '<button class="hdr-btn" onclick="printRoster(\'' + selectedTeam.id + '\')">🖨️</button>';
+    html += '<button class="hdr-btn" onclick="exportTeamCSV(\'' + selectedTeam.id + '\')">📊</button>';
+    html += '<button class="hdr-btn" style="background:#dc2626;" onclick="deleteTeamById(\'' + selectedTeam.id + '\')">🗑️</button>';
+    html += '<button class="hdr-btn" style="background:#8b5cf6;" onclick="recategorizeTeam(\'' + selectedTeam.id + '\')">🔄 Recat</button>';
     html += '</div>';
-    html += `<div style="display:flex;gap:4px;margin-bottom:8px;">`;
-    html += `<button class="hdr-btn ${selectedTeam.id === S.awayId ? 'active' : ''}" onclick="setSideTeam('away','${selectedTeam.id}')">✈️ Away</button>`;
-    html += `<button class="hdr-btn ${selectedTeam.id === S.homeId ? 'active' : ''}" onclick="setSideTeam('home','${selectedTeam.id}')">🏠 Home</button>`;
+    html += '<div style="display:flex;gap:4px;margin-bottom:8px;">';
+    html += '<button class="hdr-btn ' + (selectedTeam.id === S.awayId ? 'active' : '') + '" onclick="setSideTeam(\'away\',\'' + selectedTeam.id + '\')">✈️ Away</button>';
+    html += '<button class="hdr-btn ' + (selectedTeam.id === S.homeId ? 'active' : '') + '" onclick="setSideTeam(\'home\',\'' + selectedTeam.id + '\')">🏠 Home</button>';
     html += '</div>';
-    html += `<div class="cat-legend">
-        <span class="legend-item"><span class="cat-badge offense">O</span> Offense</span>
-        <span class="legend-item"><span class="cat-badge defense">D</span> Defense</span>
-        <span class="legend-item"><span class="cat-badge special">ST</span> Special Teams</span>
-        <span class="legend-item"><span class="cat-badge both">O/D</span> Both</span>
-        <span class="legend-item"><span class="cat-badge other">?</span> Unknown</span>
-    </div>`;
+    html += '<div class="cat-legend">';
+    html += '<span class="legend-item"><span class="cat-badge offense">O</span> Offense</span>';
+    html += '<span class="legend-item"><span class="cat-badge defense">D</span> Defense</span>';
+    html += '<span class="legend-item"><span class="cat-badge special">ST</span> Special Teams</span>';
+    html += '<span class="legend-item"><span class="cat-badge both">O/D</span> Both</span>';
+    html += '<span class="legend-item"><span class="cat-badge other">?</span> Unknown</span>';
+    html += '</div>';
     html += '<div style="display:grid;grid-template-columns:32px 1fr 70px 50px 70px 70px 26px;gap:3px;font-size:0.5rem;font-weight:700;margin-bottom:3px;opacity:0.6;">';
     html += '<span>#</span><span>Name</span><span>Pos</span><span>⭐</span><span>Notes</span><span>Pron</span><span></span>';
     html += '</div>';
-    const allPosOptions = getAllPositionOptionsWithLabels();
-    selectedTeam.players.forEach((p, pidx) => {
-        const cats = p.categories || ['all'];
-        const catLabel = getCategoryLabel(cats);
-        const badgeText = catLabel.replace(/\[|\]/g, '');
-        const catClass = getCategoryClass(cats);
-        const tooltipText = getCategoryTooltip(cats);
-        html += `<div style="display:grid;grid-template-columns:32px 1fr 70px 50px 70px 70px 26px;gap:3px;margin-bottom:2px;align-items:center;${p.st ? 'border-left:3px solid #facc15;padding-left:2px;' : ''}">`;
-        html += `<input value="${p.n}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'n',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">`;
-        html += `<input value="${p.na}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'na',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">`;
-        html += `<select onchange="updatePlayerField('${selectedTeam.id}',${pidx},'posFull',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">`;
-        allPosOptions.forEach(o => {
-            const selected = (p.posFull || p.po) === o.value ? 'selected' : '';
-            html += `<option ${selected} value="${o.value}">${o.display}</option>`;
+    var allPosOptions = getAllPositionOptionsWithLabels();
+    selectedTeam.players.forEach(function(p, pidx) {
+        var cats = p.categories || ['all'];
+        var catLabel = getCategoryLabel(cats);
+        var badgeText = catLabel.replace(/\[|\]/g, '');
+        var catClass = getCategoryClass(cats);
+        var tooltipText = getCategoryTooltip(cats);
+        html += '<div style="display:grid;grid-template-columns:32px 1fr 70px 50px 70px 70px 26px;gap:3px;margin-bottom:2px;align-items:center;' + (p.st ? 'border-left:3px solid #facc15;padding-left:2px;' : '') + '">';
+        html += '<input value="' + p.n + '" onchange="updatePlayerField(\'' + selectedTeam.id + '\',' + pidx + ',\'n\',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">';
+        html += '<input value="' + p.na + '" onchange="updatePlayerField(\'' + selectedTeam.id + '\',' + pidx + ',\'na\',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">';
+        html += '<select onchange="updatePlayerField(\'' + selectedTeam.id + '\',' + pidx + ',\'posFull\',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">';
+        allPosOptions.forEach(function(o) {
+            var selected = (p.posFull || p.po) === o.value ? 'selected' : '';
+            html += '<option ' + selected + ' value="' + o.value + '">' + o.display + '</option>';
         });
-        html += `</select>`;
-        html += `<button class="st-toggle ${p.st ? 'active' : ''}" onclick="toggleRosterStarter('${selectedTeam.id}',${pidx})" style="background:none;border:2px solid ${p.st ? '#facc15' : 'var(--border)'};border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:0.7rem;display:flex;align-items:center;justify-content:center;">⭐</button>`;
-        html += `<input value="${p.nt || ''}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'nt',this.value)" placeholder="Notes" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">`;
-        html += `<input value="${p.pron || ''}" onchange="updatePlayerField('${selectedTeam.id}',${pidx},'pron',this.value)" placeholder="Pron" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">`;
-        html += `<div><span class="cat-badge ${catClass}" data-tooltip="${tooltipText}" style="font-size:0.5rem;padding:1px 5px;">${badgeText}</span></div>`;
-        html += `<button class="sb-btn" style="width:20px;height:20px;font-size:9px;" onclick="S.teams.find(t=>t.id==='${selectedTeam.id}').players.splice(${pidx},1);saveState();renderRoster();">✕</button>`;
+        html += '</select>';
+        html += '<button class="st-toggle ' + (p.st ? 'active' : '') + '" onclick="toggleRosterStarter(\'' + selectedTeam.id + '\',' + pidx + ')" style="background:none;border:2px solid ' + (p.st ? '#facc15' : 'var(--border)') + ';border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:0.7rem;display:flex;align-items:center;justify-content:center;">⭐</button>';
+        html += '<input value="' + (p.nt || '') + '" onchange="updatePlayerField(\'' + selectedTeam.id + '\',' + pidx + ',\'nt\',this.value)" placeholder="Notes" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">';
+        html += '<input value="' + (p.pron || '') + '" onchange="updatePlayerField(\'' + selectedTeam.id + '\',' + pidx + ',\'pron\',this.value)" placeholder="Pron" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">';
+        html += '<div><span class="cat-badge ' + catClass + '" data-tooltip="' + tooltipText + '" style="font-size:0.5rem;padding:1px 5px;">' + badgeText + '</span></div>';
+        html += '<button class="sb-btn" style="width:20px;height:20px;font-size:9px;" onclick="S.teams.find(function(t){return t.id===\'' + selectedTeam.id + '\'}).players.splice(' + pidx + ',1);saveState();renderRoster();">✕</button>';
         html += '</div>';
     });
-    html += `<button class="hdr-btn" onclick="addPlayerToTeam('${selectedTeam.id}')">➕ Add Player</button>`;
+    html += '<button class="hdr-btn" onclick="addPlayerToTeam(\'' + selectedTeam.id + '\')">➕ Add Player</button>';
     html += '<div style="margin-top:8px;display:flex;gap:4px;flex-wrap:wrap;">';
-    html += `<textarea id="parseArea" placeholder="Paste roster (Number\tName\tPosition(s))" style="flex:2;min-width:150px;height:40px;padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.6rem;"></textarea>`;
-    html += `<button class="hdr-btn" onclick="parseRosterText('${selectedTeam.id}')">📝 Parse</button>`;
-    html += `<input type="file" accept=".txt,.csv" onchange="uploadRosterFile('${selectedTeam.id}',this)" style="font-size:0.6rem;">`;
+    html += '<textarea id="parseArea" placeholder="Paste roster (Number\tName\tPosition(s))" style="flex:2;min-width:150px;height:40px;padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.6rem;"></textarea>';
+    html += '<button class="hdr-btn" onclick="parseRosterText(\'' + selectedTeam.id + '\')">📝 Parse</button>';
+    html += '<input type="file" accept=".txt,.csv" onchange="uploadRosterFile(\'' + selectedTeam.id + '\',this)" style="font-size:0.6rem;">';
     html += '</div>';
-    html += `<div class="parser-help">
-        <details><summary>📝 How to format roster data</summary>
-        <p>Use one player per line. Separate fields with Tab.</p>
-        <pre>52    Cameron Hayes    LT
-77    Ricoh Sanchez    LT</pre>
-        </details>
-    </div>`;
-    html += '</div></div>';
+    html += '<div class="parser-help">';
+    html += '<details><summary>📝 How to format roster data</summary>';
+    html += '<p>Use one player per line. Separate fields with Tab.</p>';
+    html += '<pre>52    Cameron Hayes    LT\n77    Ricoh Sanchez    LT</pre>';
+    html += '</details>';
+    html += '</div></div></div>';
     document.getElementById('main').innerHTML = html;
 }
 
 function toggleRosterStarter(teamId, pidx) {
-    const team = S.teams.find(t => t.id === teamId);
+    var team = S.teams.find(function(t) { return t.id === teamId; });
     if (!team || !team.players[pidx]) return;
     team.players[pidx].st = !team.players[pidx].st;
     saveState();
@@ -1388,22 +1471,22 @@ function toggleRosterStarter(teamId, pidx) {
 }
 
 function parseRosterText(teamId) {
-    const tx = document.getElementById('parseArea').value.trim();
-    const team = S.teams.find(t => t.id === teamId);
+    var tx = document.getElementById('parseArea').value.trim();
+    var team = S.teams.find(function(t) { return t.id === teamId; });
     if (!team) return;
     if (!tx) return toast('⚠️ Empty input');
 
-    const positionMap = { 'Quick H':'WR','Quick':'WR','Big H':'TE','Q':'QB','TB':'RB','Y':'TE','Z':'WR' };
-    const starters = ['Cameron Hayes','Cameron Howell','Josh Dimsdale','Viliami Finau','Fili Mose','Kava Afungia','Brendon Cary','Graven Mohetau','Jonathan Simkins','Mack Lineweaver','Marcus Turner','Abel Ditu'];
+    var positionMap = { 'Quick H':'WR','Quick':'WR','Big H':'TE','Q':'QB','TB':'RB','Y':'TE','Z':'WR' };
+    var starters = ['Cameron Hayes','Cameron Howell','Josh Dimsdale','Viliami Finau','Fili Mose','Kava Afungia','Brendon Cary','Graven Mohetau','Jonathan Simkins','Mack Lineweaver','Marcus Turner','Abel Ditu'];
 
-    const lines = tx.split('\n');
-    const out = [];
-    const seenPlayers = new Set();
-    lines.forEach(l => {
+    var lines = tx.split('\n');
+    var out = [];
+    var seenPlayers = new Set();
+    lines.forEach(function(l) {
         if (!l.trim()) return;
-        let parts = l.split('\t').map(s => s.trim());
+        var parts = l.split('\t').map(function(s) { return s.trim(); });
         if (parts.length < 2) {
-            let match = l.match(/^#?\s*(\d+)\s+(.+?)\s+([A-Za-z/ ]+)$/);
+            var match = l.match(/^#?\s*(\d+)\s+(.+?)\s+([A-Za-z/ ]+)$/);
             if (match) parts = [match[1], match[2], match[3]];
             else {
                 match = l.match(/^(.+?)\s+([A-Za-z/ ]+)$/);
@@ -1411,17 +1494,17 @@ function parseRosterText(teamId) {
                 else parts = ['', l.trim(), ''];
             }
         }
-        const number = parts[0] || '';
-        const name = parts[1] || 'Unknown Player';
-        let positionStr = parts[2] || '';
+        var number = parts[0] || '';
+        var name = parts[1] || 'Unknown Player';
+        var positionStr = parts[2] || '';
         positionStr = positionStr.replace(/[^A-Za-z/ ]/g,'').trim();
-        let mappedPosition = positionMap[positionStr] || positionStr;
+        var mappedPosition = positionMap[positionStr] || positionStr;
         if (positionStr === 'Quick H' || positionStr === 'Quick') mappedPosition = 'WR';
         if (positionStr === 'Big H') mappedPosition = 'TE';
-        const isStarter = starters.some(s => name.toLowerCase().includes(s.toLowerCase()));
-        const categories = getPositionCategories(mappedPosition);
-        const primaryPos = mappedPosition.split('/')[0].trim() || 'QB';
-        const key = (number + name).toLowerCase();
+        var isStarter = starters.some(function(s) { return name.toLowerCase().indexOf(s.toLowerCase()) !== -1; });
+        var categories = getPositionCategories(mappedPosition);
+        var primaryPos = mappedPosition.split('/')[0].trim() || 'QB';
+        var key = (number + name).toLowerCase();
         if (seenPlayers.has(key)) return;
         seenPlayers.add(key);
         out.push({
@@ -1435,12 +1518,12 @@ function parseRosterText(teamId) {
             categories: categories
         });
     });
-    out.sort((a,b) => (parseInt(a.n)||999) - (parseInt(b.n)||999));
+    out.sort(function(a,b) { return (parseInt(a.n)||999) - (parseInt(b.n)||999); });
     if (out.length) {
         team.players = out;
         saveState();
         renderRoster();
-        toast(`✅ ${out.length} players parsed - ${out.filter(p => p.st).length} starters marked`);
+        toast('✅ ' + out.length + ' players parsed - ' + out.filter(function(p) { return p.st; }).length + ' starters marked');
     } else {
         toast('❌ No players found');
     }
@@ -1449,16 +1532,16 @@ function parseRosterText(teamId) {
 function selectTeam(id) { S.cid = id; renderRoster(); }
 
 function newTeam() {
-    const name = prompt('Team name:');
+    var name = prompt('Team name:');
     if (!name) return;
-    S.teams.push({ id: 't' + Date.now(), name, abbr: '', color: '#1e3a5f', textColor: '#ffffff', logo: '', mascot: '', coach: '', players: [] });
+    S.teams.push({ id: 't' + Date.now(), name: name, abbr: '', color: '#1e3a5f', textColor: '#ffffff', logo: '', mascot: '', coach: '', players: [] });
     S.cid = S.teams[S.teams.length - 1].id;
     saveState();
     renderRoster();
 }
 
 function saveTeam() {
-    const team = S.teams.find(t => t.id === S.cid);
+    var team = S.teams.find(function(t) { return t.id === S.cid; });
     if (!team) return;
     team.name = document.getElementById('etn').value;
     team.abbr = document.getElementById('eta').value.toUpperCase();
@@ -1469,15 +1552,15 @@ function saveTeam() {
     saveState();
     renderRoster();
     updateScorebug();
-    toast(`✅ ${team.name} saved`);
+    toast('✅ ' + team.name + ' saved');
 }
 
 function previewTeamLogo(input) {
-    const f = input.files[0];
+    var f = input.files[0];
     if (!f) return;
-    const r = new FileReader();
-    r.onload = ev => {
-        const team = S.teams.find(t => t.id === S.cid);
+    var r = new FileReader();
+    r.onload = function(ev) {
+        var team = S.teams.find(function(t) { return t.id === S.cid; });
         if (team) {
             team.logo = ev.target.result;
             document.getElementById('etl').src = ev.target.result;
@@ -1492,7 +1575,7 @@ function previewTeamLogo(input) {
 
 function deleteTeamById(id) {
     if (!confirm('Delete team?')) return;
-    S.teams = S.teams.filter(t => t.id !== id);
+    S.teams = S.teams.filter(function(t) { return t.id !== id; });
     if (S.teams.length === 0) {
         S.teams.push({ id: 't' + Date.now(), name: 'New Team', abbr: '', color: '#1e3a5f', textColor: '#ffffff', logo: '', mascot: '', coach: '', players: [] });
     }
@@ -1504,9 +1587,9 @@ function deleteTeamById(id) {
 }
 
 function updatePlayerField(teamId, pidx, field, val) {
-    const team = S.teams.find(t => t.id === teamId);
+    var team = S.teams.find(function(t) { return t.id === teamId; });
     if (!team || !team.players[pidx]) return;
-    const p = team.players[pidx];
+    var p = team.players[pidx];
     p[field] = val;
     if (field === 'posFull') {
         p.po = val.split('/')[0].trim() || val;
@@ -1517,7 +1600,7 @@ function updatePlayerField(teamId, pidx, field, val) {
 }
 
 function addPlayerToTeam(teamId) {
-    const team = S.teams.find(t => t.id === teamId);
+    var team = S.teams.find(function(t) { return t.id === teamId; });
     if (!team) return;
     team.players.push({ id: 'p' + Date.now(), n: '', na: 'New Player', po: 'QB', st: false, nt: '', pron: '', ph: '', pinned: false, categories: ['all'], posFull: 'QB' });
     saveState();
@@ -1525,27 +1608,28 @@ function addPlayerToTeam(teamId) {
 }
 
 function recategorizeTeam(teamId) {
-    const team = S.teams.find(t => t.id === teamId);
+    var team = S.teams.find(function(t) { return t.id === teamId; });
     if (!team) return;
-    let updated = 0;
-    team.players.forEach(p => {
-        const posStr = p.posFull || p.po || '';
-        const newCats = getPositionCategories(posStr);
-        if (JSON.stringify((p.categories || ['all']).sort()) !== JSON.stringify(newCats.sort())) {
+    var updated = 0;
+    team.players.forEach(function(p) {
+        var posStr = p.posFull || p.po || '';
+        var newCats = getPositionCategories(posStr);
+        var oldCats = (p.categories || ['all']).slice().sort();
+        if (JSON.stringify(oldCats) !== JSON.stringify(newCats.slice().sort())) {
             p.categories = newCats;
             updated++;
         }
     });
     saveState();
     renderRoster();
-    toast(`🔄 ${updated} players recategorized`);
+    toast('🔄 ' + updated + ' players recategorized');
 }
 
 function setSideTeam(side, teamId) {
     if (side === 'away') S.awayId = teamId;
     else S.homeId = teamId;
     if (S.awayId === S.homeId) {
-        const otherTeam = S.teams.find(t => t.id !== S.awayId);
+        var otherTeam = S.teams.find(function(t) { return t.id !== S.awayId; });
         if (otherTeam) {
             if (side === 'away') S.homeId = otherTeam.id;
             else S.awayId = otherTeam.id;
@@ -1560,23 +1644,23 @@ function setSideTeam(side, teamId) {
 // LOG, SCRIPT, CLIENTS, ADMIN
 // ============================================================
 function renderLog() {
-    let html = '<div class="panel"><div class="panel-header">';
+    var html = '<div class="panel"><div class="panel-header">';
     html += '<h3>📜 GAME LOG</h3>';
     html += '<div class="panel-actions">';
-    html += `<button class="hdr-btn" onclick="clearLogs()" style="background:#dc2626;">🗑️ Clear</button>`;
+    html += '<button class="hdr-btn" onclick="clearLogs()" style="background:#dc2626;">🗑️ Clear</button>';
     html += '</div></div>';
-    const events = [...S.scoringLog.map(e => ({...e, type:'score'})), ...S.penaltyLog.map(e => ({...e, type:'penalty'}))];
+    var events = S.scoringLog.map(function(e) { return { ...e, type: 'score' }; }).concat(S.penaltyLog.map(function(e) { return { ...e, type: 'penalty' }; }));
     if (events.length === 0) {
         html += '<p style="opacity:0.6;font-size:0.75rem;">No events in current game.</p>';
     } else {
         html += '<table style="width:100%;border-collapse:collapse;font-size:0.65rem;">';
         html += '<tr style="border-bottom:2px solid var(--border);"><th style="text-align:left;padding:3px;">Time</th><th style="text-align:left;padding:3px;">Team</th><th style="text-align:left;padding:3px;">Event</th></tr>';
-        events.sort((a,b) => (b.time||0) - (a.time||0));
-        events.forEach(ev => {
-            const timeStr = ev.time !== undefined ? `${Math.floor(ev.time/60)}:${String(ev.time%60).padStart(2,'0')}` : '--:--';
-            const teamLabel = ev.team === 'home' ? 'Home' : ev.team === 'away' ? 'Away' : '';
-            const emoji = ev.type === 'td' ? '🏈' : ev.type === 'fg' ? '🎯' : ev.type === 'penalty' ? '🚩' : '';
-            html += `<tr><td>${timeStr}</td><td>${teamLabel}</td><td>${emoji} ${ev.type.toUpperCase()} - ${ev.player || ''}</td></tr>`;
+        events.sort(function(a,b) { return (b.time||0) - (a.time||0); });
+        events.forEach(function(ev) {
+            var timeStr = ev.time !== undefined ? Math.floor(ev.time/60) + ':' + String(ev.time%60).padStart(2,'0') : '--:--';
+            var teamLabel = ev.team === 'home' ? 'Home' : ev.team === 'away' ? 'Away' : '';
+            var emoji = ev.type === 'td' ? '🏈' : ev.type === 'fg' ? '🎯' : ev.type === 'penalty' ? '🚩' : '';
+            html += '<tr><td>' + timeStr + '</td><td>' + teamLabel + '</td><td>' + emoji + ' ' + ev.type.toUpperCase() + ' - ' + (ev.player || '') + '</td></tr>';
         });
         html += '</table>';
     }
@@ -1593,42 +1677,27 @@ function clearLogs() {
 }
 
 function renderScript() {
-    let html = '<div class="panel"><div class="panel-header">';
+    var html = '<div class="panel"><div class="panel-header">';
     html += '<h3>🎙️ SCRIPT</h3>';
     html += '<div class="panel-actions">';
-    html += `<button class="hdr-btn" onclick="fnlCloudLoadScriptOnly()">📥 LOAD SCRIPT</button>`;
+    html += '<button class="hdr-btn" onclick="fnlCloudLoadScriptOnly()">📥 LOAD SCRIPT</button>';
     html += '</div></div>';
-    html += `<textarea id="scriptEditor" style="width:100%;height:300px;padding:8px;border-radius:4px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:0.8rem;">${S.script || ''}</textarea>`;
-    html += `<div style="display:flex;gap:4px;margin-top:4px;">`;
-    html += `<button class="hdr-btn" onclick="saveScript()">💾 Save</button>`;
-    html += `<button class="hdr-btn" onclick="printScript()">🖨️ Print</button>`;
-    html += `<button class="hdr-btn" onclick="clearScript()" style="background:#dc2626;">🗑️ Clear</button>`;
-    html += `</div></div>`;
+    html += '<textarea id="scriptEditor" style="width:100%;height:300px;padding:8px;border-radius:4px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:0.8rem;">' + (S.script || '') + '</textarea>';
+    html += '<div style="display:flex;gap:4px;margin-top:4px;">';
+    html += '<button class="hdr-btn" onclick="saveScript()">💾 Save</button>';
+    html += '<button class="hdr-btn" onclick="printScript()">🖨️ Print</button>';
+    html += '<button class="hdr-btn" onclick="clearScript()" style="background:#dc2626;">🗑️ Clear</button>';
+    html += '</div></div>';
     document.getElementById('main').innerHTML = html;
 }
 
-async function fnlCloudLoadScriptOnly() {
-    if (!confirm('Load script from cloud?')) return;
-    try {
-        const resp = await fetch('https://lineup-api.claytongreenberg.workers.dev/api/sync/fnl_full_sync');
-        if (!resp.ok) throw new Error('Load failed');
-        const data = await resp.json();
-        if (data.script !== undefined) {
-            S.script = data.script;
-            saveState();
-            renderAll();
-            toast('✅ Script loaded');
-        } else { toast('ℹ️ No script found'); }
-    } catch(e) { toast('❌ Load failed: ' + e.message); }
-}
-
 function saveScript() {
-    const el = document.getElementById('scriptEditor');
+    var el = document.getElementById('scriptEditor');
     if (el) { S.script = el.value; saveState(); toast('✅ Script saved'); }
 }
 
 function printScript() {
-    const w = window.open('', '_blank');
+    var w = window.open('', '_blank');
     if (!w) { toast('⚠️ Enable pop-ups to print'); return; }
     w.document.write('<html><head><title>Script</title></head><body><pre>' + (S.script || '') + '</pre></body></html>');
     w.document.close();
@@ -1638,77 +1707,55 @@ function printScript() {
 function clearScript() {
     if (!confirm('Clear script?')) return;
     S.script = '';
-    const el = document.getElementById('scriptEditor');
+    var el = document.getElementById('scriptEditor');
     if (el) el.value = '';
     saveState();
     toast('🗑️ Cleared');
 }
 
 function renderAdmin() {
-    let html = '<div class="panel"><div class="panel-header">';
+    var html = '<div class="panel"><div class="panel-header">';
     html += '<h3>⚙️ ADMIN</h3>';
     html += '<div class="panel-actions">';
-    html += `<button class="hdr-btn" onclick="fnlCloudLoadSettingsOnly()">📥 LOAD SETTINGS</button>`;
+    html += '<button class="hdr-btn" onclick="fnlCloudLoadSettingsOnly()">📥 LOAD SETTINGS</button>';
     html += '</div></div>';
     html += '<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;">';
-    html += `<button class="hdr-btn" onclick="toggleTheme()">Toggle Theme</button>`;
-    html += `<button class="hdr-btn" onclick="toggleOutdoor()">Toggle Outdoor</button>`;
-    html += `</div>`;
-    html += `<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;">`;
-    html += `<button class="hdr-btn" onclick="S.md7='tackle';saveState();renderAll();">${S.md7 === 'tackle' ? '✅' : ''} Tackle</button>`;
-    html += `<button class="hdr-btn" onclick="S.md7='7v7';saveState();renderAll();">${S.md7 === '7v7' ? '✅' : ''} 7v7</button>`;
-    html += `</div>`;
-    html += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:400px;">`;
-    html += `<div><label style="font-size:0.6rem;font-weight:600;">Scorebug BG</label><input type="color" value="${S.colors.scorebugBg}" oninput="S.colors.scorebugBg=this.value;applyColors();saveState()" style="width:100%;height:30px;"></div>`;
-    html += `<div><label style="font-size:0.6rem;font-weight:600;">Accent</label><input type="color" value="${S.colors.accent}" oninput="S.colors.accent=this.value;applyColors();saveState()" style="width:100%;height:30px;"></div>`;
-    html += `</div>`;
-    html += `<div style="display:flex;gap:4px;margin-top:6px;">`;
-    html += `<button class="hdr-btn" onclick="exportBackup()">📤 Export</button>`;
-    html += `<button class="hdr-btn" onclick="document.getElementById('impf').click()">📥 Import</button>`;
-    html += `<input type="file" id="impf" accept=".json" style="display:none;" onchange="importBackup(this)">`;
-    html += `<button class="hdr-btn" onclick="fnlCloudSaveAll()" style="background:#16a34a;">💾 Save All to Cloud</button>`;
-    html += `</div>`;
-    html += `<div style="display:flex;gap:4px;margin-top:6px;">`;
-    html += `<button class="hdr-btn" onclick="fnlCloudLoadGameState()">📥 Game State</button>`;
-    html += `<button class="hdr-btn" onclick="fnlCloudLoadRostersOnly()">📥 Rosters</button>`;
-    html += `</div></div>`;
+    html += '<button class="hdr-btn" onclick="toggleTheme()">Toggle Theme</button>';
+    html += '<button class="hdr-btn" onclick="toggleOutdoor()">Toggle Outdoor</button>';
+    html += '</div>';
+    html += '<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;">';
+    html += '<button class="hdr-btn" onclick="S.md7=\'tackle\';saveState();renderAll();">' + (S.md7 === 'tackle' ? '✅' : '') + ' Tackle</button>';
+    html += '<button class="hdr-btn" onclick="S.md7=\'7v7\';saveState();renderAll();">' + (S.md7 === '7v7' ? '✅' : '') + ' 7v7</button>';
+    html += '</div>';
+    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:400px;">';
+    html += '<div><label style="font-size:0.6rem;font-weight:600;">Scorebug BG</label><input type="color" value="' + S.colors.scorebugBg + '" oninput="S.colors.scorebugBg=this.value;applyColors();saveState()" style="width:100%;height:30px;"></div>';
+    html += '<div><label style="font-size:0.6rem;font-weight:600;">Accent</label><input type="color" value="' + S.colors.accent + '" oninput="S.colors.accent=this.value;applyColors();saveState()" style="width:100%;height:30px;"></div>';
+    html += '</div>';
+    html += '<div style="display:flex;gap:4px;margin-top:6px;">';
+    html += '<button class="hdr-btn" onclick="exportBackup()">📤 Export</button>';
+    html += '<button class="hdr-btn" onclick="document.getElementById(\'impf\').click()">📥 Import</button>';
+    html += '<input type="file" id="impf" accept=".json" style="display:none;" onchange="importBackup(this)">';
+    html += '<button class="hdr-btn" onclick="fnlCloudSaveAll()" style="background:#16a34a;">💾 Save All to Cloud</button>';
+    html += '</div>';
+    html += '<div style="display:flex;gap:4px;margin-top:6px;">';
+    html += '<button class="hdr-btn" onclick="fnlCloudLoadGameState()">📥 Game State</button>';
+    html += '<button class="hdr-btn" onclick="fnlCloudLoadRostersOnly()">📥 Rosters</button>';
+    html += '</div></div>';
     document.getElementById('main').innerHTML = html;
 }
 
-async function fnlCloudLoadSettingsOnly() {
-    if (!confirm('Load settings from cloud?')) return;
-    try {
-        const resp = await fetch('https://lineup-api.claytongreenberg.workers.dev/api/sync/fnl_full_sync');
-        if (!resp.ok) throw new Error('Load failed');
-        const data = await resp.json();
-        if (data.colors) {
-            S.colors.scorebugBg = data.colors.scorebugBg || S.colors.scorebugBg;
-            S.colors.scorebugText = data.colors.scorebugText || S.colors.scorebugText;
-            S.colors.accent = data.colors.accent || S.colors.accent;
-            S.colors.teamCardAway = data.colors.teamCardAway || S.colors.teamCardAway;
-            S.colors.teamCardHome = data.colors.teamCardHome || S.colors.teamCardHome;
-        }
-        if (data.md7 !== undefined) S.md7 = data.md7;
-        if (data.gc && data.gc.max !== undefined) S.gc.max = data.gc.max;
-        saveState();
-        renderAll();
-        applyColors();
-        toast('✅ Settings loaded');
-    } catch(e) { toast('❌ Load failed: ' + e.message); }
-}
-
 function exportBackup() {
-    const a = document.createElement('a');
+    var a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([JSON.stringify(S)], { type: 'application/json' }));
     a.download = 'fnl_backup.json';
     a.click();
 }
 
 function importBackup(input) {
-    const f = input.files[0];
+    var f = input.files[0];
     if (!f) return;
-    const r = new FileReader();
-    r.onload = ev => {
+    var r = new FileReader();
+    r.onload = function(ev) {
         try {
             S = JSON.parse(ev.target.result);
             normalizeState();
@@ -1741,28 +1788,28 @@ function toggleTheme() {
 function toggleOutdoor() {
     S.outdoor = !S.outdoor;
     document.body.style.fontSize = S.outdoor ? '20px' : '14px';
-    const btn = document.getElementById('outdoorBtn');
+    var btn = document.getElementById('outdoorBtn');
     if (btn) btn.textContent = S.outdoor ? '🌤 ON' : '🌤';
     toast(S.outdoor ? '🌤 Outdoor ON' : '🌤 Outdoor OFF');
     saveState();
 }
 
 function renderClients() {
-    let html = '<div class="panel"><div class="panel-header">';
+    var html = '<div class="panel"><div class="panel-header">';
     html += '<h3>👥 CLIENTS</h3>';
     html += '</div></div>';
-    const keys = Object.keys(S.cp);
+    var keys = Object.keys(S.cp);
     if (keys.length === 0) {
         html += '<p style="opacity:0.6;font-size:0.7rem;margin-top:4px;">No clients yet. Add one below.</p>';
     } else {
-        keys.forEach(pin => {
-            const client = S.cp[pin];
-            const isActive = (pin === S.ap);
-            html += `<div class="client-item" style="display:flex;align-items:center;gap:10px;padding:8px;border:1px solid var(--border);border-radius:6px;margin-bottom:4px;${isActive ? 'border-color: var(--accent); background: rgba(250,204,21,0.05);' : ''}">`;
-            html += `<span style="font-weight:700;font-size:0.7rem;flex:1;">${pin}</span>`;
-            html += `<span style="flex:2;font-size:0.7rem;">${client.n || 'Unnamed'}</span>`;
-            html += `<button class="hdr-btn" onclick="selectClient('${pin}')" style="font-size:0.5rem;padding:2px 6px;${isActive ? 'background:var(--accent);color:#000;' : ''}">${isActive ? '✅' : 'Select'}</button>`;
-            html += `<button class="hdr-btn" style="background:#dc2626;font-size:0.5rem;padding:2px 6px;" onclick="deleteClient('${pin}')">🗑️</button>`;
+        keys.forEach(function(pin) {
+            var client = S.cp[pin];
+            var isActive = (pin === S.ap);
+            html += '<div class="client-item" style="display:flex;align-items:center;gap:10px;padding:8px;border:1px solid var(--border);border-radius:6px;margin-bottom:4px;' + (isActive ? 'border-color: var(--accent); background: rgba(250,204,21,0.05);' : '') + '">';
+            html += '<span style="font-weight:700;font-size:0.7rem;flex:1;">' + pin + '</span>';
+            html += '<span style="flex:2;font-size:0.7rem;">' + (client.n || 'Unnamed') + '</span>';
+            html += '<button class="hdr-btn" onclick="selectClient(\'' + pin + '\')" style="font-size:0.5rem;padding:2px 6px;' + (isActive ? 'background:var(--accent);color:#000;' : '') + '">' + (isActive ? '✅' : 'Select') + '</button>';
+            html += '<button class="hdr-btn" style="background:#dc2626;font-size:0.5rem;padding:2px 6px;" onclick="deleteClient(\'' + pin + '\')">🗑️</button>';
             html += '</div>';
         });
     }
@@ -1774,9 +1821,9 @@ function renderClients() {
 }
 
 function addClient() {
-    const pin = prompt('Enter PIN (4-6 characters):');
+    var pin = prompt('Enter PIN (4-6 characters):');
     if (!pin || pin.length < 4) return toast('PIN must be at least 4 characters');
-    const name = prompt('Client name:');
+    var name = prompt('Client name:');
     if (!name) return;
     S.cp[pin.toUpperCase()] = { n: name, l: '', logo: '' };
     S.ap = pin.toUpperCase();
@@ -1798,17 +1845,17 @@ function selectClient(pin) {
     S.ap = pin;
     saveState();
     renderClients();
-    toast(`✅ ${S.cp[pin].n} is now active`);
+    toast('✅ ' + S.cp[pin].n + ' is now active');
 }
 
 function showAllPINs() {
-    const ks = Object.keys(S.cp);
+    var ks = Object.keys(S.cp);
     if (!ks.length) return toast('No clients');
-    alert('Client PINs:\n' + ks.map(p => `${p} → ${S.cp[p].n}`).join('\n'));
+    alert('Client PINs:\n' + ks.map(function(p) { return p + ' → ' + S.cp[p].n; }).join('\n'));
 }
 
 function updateHeaderBranding() {
-    const subtitle = document.getElementById('brandSubtitle');
+    var subtitle = document.getElementById('brandSubtitle');
     if (subtitle) {
         if (S.ap && S.cp[S.ap]) {
             subtitle.textContent = S.cp[S.ap].n + ' | PA CONSOLE';
@@ -1819,15 +1866,15 @@ function updateHeaderBranding() {
 }
 
 function printLU() {
-    let html = '<html><head><title>Starting Lineups</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse;margin-bottom:16px}th,td{border:1px solid #000;padding:4px}</style></head><body>';
-    ['away','home'].forEach(side => {
-        const t = getTeam(side);
-        html += `<h2>${side === 'away' ? 'Away' : 'Home'}: ${getTeamMascot(t)}</h2><table><tr><th>#</th><th>Name</th><th>Pos</th></tr>`;
-        t.players.filter(p => p.st).forEach(p => { html += `<tr><td>${p.n}</td><td>${p.na}</td><td>${p.posFull || p.po}</td></tr>`; });
+    var html = '<html><head><title>Starting Lineups</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse;margin-bottom:16px}th,td{border:1px solid #000;padding:4px}</style></head><body>';
+    ['away','home'].forEach(function(side) {
+        var t = getTeam(side);
+        html += '<h2>' + (side === 'away' ? 'Away' : 'Home') + ': ' + getTeamMascot(t) + '</h2><table><tr><th>#</th><th>Name</th><th>Pos</th></tr>';
+        t.players.filter(function(p) { return p.st; }).forEach(function(p) { html += '<tr><td>' + p.n + '</td><td>' + p.na + '</td><td>' + (p.posFull || p.po) + '</td></tr>'; });
         html += '</table>';
     });
     html += '</body></html>';
-    const w = window.open('', '_blank');
+    var w = window.open('', '_blank');
     if (!w) { toast('⚠️ Enable pop-ups to print'); return; }
     w.document.write(html);
     w.document.close();
@@ -1836,16 +1883,16 @@ function printLU() {
 }
 
 function printRoster(teamId) {
-    const team = S.teams.find(t => t.id === teamId);
+    var team = S.teams.find(function(t) { return t.id === teamId; });
     if (!team) return;
-    let html = `<html><head><title>${team.name} Roster</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #000;padding:4px}</style></head><body>`;
-    html += `<h2>${team.name} Roster</h2>`;
+    var html = '<html><head><title>' + team.name + ' Roster</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #000;padding:4px}</style></head><body>';
+    html += '<h2>' + team.name + ' Roster</h2>';
     html += '<table><tr><th>#</th><th>Name</th><th>Pos</th><th>Starter</th></tr>';
-    team.players.forEach(p => {
-        html += `<tr><td>${p.n}</td><td>${p.na}</td><td>${p.posFull || p.po}</td><td>${p.st ? 'Yes' : 'No'}</td></tr>`;
+    team.players.forEach(function(p) {
+        html += '<tr><td>' + p.n + '</td><td>' + p.na + '</td><td>' + (p.posFull || p.po) + '</td><td>' + (p.st ? 'Yes' : 'No') + '</td></tr>';
     });
     html += '</table></body></html>';
-    const w = window.open('', '_blank');
+    var w = window.open('', '_blank');
     if (!w) { toast('⚠️ Enable pop-ups to print'); return; }
     w.document.write(html);
     w.document.close();
@@ -1854,24 +1901,24 @@ function printRoster(teamId) {
 }
 
 function exportTeamCSV(teamId) {
-    const team = S.teams.find(t => t.id === teamId);
+    var team = S.teams.find(function(t) { return t.id === teamId; });
     if (!team) return;
-    let csv = 'Number,Name,Position,Starter\n';
-    team.players.forEach(p => {
-        csv += `"${p.n}","${p.na}","${p.posFull || p.po}","${p.st ? 'Yes' : 'No'}"\n`;
+    var csv = 'Number,Name,Position,Starter\n';
+    team.players.forEach(function(p) {
+        csv += '"' + p.n + '","' + p.na + '","' + (p.posFull || p.po) + '","' + (p.st ? 'Yes' : 'No') + '"\n';
     });
-    const a = document.createElement('a');
+    var a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
     a.download = team.name + '.csv';
     a.click();
 }
 
 function uploadRosterFile(teamId, input) {
-    const f = input.files[0];
+    var f = input.files[0];
     if (!f) return;
-    if (f.name.endsWith('.docx')) { toast('⚠️ .docx not supported. Use .txt or .csv'); return; }
-    const r = new FileReader();
-    r.onload = ev => {
+    if (f.name.indexOf('.docx') !== -1) { toast('⚠️ .docx not supported. Use .txt or .csv'); return; }
+    var r = new FileReader();
+    r.onload = function(ev) {
         document.getElementById('parseArea').value = ev.target.result;
         parseRosterText(teamId);
     };
@@ -1879,8 +1926,8 @@ function uploadRosterFile(teamId, input) {
 }
 
 function toggleScorebugMode() {
-    const sb = document.getElementById('scorebug');
-    const btn = document.getElementById('sbModeBtn');
+    var sb = document.getElementById('scorebug');
+    var btn = document.getElementById('sbModeBtn');
     if (!sb) return;
     if (S.scorebugMode === 'full') {
         S.scorebugMode = 'compact';
@@ -1897,20 +1944,20 @@ function toggleScorebugMode() {
 }
 
 function toggleScorebugDisplay() {
-    const sb = document.getElementById('scorebug');
+    var sb = document.getElementById('scorebug');
     if (sb) { sb.style.display = sb.style.display === 'none' ? 'flex' : 'none'; }
 }
 
 function uploadScorebugLogo(side) {
-    const input = document.createElement('input');
+    var input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
     input.onchange = function() {
-        const f = input.files[0];
-        if (!f || !f.type.startsWith('image/')) return toast('📷 Image required');
-        const r = new FileReader();
-        r.onload = ev => {
-            const team = getTeam(side);
+        var f = input.files[0];
+        if (!f || f.type.indexOf('image/') !== 0) return toast('📷 Image required');
+        var r = new FileReader();
+        r.onload = function(ev) {
+            var team = getTeam(side);
             if (team) { team.logo = ev.target.result; saveState(); updateScorebug(); toast('✅ Logo updated'); }
         };
         r.readAsDataURL(f);
@@ -1919,41 +1966,41 @@ function uploadScorebugLogo(side) {
 }
 
 function updateTeamColor(side, color) {
-    const team = getTeam(side);
+    var team = getTeam(side);
     if (!team) return;
     team.color = color;
     saveState();
     updateScorebug();
     renderGame();
-    toast(`✅ ${team.name} color updated`);
+    toast('✅ ' + team.name + ' color updated');
 }
 
 function updateWallClock() {
-    const n = new Date();
-    let h = n.getHours();
-    const m = String(n.getMinutes()).padStart(2, '0');
-    const s = String(n.getSeconds()).padStart(2, '0');
-    const a = h >= 12 ? 'PM' : 'AM';
+    var n = new Date();
+    var h = n.getHours();
+    var m = String(n.getMinutes()).padStart(2, '0');
+    var s = String(n.getSeconds()).padStart(2, '0');
+    var a = h >= 12 ? 'PM' : 'AM';
     h = h % 12 || 12;
-    const el = document.getElementById('wallClock');
-    if (el) el.textContent = `${h}:${m}:${s} ${a}`;
+    var el = document.getElementById('wallClock');
+    if (el) el.textContent = h + ':' + m + ':' + s + ' ' + a;
 }
 setInterval(updateWallClock, 1000);
 updateWallClock();
 
 function updateWeather() {
     fetch('https://api.open-meteo.com/v1/forecast?latitude=32.7767&longitude=-96.7970&current=temperature_2m,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=mph')
-        .then(r => r.json()).then(d => {
+        .then(function(r) { return r.json(); }).then(function(d) {
             if (d.current) {
-                const el = document.getElementById('weatherHeader');
-                if (el) el.textContent = `🌤 ${Math.round(d.current.temperature_2m)}°F | 💨 ${Math.round(d.current.wind_speed_10m)}mph`;
+                var el = document.getElementById('weatherHeader');
+                if (el) el.textContent = '🌤 ' + Math.round(d.current.temperature_2m) + '°F | 💨 ' + Math.round(d.current.wind_speed_10m) + 'mph';
             }
-        }).catch(() => {});
+        }).catch(function() {});
 }
 updateWeather();
 
-document.addEventListener('keydown', e => {
-    const typing = ['input','select','textarea'].includes((e.target.tagName||'').toLowerCase()) || e.target.isContentEditable;
+document.addEventListener('keydown', function(e) {
+    var typing = ['input','select','textarea'].indexOf((e.target.tagName||'').toLowerCase()) !== -1 || e.target.isContentEditable;
     if (e.code === 'Space' && !typing) { e.preventDefault(); if (S.gc.run) pauseGC(); else startGC(); }
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') { e.preventDefault(); fnlCloudSaveAll(); }
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z' && !typing) { e.preventDefault(); undoLastEvent(); }
@@ -1972,7 +2019,7 @@ updateUndoButton();
 updateHeaderBranding();
 saveState();
 
-const sb = document.getElementById('scorebug');
+var sb = document.getElementById('scorebug');
 if (sb && S.scorebugMode === 'compact') {
     sb.classList.add('compact');
 }
