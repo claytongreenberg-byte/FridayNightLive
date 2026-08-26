@@ -3039,79 +3039,117 @@ html += `</label>`;
         document.getElementById('main').innerHTML = html;
     }
 
-    // ---- SMART PARSER ----
-    function parseRosterText(teamId) {
-        const tx = document.getElementById('parseArea').value.trim();
-        const team = S.teams.find(t => t.id === teamId);
-        if (!team) return;
-        if (!tx) return toast('⚠️ Empty input');
+  function parseRosterText(teamId) {
+    const tx = document.getElementById('parseArea').value.trim();
+    const team = S.teams.find(t => t.id === teamId);
+    if (!team) return;
+    if (!tx) return toast('⚠️ Empty input');
 
-        const lines = tx.split('\n');
-        const out = [];
-        const positionMap = {};
+    // Position mapping for non-standard positions
+    const positionMap = {
+        'Quick H': 'WR',
+        'Big H': 'TE',
+        'Q': 'QB',
+        'TB': 'RB'
+    };
+
+    const lines = tx.split('\n');
+    const out = [];
+    const seenPlayers = new Set();
+    
+    lines.forEach(l => {
+        if (!l.trim()) return;
         
-        lines.forEach(l => {
-            if (!l.trim()) return;
-            
-            let parts = l.split('\t').map(s => s.trim());
-            if (parts.length < 3) {
-                const match = l.match(/^(\d+)\s+(.+?)\s+([A-Z/]+)$/);
+        // Try tab first, then spaces
+        let parts = l.split('\t').map(s => s.trim());
+        
+        // If not enough parts, try regex
+        if (parts.length < 2) {
+            // Pattern: #52 Cameron Hayes LT
+            let match = l.match(/^#?\s*(\d+)\s+(.+?)\s+([A-Za-z/ ]+)$/);
+            if (match) {
+                parts = [match[1], match[2], match[3]];
+            } else {
+                // Pattern: Cameron Hayes LT (no number)
+                match = l.match(/^(.+?)\s+([A-Za-z/ ]+)$/);
                 if (match) {
-                    parts = [match[1], match[2], match[3]];
+                    parts = ['', match[1], match[2]];
                 } else {
-                    const match2 = l.match(/^(\d+)\s+(.+)$/);
-                    if (match2) {
-                        parts = [match2[1], match2[2], ''];
-                    } else {
-                        const match3 = l.match(/^(.+?)\s+([A-Z/]+)$/);
-                        if (match3) {
-                            parts = ['', match3[1], match3[2]];
-                        }
-                    }
+                    parts = ['', l.trim(), ''];
                 }
             }
-            
-            const number = parts[0] || '';
-            const name = parts[1] || 'Unknown Player';
-            let positionStr = parts[2] || '';
-            
-            const categories = getPositionCategories(positionStr);
-            const primaryPos = positionStr.split('/')[0].trim() || 'QB';
-            
-            const key = (number + name).toLowerCase();
-            if (positionMap[key]) return;
-            positionMap[key] = true;
-            
-            out.push({
-                id: 'p' + Date.now() + Math.random().toString(36).slice(2, 7),
-                n: number,
-                na: name,
-                po: primaryPos,
-                posFull: positionStr,
-                st: false,
-                nt: '',
-                pron: '',
-                ph: '',
-                pinned: false,
-                categories: categories
-            });
-        });
-        
-        out.sort((a, b) => {
-            const numA = parseInt(a.n) || 999;
-            const numB = parseInt(b.n) || 999;
-            return numA - numB;
-        });
-        
-        if (out.length) {
-            team.players = out;
-            saveState();
-            renderRoster();
-            toast(`✅ ${out.length} players parsed with smart categorization`);
-        } else {
-            toast('❌ No players found');
         }
+        
+        const number = parts[0] || '';
+        const name = parts[1] || 'Unknown Player';
+        let positionStr = parts[2] || '';
+        
+        // Clean up position
+        positionStr = positionStr.replace(/[^A-Za-z/ ]/g, '').trim();
+        
+        // Map non-standard positions
+        let mappedPosition = positionStr;
+        for (const [key, value] of Object.entries(positionMap)) {
+            if (positionStr === key) {
+                mappedPosition = value;
+                break;
+            }
+        }
+        
+        // Fix "Quick H" from depth chart format
+        if (positionStr === 'Quick H' || positionStr === 'Quick') {
+            mappedPosition = 'WR';
+        }
+        if (positionStr === 'Big H') {
+            mappedPosition = 'TE';
+        }
+        
+        // Determine if player is a starter based on depth chart
+        // The depth chart shows starters in row 1 under each position
+        const starterPositions = ['LT', 'LG', 'C', 'RG', 'RT', 'Y', 'Z', 'WR', 'QB', 'RB', 'TE'];
+        const isStarter = starterPositions.includes(mappedPosition) || 
+                         (mappedPosition === 'WR' && positionStr === 'Quick H') ||
+                         (mappedPosition === 'TE' && positionStr === 'Big H');
+        
+        const categories = getPositionCategories(mappedPosition);
+        const primaryPos = mappedPosition.split('/')[0].trim() || 'QB';
+        
+        // Use number + name as unique key (without # symbol)
+        const key = (number + name).toLowerCase();
+        if (seenPlayers.has(key)) return;
+        seenPlayers.add(key);
+        
+        out.push({
+            id: 'p' + Date.now() + Math.random().toString(36).slice(2, 7),
+            n: number,
+            na: name,
+            po: primaryPos,
+            posFull: mappedPosition || positionStr,
+            st: isStarter,
+            nt: '',
+            pron: '',
+            ph: '',
+            pinned: false,
+            categories: categories
+        });
+    });
+    
+    // Sort by number
+    out.sort((a, b) => {
+        const numA = parseInt(a.n) || 999;
+        const numB = parseInt(b.n) || 999;
+        return numA - numB;
+    });
+    
+    if (out.length) {
+        team.players = out;
+        saveState();
+        renderRoster();
+        toast(`✅ ${out.length} players parsed with smart categorization`);
+    } else {
+        toast('❌ No players found');
     }
+}
 
     function selectTeam(id) { S.cid = id;
         renderRoster(); }
