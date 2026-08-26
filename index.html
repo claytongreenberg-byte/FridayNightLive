@@ -18,13 +18,13 @@
         .brand-text p{font-size:.5rem;color:var(--accent);opacity:.9}
         .hdr-top-right{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
         .wall-clock,.weather-pill{color:var(--accent);font-weight:700;font-size:.6rem;background:rgba(0,0,0,.4);border:1px solid var(--accent);border-radius:5px;padding:2px 6px;white-space:nowrap}
-        .hdr-btn{background:#334155;color:#fff;border:1px solid #475569;border-radius:16px;padding:4px 8px;font-size:.58rem;cursor:pointer;white-space:nowrap;min-height:24px;transition:all .15s}
-        .hdr-btn:hover{background:#475569}
+        .hdr-btn{background:#334155;color:#fff;border:1px solid #475569;border-radius:16px;padding:4px 8px;font-size:.58rem;cursor:pointer;white-space:nowrap;min-height:24px;transition:all .15s;display:inline-flex;align-items:center;gap:4px}
+        .hdr-btn:hover{background:#475569;transform:scale(1.02)}
         .hdr-btn.save-btn{background:#16a34a;border-color:#16a34a}
         .hdr-btn.save-btn:hover{background:#15803d}
         .hdr-btn.undo-btn{background:#dc2626;border-color:#dc2626}
         .hdr-btn.undo-btn:hover{background:#b91c1c}
-        .hdr-btn.undo-btn:disabled{opacity:.4;cursor:not-allowed}
+        .hdr-btn.undo-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
         .hdr-bottom{display:flex;justify-content:center;align-items:center;gap:6px;margin-top:6px}
         .save-status{font-size:.5rem;color:var(--accent);background:rgba(0,0,0,.4);padding:2px 8px;border-radius:10px;white-space:nowrap}
         .save-status.saved{color:#4ade80}
@@ -111,7 +111,7 @@
         .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:#fff;padding:6px 14px;border-radius:16px;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;font-size:.75rem;backdrop-filter:blur(10px)}
         .toast.show{opacity:1}
         .player-list-body{flex:1;overflow-y:auto;padding:4px 5px}
-        .player-row{display:grid;grid-template-columns:4px 28px 1fr 60px 26px 20px;gap:3px;align-items:center;padding:4px 4px;border-bottom:1px solid rgba(0,0,0,.1);font-size:.65rem;border-left:4px solid transparent}
+        .player-row{display:grid;grid-template-columns:4px 28px 1fr 70px 26px 20px;gap:3px;align-items:center;padding:4px 4px;border-bottom:1px solid rgba(0,0,0,.1);font-size:.65rem;border-left:4px solid transparent}
         .player-row:last-child{border-bottom:none}
         .player-row.category-offense{border-left-color:var(--badge-offense)}
         .player-row.category-defense{border-left-color:var(--badge-defense)}
@@ -183,8 +183,8 @@
         .unit-tab.defense-tab.active{background:var(--badge-defense);color:#fff}
         .unit-tab.special-tab{color:var(--badge-special)}
         .unit-tab.special-tab.active{background:var(--badge-special);color:#fff}
-        @media(max-width:1024px){.scorebug{padding:8px 10px;min-height:130px;flex-wrap:wrap}.scorebug.compact{min-height:50px;padding:4px 6px}.scorebug.compact .sb-block{padding:0 4px;min-width:30px}.scorebug.compact .sb-team-name{font-size:1rem!important}.scorebug.compact .sb-val{font-size:1.5rem;min-width:24px}.scorebug.compact .game-clock{font-size:1.5rem}.scorebug.compact .sb-qtr{font-size:1.5rem}.scorebug.compact .sb-label{font-size:.45rem}.sb-block{padding:0 8px;min-width:40px}.sb-team-name{font-size:1.6rem}.sb-val{font-size:2.8rem;min-width:38px}.sb-qtr{font-size:2.4rem}.game-clock{font-size:2.8rem}.sb-btn{width:24px;height:24px;font-size:10px}.sb-game-btns button{font-size:.5rem;padding:3px 8px;min-height:22px}.last-event{font-size:.7rem;min-height:28px;max-width:280px}.game-controls-row{padding:4px 8px;gap:3px;min-height:34px;flex-wrap:nowrap;overflow-x:auto}.game-controls-row .pos-btn{padding:2px 8px;font-size:.55rem;min-width:40px}.game-controls-row .to-btn{padding:2px 6px;font-size:.45rem}.game-controls-row .gc-btn{font-size:.45rem;padding:2px 4px;min-height:18px}.game-controls-row select,.game-controls-row input{font-size:.45rem;min-height:18px}.game-controls-row .yd-input{width:28px}.player-row{grid-template-columns:4px 24px 1fr 50px 24px 18px;font-size:.6rem}.player-row input,.player-row select{font-size:.55rem;padding:2px}.cat-badge{font-size:.5rem;padding:1px 5px}.cat-legend{font-size:.5rem;gap:8px}.brand-logo{height:28px;max-width:50px}.brand-text h1{font-size:.75rem}.brand-text p{font-size:.45rem}.hdr-btn{font-size:.5rem;padding:3px 6px;min-height:20px}.wall-clock,.weather-pill{font-size:.5rem;padding:2px 4px}.quick-cues{gap:4px;padding:4px}.quick-cues button{font-size:.6rem;padding:4px 8px;min-height:24px}}
-        @media(max-width:768px){.scorebug{padding:6px 6px;min-height:100px;flex-wrap:wrap}.scorebug.compact{min-height:40px;padding:3px 4px}.scorebug.compact .sb-block{padding:0 3px;min-width:24px}.scorebug.compact .sb-team-name{font-size:.8rem!important}.scorebug.compact .sb-val{font-size:1.2rem;min-width:20px}.scorebug.compact .game-clock{font-size:1.2rem}.scorebug.compact .sb-qtr{font-size:1.2rem}.scorebug.compact .sb-label{font-size:.4rem}.scorebug.compact .sb-btn{width:16px;height:16px;font-size:7px}.scorebug.compact .sb-game-btns button{font-size:.3rem;padding:1px 3px;min-height:14px;min-width:20px}.scorebug.compact .last-event{font-size:.4rem;min-height:16px;padding:1px 4px;max-width:100px}.sb-block{padding:0 4px;min-width:30px}.sb-team-name{font-size:1.2rem;max-width:80px}.sb-val{font-size:2rem;min-width:30px}.sb-qtr{font-size:1.8rem}.game-clock{font-size:2.2rem}.sb-btn{width:20px;height:20px;font-size:9px}.sb-game-btns button{font-size:.4rem;padding:2px 6px;min-height:18px}.last-event{font-size:.55rem;min-height:22px;max-width:160px}.game-controls-row{padding:3px 4px;gap:2px;min-height:28px;flex-wrap:nowrap;overflow-x:auto}.game-controls-row .pos-btn{padding:2px 6px;font-size:.5rem;min-width:32px}.game-controls-row .to-btn{padding:2px 5px;font-size:.4rem}.game-controls-row .gc-btn{font-size:.4rem;padding:2px 4px;min-height:16px}.game-controls-row select,.game-controls-row input{font-size:.4rem;min-height:16px}.game-controls-row .yd-input{width:24px}.game-controls-row .label{font-size:.4rem}.team-cards{flex-direction:column;height:auto;min-height:140px}.roster-layout{flex-direction:column}.team-sidebar{width:100%;max-height:100px}.admin-color-grid{grid-template-columns:1fr}.quick-cues button{font-size:.6rem;padding:4px 8px;min-height:24px}.player-row{grid-template-columns:4px 20px 1fr 40px 20px 16px;font-size:.5rem;gap:2px;padding:2px}.player-row input,.player-row select{font-size:.45rem;padding:1px 2px}.player-row .pos-select-wrapper select{font-size:.45rem}.cat-badge{font-size:.4rem;padding:1px 4px}.st-toggle,.pin-btn,.delete-btn{width:16px;height:16px;font-size:.4rem}.cat-legend{font-size:.4rem;gap:4px}.brand-logo{height:24px;max-width:40px}.brand-text h1{font-size:.65rem}.brand-text p{font-size:.4rem}.hdr-btn{font-size:.45rem;padding:2px 5px;min-height:18px}.wall-clock,.weather-pill{font-size:.45rem;padding:2px 4px}}
+        @media(max-width:1024px){.scorebug{padding:8px 10px;min-height:130px;flex-wrap:wrap}.scorebug.compact{min-height:50px;padding:4px 6px}.scorebug.compact .sb-block{padding:0 4px;min-width:30px}.scorebug.compact .sb-team-name{font-size:1rem!important}.scorebug.compact .sb-val{font-size:1.5rem;min-width:24px}.scorebug.compact .game-clock{font-size:1.5rem}.scorebug.compact .sb-qtr{font-size:1.5rem}.scorebug.compact .sb-label{font-size:.45rem}.sb-block{padding:0 8px;min-width:40px}.sb-team-name{font-size:1.6rem}.sb-val{font-size:2.8rem;min-width:38px}.sb-qtr{font-size:2.4rem}.game-clock{font-size:2.8rem}.sb-btn{width:24px;height:24px;font-size:10px}.sb-game-btns button{font-size:.5rem;padding:3px 8px;min-height:22px}.last-event{font-size:.7rem;min-height:28px;max-width:280px}.game-controls-row{padding:4px 8px;gap:3px;min-height:34px;flex-wrap:nowrap;overflow-x:auto}.game-controls-row .pos-btn{padding:2px 8px;font-size:.55rem;min-width:40px}.game-controls-row .to-btn{padding:2px 6px;font-size:.45rem}.game-controls-row .gc-btn{font-size:.45rem;padding:2px 4px;min-height:18px}.game-controls-row select,.game-controls-row input{font-size:.45rem;min-height:18px}.game-controls-row .yd-input{width:28px}.player-row{grid-template-columns:4px 24px 1fr 60px 24px 18px;font-size:.6rem}.player-row input,.player-row select{font-size:.55rem;padding:2px}.cat-badge{font-size:.5rem;padding:1px 5px}.cat-legend{font-size:.5rem;gap:8px}.brand-logo{height:28px;max-width:50px}.brand-text h1{font-size:.75rem}.brand-text p{font-size:.45rem}.hdr-btn{font-size:.5rem;padding:3px 6px;min-height:20px}.wall-clock,.weather-pill{font-size:.5rem;padding:2px 4px}.quick-cues{gap:4px;padding:4px}.quick-cues button{font-size:.6rem;padding:4px 8px;min-height:24px}}
+        @media(max-width:768px){.scorebug{padding:6px 6px;min-height:100px;flex-wrap:wrap}.scorebug.compact{min-height:40px;padding:3px 4px}.scorebug.compact .sb-block{padding:0 3px;min-width:24px}.scorebug.compact .sb-team-name{font-size:.8rem!important}.scorebug.compact .sb-val{font-size:1.2rem;min-width:20px}.scorebug.compact .game-clock{font-size:1.2rem}.scorebug.compact .sb-qtr{font-size:1.2rem}.scorebug.compact .sb-label{font-size:.4rem}.scorebug.compact .sb-btn{width:16px;height:16px;font-size:7px}.scorebug.compact .sb-game-btns button{font-size:.3rem;padding:1px 3px;min-height:14px;min-width:20px}.scorebug.compact .last-event{font-size:.4rem;min-height:16px;padding:1px 4px;max-width:100px}.sb-block{padding:0 4px;min-width:30px}.sb-team-name{font-size:1.2rem;max-width:80px}.sb-val{font-size:2rem;min-width:30px}.sb-qtr{font-size:1.8rem}.game-clock{font-size:2.2rem}.sb-btn{width:20px;height:20px;font-size:9px}.sb-game-btns button{font-size:.4rem;padding:2px 6px;min-height:18px}.last-event{font-size:.55rem;min-height:22px;max-width:160px}.game-controls-row{padding:3px 4px;gap:2px;min-height:28px;flex-wrap:nowrap;overflow-x:auto}.game-controls-row .pos-btn{padding:2px 6px;font-size:.5rem;min-width:32px}.game-controls-row .to-btn{padding:2px 5px;font-size:.4rem}.game-controls-row .gc-btn{font-size:.4rem;padding:2px 4px;min-height:16px}.game-controls-row select,.game-controls-row input{font-size:.4rem;min-height:16px}.game-controls-row .yd-input{width:24px}.game-controls-row .label{font-size:.4rem}.team-cards{flex-direction:column;height:auto;min-height:140px}.roster-layout{flex-direction:column}.team-sidebar{width:100%;max-height:100px}.admin-color-grid{grid-template-columns:1fr}.quick-cues button{font-size:.6rem;padding:4px 8px;min-height:24px}.player-row{grid-template-columns:4px 20px 1fr 50px 20px 16px;font-size:.5rem;gap:2px;padding:2px}.player-row input,.player-row select{font-size:.45rem;padding:1px 2px}.cat-badge{font-size:.4rem;padding:1px 4px}.st-toggle,.pin-btn,.delete-btn{width:16px;height:16px;font-size:.4rem}.cat-legend{font-size:.4rem;gap:4px}.brand-logo{height:24px;max-width:40px}.brand-text h1{font-size:.65rem}.brand-text p{font-size:.4rem}.hdr-btn{font-size:.45rem;padding:2px 5px;min-height:18px}.wall-clock,.weather-pill{font-size:.45rem;padding:2px 4px}}
     </style>
 </head>
 <body>
@@ -205,12 +205,12 @@
             <span class="wall-clock" id="wallClock">12:00 AM</span>
             <span class="weather-pill" id="weatherHeader">--°F</span>
             <span class="save-status" id="saveStatus">💾 Auto-saved</span>
-            <button class="hdr-btn save-btn" onclick="fnlCloudSaveAll()">💾 SAVE ALL</button>
-            <button class="hdr-btn" id="themeBtn" onclick="toggleTheme()">🌙 Dark</button>
-            <button class="hdr-btn" id="outdoorBtn" onclick="toggleOutdoor()">🌤</button>
-            <button class="hdr-btn" onclick="printLU()">🖨️</button>
-            <button class="hdr-btn undo-btn" onclick="undoLastEvent()" id="undoBtn" disabled>↩ Undo</button>
-            <button class="hdr-btn" onclick="resetGame()" style="background:#dc2626;">RESET</button>
+            <button class="hdr-btn save-btn" onclick="fnlCloudSaveAll()" data-tooltip="Save all data to cloud">💾 SAVE ALL</button>
+            <button class="hdr-btn" id="themeBtn" onclick="toggleTheme()" data-tooltip="Toggle dark/light theme">🌙 Dark</button>
+            <button class="hdr-btn" id="outdoorBtn" onclick="toggleOutdoor()" data-tooltip="Toggle outdoor mode (larger text)">🌤</button>
+            <button class="hdr-btn" onclick="printLU()" data-tooltip="Print starting lineups">🖨️</button>
+            <button class="hdr-btn undo-btn" onclick="undoLastEvent()" id="undoBtn" disabled data-tooltip="Undo last action (Ctrl+Z)">↩ Undo</button>
+            <button class="hdr-btn" onclick="resetGame()" style="background:#dc2626;" data-tooltip="Reset entire game">RESET</button>
         </div>
     </div>
     <div class="hdr-bottom">
@@ -218,19 +218,19 @@
             <div class="scorebug" id="scorebug">
                 <span class="sb-network-tag">Voice of DFW Live</span>
                 <span class="live-pill" id="livePill"><span class="dot"></span><span id="livePillText">LIVE</span></span>
-                <div class="sb-block score-block" onclick="setPossession('away')">
+                <div class="sb-block score-block" onclick="setPossession('away')" data-tooltip="Click to set possession to Away">
                     <div class="sb-name-col">
                         <span class="sb-label">AWAY</span>
                         <span class="sb-team-name" id="sbAwayName" style="color:#ffffff;">AWAY</span>
                     </div>
                     <div class="sb-row">
-                        <button class="sb-btn" onclick="event.stopPropagation();chScore('away',-1)">−</button>
+                        <button class="sb-btn" onclick="event.stopPropagation();chScore('away',-1)" data-tooltip="Subtract 1 point">−</button>
                         <span class="sb-val" id="sbAwayScore">0</span>
-                        <button class="sb-btn" onclick="event.stopPropagation();chScore('away',1)">+</button>
+                        <button class="sb-btn" onclick="event.stopPropagation();chScore('away',1)" data-tooltip="Add 1 point">+</button>
                     </div>
                     <div class="sb-color-picker-wrapper">
-                        <button class="sb-btn" onclick="event.stopPropagation();uploadScorebugLogo('away')" style="width:22px;height:22px;font-size:10px;">📷</button>
-                        <input type="color" class="team-color-picker" id="awayColorPicker" onchange="event.stopPropagation();updateTeamColor('away',this.value)" value="#334155">
+                        <button class="sb-btn" onclick="event.stopPropagation();uploadScorebugLogo('away')" style="width:22px;height:22px;font-size:10px;" data-tooltip="Upload team logo">📷</button>
+                        <input type="color" class="team-color-picker" id="awayColorPicker" onchange="event.stopPropagation();updateTeamColor('away',this.value)" value="#334155" data-tooltip="Team color">
                     </div>
                     <div class="timeout-display">
                         <span class="timeout-label">TO:</span>
@@ -239,27 +239,27 @@
                         <span class="timeout-dot" id="awayTO3"></span>
                     </div>
                 </div>
-                <div class="sb-block">
+                <div class="sb-block" data-tooltip="Current quarter">
                     <span class="sb-label" style="font-size:0.7rem;color:var(--sb-text);opacity:0.85;font-weight:800;letter-spacing:2px;">QUARTER</span>
                     <span class="sb-qtr" id="sbQuarter">Q1</span>
                     <div class="sb-row">
-                        <button class="sb-btn" onclick="chQuarter(-1)">◀</button>
-                        <button class="sb-btn" onclick="chQuarter(1)">▶</button>
+                        <button class="sb-btn" onclick="chQuarter(-1)" data-tooltip="Previous quarter">◀</button>
+                        <button class="sb-btn" onclick="chQuarter(1)" data-tooltip="Next quarter">▶</button>
                     </div>
                 </div>
-                <div class="sb-block score-block" onclick="setPossession('home')">
+                <div class="sb-block score-block" onclick="setPossession('home')" data-tooltip="Click to set possession to Home">
                     <div class="sb-name-col">
                         <span class="sb-label">HOME</span>
                         <span class="sb-team-name" id="sbHomeName" style="color:#ffffff;">HOME</span>
                     </div>
                     <div class="sb-row">
-                        <button class="sb-btn" onclick="event.stopPropagation();chScore('home',-1)">−</button>
+                        <button class="sb-btn" onclick="event.stopPropagation();chScore('home',-1)" data-tooltip="Subtract 1 point">−</button>
                         <span class="sb-val" id="sbHomeScore">0</span>
-                        <button class="sb-btn" onclick="event.stopPropagation();chScore('home',1)">+</button>
+                        <button class="sb-btn" onclick="event.stopPropagation();chScore('home',1)" data-tooltip="Add 1 point">+</button>
                     </div>
                     <div class="sb-color-picker-wrapper">
-                        <button class="sb-btn" onclick="event.stopPropagation();uploadScorebugLogo('home')" style="width:22px;height:22px;font-size:10px;">📷</button>
-                        <input type="color" class="team-color-picker" id="homeColorPicker" onchange="event.stopPropagation();updateTeamColor('home',this.value)" value="#334155">
+                        <button class="sb-btn" onclick="event.stopPropagation();uploadScorebugLogo('home')" style="width:22px;height:22px;font-size:10px;" data-tooltip="Upload team logo">📷</button>
+                        <input type="color" class="team-color-picker" id="homeColorPicker" onchange="event.stopPropagation();updateTeamColor('home',this.value)" value="#334155" data-tooltip="Team color">
                     </div>
                     <div class="timeout-display">
                         <span class="timeout-label">TO:</span>
@@ -268,31 +268,31 @@
                         <span class="timeout-dot" id="homeTO3"></span>
                     </div>
                 </div>
-                <div class="sb-block clock-block">
+                <div class="sb-block clock-block" data-tooltip="Game clock">
                     <span class="sb-label" style="font-size:0.5rem;color:var(--sb-text);opacity:.35;">CLOCK</span>
                     <span class="game-clock" id="gameClockDisplay">8:00</span>
                     <div class="sb-row">
-                        <button class="sb-btn" onclick="startGC()">▶</button>
-                        <button class="sb-btn" onclick="pauseGC()">⏸</button>
-                        <button class="sb-btn" onclick="resetGC()">↺</button>
+                        <button class="sb-btn" onclick="startGC()" data-tooltip="Start clock (Space)">▶</button>
+                        <button class="sb-btn" onclick="pauseGC()" data-tooltip="Pause clock (Space)">⏸</button>
+                        <button class="sb-btn" onclick="resetGC()" data-tooltip="Reset clock">↺</button>
                     </div>
                 </div>
-                <div class="sb-block game-block">
+                <div class="sb-block game-block" data-tooltip="Game controls">
                     <span class="sb-label" style="font-size:0.5rem;color:var(--sb-text);opacity:.35;">GAME</span>
                     <div class="sb-game-btns">
-                        <button onclick="startGame()" id="btnStart">▶ Start</button>
-                        <button onclick="setHalftime()" id="btnHalf">⏸ Half</button>
-                        <button onclick="startSecondHalf()" id="btn2nd">⏭ 2nd</button>
-                        <button onclick="setOvertime()" id="btnOT">⏱ OT</button>
-                        <button onclick="endGame()" id="btnFinal">🏁 Final</button>
+                        <button onclick="startGame()" id="btnStart" data-tooltip="Start new game">▶ Start</button>
+                        <button onclick="setHalftime()" id="btnHalf" data-tooltip="Halftime">⏸ Half</button>
+                        <button onclick="startSecondHalf()" id="btn2nd" data-tooltip="Start 2nd half">⏭ 2nd</button>
+                        <button onclick="setOvertime()" id="btnOT" data-tooltip="Overtime">⏱ OT</button>
+                        <button onclick="endGame()" id="btnFinal" data-tooltip="End game">🏁 Final</button>
                     </div>
                     <div class="last-event" id="lastEvent">🏈 Ready — Set possession</div>
                 </div>
             </div>
             <div class="dd-ticker" id="ddTicker">🏈 SET POSSESSION TO BEGIN</div>
         </div>
-        <button class="sb-mode-btn" onclick="toggleScorebugMode()" id="sbModeBtn">📏</button>
-        <button class="sb-toggle-btn" onclick="toggleScorebugDisplay()">👁️</button>
+        <button class="sb-mode-btn" onclick="toggleScorebugMode()" id="sbModeBtn" data-tooltip="Toggle compact scorebug">📏</button>
+        <button class="sb-toggle-btn" onclick="toggleScorebugDisplay()" data-tooltip="Toggle scoreboard visibility">👁️</button>
     </div>
 </header>
 
@@ -352,7 +352,18 @@ let S = {
     ],
     scoringLog: [], penaltyLog: [], gameHistory: [], script: '', cp: {}, ap: '', im: true,
     ua: 'all', uh: 'all', cid: 'h',
-    colors: { scorebugBg: '#0d0d1a', scorebugText: '#ffffff', accent: '#facc15', teamCardAway: '#e2e8f0', teamCardHome: '#e2e8f0', teamCardBorder: '#94a3b8' }
+    colors: { 
+        scorebugBg: '#0d0d1a', 
+        scorebugText: '#ffffff', 
+        accent: '#facc15', 
+        teamCardAway: '#e2e8f0', 
+        teamCardHome: '#e2e8f0', 
+        teamCardBorder: '#94a3b8',
+        awayHeaderBg: '#1e3a5f',
+        homeHeaderBg: '#7f1d1d',
+        awayCardBg: '#e2e8f0',
+        homeCardBg: '#e2e8f0'
+    }
 };
 
 const STORAGE_KEY = 'fnl_v28';
@@ -411,7 +422,18 @@ function normalizeState() {
         var alt = S.teams.find(function(t) { return t.id !== S.awayId; });
         S.homeId = alt ? alt.id : S.awayId;
     }
-    if (!S.colors) S.colors = { scorebugBg: '#0d0d1a', scorebugText: '#ffffff', accent: '#facc15', teamCardAway: '#e2e8f0', teamCardHome: '#e2e8f0', teamCardBorder: '#94a3b8' };
+    if (!S.colors) S.colors = { 
+        scorebugBg: '#0d0d1a', 
+        scorebugText: '#ffffff', 
+        accent: '#facc15', 
+        teamCardAway: '#e2e8f0', 
+        teamCardHome: '#e2e8f0', 
+        teamCardBorder: '#94a3b8',
+        awayHeaderBg: '#1e3a5f',
+        homeHeaderBg: '#7f1d1d',
+        awayCardBg: '#e2e8f0',
+        homeCardBg: '#e2e8f0'
+    };
     if (!S.gc.max) S.gc.max = 480;
     if (!S.timeouts) S.timeouts = { away: 3, home: 3 };
     if (!S.timeoutConfig) {
@@ -692,6 +714,11 @@ function fnlCloudLoadSettingsOnly() {
                 S.colors.accent = data.colors.accent || S.colors.accent;
                 S.colors.teamCardAway = data.colors.teamCardAway || S.colors.teamCardAway;
                 S.colors.teamCardHome = data.colors.teamCardHome || S.colors.teamCardHome;
+                S.colors.teamCardBorder = data.colors.teamCardBorder || S.colors.teamCardBorder;
+                S.colors.awayHeaderBg = data.colors.awayHeaderBg || S.colors.awayHeaderBg;
+                S.colors.homeHeaderBg = data.colors.homeHeaderBg || S.colors.homeHeaderBg;
+                S.colors.awayCardBg = data.colors.awayCardBg || S.colors.awayCardBg;
+                S.colors.homeCardBg = data.colors.homeCardBg || S.colors.homeCardBg;
             }
             if (data.md7 !== undefined) S.md7 = data.md7;
             if (data.gc && data.gc.max !== undefined) S.gc.max = data.gc.max;
@@ -803,6 +830,14 @@ function updateGameClockDisplay() {
     var m = Math.floor(S.gc.rem / 60);
     var s = S.gc.rem % 60;
     el.textContent = m + ':' + String(s).padStart(2, '0');
+    // Also update clock status color
+    if (S.gc.run) {
+        el.style.color = '#00ff88';
+        el.className = 'game-clock';
+    } else {
+        el.style.color = 'var(--sb-text)';
+        el.className = 'game-clock paused';
+    }
 }
 
 function updateDDTicker() {
@@ -880,6 +915,7 @@ function startGC() {
     S.gc.run = true;
     toast('▶️ Clock running');
     updateGameClockDisplay();
+    updateClockStatusIndicator();
     saveState();
 }
 
@@ -887,6 +923,7 @@ function pauseGC() {
     S.gc.run = false;
     toast('⏸️ Clock paused');
     updateGameClockDisplay();
+    updateClockStatusIndicator();
     saveState();
 }
 
@@ -894,6 +931,7 @@ function resetGC() {
     S.gc.run = false;
     S.gc.rem = S.gc.max || 480;
     updateGameClockDisplay();
+    updateClockStatusIndicator();
     saveState();
 }
 
@@ -907,18 +945,51 @@ function setPossession(side) {
     saveState();
 }
 
+function updateClockStatusIndicator() {
+    var el = document.getElementById('clockStatusIndicator');
+    if (el) {
+        el.textContent = S.gc.run ? '▶ LIVE' : '⏸ PAUSED';
+        el.className = 'clock-status ' + (S.gc.run ? 'running' : 'paused');
+    }
+}
+
+function applyColors() {
+    var el = document.getElementById('scorebug');
+    if (el) {
+        el.style.setProperty('--accent', S.colors.accent);
+        el.style.setProperty('--scorebug-bg', S.colors.scorebugBg);
+        el.style.setProperty('--scorebug-text', S.colors.scorebugText);
+    }
+    // Apply team card colors
+    document.querySelectorAll('.team-card.away-card').forEach(function(card) {
+        card.style.background = S.colors.awayCardBg || '#e2e8f0';
+    });
+    document.querySelectorAll('.team-card.home-card').forEach(function(card) {
+        card.style.background = S.colors.homeCardBg || '#e2e8f0';
+    });
+    // Apply header colors
+    document.querySelectorAll('.card-head').forEach(function(head) {
+        var card = head.closest('.team-card');
+        if (card && card.classList.contains('away-card')) {
+            head.style.background = S.colors.awayHeaderBg || '#1e3a5f';
+        } else if (card && card.classList.contains('home-card')) {
+            head.style.background = S.colors.homeHeaderBg || '#7f1d1d';
+        }
+    });
+}
+
 // ============================================================
 // GAME VIEW
 // ============================================================
 function renderGame() {
     var html = '';
     html += '<div class="quick-cues">';
-    html += '<button onclick="quickCue(\'🔻 FIRST DOWN\')">🔻 First Down</button>';
-    html += '<button onclick="quickCue(\'🦵 PUNT\')">🦵 Punt</button>';
-    html += '<button onclick="quickCue(\'🔄 INTERCEPTION\')">🔄 INT</button>';
-    html += '<button onclick="quickCue(\'😱 FUMBLE\')">😱 Fumble</button>';
-    html += '<button onclick="quickCue(\'⏱️ END OF QUARTER\')">⏱️ End Qtr</button>';
-    html += '<button class="flag" onclick="quickPenalty()">🚩 FLAG</button>';
+    html += '<button onclick="quickCue(\'🔻 FIRST DOWN\')" data-tooltip="Announce first down">🔻 First Down</button>';
+    html += '<button onclick="quickCue(\'🦵 PUNT\')" data-tooltip="Announce punt">🦵 Punt</button>';
+    html += '<button onclick="quickCue(\'🔄 INTERCEPTION\')" data-tooltip="Announce interception">🔄 INT</button>';
+    html += '<button onclick="quickCue(\'😱 FUMBLE\')" data-tooltip="Announce fumble">😱 Fumble</button>';
+    html += '<button onclick="quickCue(\'⏱️ END OF QUARTER\')" data-tooltip="Announce end of quarter">⏱️ End Qtr</button>';
+    html += '<button class="flag" onclick="quickPenalty()" data-tooltip="Flag a penalty">🚩 FLAG</button>';
     html += '</div>';
 
     var awayTeam = getTeam('away');
@@ -930,50 +1001,51 @@ function renderGame() {
 
     html += '<div class="game-controls-row">';
     html += '<span class="label">🏈</span>';
-    html += '<button class="pos-btn ' + (S.poss === 'away' ? 'active' : '') + '" onclick="setPossession(\'away\')" style="' + (S.poss === 'away' ? 'background:' + awayColor + ';border-color:' + awayColor + ';' : 'border-color:' + awayColor + ';') + '">' + awayLogo + ' ' + getTeamMascot(awayTeam) + '</button>';
-    html += '<button class="pos-btn ' + (S.poss === 'home' ? 'active' : '') + '" onclick="setPossession(\'home\')" style="' + (S.poss === 'home' ? 'background:' + homeColor + ';border-color:' + homeColor + ';' : 'border-color:' + homeColor + ';') + '">' + homeLogo + ' ' + getTeamMascot(homeTeam) + '</button>';
-    html += '<button class="to-btn" onclick="useTimeout(\'away\')">⏱ AWAY</button>';
-    html += '<button class="to-btn" onclick="useTimeout(\'home\')">⏱ HOME</button>';
-    html += '<button class="to-btn injury-btn" onclick="injuryTimeout()">🆘 INJ</button>';
-    html += '<span class="clock-status ' + (S.gc.run ? 'running' : 'paused') + '" id="clockStatusIndicator">' + (S.gc.run ? '▶ LIVE' : '⏸ PAUSED') + '</span>';
+    html += '<button class="pos-btn ' + (S.poss === 'away' ? 'active' : '') + '" onclick="setPossession(\'away\')" style="' + (S.poss === 'away' ? 'background:' + awayColor + ';border-color:' + awayColor + ';' : 'border-color:' + awayColor + ';') + '" data-tooltip="Give possession to Away">' + awayLogo + ' ' + getTeamMascot(awayTeam) + '</button>';
+    html += '<button class="pos-btn ' + (S.poss === 'home' ? 'active' : '') + '" onclick="setPossession(\'home\')" style="' + (S.poss === 'home' ? 'background:' + homeColor + ';border-color:' + homeColor + ';' : 'border-color:' + homeColor + ';') + '" data-tooltip="Give possession to Home">' + homeLogo + ' ' + getTeamMascot(homeTeam) + '</button>';
+    html += '<button class="to-btn" onclick="useTimeout(\'away\')" data-tooltip="Call away timeout">⏱ AWAY</button>';
+    html += '<button class="to-btn" onclick="useTimeout(\'home\')" data-tooltip="Call home timeout">⏱ HOME</button>';
+    html += '<button class="to-btn injury-btn" onclick="injuryTimeout()" data-tooltip="Injury timeout (clock paused, no TO charged)">🆘 INJ</button>';
+    html += '<span class="clock-status ' + (S.gc.run ? 'running' : 'paused') + '" id="clockStatusIndicator" data-tooltip="Clock status">' + (S.gc.run ? '▶ LIVE' : '⏸ PAUSED') + '</span>';
     html += '<span class="divider"></span>';
     html += '<span class="label">DOWN</span>';
-    html += '<select onchange="setDown(this.value)">' + [1,2,3,4].map(function(d) { return '<option ' + (d === S.down ? 'selected' : '') + '>' + d + '</option>'; }).join('') + '</select>';
+    html += '<select onchange="setDown(this.value)" data-tooltip="Set down">' + [1,2,3,4].map(function(d) { return '<option ' + (d === S.down ? 'selected' : '') + '>' + d + '</option>'; }).join('') + '</select>';
     html += '<span class="label">YDS</span>';
-    html += '<input type="number" value="' + S.dist + '" min="1" max="99" style="width:32px;" onchange="setDist(this.value)" class="yd-input">';
-    html += '<button class="gc-btn" onclick="adjustYards(-1)">-1</button>';
-    html += '<button class="gc-btn" onclick="adjustYards(1)">+1</button>';
+    html += '<input type="number" value="' + S.dist + '" min="1" max="99" style="width:32px;" onchange="setDist(this.value)" class="yd-input" data-tooltip="Set yards to go">';
+    html += '<button class="gc-btn" onclick="adjustYards(-1)" data-tooltip="-1 yard">-1</button>';
+    html += '<button class="gc-btn" onclick="adjustYards(1)" data-tooltip="+1 yard">+1</button>';
     html += '<span class="divider"></span>';
     html += '<span class="label">SCORE</span>';
-    html += '<button class="gc-btn td" onclick="quickScore(\'td\')">TD</button>';
-    html += '<button class="gc-btn fg" onclick="quickScore(\'fg\')">FG</button>';
-    html += '<button class="gc-btn twopt" onclick="quickScore(\'twopt\')">2PT</button>';
-    html += '<button class="gc-btn pat" onclick="quickScore(\'pat\')">PAT</button>';
-    html += '<button class="gc-btn safety" onclick="quickScore(\'safety\')">Safe</button>';
-    html += '<button class="gc-btn load-btn" onclick="fnlCloudLoadGameState()">📥LOAD</button>';
+    html += '<button class="gc-btn td" onclick="quickScore(\'td\')" data-tooltip="Touchdown +6">TD</button>';
+    html += '<button class="gc-btn fg" onclick="quickScore(\'fg\')" data-tooltip="Field Goal +3">FG</button>';
+    html += '<button class="gc-btn twopt" onclick="quickScore(\'twopt\')" data-tooltip="2-Point Conversion +2">2PT</button>';
+    html += '<button class="gc-btn pat" onclick="quickScore(\'pat\')" data-tooltip="PAT +1">PAT</button>';
+    html += '<button class="gc-btn safety" onclick="quickScore(\'safety\')" data-tooltip="Safety +2">Safe</button>';
+    html += '<button class="gc-btn load-btn" onclick="fnlCloudLoadGameState()" data-tooltip="Load game state from cloud">📥LOAD</button>';
     html += '</div>';
 
     html += '<div class="team-cards">';
     ['away','home'].forEach(function(side) {
         var team = getTeam(side);
         var filter = S[side === 'away' ? 'ua' : 'uh'] || 'all';
+        var headerBg = side === 'away' ? (S.colors.awayHeaderBg || '#1e3a5f') : (S.colors.homeHeaderBg || '#7f1d1d');
         html += '<div class="team-card ' + side + '-card">';
-        html += '<div class="card-head" style="background:' + team.color + ';">';
+        html += '<div class="card-head" style="background:' + headerBg + ';">';
         html += '<span>' + side.toUpperCase() + '</span>';
         if (team.logo) html += '<img class="mini-logo" src="' + team.logo + '" alt="">';
-        html += '<select onchange="setSideTeam(\'' + side + '\', this.value)" style="border-color:' + team.color + ';">' + S.teams.map(function(t) { return '<option value="' + t.id + '" ' + (t.id === team.id ? 'selected' : '') + '>' + t.name + '</option>'; }).join('') + '</select>';
-        html += '<button class="sb-btn" onclick="setPossession(\'' + side + '\')" style="width:22px;height:22px;">🏈</button>';
+        html += '<select onchange="setSideTeam(\'' + side + '\', this.value)" style="border-color:' + team.color + ';" data-tooltip="Switch team">' + S.teams.map(function(t) { return '<option value="' + t.id + '" ' + (t.id === team.id ? 'selected' : '') + '>' + t.name + '</option>'; }).join('') + '</select>';
+        html += '<button class="sb-btn" onclick="setPossession(\'' + side + '\')" style="width:22px;height:22px;" data-tooltip="Give ball to this team">🏈</button>';
         html += '</div>';
         html += '<div class="unit-tabs">';
         var allActive = filter === 'all' ? 'active' : '';
-        html += '<button class="unit-tab all-tab ' + allActive + '" onclick="setFilter(\'' + side + '\',\'all\')">ALL</button>';
+        html += '<button class="unit-tab all-tab ' + allActive + '" onclick="setFilter(\'' + side + '\',\'all\')" data-tooltip="Show all players">ALL</button>';
         if (S.md7 === 'tackle') {
             var offActive = filter === 'offense' ? 'active' : '';
-            html += '<button class="unit-tab offense-tab ' + offActive + '" onclick="setFilter(\'' + side + '\',\'offense\')">OFF</button>';
+            html += '<button class="unit-tab offense-tab ' + offActive + '" onclick="setFilter(\'' + side + '\',\'offense\')" data-tooltip="Show offense">OFF</button>';
             var defActive = filter === 'defense' ? 'active' : '';
-            html += '<button class="unit-tab defense-tab ' + defActive + '" onclick="setFilter(\'' + side + '\',\'defense\')">DEF</button>';
+            html += '<button class="unit-tab defense-tab ' + defActive + '" onclick="setFilter(\'' + side + '\',\'defense\')" data-tooltip="Show defense">DEF</button>';
             var stActive = filter === 'special' ? 'active' : '';
-            html += '<button class="unit-tab special-tab ' + stActive + '" onclick="setFilter(\'' + side + '\',\'special\')">ST</button>';
+            html += '<button class="unit-tab special-tab ' + stActive + '" onclick="setFilter(\'' + side + '\',\'special\')" data-tooltip="Show special teams">ST</button>';
         }
         html += '</div>';
         html += '<div class="player-list-body">';
@@ -984,16 +1056,16 @@ function renderGame() {
             var isPinned = p.pinned || false;
             html += '<div class="player-row category-' + catClass + (isPinned ? ' pinned' : '') + (p.st ? ' starter' : '') + '">';
             html += '<div style="width:4px;border-radius:2px;" title="Category bar"></div>';
-            html += '<input value="' + p.n + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'n\',this.value)" style="width:28px;" placeholder="#">';
-            html += '<input value="' + p.na + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'na\',this.value)" placeholder="Name">';
-            html += '<select onchange="updateGamePlayerPositionOnly(\'' + side + '\',\'' + p.id + '\',this.value)">';
+            html += '<input value="' + p.n + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'n\',this.value)" style="width:28px;" placeholder="#" data-tooltip="Jersey number">';
+            html += '<input value="' + p.na + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'na\',this.value)" placeholder="Name" data-tooltip="Player name">';
+            html += '<select onchange="updateGamePlayerPositionOnly(\'' + side + '\',\'' + p.id + '\',this.value)" data-tooltip="Position">';
             allPosOptions.forEach(function(opt) {
                 var selected = (opt.value === (p.posFull || p.po)) ? 'selected' : '';
                 html += '<option ' + selected + ' value="' + opt.value + '">' + opt.display + '</option>';
             });
             html += '</select>';
-            html += '<button class="st-toggle ' + (p.st ? 'active' : '') + '" onclick="toggleStarterOnly(\'' + side + '\',\'' + p.id + '\')" title="Starter">⭐</button>';
-            html += '<button class="pin-btn ' + (isPinned ? 'active' : '') + '" onclick="togglePinOnly(\'' + side + '\',\'' + p.id + '\')" title="Pin to top">📌</button>';
+            html += '<button class="st-toggle ' + (p.st ? 'active' : '') + '" onclick="toggleStarterOnly(\'' + side + '\',\'' + p.id + '\')" title="Toggle starter status" data-tooltip="Toggle starter status">⭐</button>';
+            html += '<button class="pin-btn ' + (isPinned ? 'active' : '') + '" onclick="togglePinOnly(\'' + side + '\',\'' + p.id + '\')" title="Pin to top" data-tooltip="Pin to top of list">📌</button>';
             html += '</div>';
         });
         html += '</div></div>';
@@ -1053,23 +1125,6 @@ function setFilter(side, f) {
     renderGame();
 }
 
-function updateClockStatusIndicator() {
-    var el = document.getElementById('clockStatusIndicator');
-    if (el) {
-        el.textContent = S.gc.run ? '▶ LIVE' : '⏸ PAUSED';
-        el.className = 'clock-status ' + (S.gc.run ? 'running' : 'paused');
-    }
-}
-
-function applyColors() {
-    var el = document.getElementById('scorebug');
-    if (el) {
-        el.style.setProperty('--accent', S.colors.accent);
-        el.style.setProperty('--scorebug-bg', S.colors.scorebugBg);
-        el.style.setProperty('--scorebug-text', S.colors.scorebugText);
-    }
-}
-
 // ============================================================
 // GAME CONTROLS
 // ============================================================
@@ -1083,6 +1138,7 @@ function useTimeout(side) {
     setLastEvent('⏱️ ' + side.toUpperCase() + ' TIMEOUT — ' + S.timeouts[key] + ' remaining', 'timeout');
     updateTimeoutDisplay();
     updateGameClockDisplay();
+    updateClockStatusIndicator();
     saveState();
     toast('⏱️ ' + side.toUpperCase() + ' timeout — ' + S.timeouts[key] + ' remaining');
 }
@@ -1092,6 +1148,7 @@ function injuryTimeout() {
     S.gc.run = false;
     setLastEvent('🆘 INJURY TIMEOUT — Clock paused', 'injury');
     updateGameClockDisplay();
+    updateClockStatusIndicator();
     saveState();
     toast('🆘 Injury timeout — Clock paused');
 }
@@ -1360,35 +1417,36 @@ function renderRoster() {
     html += '<div class="team-sidebar">';
     html += '<div class="panel-header" style="flex-direction:column;align-items:stretch;gap:4px;">';
     html += '<h4 style="margin-bottom:4px;font-size:0.8rem;">TEAMS</h4>';
-    html += '<button class="hdr-btn" onclick="fnlCloudLoadRostersOnly()">📥 LOAD ROSTERS</button>';
+    html += '<button class="hdr-btn" onclick="fnlCloudLoadRostersOnly()" data-tooltip="Load rosters from cloud">📥 LOAD ROSTERS</button>';
     html += '</div>';
     sortedTeams.forEach(function(t) {
         var badge = (t.id === S.awayId ? ' ✈️' : '') + (t.id === S.homeId ? ' 🏠' : '');
         html += '<div class="team-item ' + (t.id === S.cid ? 'active' : '') + '" onclick="selectTeam(\'' + t.id + '\')" data-tooltip="' + t.players.length + ' players">' + t.name + ' (' + t.players.length + ')' + badge + '</div>';
     });
-    html += '<button class="hdr-btn" style="margin-top:8px;width:100%;" onclick="newTeam()">➕ New Team</button>';
+    html += '<button class="hdr-btn" style="margin-top:8px;width:100%;" onclick="newTeam()" data-tooltip="Create a new team">➕ New Team</button>';
     html += '<div style="margin-top:8px;font-size:0.5rem;opacity:0.6;text-align:center;">Teams sync via cloud — Save All then Load Rosters</div>';
     html += '</div>';
     html += '<div class="roster-workspace">';
     html += '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:8px;">';
-    html += '<input id="etn" value="' + selectedTeam.name + '" placeholder="Team Name" style="flex:1;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.7rem;">';
-    html += '<input id="eta" value="' + (selectedTeam.abbr || '') + '" placeholder="ABBR" maxlength="4" style="width:55px;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);text-transform:uppercase;font-size:0.7rem;">';
-    html += '<input type="color" id="etc" value="' + selectedTeam.color + '" style="width:35px;height:28px;">';
-    html += '<input type="color" id="ettc" value="' + (selectedTeam.textColor || '#ffffff') + '" style="width:35px;height:28px;">';
-    html += '<input id="etm" value="' + (selectedTeam.mascot || '') + '" placeholder="Mascot" style="width:80px;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.7rem;">';
-    html += '<input id="etco" value="' + (selectedTeam.coach || '') + '" placeholder="Coach" style="width:80px;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.7rem;">';
-    html += '<img id="etl" src="' + selectedTeam.logo + '" style="width:28px;height:28px;border-radius:50%;object-fit:cover;' + (selectedTeam.logo ? '' : 'display:none') + '">';
+    html += '<input id="etn" value="' + selectedTeam.name + '" placeholder="Team Name" style="flex:1;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.7rem;" data-tooltip="Team name">';
+    html += '<input id="eta" value="' + (selectedTeam.abbr || '') + '" placeholder="ABBR" maxlength="4" style="width:55px;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);text-transform:uppercase;font-size:0.7rem;" data-tooltip="Team abbreviation (max 4 chars)">';
+    html += '<input type="color" id="etc" value="' + selectedTeam.color + '" style="width:35px;height:28px;" data-tooltip="Primary team color" onchange="document.getElementById(\'ettc\').value = this.value">';
+    html += '<input type="color" id="ettc" value="' + (selectedTeam.textColor || '#ffffff') + '" style="width:35px;height:28px;" data-tooltip="Text color">';
+    html += '<button class="hdr-btn" onclick="document.getElementById(\'ettc\').value = document.getElementById(\'etc\').value; syncTextColor();" data-tooltip="Copy primary color to text color" style="font-size:0.5rem;padding:2px 6px;">🔄 Sync</button>';
+    html += '<input id="etm" value="' + (selectedTeam.mascot || '') + '" placeholder="Mascot" style="width:80px;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.7rem;" data-tooltip="Team mascot">';
+    html += '<input id="etco" value="' + (selectedTeam.coach || '') + '" placeholder="Coach" style="width:80px;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.7rem;" data-tooltip="Coach name">';
+    html += '<img id="etl" src="' + selectedTeam.logo + '" style="width:28px;height:28px;border-radius:50%;object-fit:cover;' + (selectedTeam.logo ? '' : 'display:none') + '" data-tooltip="Team logo">';
     html += '<input type="file" id="etlf" accept="image/*" style="display:none;" onchange="previewTeamLogo(this)">';
-    html += '<button class="hdr-btn" onclick="document.getElementById(\'etlf\').click()">📷</button>';
-    html += '<button class="hdr-btn" onclick="saveTeam()">💾 Save</button>';
-    html += '<button class="hdr-btn" onclick="printRoster(\'' + selectedTeam.id + '\')">🖨️</button>';
-    html += '<button class="hdr-btn" onclick="exportTeamCSV(\'' + selectedTeam.id + '\')">📊</button>';
-    html += '<button class="hdr-btn" onclick="deleteTeamById(\'' + selectedTeam.id + '\')">🗑️</button>';
-    html += '<button class="hdr-btn" onclick="recategorizeTeam(\'' + selectedTeam.id + '\')">🔄 Recat</button>';
+    html += '<button class="hdr-btn" onclick="document.getElementById(\'etlf\').click()" data-tooltip="Upload team logo">📷</button>';
+    html += '<button class="hdr-btn" onclick="saveTeam()" data-tooltip="Save team changes">💾 Save</button>';
+    html += '<button class="hdr-btn" onclick="printRoster(\'' + selectedTeam.id + '\')" data-tooltip="Print roster">🖨️</button>';
+    html += '<button class="hdr-btn" onclick="exportTeamCSV(\'' + selectedTeam.id + '\')" data-tooltip="Export as CSV">📊</button>';
+    html += '<button class="hdr-btn" style="background:#dc2626;" onclick="deleteTeamById(\'' + selectedTeam.id + '\')" data-tooltip="Delete this team">🗑️</button>';
+    html += '<button class="hdr-btn" style="background:#8b5cf6;" onclick="recategorizeTeam(\'' + selectedTeam.id + '\')" data-tooltip="Recategorize all players based on positions">🔄 Recat</button>';
     html += '</div>';
     html += '<div style="display:flex;gap:4px;margin-bottom:8px;">';
-    html += '<button class="hdr-btn ' + (selectedTeam.id === S.awayId ? 'active' : '') + '" onclick="setSideTeam(\'away\',\'' + selectedTeam.id + '\')">✈️ Away</button>';
-    html += '<button class="hdr-btn ' + (selectedTeam.id === S.homeId ? 'active' : '') + '" onclick="setSideTeam(\'home\',\'' + selectedTeam.id + '\')">🏠 Home</button>';
+    html += '<button class="hdr-btn ' + (selectedTeam.id === S.awayId ? 'active' : '') + '" onclick="setSideTeam(\'away\',\'' + selectedTeam.id + '\')" data-tooltip="Set as away team">✈️ Away</button>';
+    html += '<button class="hdr-btn ' + (selectedTeam.id === S.homeId ? 'active' : '') + '" onclick="setSideTeam(\'home\',\'' + selectedTeam.id + '\')" data-tooltip="Set as home team">🏠 Home</button>';
     html += '</div>';
     html += '<div class="cat-legend">';
     html += '<span class="legend-item"><span class="cat-dot offense"></span> Offense</span>';
@@ -1405,26 +1463,26 @@ function renderRoster() {
         var cats = p.categories || ['all'];
         var catClass = getCategoryClass(cats);
         html += '<div style="display:grid;grid-template-columns:32px 1fr 70px 50px 70px 70px 26px;gap:3px;margin-bottom:2px;align-items:center;' + (p.st ? 'border-left:3px solid #facc15;padding-left:2px;' : '') + '">';
-        html += '<input value="' + p.n + '" onchange="updatePlayerField(\'' + selectedTeam.id + '\',' + pidx + ',\'n\',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">';
-        html += '<input value="' + p.na + '" onchange="updatePlayerField(\'' + selectedTeam.id + '\',' + pidx + ',\'na\',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">';
-        html += '<select onchange="updatePlayerField(\'' + selectedTeam.id + '\',' + pidx + ',\'posFull\',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">';
+        html += '<input value="' + p.n + '" onchange="updatePlayerField(\'' + selectedTeam.id + '\',' + pidx + ',\'n\',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;" data-tooltip="Jersey number">';
+        html += '<input value="' + p.na + '" onchange="updatePlayerField(\'' + selectedTeam.id + '\',' + pidx + ',\'na\',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;" data-tooltip="Player name">';
+        html += '<select onchange="updatePlayerField(\'' + selectedTeam.id + '\',' + pidx + ',\'posFull\',this.value)" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;" data-tooltip="Position">';
         allPosOptions.forEach(function(o) {
             var selected = (p.posFull || p.po) === o.value ? 'selected' : '';
             html += '<option ' + selected + ' value="' + o.value + '">' + o.display + '</option>';
         });
         html += '</select>';
-        html += '<button class="st-toggle ' + (p.st ? 'active' : '') + '" onclick="toggleRosterStarter(\'' + selectedTeam.id + '\',' + pidx + ')" style="background:none;border:2px solid ' + (p.st ? '#facc15' : 'var(--border)') + ';border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:0.7rem;display:flex;align-items:center;justify-content:center;">⭐</button>';
-        html += '<input value="' + (p.nt || '') + '" onchange="updatePlayerField(\'' + selectedTeam.id + '\',' + pidx + ',\'nt\',this.value)" placeholder="Notes" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">';
-        html += '<input value="' + (p.pron || '') + '" onchange="updatePlayerField(\'' + selectedTeam.id + '\',' + pidx + ',\'pron\',this.value)" placeholder="Pron" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">';
+        html += '<button class="st-toggle ' + (p.st ? 'active' : '') + '" onclick="toggleRosterStarter(\'' + selectedTeam.id + '\',' + pidx + ')" style="background:none;border:2px solid ' + (p.st ? '#facc15' : 'var(--border)') + ';border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:0.7rem;display:flex;align-items:center;justify-content:center;" data-tooltip="Toggle starter status">⭐</button>';
+        html += '<input value="' + (p.nt || '') + '" onchange="updatePlayerField(\'' + selectedTeam.id + '\',' + pidx + ',\'nt\',this.value)" placeholder="Notes" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;" data-tooltip="Notes">';
+        html += '<input value="' + (p.pron || '') + '" onchange="updatePlayerField(\'' + selectedTeam.id + '\',' + pidx + ',\'pron\',this.value)" placeholder="Pron" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;" data-tooltip="Pronunciation">';
         html += '<div><span class="cat-dot ' + catClass + '" title="' + getCategoryTooltip(cats) + '"></span></div>';
-        html += '<button class="sb-btn" style="width:20px;height:20px;font-size:9px;" onclick="S.teams.find(function(t){return t.id===\'' + selectedTeam.id + '\'}).players.splice(' + pidx + ',1);saveState();renderRoster();">✕</button>';
+        html += '<button class="sb-btn" style="width:20px;height:20px;font-size:9px;" onclick="S.teams.find(function(t){return t.id===\'' + selectedTeam.id + '\'}).players.splice(' + pidx + ',1);saveState();renderRoster();" data-tooltip="Delete player">✕</button>';
         html += '</div>';
     });
-    html += '<button class="hdr-btn" onclick="addPlayerToTeam(\'' + selectedTeam.id + '\')">➕ Add Player</button>';
+    html += '<button class="hdr-btn" onclick="addPlayerToTeam(\'' + selectedTeam.id + '\')" data-tooltip="Add a new player">➕ Add Player</button>';
     html += '<div style="margin-top:8px;display:flex;gap:4px;flex-wrap:wrap;">';
-    html += '<textarea id="parseArea" placeholder="Paste roster (Number\tName\tPosition(s))" style="flex:2;min-width:150px;height:40px;padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.6rem;"></textarea>';
-    html += '<button class="hdr-btn" onclick="parseRosterText(\'' + selectedTeam.id + '\')">📝 Parse</button>';
-    html += '<input type="file" accept=".txt,.csv" onchange="uploadRosterFile(\'' + selectedTeam.id + '\',this)" style="font-size:0.6rem;">';
+    html += '<textarea id="parseArea" placeholder="Paste roster (Number\tName\tPosition(s))" style="flex:2;min-width:150px;height:40px;padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.6rem;" data-tooltip="Paste roster data here"></textarea>';
+    html += '<button class="hdr-btn" onclick="parseRosterText(\'' + selectedTeam.id + '\')" data-tooltip="Parse roster from text">📝 Parse</button>';
+    html += '<input type="file" accept=".txt,.csv" onchange="uploadRosterFile(\'' + selectedTeam.id + '\',this)" style="font-size:0.6rem;" data-tooltip="Upload roster file">';
     html += '</div>';
     html += '<div class="parser-help">';
     html += '<details><summary>📝 How to format roster data</summary>';
@@ -1433,6 +1491,15 @@ function renderRoster() {
     html += '</details>';
     html += '</div></div></div>';
     document.getElementById('main').innerHTML = html;
+}
+
+function syncTextColor() {
+    var colorPicker = document.getElementById('etc');
+    var textPicker = document.getElementById('ettc');
+    if (colorPicker && textPicker) {
+        textPicker.value = colorPicker.value;
+        toast('✅ Text color synced to primary color');
+    }
 }
 
 function toggleRosterStarter(teamId, pidx) {
@@ -1526,6 +1593,7 @@ function saveTeam() {
     saveState();
     renderRoster();
     updateScorebug();
+    applyColors();
     toast('✅ ' + team.name + ' saved');
 }
 
@@ -1612,6 +1680,7 @@ function setSideTeam(side, teamId) {
     saveState();
     renderGame();
     updateScorebug();
+    applyColors();
 }
 
 // ============================================================
@@ -1621,7 +1690,7 @@ function renderLog() {
     var html = '<div class="panel"><div class="panel-header">';
     html += '<h3>📜 GAME LOG</h3>';
     html += '<div class="panel-actions">';
-    html += '<button class="hdr-btn" onclick="clearLogs()" style="background:#dc2626;">🗑️ Clear</button>';
+    html += '<button class="hdr-btn" onclick="clearLogs()" style="background:#dc2626;" data-tooltip="Clear all logs">🗑️ Clear</button>';
     html += '</div></div>';
     var events = S.scoringLog.map(function(e) { return { ...e, type: 'score' }; }).concat(S.penaltyLog.map(function(e) { return { ...e, type: 'penalty' }; }));
     if (events.length === 0) {
@@ -1654,13 +1723,13 @@ function renderScript() {
     var html = '<div class="panel"><div class="panel-header">';
     html += '<h3>🎙️ SCRIPT</h3>';
     html += '<div class="panel-actions">';
-    html += '<button class="hdr-btn" onclick="fnlCloudLoadScriptOnly()">📥 LOAD SCRIPT</button>';
+    html += '<button class="hdr-btn" onclick="fnlCloudLoadScriptOnly()" data-tooltip="Load script from cloud">📥 LOAD SCRIPT</button>';
     html += '</div></div>';
-    html += '<textarea id="scriptEditor" style="width:100%;height:300px;padding:8px;border-radius:4px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:0.8rem;">' + (S.script || '') + '</textarea>';
+    html += '<textarea id="scriptEditor" style="width:100%;height:300px;padding:8px;border-radius:4px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:0.8rem;" data-tooltip="Script content">' + (S.script || '') + '</textarea>';
     html += '<div style="display:flex;gap:4px;margin-top:4px;">';
-    html += '<button class="hdr-btn" onclick="saveScript()">💾 Save</button>';
-    html += '<button class="hdr-btn" onclick="printScript()">🖨️ Print</button>';
-    html += '<button class="hdr-btn" onclick="clearScript()" style="background:#dc2626;">🗑️ Clear</button>';
+    html += '<button class="hdr-btn" onclick="saveScript()" data-tooltip="Save script">💾 Save</button>';
+    html += '<button class="hdr-btn" onclick="printScript()" data-tooltip="Print script">🖨️ Print</button>';
+    html += '<button class="hdr-btn" onclick="clearScript()" style="background:#dc2626;" data-tooltip="Clear script">🗑️ Clear</button>';
     html += '</div></div>';
     document.getElementById('main').innerHTML = html;
 }
@@ -1691,31 +1760,38 @@ function renderAdmin() {
     var html = '<div class="panel"><div class="panel-header">';
     html += '<h3>⚙️ ADMIN</h3>';
     html += '<div class="panel-actions">';
-    html += '<button class="hdr-btn" onclick="fnlCloudLoadSettingsOnly()">📥 LOAD SETTINGS</button>';
+    html += '<button class="hdr-btn" onclick="fnlCloudLoadSettingsOnly()" data-tooltip="Load settings from cloud">📥 LOAD SETTINGS</button>';
     html += '</div></div>';
     html += '<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;">';
-    html += '<button class="hdr-btn" onclick="toggleTheme()">Toggle Theme</button>';
-    html += '<button class="hdr-btn" onclick="toggleOutdoor()">Toggle Outdoor</button>';
+    html += '<button class="hdr-btn" onclick="toggleTheme()" data-tooltip="Toggle dark/light theme">Toggle Theme</button>';
+    html += '<button class="hdr-btn" onclick="toggleOutdoor()" data-tooltip="Toggle outdoor mode">Toggle Outdoor</button>';
     html += '</div>';
     html += '<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;">';
-    html += '<button class="hdr-btn" onclick="S.md7=\'tackle\';saveState();renderAll();">' + (S.md7 === 'tackle' ? '✅' : '') + ' Tackle</button>';
-    html += '<button class="hdr-btn" onclick="S.md7=\'7v7\';saveState();renderAll();">' + (S.md7 === '7v7' ? '✅' : '') + ' 7v7</button>';
+    html += '<button class="hdr-btn" onclick="S.md7=\'tackle\';saveState();renderAll();" data-tooltip="Switch to 11-man tackle mode">' + (S.md7 === 'tackle' ? '✅' : '') + ' Tackle</button>';
+    html += '<button class="hdr-btn" onclick="S.md7=\'7v7\';saveState();renderAll();" data-tooltip="Switch to 7v7 mode">' + (S.md7 === '7v7' ? '✅' : '') + ' 7v7</button>';
     html += '</div>';
-    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:400px;">';
-    html += '<div><label style="font-size:0.6rem;font-weight:600;">Scorebug BG</label><input type="color" value="' + S.colors.scorebugBg + '" oninput="S.colors.scorebugBg=this.value;applyColors();saveState()" style="width:100%;height:30px;"></div>';
-    html += '<div><label style="font-size:0.6rem;font-weight:600;">Accent</label><input type="color" value="' + S.colors.accent + '" oninput="S.colors.accent=this.value;applyColors();saveState()" style="width:100%;height:30px;"></div>';
+    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:450px;">';
+    html += '<div><label style="font-size:0.6rem;font-weight:600;">Scorebug BG</label><input type="color" value="' + S.colors.scorebugBg + '" oninput="S.colors.scorebugBg=this.value;applyColors();saveState()" style="width:100%;height:30px;" data-tooltip="Scorebug background color"></div>';
+    html += '<div><label style="font-size:0.6rem;font-weight:600;">Scorebug Text</label><input type="color" value="' + S.colors.scorebugText + '" oninput="S.colors.scorebugText=this.value;applyColors();saveState()" style="width:100%;height:30px;" data-tooltip="Scorebug text color"></div>';
+    html += '<div><label style="font-size:0.6rem;font-weight:600;">Accent</label><input type="color" value="' + S.colors.accent + '" oninput="S.colors.accent=this.value;applyColors();saveState()" style="width:100%;height:30px;" data-tooltip="Accent/gold color"></div>';
+    html += '<div><label style="font-size:0.6rem;font-weight:600;">Away Card BG</label><input type="color" value="' + S.colors.awayCardBg + '" oninput="S.colors.awayCardBg=this.value;applyColors();saveState()" style="width:100%;height:30px;" data-tooltip="Away team card background"></div>';
+    html += '<div><label style="font-size:0.6rem;font-weight:600;">Home Card BG</label><input type="color" value="' + S.colors.homeCardBg + '" oninput="S.colors.homeCardBg=this.value;applyColors();saveState()" style="width:100%;height:30px;" data-tooltip="Home team card background"></div>';
+    html += '<div><label style="font-size:0.6rem;font-weight:600;">Card Border</label><input type="color" value="' + S.colors.teamCardBorder + '" oninput="S.colors.teamCardBorder=this.value;applyColors();saveState()" style="width:100%;height:30px;" data-tooltip="Card border color"></div>';
+    html += '<div><label style="font-size:0.6rem;font-weight:600;">Away Header</label><input type="color" value="' + S.colors.awayHeaderBg + '" oninput="S.colors.awayHeaderBg=this.value;applyColors();saveState()" style="width:100%;height:30px;" data-tooltip="Away team header color"></div>';
+    html += '<div><label style="font-size:0.6rem;font-weight:600;">Home Header</label><input type="color" value="' + S.colors.homeHeaderBg + '" oninput="S.colors.homeHeaderBg=this.value;applyColors();saveState()" style="width:100%;height:30px;" data-tooltip="Home team header color"></div>';
     html += '</div>';
     html += '<div style="display:flex;gap:4px;margin-top:6px;">';
-    html += '<button class="hdr-btn" onclick="exportBackup()">📤 Export</button>';
-    html += '<button class="hdr-btn" onclick="document.getElementById(\'impf\').click()">📥 Import</button>';
+    html += '<button class="hdr-btn" onclick="exportBackup()" data-tooltip="Export backup file">📤 Export</button>';
+    html += '<button class="hdr-btn" onclick="document.getElementById(\'impf\').click()" data-tooltip="Import backup file">📥 Import</button>';
     html += '<input type="file" id="impf" accept=".json" style="display:none;" onchange="importBackup(this)">';
-    html += '<button class="hdr-btn" onclick="fnlCloudSaveAll()" style="background:#16a34a;">💾 Save All to Cloud</button>';
+    html += '<button class="hdr-btn" onclick="fnlCloudSaveAll()" style="background:#16a34a;" data-tooltip="Save all data to cloud">💾 Save All to Cloud</button>';
     html += '</div>';
     html += '<div style="display:flex;gap:4px;margin-top:6px;">';
-    html += '<button class="hdr-btn" onclick="fnlCloudLoadGameState()">📥 Game State</button>';
-    html += '<button class="hdr-btn" onclick="fnlCloudLoadRostersOnly()">📥 Rosters</button>';
+    html += '<button class="hdr-btn" onclick="fnlCloudLoadGameState()" data-tooltip="Load game state from cloud">📥 Game State</button>';
+    html += '<button class="hdr-btn" onclick="fnlCloudLoadRostersOnly()" data-tooltip="Load rosters from cloud">📥 Rosters</button>';
     html += '</div></div>';
     document.getElementById('main').innerHTML = html;
+    applyColors();
 }
 
 function exportBackup() {
@@ -1782,14 +1858,14 @@ function renderClients() {
             html += '<div class="client-item" style="display:flex;align-items:center;gap:10px;padding:8px;border:1px solid var(--border);border-radius:6px;margin-bottom:4px;' + (isActive ? 'border-color: var(--accent); background: rgba(250,204,21,0.05);' : '') + '">';
             html += '<span style="font-weight:700;font-size:0.7rem;flex:1;">' + pin + '</span>';
             html += '<span style="flex:2;font-size:0.7rem;">' + (client.n || 'Unnamed') + '</span>';
-            html += '<button class="hdr-btn" onclick="selectClient(\'' + pin + '\')" style="font-size:0.5rem;padding:2px 6px;' + (isActive ? 'background:var(--accent);color:#000;' : '') + '">' + (isActive ? '✅' : 'Select') + '</button>';
-            html += '<button class="hdr-btn" style="background:#dc2626;font-size:0.5rem;padding:2px 6px;" onclick="deleteClient(\'' + pin + '\')">🗑️</button>';
+            html += '<button class="hdr-btn" onclick="selectClient(\'' + pin + '\')" style="font-size:0.5rem;padding:2px 6px;' + (isActive ? 'background:var(--accent);color:#000;' : '') + '" data-tooltip="Select this client">' + (isActive ? '✅' : 'Select') + '</button>';
+            html += '<button class="hdr-btn" style="background:#dc2626;font-size:0.5rem;padding:2px 6px;" onclick="deleteClient(\'' + pin + '\')" data-tooltip="Delete this client">🗑️</button>';
             html += '</div>';
         });
     }
     html += '<div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">';
-    html += '<button class="hdr-btn" onclick="addClient()">➕ Add Client</button> ';
-    html += '<button class="hdr-btn" onclick="showAllPINs()">🔑 Show PINs</button>';
+    html += '<button class="hdr-btn" onclick="addClient()" data-tooltip="Add a new client">➕ Add Client</button> ';
+    html += '<button class="hdr-btn" onclick="showAllPINs()" data-tooltip="Show all client PINs">🔑 Show PINs</button>';
     html += '</div></div>';
     document.getElementById('main').innerHTML = html;
 }
@@ -1946,6 +2022,7 @@ function updateTeamColor(side, color) {
     saveState();
     updateScorebug();
     renderGame();
+    applyColors();
     toast('✅ ' + team.name + ' color updated');
 }
 
@@ -1973,11 +2050,64 @@ function updateWeather() {
 }
 updateWeather();
 
+// ============================================================
+// TOOLTIPS - FIXED
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+    var tooltipEl = document.getElementById('tooltip');
+    if (!tooltipEl) return;
+
+    document.querySelectorAll('[data-tooltip]').forEach(function(el) {
+        el.addEventListener('mouseenter', function(e) {
+            tooltipEl.textContent = this.getAttribute('data-tooltip');
+            tooltipEl.style.display = 'block';
+            tooltipEl.style.maxWidth = '250px';
+            tooltipEl.style.whiteSpace = 'normal';
+            tooltipEl.style.wordWrap = 'break-word';
+            var rect = this.getBoundingClientRect();
+            var left = rect.left + rect.width / 2 - tooltipEl.offsetWidth / 2;
+            var top = rect.top - tooltipEl.offsetHeight - 8;
+            if (top < 10) top = rect.bottom + 8;
+            if (left < 10) left = 10;
+            if (left + tooltipEl.offsetWidth > window.innerWidth - 10) {
+                left = window.innerWidth - tooltipEl.offsetWidth - 10;
+            }
+            tooltipEl.style.left = left + 'px';
+            tooltipEl.style.top = top + 'px';
+        });
+        el.addEventListener('mouseleave', function() {
+            tooltipEl.style.display = 'none';
+        });
+    });
+});
+
+// ============================================================
+// KEYBOARD SHORTCUTS
+// ============================================================
 document.addEventListener('keydown', function(e) {
     var typing = ['input','select','textarea'].indexOf((e.target.tagName||'').toLowerCase()) !== -1 || e.target.isContentEditable;
-    if (e.code === 'Space' && !typing) { e.preventDefault(); if (S.gc.run) pauseGC(); else startGC(); }
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's' && !typing) { e.preventDefault(); fnlCloudSaveAll(); }
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z' && !typing) { e.preventDefault(); undoLastEvent(); }
+    
+    // Space: Start/Pause clock
+    if (e.code === 'Space' && !typing) {
+        e.preventDefault();
+        if (S.gc.run) {
+            pauseGC();
+        } else {
+            startGC();
+        }
+    }
+    
+    // Ctrl+S: Save all
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's' && !typing) {
+        e.preventDefault();
+        fnlCloudSaveAll();
+    }
+    
+    // Ctrl+Z: Undo
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z' && !typing) {
+        e.preventDefault();
+        undoLastEvent();
+    }
 });
 
 // ============================================================
