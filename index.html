@@ -8,7 +8,7 @@
         *{margin:0;padding:0;box-sizing:border-box}
         :root{--accent:#facc15;--bg:#f1f5f9;--surface:#e2e8f0;--text:#0f172a;--border:#94a3b8;--footer-bg:#1a1a1a;--footer-text:#f1f5f9;--scorebug-bg:#0d0d1a;--scorebug-text:#ffffff;--team-card-away:#e2e8f0;--team-card-home:#e2e8f0;--badge-offense:#2563eb;--badge-defense:#dc2626;--badge-special:#16a34a;--badge-both:#8b5cf6;--badge-other:#6b7280}
         html,body{height:100%;overflow:hidden}
-        body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;font-size:14px}function parseRosterText(teamId)
+        body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;font-size:14px}
         select{-webkit-appearance:menulist;appearance:menulist}
         header{background:linear-gradient(180deg,#1a3a0e,#0f2a08);padding:6px 10px;border-bottom:3px solid var(--accent);flex-shrink:0}
         .hdr-top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
@@ -109,24 +109,19 @@
         .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:#fff;padding:6px 14px;border-radius:16px;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;font-size:.75rem;backdrop-filter:blur(10px)}
         .toast.show{opacity:1}
         .player-list-body{flex:1;overflow-y:auto;padding:4px 5px}
-        .player-row{display:grid;grid-template-columns:4px 28px 1fr 80px 60px 26px 20px;gap:3px;align-items:center;padding:4px 4px;border-bottom:1px solid rgba(0,0,0,.1);font-size:.65rem;border-left:4px solid transparent}
+        .player-row{display:grid;grid-template-columns:4px 30px 1fr 80px 60px 28px 22px;gap:4px;align-items:center;padding:4px 4px;border-bottom:1px solid rgba(0,0,0,.08);font-size:.6rem;border-left:4px solid transparent;min-height:32px;background:rgba(255,255,255,.4);border-radius:4px;margin-bottom:2px}
         .player-row:last-child{border-bottom:none}
+        .player-row input,.player-row select{background:rgba(255,255,255,.7);border:1px solid var(--border);color:#0a0a0a;font-weight:700;padding:2px 4px;width:100%;font-size:.55rem;border-radius:3px;min-width:0;height:24px}
+        .player-row input:focus,.player-row select:focus{border-color:var(--accent);outline:2px solid rgba(250,204,21,.3);background:#fff}
+        .player-row.starter{background:rgba(251,191,36,.12);border-left:4px solid var(--accent)}
+        .player-row.pinned{background:rgba(250,204,21,.15);border-left-color:var(--accent)!important}
         .player-row.category-offense{border-left-color:var(--badge-offense)}
         .player-row.category-defense{border-left-color:var(--badge-defense)}
         .player-row.category-special{border-left-color:var(--badge-special)}
         .player-row.category-both{border-left-color:var(--badge-both)}
         .player-row.category-other{border-left-color:#c9a227}
-        .player-row.pinned{background:rgba(250,204,21,.15);border-left-color:var(--accent)!important}
-        .player-row input,.player-row select{background:transparent;border:1px solid var(--border);color:#0a0a0a;font-weight:700;padding:2px 3px;width:100%;font-size:.6rem;border-radius:3px;min-width:0}
-        .player-row input:focus,.player-row select:focus{border-color:var(--accent);outline:0;background:rgba(255,255,255,.5)}
-        .player-row.starter{font-weight:700}
-        .cat-dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex-shrink:0}
-        .cat-dot.offense{background:var(--badge-offense)}
-        .cat-dot.defense{background:var(--badge-defense)}
-        .cat-dot.special{background:var(--badge-special)}
-        .cat-dot.both{background:var(--badge-both)}
-        .cat-dot.other{background:#c9a227}
-        .st-toggle,.pin-btn{background:0 0;border:1px solid var(--border);border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:.45rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;border-radius:50%!important}
+        .st-toggle,.pin-btn{background:rgba(255,255,255,.5);border:1px solid var(--border);border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:.5rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+        .st-toggle:hover,.pin-btn:hover{transform:scale(1.1)}
         .st-toggle.active{background:var(--accent);color:#000;border-color:var(--accent)}
         .pin-btn.active{background:var(--accent);color:#000;border-color:var(--accent)}
         .delete-btn{background:0 0;border:1px solid var(--border);border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#dc2626;border-radius:50%!important}
@@ -183,6 +178,23 @@
         .game-controls-row .to-btn.injury-btn:hover{background:linear-gradient(135deg,#ef4444,#dc2626)}
         .pos-btn{transition:all .2s!important;font-weight:700!important}
         .pos-btn.active{transform:scale(1.05);box-shadow:0 0 0 3px var(--accent),0 0 20px rgba(250,204,21,.3)}
+        .card-head{padding:8px 12px;font-weight:800;display:flex;align-items:center;gap:8px;color:#fff;font-size:1.1rem;flex-shrink:0;min-height:44px}
+        .card-head span{font-size:1.2rem;letter-spacing:1px;font-weight:900;min-width:50px}
+        .card-head select{flex:1;padding:4px 6px;border-radius:6px;background:rgba(255,255,255,.9);color:#000;font-size:.75rem;font-weight:700;min-height:28px;border:1px solid rgba(255,255,255,.3)}
+        .card-head .mini-logo{width:28px;height:28px;object-fit:cover;border-radius:50%;flex-shrink:0}
+        .card-head .sb-btn{width:28px;height:28px;font-size:12px;border-radius:50%!important}
+        .unit-tabs{display:flex;gap:4px;padding:4px 8px;border-bottom:2px solid var(--border);flex-shrink:0;background:rgba(0,0,0,.03)}
+        .unit-tab{background:#334155;border:2px solid #475569;padding:4px 14px;cursor:pointer;font-weight:800;font-size:.6rem;border-radius:6px;transition:all .2s;color:#fff;letter-spacing:.5px;min-height:28px;display:inline-flex;align-items:center;justify-content:center}
+        .unit-tab:hover{transform:scale(1.05);opacity:.9}
+        .unit-tab.active{color:#000;border-color:var(--accent);box-shadow:0 0 0 2px rgba(250,204,21,.3)}
+        .unit-tab.all-tab{background:#334155;border-color:#475569;color:#fff}
+        .unit-tab.all-tab.active{background:var(--accent);border-color:var(--accent);color:#000}
+        .unit-tab.offense-tab{background:var(--badge-offense);border-color:var(--badge-offense);color:#fff}
+        .unit-tab.offense-tab.active{background:#fff;border-color:var(--badge-offense);color:var(--badge-offense);box-shadow:0 0 0 2px rgba(37,99,235,.3)}
+        .unit-tab.defense-tab{background:var(--badge-defense);border-color:var(--badge-defense);color:#fff}
+        .unit-tab.defense-tab.active{background:#fff;border-color:var(--badge-defense);color:var(--badge-defense);box-shadow:0 0 0 2px rgba(220,38,38,.3)}
+        .unit-tab.special-tab{background:var(--badge-special);border-color:var(--badge-special);color:#fff}
+        .unit-tab.special-tab.active{background:#fff;border-color:var(--badge-special);color:var(--badge-special);box-shadow:0 0 0 2px rgba(22,163,74,.3)}
         .team-cards .card-head .sb-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2)}
         .team-cards .card-head .sb-btn:hover{background:var(--accent);color:#000;border-color:var(--accent)}
         .sb-mode-btn,.sb-toggle-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:#fff;border-radius:50%!important;width:32px;height:32px;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
@@ -379,7 +391,7 @@ var S = {
     }
 };
 
-var STORAGE_KEY = 'fnl_v32';
+var STORAGE_KEY = 'fnl_v33';
 
 function toast(m) {
     var x = document.getElementById('toast');
@@ -1270,16 +1282,18 @@ function renderGame() {
         var team = getTeam(side);
         var filter = S[side === 'away' ? 'ua' : 'uh'] || 'all';
         var headerBg = side === 'away' ? (S.colors.awayHeaderBg || '#1e3a5f') : (S.colors.homeHeaderBg || '#7f1d1d');
-        html += '<div class="team-card ' + side + '-card" style="flex:1;min-width:0;display:flex;flex-direction:column;">';
-        html += '<div class="card-head" style="background:' + headerBg + ';">';
-        html += '<span>' + side.toUpperCase() + '</span>';
+        html += '<div class="team-card ' + side + '-card" style="flex:1;min-width:0;display:flex;flex-direction:column;border-radius:8px;overflow:hidden;">';
+        
+        // ---- CARD HEADER - BIGGER LABELS ----
+        html += '<div class="card-head" style="background:' + headerBg + ';padding:8px 12px;min-height:44px;">';
+        html += '<span style="font-size:1.2rem;font-weight:900;letter-spacing:1px;min-width:50px;">' + side.toUpperCase() + '</span>';
         if (team.logo) html += '<img class="mini-logo" src="' + team.logo + '" alt="">';
-        html += '<select onchange="setSideTeam(\'' + side + '\', this.value)" style="border-color:' + team.color + ';" data-tooltip="Switch team">' + S.teams.map(function(t) { return '<option value="' + t.id + '" ' + (t.id === team.id ? 'selected' : '') + '>' + t.name + '</option>'; }).join('') + '</select>';
-        html += '<button class="sb-btn" onclick="setPossession(\'' + side + '\')" style="width:22px;height:22px;" data-tooltip="Give ball to this team">🏈</button>';
+        html += '<select onchange="setSideTeam(\'' + side + '\', this.value)" style="border-color:' + team.color + ';flex:1;padding:4px 6px;border-radius:6px;background:rgba(255,255,255,0.9);color:#000;font-size:0.75rem;font-weight:700;min-height:28px;">' + S.teams.map(function(t) { return '<option value="' + t.id + '" ' + (t.id === team.id ? 'selected' : '') + '>' + t.name + '</option>'; }).join('') + '</select>';
+        html += '<button class="sb-btn" onclick="setPossession(\'' + side + '\')" style="width:28px;height:28px;font-size:12px;border-radius:50%!important;" data-tooltip="Give ball to this team">🏈</button>';
         html += '</div>';
 
-        // ---- UNIT TABS ----
-        html += '<div class="unit-tabs">';
+        // ---- UNIT TABS - BUTTON STYLE ----
+        html += '<div class="unit-tabs" style="display:flex;gap:4px;padding:4px 8px;border-bottom:2px solid var(--border);flex-shrink:0;">';
         var allActive = filter === 'all' ? 'active' : '';
         html += '<button class="unit-tab all-tab ' + allActive + '" onclick="setFilterAndSearch(\'' + side + '\',\'all\')" data-tooltip="Show all players">ALL</button>';
         if (S.md7 === 'tackle') {
@@ -1307,17 +1321,17 @@ function renderGame() {
             var isPinned = p.pinned || false;
             html += '<div class="player-row category-' + catClass + (isPinned ? ' pinned' : '') + (p.st ? ' starter' : '') + '" data-name="' + (p.na || '').toLowerCase() + '" data-number="' + (p.n || '') + '">';
             html += '<div style="width:4px;border-radius:2px;" title="Category bar"></div>';
-            html += '<input value="' + (p.n || '') + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'n\',this.value)" style="width:28px;" placeholder="#" data-tooltip="Jersey number">';
+            html += '<input value="' + (p.n || '') + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'n\',this.value)" style="width:30px;" placeholder="#" data-tooltip="Jersey number">';
             html += '<input value="' + (p.na || '') + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'na\',this.value)" placeholder="Name" data-tooltip="Player name">';
             html += '<div style="display:flex;align-items:center;gap:2px;width:100%;">';
-            html += '<select onchange="updateGamePlayerPositionOnly(\'' + side + '\',\'' + p.id + '\',this.value)" style="flex:1;" data-tooltip="Position">';
+            html += '<select onchange="updateGamePlayerPositionOnly(\'' + side + '\',\'' + p.id + '\',this.value)" style="flex:1;height:24px;font-size:0.55rem;" data-tooltip="Position">';
             allPosOptions.forEach(function(opt) {
                 var selected = (opt.value === (p.posFull || p.po)) ? 'selected' : '';
                 html += '<option ' + selected + ' value="' + opt.value + '">' + opt.display + '</option>';
             });
             html += '</select>';
             html += '</div>';
-            html += '<input value="' + (p.nt || '') + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'nt\',this.value)" placeholder="Notes" style="width:60px;" data-tooltip="Notes">';
+            html += '<input value="' + (p.nt || '') + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'nt\',this.value)" placeholder="Notes" style="width:60px;font-size:0.5rem;" data-tooltip="Notes">';
             html += '<button class="st-toggle ' + (p.st ? 'active' : '') + '" onclick="toggleStarterOnly(\'' + side + '\',\'' + p.id + '\')" title="Toggle starter status" data-tooltip="Toggle starter status">⭐</button>';
             html += '<button class="pin-btn ' + (isPinned ? 'active' : '') + '" onclick="togglePinOnly(\'' + side + '\',\'' + p.id + '\')" title="Pin to top" data-tooltip="Pin to top of list">📌</button>';
             html += '</div>';
@@ -1733,7 +1747,7 @@ function syncTeamColors(color) {
 }
 
 // ============================================================
-// ROSTER VIEW
+// ROSTER VIEW - with enhanced parser
 // ============================================================
 function renderRoster() {
     var sortedTeams = S.teams.slice().sort(function(a, b) { return a.name.localeCompare(b.name); });
@@ -1853,6 +1867,159 @@ function renderRoster() {
                 deleteRosterPlayer(teamId, idx);
             });
         });
+    }
+}
+
+// ============================================================
+// ENHANCED PARSER - Handles ALL Formats
+// ============================================================
+function parseRosterText(teamId) {
+    var tx = document.getElementById('parseArea').value.trim();
+    var team = S.teams.find(function(t) { return t.id === teamId; });
+    if (!team) return;
+    if (!tx) return toast('⚠️ Empty input');
+    
+    var positions = getAllPositions();
+    var posMap = {
+        'QB': 'QB', 'RB': 'RB', 'WR': 'WR', 'TE': 'TE', 'OL': 'OL',
+        'C': 'C', 'G': 'G', 'T': 'T', 'DL': 'DL', 'DE': 'DE',
+        'DT': 'DT', 'LB': 'LB', 'OLB': 'OLB', 'ILB': 'ILB', 'MLB': 'MLB',
+        'CB': 'CB', 'S': 'S', 'SS': 'SS', 'FS': 'FS', 'DB': 'DB',
+        'K': 'K', 'P': 'P', 'LS': 'LS', 'KR': 'KR', 'PR': 'PR',
+        'ATH': 'ATH', 'ST': 'ST', 'SP': 'SP'
+    };
+    
+    var lines = tx.split('\n');
+    var out = [];
+    var autoNumber = 1;
+    
+    lines.forEach(function(l) {
+        var line = l.trim();
+        if (!line) return;
+        
+        // Skip table headers and separators
+        if (line.match(/^[\|\-\s]+$/) || 
+            line.match(/^Role\s*\|/i) ||
+            line.match(/^Notes\s*\|/i) ||
+            line.match(/^Pron\s*\|/i) ||
+            line.match(/^Offense\s*$/i) ||
+            line.match(/^Defense\s*$/i) ||
+            line.match(/^Special Teams\s*$/i) ||
+            line.match(/^Both\s*$/i) ||
+            line.match(/^Other\s*$/i) ||
+            line.match(/^#\s+Name\s*$/i) ||
+            line.match(/^Name\s+#\s*$/i) ||
+            line === 'Role' || line === 'Notes' || line === 'Pron') {
+            return;
+        }
+        
+        // Remove table pipe characters
+        line = line.replace(/^\||\|$/g, '').trim();
+        var parts = line.split('|').map(function(s) { return s.trim(); }).filter(function(s) { return s; });
+        if (parts.length >= 2 && parts[0].match(/^[A-Za-z]/) && parts[1].match(/^[A-Za-z]/)) {
+            var namePart = parts[0].replace(/^[⭐\s]+/, '');
+            var rolePart = parts[1].trim().toUpperCase();
+            if (namePart === 'Notes' || namePart === 'Pron' || namePart === 'Role') return;
+            var numMatch = namePart.match(/^(\d+)\s+/);
+            var num = numMatch ? numMatch[1] : '';
+            var cleanName = numMatch ? namePart.replace(/^(\d+)\s+/, '') : namePart;
+            var pos = posMap[rolePart] || rolePart;
+            if (positions.indexOf(pos) === -1 && pos !== 'ST' && pos !== 'SP' && pos !== 'ATH') {
+                cleanName = namePart;
+                pos = 'QB';
+            }
+            if (cleanName) {
+                var isStarter = namePart.indexOf('⭐') !== -1 || line.indexOf('⭐') !== -1 || rolePart.indexOf('⭐') !== -1;
+                out.push({ 
+                    id: 'p' + Date.now() + Math.random().toString(36).slice(2,7), 
+                    n: num, 
+                    na: cleanName, 
+                    po: pos, 
+                    posFull: pos, 
+                    st: isStarter, 
+                    nt: '', 
+                    pron: '', 
+                    ph: '', 
+                    pinned: false, 
+                    categories: getPositionCategories(pos) 
+                });
+            }
+            return;
+        }
+        
+        var isStarter = false;
+        if (line.indexOf('⭐') !== -1 || line.indexOf('*') !== -1) {
+            isStarter = true;
+            line = line.replace(/[⭐\*]\s*/, '');
+        }
+        
+        var n = '';
+        var rest = line;
+        var numMatch = rest.match(/^(\d{1,3})\s+/);
+        if (numMatch) { 
+            n = numMatch[1]; 
+            rest = rest.slice(numMatch[0].length).trim(); 
+        }
+        
+        var po = '';
+        var name = rest;
+        var words = rest.split(/\s+/);
+        var lastWord = words[words.length - 1] ? words[words.length - 1].toUpperCase() : '';
+        
+        if (lastWord && (positions.indexOf(lastWord) !== -1 || posMap[lastWord])) {
+            po = posMap[lastWord] || lastWord;
+            words.pop();
+            name = words.join(' ');
+        } else {
+            var lastTwo = words.length >= 2 ? words.slice(-2).join('/').toUpperCase() : '';
+            if (lastTwo) {
+                var posCandidates = lastTwo.split('/');
+                var found = false;
+                posCandidates.forEach(function(p) {
+                    if (positions.indexOf(p) !== -1 || posMap[p]) {
+                        po = posMap[p] || p;
+                        found = true;
+                    }
+                });
+                if (found) {
+                    var tempName = rest;
+                    posCandidates.forEach(function(p) {
+                        tempName = tempName.replace(new RegExp(p, 'i'), '').trim();
+                    });
+                    name = tempName;
+                }
+            }
+        }
+        
+        name = name.replace(/\s+/g, ' ').trim();
+        if (!name && rest) name = rest;
+        if (!n) { n = autoNumber; autoNumber++; }
+        if (!po) po = 'QB';
+        
+        if (name) {
+            out.push({ 
+                id: 'p' + Date.now() + Math.random().toString(36).slice(2,7), 
+                n: String(n), 
+                na: name, 
+                po: po, 
+                posFull: po, 
+                st: isStarter, 
+                nt: '', 
+                pron: '', 
+                ph: '', 
+                pinned: false, 
+                categories: getPositionCategories(po) 
+            });
+        }
+    });
+    
+    if (out.length) {
+        team.players = out;
+        saveState();
+        renderRoster();
+        toast('✅ ' + out.length + ' players parsed (' + out.filter(function(p) { return p.st; }).length + ' starters)');
+    } else {
+        toast('❌ No players found. Format: "Number Name Position" or "Name Position"');
     }
 }
 
@@ -1985,195 +2152,8 @@ function exportTeamCSV(teamId) {
     a.click();
 }
 
-function parseRosterText(teamId) {
-    var tx = document.getElementById('parseArea').value.trim();
-    var team = S.teams.find(function(t) { return t.id === teamId; });
-    if (!team) return;
-    if (!tx) return toast('⚠️ Empty input');
-    
-    var positions = getAllPositions();
-    // Common position aliases
-    var posMap = {
-        'QB': 'QB', 'RB': 'RB', 'WR': 'WR', 'TE': 'TE', 'OL': 'OL',
-        'C': 'C', 'G': 'G', 'T': 'T', 'DL': 'DL', 'DE': 'DE',
-        'DT': 'DT', 'LB': 'LB', 'OLB': 'OLB', 'ILB': 'ILB', 'MLB': 'MLB',
-        'CB': 'CB', 'S': 'S', 'SS': 'SS', 'FS': 'FS', 'DB': 'DB',
-        'K': 'K', 'P': 'P', 'LS': 'LS', 'KR': 'KR', 'PR': 'PR',
-        'ATH': 'ATH', 'ST': 'ST', 'SP': 'SP'
-    };
-    
-    var lines = tx.split('\n');
-    var out = [];
-    var autoNumber = 1;
-    
-    lines.forEach(function(l) {
-        var line = l.trim();
-        if (!line) return;
-        
-        // Skip table headers and separators
-        if (line.match(/^[\|\-\s]+$/) || 
-            line.match(/^Role\s*\|/i) ||
-            line.match(/^Notes\s*\|/i) ||
-            line.match(/^Pron\s*\|/i) ||
-            line.match(/^Offense\s*$/i) ||
-            line.match(/^Defense\s*$/i) ||
-            line.match(/^Special Teams\s*$/i) ||
-            line.match(/^Both\s*$/i) ||
-            line.match(/^Other\s*$/i) ||
-            line.match(/^#\s+Name\s*$/i) ||
-            line.match(/^Name\s+#\s*$/i) ||
-            line === 'Role' || line === 'Notes' || line === 'Pron') {
-            return;
-        }
-        
-        // Remove table pipe characters
-        line = line.replace(/^\||\|$/g, '').trim();
-        var parts = line.split('|').map(function(s) { return s.trim(); }).filter(function(s) { return s; });
-        if (parts.length >= 2 && parts[0].match(/^[A-Za-z]/) && parts[1].match(/^[A-Za-z]/)) {
-            // This is table format with Name and Role
-            var namePart = parts[0].replace(/^[⭐\s]+/, '');
-            var rolePart = parts[1].trim().toUpperCase();
-            // If it's a table with "Notes" or "Pron" as first column, skip
-            if (namePart === 'Notes' || namePart === 'Pron' || namePart === 'Role') return;
-            // Try to extract number from name
-            var numMatch = namePart.match(/^(\d+)\s+/);
-            var num = numMatch ? numMatch[1] : '';
-            var cleanName = numMatch ? namePart.replace(/^(\d+)\s+/, '') : namePart;
-            // Check if rolePart is a position
-            var pos = posMap[rolePart] || rolePart;
-            if (positions.indexOf(pos) === -1 && pos !== 'ST' && pos !== 'SP' && pos !== 'ATH') {
-                // If not a valid position, treat as part of name
-                cleanName = namePart;
-                pos = 'QB'; // default
-            }
-            if (cleanName) {
-                var isStarter = namePart.indexOf('⭐') !== -1 || line.indexOf('⭐') !== -1 || rolePart.indexOf('⭐') !== -1;
-                out.push({ 
-                    id: 'p' + Date.now() + Math.random().toString(36).slice(2,7), 
-                    n: num, 
-                    na: cleanName, 
-                    po: pos, 
-                    posFull: pos, 
-                    st: isStarter, 
-                    nt: '', 
-                    pron: '', 
-                    ph: '', 
-                    pinned: false, 
-                    categories: getPositionCategories(pos) 
-                });
-            }
-            return;
-        }
-        
-        // Strip leading star for starter detection
-        var isStarter = false;
-        if (line.indexOf('⭐') !== -1 || line.indexOf('*') !== -1) {
-            isStarter = true;
-            line = line.replace(/[⭐\*]\s*/, '');
-        }
-        
-        var n = '';
-        var rest = line;
-        
-        // Try to extract number
-        var numMatch = rest.match(/^(\d{1,3})\s+/);
-        if (numMatch) { 
-            n = numMatch[1]; 
-            rest = rest.slice(numMatch[0].length).trim(); 
-        }
-        
-        var po = '';
-        var name = rest;
-        
-        // Try to find position at the end
-        var words = rest.split(/\s+/);
-        var lastWord = words[words.length - 1] ? words[words.length - 1].toUpperCase() : '';
-        
-        // Check if last word is a position
-        if (lastWord && (positions.indexOf(lastWord) !== -1 || posMap[lastWord])) {
-            po = posMap[lastWord] || lastWord;
-            words.pop();
-            name = words.join(' ');
-        } else {
-            // Check for multi-word positions like "WR/DB", "LB/TE"
-            var lastTwo = words.length >= 2 ? words.slice(-2).join('/').toUpperCase() : '';
-            if (lastTwo) {
-                var posCandidates = lastTwo.split('/');
-                var found = false;
-                posCandidates.forEach(function(p) {
-                    if (positions.indexOf(p) !== -1 || posMap[p]) {
-                        po = posMap[p] || p;
-                        found = true;
-                    }
-                });
-                if (found) {
-                    // Remove the position parts from name
-                    var tempName = rest;
-                    posCandidates.forEach(function(p) {
-                        tempName = tempName.replace(new RegExp(p, 'i'), '').trim();
-                    });
-                    name = tempName;
-                }
-            }
-        }
-        
-        // Clean up name
-        name = name.replace(/\s+/g, ' ').trim();
-        
-        // If no name, use the rest
-        if (!name && rest) name = rest;
-        
-        // If no number, auto-assign
-        if (!n) {
-            n = autoNumber;
-            autoNumber++;
-        }
-        
-        // Default position
-        if (!po) po = 'QB';
-        
-        // If we have a name, add the player
-        if (name) {
-            out.push({ 
-                id: 'p' + Date.now() + Math.random().toString(36).slice(2,7), 
-                n: String(n), 
-                na: name, 
-                po: po, 
-                posFull: po, 
-                st: isStarter, 
-                nt: '', 
-                pron: '', 
-                ph: '', 
-                pinned: false, 
-                categories: getPositionCategories(po) 
-            });
-        }
-    });
-    
-    if (out.length) {
-        team.players = out;
-        saveState();
-        renderRoster();
-        toast('✅ ' + out.length + ' players parsed (' + out.filter(function(p) { return p.st; }).length + ' starters)');
-    } else {
-        toast('❌ No players found. Format: "Number Name Position" or "Name Position"');
-    }
-}
-
-function uploadRosterFile(teamId, input) {
-    var f = input.files[0];
-    if (!f) return;
-    if (f.name.endsWith('.docx')) { toast('⚠️ .docx not supported. Use .txt or .csv'); return; }
-    var r = new FileReader();
-    r.onload = function(ev) {
-        document.getElementById('parseArea').value = ev.target.result;
-        parseRosterText(teamId);
-    };
-    r.readAsText(f);
-}
-
 // ============================================================
-// CLIENTS VIEW
+// REST OF FUNCTIONS (Clients, Log, Script, Admin, etc.)
 // ============================================================
 function renderClients() {
     var html = '<div class="panel"><div class="panel-header">';
@@ -2679,7 +2659,6 @@ S.gc.run = false;
 saveState();
 updateHeaderBranding();
 
-// Restore scorebug mode
 if (S.scorebugMode === 'compact') {
     var sb = document.getElementById('scorebug');
     if (sb) sb.classList.add('compact');
@@ -2687,7 +2666,6 @@ if (S.scorebugMode === 'compact') {
     if (btn) btn.textContent = '📏 Compact';
 }
 
-// Set color pickers to match team colors
 var awayTeam = getTeam('away');
 var homeTeam = getTeam('home');
 var awayPicker = document.getElementById('awayColorPicker');
@@ -2696,7 +2674,7 @@ if (awayPicker && awayTeam) awayPicker.value = awayTeam.color;
 if (homePicker && homeTeam) homePicker.value = homeTeam.color;
 
 console.log('🏈 Friday Night Live PA Console loaded successfully!');
-console.log('📋 Version: v32 – 50/50 split, search, emoji buttons, rounded, roster fixed');
+console.log('📋 Version: v33 – 50/50 split, colored unit tabs, bigger labels, enhanced parser');
 console.log('🔧 Enjoy the game!');
 </script>
 </body>
