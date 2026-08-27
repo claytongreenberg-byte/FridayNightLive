@@ -109,7 +109,7 @@
         .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:#fff;padding:6px 14px;border-radius:16px;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;font-size:.75rem;backdrop-filter:blur(10px)}
         .toast.show{opacity:1}
         .player-list-body{flex:1;overflow-y:auto;padding:4px 5px}
-        .player-row{display:grid;grid-template-columns:4px 30px 1fr 80px 60px 28px 22px;gap:4px;align-items:center;padding:4px 4px;border-bottom:1px solid rgba(0,0,0,.08);font-size:.6rem;border-left:4px solid transparent;min-height:32px;background:rgba(255,255,255,.4);border-radius:4px;margin-bottom:2px}
+        .player-row{display:grid;grid-template-columns:4px 28px 1fr 80px 55px 55px 22px 22px;gap:3px;align-items:center;padding:4px 4px;border-bottom:1px solid rgba(0,0,0,.08);font-size:.6rem;border-left:4px solid transparent;min-height:32px;background:rgba(255,255,255,.4);border-radius:4px;margin-bottom:2px}
         .player-row:last-child{border-bottom:none}
         .player-row input,.player-row select{background:rgba(255,255,255,.7);border:1px solid var(--border);color:#0a0a0a;font-weight:700;padding:2px 4px;width:100%;font-size:.55rem;border-radius:3px;min-width:0;height:24px}
         .player-row input:focus,.player-row select:focus{border-color:var(--accent);outline:2px solid rgba(250,204,21,.3);background:#fff}
@@ -203,8 +203,8 @@
         .team-color-picker::-webkit-color-swatch-wrapper{padding:0}
         .team-color-picker::-webkit-color-swatch{border:none;border-radius:50%}
         .tooltip-js{position:fixed;z-index:10000;background:#1e293b;color:#fff;padding:4px 10px;border-radius:6px;font-size:.6rem;pointer-events:none;display:none;max-width:180px;border:1px solid #475569}
-        @media(max-width:1024px){.scorebug{padding:8px 10px;min-height:130px;flex-wrap:wrap}.scorebug.compact{min-height:50px;padding:4px 6px}.scorebug.compact .sb-block{padding:0 4px;min-width:30px}.scorebug.compact .sb-team-name{font-size:1rem!important}.scorebug.compact .sb-val{font-size:1.5rem;min-width:24px}.scorebug.compact .game-clock{font-size:1.5rem}.scorebug.compact .sb-qtr{font-size:1.5rem}.scorebug.compact .sb-label{font-size:.45rem}.sb-block{padding:0 8px;min-width:40px}.sb-team-name{font-size:1.6rem}.sb-val{font-size:2.8rem;min-width:38px}.sb-qtr{font-size:2.4rem}.game-clock{font-size:2.8rem}.sb-btn{width:24px;height:24px;font-size:10px}.sb-game-btns button{font-size:.5rem;padding:3px 8px;min-height:22px}.last-event{font-size:.7rem;min-height:28px;max-width:280px}.game-controls-row{padding:4px 8px;gap:3px;min-height:34px;flex-wrap:nowrap;overflow-x:auto}.game-controls-row .pos-btn{padding:2px 8px;font-size:.55rem;min-width:40px}.game-controls-row .to-btn{padding:2px 6px;font-size:.45rem}.game-controls-row .gc-btn{font-size:.45rem;padding:2px 4px;min-height:18px}.game-controls-row select,.game-controls-row input{font-size:.45rem;min-height:18px}.game-controls-row .yd-input{width:28px}.player-row{grid-template-columns:4px 24px 1fr 60px 50px 24px 18px;font-size:.6rem}.player-row input,.player-row select{font-size:.55rem;padding:2px}.cat-badge{font-size:.5rem;padding:1px 5px}.cat-legend{font-size:.5rem;gap:8px}.brand-logo{height:28px;max-width:50px}.brand-text h1{font-size:.75rem}.brand-text p{font-size:.45rem}.hdr-btn{font-size:.5rem;padding:3px 6px;min-height:20px}.wall-clock,.weather-pill{font-size:.5rem;padding:2px 4px}.quick-cues{gap:4px;padding:4px}.quick-cues button{font-size:.6rem;padding:4px 8px;min-height:24px}}
-        @media(max-width:768px){.scorebug{padding:6px 6px;min-height:100px;flex-wrap:wrap}.scorebug.compact{min-height:40px;padding:3px 4px}.scorebug.compact .sb-block{padding:0 3px;min-width:24px}.scorebug.compact .sb-team-name{font-size:.8rem!important}.scorebug.compact .sb-val{font-size:1.2rem;min-width:20px}.scorebug.compact .game-clock{font-size:1.2rem}.scorebug.compact .sb-qtr{font-size:1.2rem}.scorebug.compact .sb-label{font-size:.4rem}.scorebug.compact .sb-btn{width:16px;height:16px;font-size:7px}.scorebug.compact .sb-game-btns button{font-size:.3rem;padding:1px 3px;min-height:14px;min-width:20px}.scorebug.compact .last-event{font-size:.4rem;min-height:16px;padding:1px 4px;max-width:100px}.sb-block{padding:0 4px;min-width:30px}.sb-team-name{font-size:1.2rem;max-width:80px}.sb-val{font-size:2rem;min-width:30px}.sb-qtr{font-size:1.8rem}.game-clock{font-size:2.2rem}.sb-btn{width:20px;height:20px;font-size:9px}.sb-game-btns button{font-size:.4rem;padding:2px 6px;min-height:18px}.last-event{font-size:.55rem;min-height:22px;max-width:160px}.game-controls-row{padding:3px 4px;gap:2px;min-height:28px;flex-wrap:nowrap;overflow-x:auto}.game-controls-row .pos-btn{padding:2px 6px;font-size:.5rem;min-width:32px}.game-controls-row .to-btn{padding:2px 5px;font-size:.4rem}.game-controls-row .gc-btn{font-size:.4rem;padding:2px 4px;min-height:16px}.game-controls-row select,.game-controls-row input{font-size:.4rem;min-height:16px}.game-controls-row .yd-input{width:24px}.game-controls-row .label{font-size:.4rem}.team-cards{flex-direction:column;height:auto;min-height:140px}.roster-layout{flex-direction:column}.team-sidebar{width:100%;max-height:100px}.admin-color-grid{grid-template-columns:1fr}.quick-cues button{font-size:.6rem;padding:4px 8px;min-height:24px}.player-row{grid-template-columns:4px 20px 1fr 50px 40px 20px 16px;font-size:.5rem;gap:2px;padding:2px}.player-row input,.player-row select{font-size:.45rem;padding:1px 2px}.cat-badge{font-size:.4rem;padding:1px 4px}.st-toggle,.pin-btn,.delete-btn{width:16px;height:16px;font-size:.4rem}.cat-legend{font-size:.4rem;gap:4px}.brand-logo{height:24px;max-width:40px}.brand-text h1{font-size:.65rem}.brand-text p{font-size:.4rem}.hdr-btn{font-size:.45rem;padding:2px 5px;min-height:18px}.wall-clock,.weather-pill{font-size:.45rem;padding:2px 4px}}
+        @media(max-width:1024px){.scorebug{padding:8px 10px;min-height:130px;flex-wrap:wrap}.scorebug.compact{min-height:50px;padding:4px 6px}.scorebug.compact .sb-block{padding:0 4px;min-width:30px}.scorebug.compact .sb-team-name{font-size:1rem!important}.scorebug.compact .sb-val{font-size:1.5rem;min-width:24px}.scorebug.compact .game-clock{font-size:1.5rem}.scorebug.compact .sb-qtr{font-size:1.5rem}.scorebug.compact .sb-label{font-size:.45rem}.sb-block{padding:0 8px;min-width:40px}.sb-team-name{font-size:1.6rem}.sb-val{font-size:2.8rem;min-width:38px}.sb-qtr{font-size:2.4rem}.game-clock{font-size:2.8rem}.sb-btn{width:24px;height:24px;font-size:10px}.sb-game-btns button{font-size:.5rem;padding:3px 8px;min-height:22px}.last-event{font-size:.7rem;min-height:28px;max-width:280px}.game-controls-row{padding:4px 8px;gap:3px;min-height:34px;flex-wrap:nowrap;overflow-x:auto}.game-controls-row .pos-btn{padding:2px 8px;font-size:.55rem;min-width:40px}.game-controls-row .to-btn{padding:2px 6px;font-size:.45rem}.game-controls-row .gc-btn{font-size:.45rem;padding:2px 4px;min-height:18px}.game-controls-row select,.game-controls-row input{font-size:.45rem;min-height:18px}.game-controls-row .yd-input{width:28px}.player-row{grid-template-columns:4px 24px 1fr 60px 50px 50px 20px 20px;font-size:.6rem}.player-row input,.player-row select{font-size:.55rem;padding:2px}.cat-badge{font-size:.5rem;padding:1px 5px}.cat-legend{font-size:.5rem;gap:8px}.brand-logo{height:28px;max-width:50px}.brand-text h1{font-size:.75rem}.brand-text p{font-size:.45rem}.hdr-btn{font-size:.5rem;padding:3px 6px;min-height:20px}.wall-clock,.weather-pill{font-size:.5rem;padding:2px 4px}.quick-cues{gap:4px;padding:4px}.quick-cues button{font-size:.6rem;padding:4px 8px;min-height:24px}}
+        @media(max-width:768px){.scorebug{padding:6px 6px;min-height:100px;flex-wrap:wrap}.scorebug.compact{min-height:40px;padding:3px 4px}.scorebug.compact .sb-block{padding:0 3px;min-width:24px}.scorebug.compact .sb-team-name{font-size:.8rem!important}.scorebug.compact .sb-val{font-size:1.2rem;min-width:20px}.scorebug.compact .game-clock{font-size:1.2rem}.scorebug.compact .sb-qtr{font-size:1.2rem}.scorebug.compact .sb-label{font-size:.4rem}.scorebug.compact .sb-btn{width:16px;height:16px;font-size:7px}.scorebug.compact .sb-game-btns button{font-size:.3rem;padding:1px 3px;min-height:14px;min-width:20px}.scorebug.compact .last-event{font-size:.4rem;min-height:16px;padding:1px 4px;max-width:100px}.sb-block{padding:0 4px;min-width:30px}.sb-team-name{font-size:1.2rem;max-width:80px}.sb-val{font-size:2rem;min-width:30px}.sb-qtr{font-size:1.8rem}.game-clock{font-size:2.2rem}.sb-btn{width:20px;height:20px;font-size:9px}.sb-game-btns button{font-size:.4rem;padding:2px 6px;min-height:18px}.last-event{font-size:.55rem;min-height:22px;max-width:160px}.game-controls-row{padding:3px 4px;gap:2px;min-height:28px;flex-wrap:nowrap;overflow-x:auto}.game-controls-row .pos-btn{padding:2px 6px;font-size:.5rem;min-width:32px}.game-controls-row .to-btn{padding:2px 5px;font-size:.4rem}.game-controls-row .gc-btn{font-size:.4rem;padding:2px 4px;min-height:16px}.game-controls-row select,.game-controls-row input{font-size:.4rem;min-height:16px}.game-controls-row .yd-input{width:24px}.game-controls-row .label{font-size:.4rem}.team-cards{flex-direction:column;height:auto;min-height:140px}.roster-layout{flex-direction:column}.team-sidebar{width:100%;max-height:100px}.admin-color-grid{grid-template-columns:1fr}.quick-cues button{font-size:.6rem;padding:4px 8px;min-height:24px}.player-row{grid-template-columns:4px 20px 1fr 50px 40px 40px 18px 18px;font-size:.5rem;gap:2px;padding:2px}.player-row input,.player-row select{font-size:.45rem;padding:1px 2px}.cat-badge{font-size:.4rem;padding:1px 4px}.st-toggle,.pin-btn,.delete-btn{width:16px;height:16px;font-size:.4rem}.cat-legend{font-size:.4rem;gap:4px}.brand-logo{height:24px;max-width:40px}.brand-text h1{font-size:.65rem}.brand-text p{font-size:.4rem}.hdr-btn{font-size:.45rem;padding:2px 5px;min-height:18px}.wall-clock,.weather-pill{font-size:.45rem;padding:2px 4px}}
         @media(pointer:coarse){.hdr-btn{min-height:36px!important;padding:6px 12px!important}.sb-btn{min-height:36px!important;min-width:36px!important;font-size:14px!important}.gc-btn,.pos-btn,.to-btn{min-height:34px!important;padding:4px 10px!important}.quick-cues button{min-height:36px!important;padding:6px 12px!important}.nav-link{padding:8px 12px!important;font-size:.7rem!important}.game-controls-row select,.game-controls-row input{min-height:30px!important;font-size:.6rem!important}.player-row input,.player-row select{min-height:28px!important;font-size:.65rem!important}.game-controls-row{flex-wrap:nowrap!important;overflow-x:auto!important}}
     </style>
 </head>
@@ -391,7 +391,7 @@ var S = {
     }
 };
 
-var STORAGE_KEY = 'fnl_v34';
+var STORAGE_KEY = 'fnl_v35';
 
 function toast(m) {
     var x = document.getElementById('toast');
@@ -1230,7 +1230,7 @@ function toggleOutdoor() {
 }
 
 // ============================================================
-// GAME VIEW - 50/50 split with search on each team card
+// GAME VIEW - 50/50 split with search and pronunciation
 // ============================================================
 function renderGame() {
     var html = '';
@@ -1311,7 +1311,7 @@ function renderGame() {
         html += '<input type="text" class="player-search" data-side="' + side + '" placeholder="🔍 Search # or name..." style="flex:1;padding:4px 8px;border-radius:4px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:0.65rem;min-width:0;">';
         html += '</div>';
 
-        // ---- PLAYER LIST ----
+        // ---- PLAYER LIST - WITH PRONUNCIATION ----
         html += '<div class="player-list-body" id="playerList_' + side + '" style="flex:1;overflow-y:auto;padding:4px 5px;">';
         var allPosOptions = getAllPositionOptionsWithLabels();
         var players = getPlayers(side, filter);
@@ -1321,7 +1321,7 @@ function renderGame() {
             var isPinned = p.pinned || false;
             html += '<div class="player-row category-' + catClass + (isPinned ? ' pinned' : '') + (p.st ? ' starter' : '') + '" data-name="' + (p.na || '').toLowerCase() + '" data-number="' + (p.n || '') + '">';
             html += '<div style="width:4px;border-radius:2px;" title="Category bar"></div>';
-            html += '<input value="' + (p.n || '') + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'n\',this.value)" style="width:30px;" placeholder="#" data-tooltip="Jersey number">';
+            html += '<input value="' + (p.n || '') + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'n\',this.value)" style="width:28px;" placeholder="#" data-tooltip="Jersey number">';
             html += '<input value="' + (p.na || '') + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'na\',this.value)" placeholder="Name" data-tooltip="Player name">';
             html += '<div style="display:flex;align-items:center;gap:2px;width:100%;">';
             html += '<select onchange="updateGamePlayerPositionOnly(\'' + side + '\',\'' + p.id + '\',this.value)" style="flex:1;height:24px;font-size:0.55rem;" data-tooltip="Position">';
@@ -1331,7 +1331,8 @@ function renderGame() {
             });
             html += '</select>';
             html += '</div>';
-            html += '<input value="' + (p.nt || '') + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'nt\',this.value)" placeholder="Notes" style="width:60px;font-size:0.5rem;" data-tooltip="Notes">';
+            html += '<input value="' + (p.nt || '') + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'nt\',this.value)" placeholder="Notes" style="width:55px;font-size:0.5rem;" data-tooltip="Notes">';
+            html += '<input value="' + (p.pron || '') + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'pron\',this.value)" placeholder="Pron" style="width:55px;font-size:0.5rem;" data-tooltip="Pronunciation">';
             html += '<button class="st-toggle ' + (p.st ? 'active' : '') + '" onclick="toggleStarterOnly(\'' + side + '\',\'' + p.id + '\')" title="Toggle starter status" data-tooltip="Toggle starter status">⭐</button>';
             html += '<button class="pin-btn ' + (isPinned ? 'active' : '') + '" onclick="togglePinOnly(\'' + side + '\',\'' + p.id + '\')" title="Pin to top" data-tooltip="Pin to top of list">📌</button>';
             html += '</div>';
@@ -1365,7 +1366,6 @@ function setFilterAndSearch(side, f) {
     if (side === 'away') S.ua = f;
     else S.uh = f;
     renderGame();
-    // Re-apply search after re-render
     setTimeout(function() {
         var inputs = document.querySelectorAll('.player-search');
         inputs.forEach(function(input) {
@@ -1728,7 +1728,7 @@ function setSideTeam(side, teamId) {
 }
 
 // ============================================================
-// SYNC COLORS - stays on current tab, updates scorebug
+// SYNC COLORS
 // ============================================================
 function syncTeamColors(color) {
     var team = S.teams.find(function(t) { return t.id === S.cid; });
@@ -1747,7 +1747,7 @@ function syncTeamColors(color) {
 }
 
 // ============================================================
-// ROSTER VIEW - FIXED GRID LAYOUT
+// ROSTER VIEW - FIXED GRID
 // ============================================================
 function renderRoster() {
     var sortedTeams = S.teams.slice().sort(function(a, b) { return a.name.localeCompare(b.name); });
@@ -1806,7 +1806,6 @@ function renderRoster() {
     html += '<span class="legend-item"><span class="cat-dot other"></span> Other</span>';
     html += '</div>';
 
-    // ---- FIXED GRID LAYOUT - wider columns ----
     html += '<div style="display:grid;grid-template-columns:30px 1fr 80px 70px 80px 70px 26px;gap:4px;font-size:0.5rem;font-weight:700;margin-bottom:4px;opacity:0.6;border-bottom:1px solid var(--border);padding-bottom:4px;">';
     html += '<span>#</span><span>Name</span><span>Position</span><span>Role</span><span>Notes</span><span>Pron</span><span></span>';
     html += '</div>';
@@ -1843,7 +1842,6 @@ function renderRoster() {
 
     document.getElementById('main').innerHTML = html;
 
-    // Attach event listeners for dynamic roster fields
     var container = document.getElementById('main');
     if (container) {
         container.querySelectorAll('.roster-workspace input[data-field], .roster-workspace select[data-field]').forEach(function(el) {
@@ -1898,7 +1896,6 @@ function parseRosterText(teamId) {
         var line = l.trim();
         if (!line) return;
         
-        // Skip table headers and separators
         if (line.match(/^[\|\-\s]+$/) || 
             line.match(/^Role\s*\|/i) ||
             line.match(/^Notes\s*\|/i) ||
@@ -1914,7 +1911,6 @@ function parseRosterText(teamId) {
             return;
         }
         
-        // Remove table pipe characters
         line = line.replace(/^\||\|$/g, '').trim();
         var parts = line.split('|').map(function(s) { return s.trim(); }).filter(function(s) { return s; });
         if (parts.length >= 2 && parts[0].match(/^[A-Za-z]/) && parts[1].match(/^[A-Za-z]/)) {
@@ -2154,7 +2150,7 @@ function exportTeamCSV(teamId) {
 }
 
 // ============================================================
-// CLIENTS VIEW
+// CLIENTS, LOG, SCRIPT, ADMIN (condensed for brevity - full working)
 // ============================================================
 function renderClients() {
     var html = '<div class="panel"><div class="panel-header">';
@@ -2162,7 +2158,6 @@ function renderClients() {
     html += '<div class="panel-actions">';
     html += '<button class="hdr-btn" onclick="fnlCloudLoadClientsOnly()" data-tooltip="Load clients from cloud (merges)">📥 LOAD CLIENTS</button>';
     html += '</div></div>';
-
     var keys = Object.keys(S.cp);
     if (keys.length === 0) {
         html += '<p style="opacity:0.6;font-size:0.7rem;margin-top:4px;">No clients yet. Add one below.</p>';
@@ -2187,7 +2182,6 @@ function renderClients() {
             html += '</div>';
         });
     }
-
     html += '<div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">';
     html += '<button class="hdr-btn" onclick="addClient()" data-tooltip="Add new client">➕ Add Client</button> ';
     html += '<button class="hdr-btn" onclick="showAllPINs()" data-tooltip="Show all client PINs">🔑 Show PINs</button>';
@@ -2271,10 +2265,8 @@ function updateHeaderBranding() {
     var brandContainer = document.getElementById('brandContainer');
     var brandLogo = document.getElementById('brandLogo');
     var brandSubtitle = document.getElementById('brandSubtitle');
-
     var activeClient = null;
     var activePin = S.ap;
-
     if (!activePin || !S.cp[activePin]) {
         var keys = Object.keys(S.cp);
         if (keys.length > 0) {
@@ -2282,20 +2274,16 @@ function updateHeaderBranding() {
             S.ap = activePin;
         }
     }
-
     if (activePin && S.cp[activePin]) {
         activeClient = S.cp[activePin];
     }
-
     var existingClientLogo = document.getElementById('clientHeaderLogo');
     var existingClientName = document.getElementById('clientHeaderName');
     if (existingClientLogo) existingClientLogo.remove();
     if (existingClientName) existingClientName.remove();
-
     if (activeClient) {
         brandSubtitle.textContent = activeClient.n || 'PA CONSOLE';
         brandSubtitle.style.color = 'var(--accent)';
-
         if (activeClient.logo) {
             var logoImg = document.createElement('img');
             logoImg.id = 'clientHeaderLogo';
@@ -2311,13 +2299,11 @@ function updateHeaderBranding() {
             initial.textContent = activeClient.n ? activeClient.n[0].toUpperCase() : '?';
             brandContainer.appendChild(initial);
         }
-
         var nameSpan = document.createElement('span');
         nameSpan.id = 'clientHeaderName';
         nameSpan.className = 'client-header-name';
         nameSpan.textContent = activeClient.n || '';
         brandContainer.appendChild(nameSpan);
-
     } else {
         brandSubtitle.textContent = 'PA CONSOLE';
         brandSubtitle.style.color = 'var(--accent)';
@@ -2555,9 +2541,6 @@ function importBackup(input) {
     r.readAsText(f); 
 }
 
-// ============================================================
-// PRINT LINEUPS
-// ============================================================
 function printLU() {
     var html = '<html><head><title>Starting Lineups</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse;margin-bottom:16px}th,td{border:1px solid #000;padding:4px}</style></head><body>';
     ['away','home'].forEach(function(side) {
@@ -2570,9 +2553,6 @@ function printLU() {
     safePrint(html);
 }
 
-// ============================================================
-// WALL CLOCK & WEATHER
-// ============================================================
 function updateWallClock() {
     var n = new Date();
     var h = n.getHours();
@@ -2600,9 +2580,6 @@ function updateWeather() {
 }
 updateWeather();
 
-// ============================================================
-// KEYBOARD SHORTCUTS
-// ============================================================
 document.addEventListener('keydown', function(e) {
     var tag = (e.target.tagName || '').toLowerCase();
     var typing = tag === 'input' || tag === 'select' || tag === 'textarea' || e.target.isContentEditable;
@@ -2629,9 +2606,6 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// ============================================================
-// CLOCK TICKER
-// ============================================================
 setInterval(function() {
     if (S.gc.run && S.gc.rem > 0) {
         S.gc.rem--;
@@ -2645,9 +2619,6 @@ setInterval(function() {
     }
 }, 1000);
 
-// ============================================================
-// INIT
-// ============================================================
 loadState();
 renderAll();
 updateScorebug();
@@ -2675,8 +2646,7 @@ if (awayPicker && awayTeam) awayPicker.value = awayTeam.color;
 if (homePicker && homeTeam) homePicker.value = homeTeam.color;
 
 console.log('🏈 Friday Night Live PA Console loaded successfully!');
-console.log('📋 Version: v34 – 50/50 split, colored unit tabs, bigger labels, enhanced parser, fixed roster grid');
-console.log('🔧 Enjoy the game!');
+console.log('📋 Version: v35 – All fixes applied');
 </script>
 </body>
 </html>
