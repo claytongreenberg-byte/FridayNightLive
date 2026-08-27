@@ -158,36 +158,39 @@
         .game-controls-row .yd-input{width:32px}
         .game-controls-row .gc-btn{background:#334155;color:#fff;border:1px solid #475569;border-radius:6px;padding:2px 5px;font-weight:700;font-size:.5rem;cursor:pointer;min-height:20px;transition:all .15s;white-space:nowrap;flex-shrink:0;border-radius:6px!important}
         .game-controls-row .gc-btn:hover{background:#475569}
-        .game-controls-row .gc-btn.td{background:#dc2626;border-color:#dc2626}
-        .game-controls-row .gc-btn.fg{background:#2563eb;border-color:#2563eb}
-        .game-controls-row .gc-btn.twopt{background:#8b5cf6;border-color:#8b5cf6}
-        .game-controls-row .gc-btn.pat{background:#16a34a;border-color:#16a34a}
-        .game-controls-row .gc-btn.safety{background:#f59e0b;color:#000;border-color:#f59e0b}
-        .team-cards{display:flex;gap:6px;height:calc(100% - 120px);min-height:200px}
-        .team-card{flex:1;background:var(--team-card-bg);border:2px solid var(--border);border-radius:6px;display:flex;flex-direction:column;overflow:hidden}
-        .team-card.away-card{background:var(--team-card-away)}
-        .team-card.home-card{background:var(--team-card-home)}
-        .card-head{padding:5px 8px;font-weight:700;display:flex;align-items:center;gap:5px;color:#fff;font-size:.75rem;flex-shrink:0}
-        .card-head select{flex:1;padding:3px 5px;border-radius:4px;background:#fff;color:#000;font-size:.7rem;min-height:24px;border:1px solid rgba(255,255,255,.3)}
-        .card-head select option{color:#000}
-        .card-head .mini-logo{width:22px;height:22px;object-fit:cover;border-radius:50%;flex-shrink:0}
-        .card-head .sb-btn{width:22px;height:22px;font-size:10px;border-radius:50%!important}
-        .unit-tabs{display:flex;gap:3px;padding:2px 5px;border-bottom:1px solid var(--border);flex-shrink:0}
-        .unit-tab{background:0 0;border:none;padding:3px 6px;cursor:pointer;font-weight:700;font-size:.5rem;border-radius:4px;transition:all .15s}
-        .unit-tab.active{color:#000}
-        .unit-tab.all-tab{color:var(--accent)}
-        .unit-tab.all-tab.active{background:var(--accent);color:#000}
-        .unit-tab.offense-tab{color:var(--badge-offense)}
-        .unit-tab.offense-tab.active{background:var(--badge-offense);color:#fff}
-        .unit-tab.defense-tab{color:var(--badge-defense)}
-        .unit-tab.defense-tab.active{background:var(--badge-defense);color:#fff}
-        .unit-tab.special-tab{color:var(--badge-special)}
-        .unit-tab.special-tab.active{background:var(--badge-special);color:#fff}
-        .sb-mode-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:#fff;width:32px;height:32px;border-radius:50%;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;border-radius:50%!important}
-        .sb-mode-btn:hover{background:var(--accent);color:#000}
-        .sb-toggle-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:#fff;width:32px;height:32px;border-radius:50%;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;border-radius:50%!important}
-        .sb-toggle-btn:hover{background:var(--accent);color:#000}
-        .sb-color-picker-wrapper{display:flex;align-items:center;gap:4px;margin-top:2px}
+        /* Scoring buttons - colorful & intuitive */
+        .game-controls-row .gc-btn.td{background:linear-gradient(135deg,#dc2626,#b91c1c);border-color:#b91c1c;color:#fff;box-shadow:0 2px 8px rgba(220,38,38,.4)}
+        .game-controls-row .gc-btn.td:hover{background:linear-gradient(135deg,#ef4444,#dc2626);transform:scale(1.05);box-shadow:0 4px 16px rgba(220,38,38,.6)}
+        .game-controls-row .gc-btn.fg{background:linear-gradient(135deg,#2563eb,#1d4ed8);border-color:#1d4ed8;color:#fff;box-shadow:0 2px 8px rgba(37,99,235,.4)}
+        .game-controls-row .gc-btn.fg:hover{background:linear-gradient(135deg,#3b82f6,#2563eb);transform:scale(1.05);box-shadow:0 4px 16px rgba(37,99,235,.6)}
+        .game-controls-row .gc-btn.twopt{background:linear-gradient(135deg,#8b5cf6,#7c3aed);border-color:#7c3aed;color:#fff;box-shadow:0 2px 8px rgba(139,92,246,.4)}
+        .game-controls-row .gc-btn.twopt:hover{background:linear-gradient(135deg,#a78bfa,#8b5cf6);transform:scale(1.05);box-shadow:0 4px 16px rgba(139,92,246,.6)}
+        .game-controls-row .gc-btn.pat{background:linear-gradient(135deg,#16a34a,#15803d);border-color:#15803d;color:#fff;box-shadow:0 2px 8px rgba(22,163,74,.4)}
+        .game-controls-row .gc-btn.pat:hover{background:linear-gradient(135deg,#22c55e,#16a34a);transform:scale(1.05);box-shadow:0 4px 16px rgba(22,163,74,.6)}
+        .game-controls-row .gc-btn.safety{background:linear-gradient(135deg,#f59e0b,#d97706);border-color:#d97706;color:#000;box-shadow:0 2px 8px rgba(245,158,11,.4)}
+        .game-controls-row .gc-btn.safety:hover{background:linear-gradient(135deg,#fbbf24,#f59e0b);transform:scale(1.05);box-shadow:0 4px 16px rgba(245,158,11,.6)}
+        .game-controls-row .gc-btn.load-btn{background:linear-gradient(135deg,#334155,#1e293b);border-color:#475569;color:#fff}
+        .game-controls-row .gc-btn.load-btn:hover{background:linear-gradient(135deg,#475569,#334155);transform:scale(1.05)}
+        /* Quick cues with emoji colors */
+        .quick-cues button[onclick*="FIRST DOWN"]{background:linear-gradient(135deg,#2563eb,#1d4ed8);border-color:#1d4ed8}
+        .quick-cues button[onclick*="PUNT"]{background:linear-gradient(135deg,#6b7280,#4b5563);border-color:#4b5563}
+        .quick-cues button[onclick*="INTERCEPTION"]{background:linear-gradient(135deg,#dc2626,#b91c1c);border-color:#b91c1c}
+        .quick-cues button[onclick*="FUMBLE"]{background:linear-gradient(135deg,#ea580c,#c2410c);border-color:#c2410c}
+        .quick-cues button[onclick*="END OF QUARTER"]{background:linear-gradient(135deg,#8b5cf6,#7c3aed);border-color:#7c3aed}
+        .quick-cues button.flag{background:linear-gradient(135deg,#facc15,#eab308)!important;border-color:#eab308!important;color:#000!important}
+        .quick-cues button.flag:hover{background:linear-gradient(135deg,#fde047,#facc15)!important}
+        /* Timeout buttons */
+        .game-controls-row .to-btn{background:linear-gradient(135deg,#f97316,#ea580c);border:1px solid #ea580c;color:#fff;box-shadow:0 2px 6px rgba(249,115,22,.3)}
+        .game-controls-row .to-btn:hover{background:linear-gradient(135deg,#fb923c,#f97316);transform:scale(1.05)}
+        .game-controls-row .to-btn.injury-btn{background:linear-gradient(135deg,#dc2626,#b91c1c);border-color:#b91c1c}
+        .game-controls-row .to-btn.injury-btn:hover{background:linear-gradient(135deg,#ef4444,#dc2626)}
+        /* Possession buttons */
+        .pos-btn{transition:all .2s!important;font-weight:700!important}
+        .pos-btn.active{transform:scale(1.05);box-shadow:0 0 0 3px var(--accent),0 0 20px rgba(250,204,21,.3)}
+        .team-cards .card-head .sb-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2)}
+        .team-cards .card-head .sb-btn:hover{background:var(--accent);color:#000;border-color:var(--accent)}
+        .sb-mode-btn,.sb-toggle-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:#fff;border-radius:50%!important;width:32px;height:32px;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+        .sb-mode-btn:hover,.sb-toggle-btn:hover{background:var(--accent);color:#000;transform:scale(1.1)}
         .team-color-picker{width:22px;height:22px;border:2px solid rgba(255,255,255,.2);border-radius:50%;cursor:pointer;padding:0;background:transparent}
         .team-color-picker::-webkit-color-swatch-wrapper{padding:0}
         .team-color-picker::-webkit-color-swatch{border:none;border-radius:50%}
@@ -500,6 +503,7 @@ function getCategoryClass(categories) {
     if (hasSpecial) return 'special';
     return 'other';
 }
+
 function getCategoryTooltip(categories) {
     if (!categories || categories.length === 0 || categories[0] === 'all') return 'Unknown Position';
     var labels = [];
@@ -508,6 +512,7 @@ function getCategoryTooltip(categories) {
     if (categories.indexOf('special') !== -1) labels.push('Special Teams');
     return labels.join(' + ') || 'Unknown';
 }
+
 function getContrastColor(hex) {
     if (!hex) return '#ffffff';
     var r = parseInt(hex.slice(1,3), 16);
@@ -1048,7 +1053,7 @@ function setPossession(side) {
 function updateClockStatusIndicator() {
     var el = document.getElementById('clockStatusIndicator');
     if (el) {
-        el.textContent = S.gc.run ? '▶ LIVE' : '⏸ PAUSED';
+        el.textContent = S.gc.run ? '▶️ LIVE' : '⏸️ PAUSED';
         el.className = 'clock-status ' + (S.gc.run ? 'running' : 'paused');
     }
 }
@@ -1237,8 +1242,8 @@ function renderGame() {
     var awayColor = awayTeam.color || '#475569';
     var homeColor = homeTeam.color || '#475569';
 
-     html += '<div class="game-controls-row">';
-    // POSSESSION
+    // ---- GAME CONTROLS ROW - with emojis for every button ----
+    html += '<div class="game-controls-row">';
     html += '<span class="label">🏈</span>';
     html += '<button class="pos-btn ' + (S.poss === 'away' ? 'active' : '') + '" onclick="setPossession(\'away\')" style="' + (S.poss === 'away' ? 'background:' + awayColor + ';border-color:' + awayColor + ';' : 'border-color:' + awayColor + ';') + '" data-tooltip="Give possession to Away">' + awayLogo + ' 🏹 ' + getTeamMascot(awayTeam) + '</button>';
     html += '<button class="pos-btn ' + (S.poss === 'home' ? 'active' : '') + '" onclick="setPossession(\'home\')" style="' + (S.poss === 'home' ? 'background:' + homeColor + ';border-color:' + homeColor + ';' : 'border-color:' + homeColor + ';') + '" data-tooltip="Give possession to Home">' + homeLogo + ' 🏠 ' + getTeamMascot(homeTeam) + '</button>';
@@ -1247,7 +1252,6 @@ function renderGame() {
     html += '<button class="to-btn injury-btn" onclick="injuryTimeout()" data-tooltip="Injury timeout (clock paused, no TO charged)">🆘 INJ</button>';
     html += '<span class="clock-status ' + (S.gc.run ? 'running' : 'paused') + '" id="clockStatusIndicator" data-tooltip="Clock status">' + (S.gc.run ? '▶️ LIVE' : '⏸️ PAUSED') + '</span>';
     html += '<span class="divider"></span>';
-    // DOWN & DISTANCE
     html += '<span class="label">⬇️</span>';
     html += '<select onchange="setDown(this.value)" data-tooltip="Set down">' + [1,2,3,4].map(function(d) { return '<option ' + (d === S.down ? 'selected' : '') + '>' + d + '</option>'; }).join('') + '</select>';
     html += '<span class="label">📏</span>';
@@ -1255,14 +1259,12 @@ function renderGame() {
     html += '<button class="gc-btn" onclick="adjustYards(-1)" data-tooltip="-1 yard">➖</button>';
     html += '<button class="gc-btn" onclick="adjustYards(1)" data-tooltip="+1 yard">➕</button>';
     html += '<span class="divider"></span>';
-    // SCORING
     html += '<span class="label">⚡</span>';
     html += '<button class="gc-btn td" onclick="quickScore(\'td\')" data-tooltip="Touchdown +6">🏈 TD</button>';
     html += '<button class="gc-btn fg" onclick="quickScore(\'fg\')" data-tooltip="Field Goal +3">🎯 FG</button>';
     html += '<button class="gc-btn twopt" onclick="quickScore(\'twopt\')" data-tooltip="2-Point Conversion +2">➕ 2PT</button>';
     html += '<button class="gc-btn pat" onclick="quickScore(\'pat\')" data-tooltip="PAT +1">🎯 PAT</button>';
     html += '<button class="gc-btn safety" onclick="quickScore(\'safety\')" data-tooltip="Safety +2">🛡️ Safe</button>';
-    // LOAD GAME STATE
     html += '<button class="gc-btn load-btn" onclick="fnlCloudLoadGameState()" data-tooltip="Load game state from cloud">📥 LOAD</button>';
     html += '</div>';
 
@@ -1669,7 +1671,7 @@ function setSideTeam(side, teamId) {
 }
 
 // ============================================================
-// SYNC COLORS
+// SYNC COLORS - stays on current tab, updates scorebug
 // ============================================================
 function syncTeamColors(color) {
     var team = S.teams.find(function(t) { return t.id === S.cid; });
@@ -1682,8 +1684,8 @@ function syncTeamColors(color) {
     if (team.id === S.awayId && awayPicker) awayPicker.value = color;
     if (team.id === S.homeId && homePicker) homePicker.value = color;
     saveState();
-    updateScorebug();
-    renderView();
+    updateScorebug(); // updates scorebug team name color
+    renderView(); // stays on current tab (ROSTER)
     toast('✅ Colors synced');
 }
 
@@ -2505,8 +2507,8 @@ if (awayPicker && awayTeam) awayPicker.value = awayTeam.color;
 if (homePicker && homeTeam) homePicker.value = homeTeam.color;
 
 console.log('🏈 Friday Night Live PA Console loaded successfully!');
-console.log('📋 Version: v31 – PC optimized with tooltips, emoji buttons, and stable layout');
-console.log('🔧 Roster tab: fixed with event listeners instead of inline onchange');
+console.log('📋 Version: final – emojis, rounded buttons, roster fixed, color sync stays');
+console.log('🔧 Enjoy the game!');
 </script>
 </body>
 </html>
