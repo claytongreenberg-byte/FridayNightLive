@@ -8,7 +8,7 @@
         *{margin:0;padding:0;box-sizing:border-box}
         :root{--accent:#facc15;--bg:#f1f5f9;--surface:#e2e8f0;--text:#0f172a;--border:#94a3b8;--footer-bg:#1a1a1a;--footer-text:#f1f5f9;--scorebug-bg:#0d0d1a;--scorebug-text:#ffffff;--team-card-away:#e2e8f0;--team-card-home:#e2e8f0;--badge-offense:#2563eb;--badge-defense:#dc2626;--badge-special:#16a34a;--badge-both:#8b5cf6;--badge-other:#6b7280}
         html,body{height:100%;overflow:hidden}
-        body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;font-size:14px}
+        body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;font-size:14px}function parseRosterText(teamId)
         select{-webkit-appearance:menulist;appearance:menulist}
         header{background:linear-gradient(180deg,#1a3a0e,#0f2a08);padding:6px 10px;border-bottom:3px solid var(--accent);flex-shrink:0}
         .hdr-top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
@@ -1990,28 +1990,174 @@ function parseRosterText(teamId) {
     var team = S.teams.find(function(t) { return t.id === teamId; });
     if (!team) return;
     if (!tx) return toast('⚠️ Empty input');
+    
     var positions = getAllPositions();
+    // Common position aliases
+    var posMap = {
+        'QB': 'QB', 'RB': 'RB', 'WR': 'WR', 'TE': 'TE', 'OL': 'OL',
+        'C': 'C', 'G': 'G', 'T': 'T', 'DL': 'DL', 'DE': 'DE',
+        'DT': 'DT', 'LB': 'LB', 'OLB': 'OLB', 'ILB': 'ILB', 'MLB': 'MLB',
+        'CB': 'CB', 'S': 'S', 'SS': 'SS', 'FS': 'FS', 'DB': 'DB',
+        'K': 'K', 'P': 'P', 'LS': 'LS', 'KR': 'KR', 'PR': 'PR',
+        'ATH': 'ATH', 'ST': 'ST', 'SP': 'SP'
+    };
+    
     var lines = tx.split('\n');
     var out = [];
+    var autoNumber = 1;
+    
     lines.forEach(function(l) {
-        if (!l.trim()) return;
-        var n = '', rest = l.trim();
-        var m = rest.match(/^(\d{1,3})\s+/);
-        if (m) { n = m[1]; rest = rest.slice(m[0].length).trim(); }
-        var po = '', name = rest;
-        var words = rest.split(/\s+/);
-        if (words.length && positions.indexOf(words[words.length - 1].toUpperCase()) !== -1) {
-            po = words.pop().toUpperCase();
-            name = words.join(' ');
+        var line = l.trim();
+        if (!line) return;
+        
+        // Skip table headers and separators
+        if (line.match(/^[\|\-\s]+$/) || 
+            line.match(/^Role\s*\|/i) ||
+            line.match(/^Notes\s*\|/i) ||
+            line.match(/^Pron\s*\|/i) ||
+            line.match(/^Offense\s*$/i) ||
+            line.match(/^Defense\s*$/i) ||
+            line.match(/^Special Teams\s*$/i) ||
+            line.match(/^Both\s*$/i) ||
+            line.match(/^Other\s*$/i) ||
+            line.match(/^#\s+Name\s*$/i) ||
+            line.match(/^Name\s+#\s*$/i) ||
+            line === 'Role' || line === 'Notes' || line === 'Pron') {
+            return;
         }
-        if (name) out.push({ id: 'p' + Date.now() + Math.random().toString(36).slice(2,7), n: n, na: name, po: po || 'QB', posFull: po || 'QB', st: false, nt: '', pron: '', ph: '', pinned: false, categories: getPositionCategories(po || 'QB') });
+        
+        // Remove table pipe characters
+        line = line.replace(/^\||\|$/g, '').trim();
+        var parts = line.split('|').map(function(s) { return s.trim(); }).filter(function(s) { return s; });
+        if (parts.length >= 2 && parts[0].match(/^[A-Za-z]/) && parts[1].match(/^[A-Za-z]/)) {
+            // This is table format with Name and Role
+            var namePart = parts[0].replace(/^[⭐\s]+/, '');
+            var rolePart = parts[1].trim().toUpperCase();
+            // If it's a table with "Notes" or "Pron" as first column, skip
+            if (namePart === 'Notes' || namePart === 'Pron' || namePart === 'Role') return;
+            // Try to extract number from name
+            var numMatch = namePart.match(/^(\d+)\s+/);
+            var num = numMatch ? numMatch[1] : '';
+            var cleanName = numMatch ? namePart.replace(/^(\d+)\s+/, '') : namePart;
+            // Check if rolePart is a position
+            var pos = posMap[rolePart] || rolePart;
+            if (positions.indexOf(pos) === -1 && pos !== 'ST' && pos !== 'SP' && pos !== 'ATH') {
+                // If not a valid position, treat as part of name
+                cleanName = namePart;
+                pos = 'QB'; // default
+            }
+            if (cleanName) {
+                var isStarter = namePart.indexOf('⭐') !== -1 || line.indexOf('⭐') !== -1 || rolePart.indexOf('⭐') !== -1;
+                out.push({ 
+                    id: 'p' + Date.now() + Math.random().toString(36).slice(2,7), 
+                    n: num, 
+                    na: cleanName, 
+                    po: pos, 
+                    posFull: pos, 
+                    st: isStarter, 
+                    nt: '', 
+                    pron: '', 
+                    ph: '', 
+                    pinned: false, 
+                    categories: getPositionCategories(pos) 
+                });
+            }
+            return;
+        }
+        
+        // Strip leading star for starter detection
+        var isStarter = false;
+        if (line.indexOf('⭐') !== -1 || line.indexOf('*') !== -1) {
+            isStarter = true;
+            line = line.replace(/[⭐\*]\s*/, '');
+        }
+        
+        var n = '';
+        var rest = line;
+        
+        // Try to extract number
+        var numMatch = rest.match(/^(\d{1,3})\s+/);
+        if (numMatch) { 
+            n = numMatch[1]; 
+            rest = rest.slice(numMatch[0].length).trim(); 
+        }
+        
+        var po = '';
+        var name = rest;
+        
+        // Try to find position at the end
+        var words = rest.split(/\s+/);
+        var lastWord = words[words.length - 1] ? words[words.length - 1].toUpperCase() : '';
+        
+        // Check if last word is a position
+        if (lastWord && (positions.indexOf(lastWord) !== -1 || posMap[lastWord])) {
+            po = posMap[lastWord] || lastWord;
+            words.pop();
+            name = words.join(' ');
+        } else {
+            // Check for multi-word positions like "WR/DB", "LB/TE"
+            var lastTwo = words.length >= 2 ? words.slice(-2).join('/').toUpperCase() : '';
+            if (lastTwo) {
+                var posCandidates = lastTwo.split('/');
+                var found = false;
+                posCandidates.forEach(function(p) {
+                    if (positions.indexOf(p) !== -1 || posMap[p]) {
+                        po = posMap[p] || p;
+                        found = true;
+                    }
+                });
+                if (found) {
+                    // Remove the position parts from name
+                    var tempName = rest;
+                    posCandidates.forEach(function(p) {
+                        tempName = tempName.replace(new RegExp(p, 'i'), '').trim();
+                    });
+                    name = tempName;
+                }
+            }
+        }
+        
+        // Clean up name
+        name = name.replace(/\s+/g, ' ').trim();
+        
+        // If no name, use the rest
+        if (!name && rest) name = rest;
+        
+        // If no number, auto-assign
+        if (!n) {
+            n = autoNumber;
+            autoNumber++;
+        }
+        
+        // Default position
+        if (!po) po = 'QB';
+        
+        // If we have a name, add the player
+        if (name) {
+            out.push({ 
+                id: 'p' + Date.now() + Math.random().toString(36).slice(2,7), 
+                n: String(n), 
+                na: name, 
+                po: po, 
+                posFull: po, 
+                st: isStarter, 
+                nt: '', 
+                pron: '', 
+                ph: '', 
+                pinned: false, 
+                categories: getPositionCategories(po) 
+            });
+        }
     });
+    
     if (out.length) {
         team.players = out;
         saveState();
         renderRoster();
-        toast('✅ ' + out.length + ' players parsed');
-    } else toast('❌ No players found');
+        toast('✅ ' + out.length + ' players parsed (' + out.filter(function(p) { return p.st; }).length + ' starters)');
+    } else {
+        toast('❌ No players found. Format: "Number Name Position" or "Name Position"');
+    }
 }
 
 function uploadRosterFile(teamId, input) {
