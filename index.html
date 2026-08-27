@@ -158,7 +158,6 @@
         .game-controls-row .yd-input{width:32px}
         .game-controls-row .gc-btn{background:#334155;color:#fff;border:1px solid #475569;border-radius:6px;padding:2px 5px;font-weight:700;font-size:.5rem;cursor:pointer;min-height:20px;transition:all .15s;white-space:nowrap;flex-shrink:0;border-radius:6px!important}
         .game-controls-row .gc-btn:hover{background:#475569}
-        /* Scoring buttons - colorful & intuitive */
         .game-controls-row .gc-btn.td{background:linear-gradient(135deg,#dc2626,#b91c1c);border-color:#b91c1c;color:#fff;box-shadow:0 2px 8px rgba(220,38,38,.4)}
         .game-controls-row .gc-btn.td:hover{background:linear-gradient(135deg,#ef4444,#dc2626);transform:scale(1.05);box-shadow:0 4px 16px rgba(220,38,38,.6)}
         .game-controls-row .gc-btn.fg{background:linear-gradient(135deg,#2563eb,#1d4ed8);border-color:#1d4ed8;color:#fff;box-shadow:0 2px 8px rgba(37,99,235,.4)}
@@ -171,7 +170,6 @@
         .game-controls-row .gc-btn.safety:hover{background:linear-gradient(135deg,#fbbf24,#f59e0b);transform:scale(1.05);box-shadow:0 4px 16px rgba(245,158,11,.6)}
         .game-controls-row .gc-btn.load-btn{background:linear-gradient(135deg,#334155,#1e293b);border-color:#475569;color:#fff}
         .game-controls-row .gc-btn.load-btn:hover{background:linear-gradient(135deg,#475569,#334155);transform:scale(1.05)}
-        /* Quick cues with emoji colors */
         .quick-cues button[onclick*="FIRST DOWN"]{background:linear-gradient(135deg,#2563eb,#1d4ed8);border-color:#1d4ed8}
         .quick-cues button[onclick*="PUNT"]{background:linear-gradient(135deg,#6b7280,#4b5563);border-color:#4b5563}
         .quick-cues button[onclick*="INTERCEPTION"]{background:linear-gradient(135deg,#dc2626,#b91c1c);border-color:#b91c1c}
@@ -179,12 +177,10 @@
         .quick-cues button[onclick*="END OF QUARTER"]{background:linear-gradient(135deg,#8b5cf6,#7c3aed);border-color:#7c3aed}
         .quick-cues button.flag{background:linear-gradient(135deg,#facc15,#eab308)!important;border-color:#eab308!important;color:#000!important}
         .quick-cues button.flag:hover{background:linear-gradient(135deg,#fde047,#facc15)!important}
-        /* Timeout buttons */
         .game-controls-row .to-btn{background:linear-gradient(135deg,#f97316,#ea580c);border:1px solid #ea580c;color:#fff;box-shadow:0 2px 6px rgba(249,115,22,.3)}
         .game-controls-row .to-btn:hover{background:linear-gradient(135deg,#fb923c,#f97316);transform:scale(1.05)}
         .game-controls-row .to-btn.injury-btn{background:linear-gradient(135deg,#dc2626,#b91c1c);border-color:#b91c1c}
         .game-controls-row .to-btn.injury-btn:hover{background:linear-gradient(135deg,#ef4444,#dc2626)}
-        /* Possession buttons */
         .pos-btn{transition:all .2s!important;font-weight:700!important}
         .pos-btn.active{transform:scale(1.05);box-shadow:0 0 0 3px var(--accent),0 0 20px rgba(250,204,21,.3)}
         .team-cards .card-head .sb-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2)}
@@ -383,7 +379,7 @@ var S = {
     }
 };
 
-var STORAGE_KEY = 'fnl_v31';
+var STORAGE_KEY = 'fnl_v32';
 
 function toast(m) {
     var x = document.getElementById('toast');
@@ -1222,7 +1218,7 @@ function toggleOutdoor() {
 }
 
 // ============================================================
-// GAME VIEW
+// GAME VIEW - 50/50 split with search on each team card
 // ============================================================
 function renderGame() {
     var html = '';
@@ -1242,11 +1238,11 @@ function renderGame() {
     var awayColor = awayTeam.color || '#475569';
     var homeColor = homeTeam.color || '#475569';
 
-    // ---- GAME CONTROLS ROW - with emojis for every button ----
+    // ---- GAME CONTROLS ROW ----
     html += '<div class="game-controls-row">';
     html += '<span class="label">🏈</span>';
-    html += '<button class="pos-btn ' + (S.poss === 'away' ? 'active' : '') + '" onclick="setPossession(\'away\')" style="' + (S.poss === 'away' ? 'background:' + awayColor + ';border-color:' + awayColor + ';' : 'border-color:' + awayColor + ';') + '" data-tooltip="Give possession to Away">' + awayLogo + ' 🏹 ' + getTeamMascot(awayTeam) + '</button>';
-    html += '<button class="pos-btn ' + (S.poss === 'home' ? 'active' : '') + '" onclick="setPossession(\'home\')" style="' + (S.poss === 'home' ? 'background:' + homeColor + ';border-color:' + homeColor + ';' : 'border-color:' + homeColor + ';') + '" data-tooltip="Give possession to Home">' + homeLogo + ' 🏠 ' + getTeamMascot(homeTeam) + '</button>';
+    html += '<button class="pos-btn ' + (S.poss === 'away' ? 'active' : '') + '" onclick="setPossession(\'away\')" style="' + (S.poss === 'away' ? 'background:' + awayColor + ';border-color:' + awayColor + ';' : 'border-color:' + awayColor + ';') + '" data-tooltip="Give possession to Away">' + awayLogo + ' 🏹 ' + getTeamMascot(awayTeam) + (S.poss === 'away' ? ' 🏈' : '') + '</button>';
+    html += '<button class="pos-btn ' + (S.poss === 'home' ? 'active' : '') + '" onclick="setPossession(\'home\')" style="' + (S.poss === 'home' ? 'background:' + homeColor + ';border-color:' + homeColor + ';' : 'border-color:' + homeColor + ';') + '" data-tooltip="Give possession to Home">' + homeLogo + ' 🏠 ' + getTeamMascot(homeTeam) + (S.poss === 'home' ? ' 🏈' : '') + '</button>';
     html += '<button class="to-btn" onclick="useTimeout(\'away\')" data-tooltip="Call away timeout">⏱️ AWAY</button>';
     html += '<button class="to-btn" onclick="useTimeout(\'home\')" data-tooltip="Call home timeout">⏱️ HOME</button>';
     html += '<button class="to-btn injury-btn" onclick="injuryTimeout()" data-tooltip="Injury timeout (clock paused, no TO charged)">🆘 INJ</button>';
@@ -1268,37 +1264,48 @@ function renderGame() {
     html += '<button class="gc-btn load-btn" onclick="fnlCloudLoadGameState()" data-tooltip="Load game state from cloud">📥 LOAD</button>';
     html += '</div>';
 
-    html += '<div class="team-cards">';
+    // ---- 50/50 SPLIT TEAM CARDS ----
+    html += '<div class="team-cards" style="display:flex;gap:8px;height:calc(100% - 120px);min-height:200px;flex:1;">';
     ['away','home'].forEach(function(side) {
         var team = getTeam(side);
         var filter = S[side === 'away' ? 'ua' : 'uh'] || 'all';
         var headerBg = side === 'away' ? (S.colors.awayHeaderBg || '#1e3a5f') : (S.colors.homeHeaderBg || '#7f1d1d');
-        html += '<div class="team-card ' + side + '-card">';
+        html += '<div class="team-card ' + side + '-card" style="flex:1;min-width:0;display:flex;flex-direction:column;">';
         html += '<div class="card-head" style="background:' + headerBg + ';">';
         html += '<span>' + side.toUpperCase() + '</span>';
         if (team.logo) html += '<img class="mini-logo" src="' + team.logo + '" alt="">';
         html += '<select onchange="setSideTeam(\'' + side + '\', this.value)" style="border-color:' + team.color + ';" data-tooltip="Switch team">' + S.teams.map(function(t) { return '<option value="' + t.id + '" ' + (t.id === team.id ? 'selected' : '') + '>' + t.name + '</option>'; }).join('') + '</select>';
         html += '<button class="sb-btn" onclick="setPossession(\'' + side + '\')" style="width:22px;height:22px;" data-tooltip="Give ball to this team">🏈</button>';
         html += '</div>';
+
+        // ---- UNIT TABS ----
         html += '<div class="unit-tabs">';
         var allActive = filter === 'all' ? 'active' : '';
-        html += '<button class="unit-tab all-tab ' + allActive + '" onclick="setFilter(\'' + side + '\',\'all\')" data-tooltip="Show all players">ALL</button>';
+        html += '<button class="unit-tab all-tab ' + allActive + '" onclick="setFilterAndSearch(\'' + side + '\',\'all\')" data-tooltip="Show all players">ALL</button>';
         if (S.md7 === 'tackle') {
             var offActive = filter === 'offense' ? 'active' : '';
-            html += '<button class="unit-tab offense-tab ' + offActive + '" onclick="setFilter(\'' + side + '\',\'offense\')" data-tooltip="Show offense">OFF</button>';
+            html += '<button class="unit-tab offense-tab ' + offActive + '" onclick="setFilterAndSearch(\'' + side + '\',\'offense\')" data-tooltip="Show offense">OFF</button>';
             var defActive = filter === 'defense' ? 'active' : '';
-            html += '<button class="unit-tab defense-tab ' + defActive + '" onclick="setFilter(\'' + side + '\',\'defense\')" data-tooltip="Show defense">DEF</button>';
+            html += '<button class="unit-tab defense-tab ' + defActive + '" onclick="setFilterAndSearch(\'' + side + '\',\'defense\')" data-tooltip="Show defense">DEF</button>';
             var stActive = filter === 'special' ? 'active' : '';
-            html += '<button class="unit-tab special-tab ' + stActive + '" onclick="setFilter(\'' + side + '\',\'special\')" data-tooltip="Show special teams">ST</button>';
+            html += '<button class="unit-tab special-tab ' + stActive + '" onclick="setFilterAndSearch(\'' + side + '\',\'special\')" data-tooltip="Show special teams">ST</button>';
         }
         html += '</div>';
-        html += '<div class="player-list-body">';
+
+        // ---- SEARCH INPUT ----
+        html += '<div style="display:flex;gap:4px;padding:4px 8px;border-bottom:1px solid var(--border);flex-shrink:0;">';
+        html += '<input type="text" class="player-search" data-side="' + side + '" placeholder="🔍 Search # or name..." style="flex:1;padding:4px 8px;border-radius:4px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:0.65rem;min-width:0;">';
+        html += '</div>';
+
+        // ---- PLAYER LIST ----
+        html += '<div class="player-list-body" id="playerList_' + side + '" style="flex:1;overflow-y:auto;padding:4px 5px;">';
         var allPosOptions = getAllPositionOptionsWithLabels();
-        getPlayers(side, filter).forEach(function(p) {
+        var players = getPlayers(side, filter);
+        players.forEach(function(p) {
             var cats = p.categories || ['all'];
             var catClass = getCategoryClass(cats);
             var isPinned = p.pinned || false;
-            html += '<div class="player-row category-' + catClass + (isPinned ? ' pinned' : '') + (p.st ? ' starter' : '') + '">';
+            html += '<div class="player-row category-' + catClass + (isPinned ? ' pinned' : '') + (p.st ? ' starter' : '') + '" data-name="' + (p.na || '').toLowerCase() + '" data-number="' + (p.n || '') + '">';
             html += '<div style="width:4px;border-radius:2px;" title="Category bar"></div>';
             html += '<input value="' + (p.n || '') + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'n\',this.value)" style="width:28px;" placeholder="#" data-tooltip="Jersey number">';
             html += '<input value="' + (p.na || '') + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'na\',this.value)" placeholder="Name" data-tooltip="Player name">';
@@ -1323,6 +1330,42 @@ function renderGame() {
     applyColors();
     updateUndoButton();
     updateTimeoutDisplay();
+
+    // ---- Attach search event listeners ----
+    document.querySelectorAll('.player-search').forEach(function(input) {
+        input.addEventListener('input', function() {
+            var side = this.dataset.side;
+            var searchTerm = this.value.toLowerCase().trim();
+            var rows = document.querySelectorAll('#playerList_' + side + ' .player-row');
+            rows.forEach(function(row) {
+                var name = row.dataset.name || '';
+                var number = row.dataset.number || '';
+                var match = name.indexOf(searchTerm) !== -1 || number.indexOf(searchTerm) !== -1;
+                row.style.display = match ? '' : 'none';
+            });
+        });
+    });
+}
+
+function setFilterAndSearch(side, f) {
+    if (side === 'away') S.ua = f;
+    else S.uh = f;
+    renderGame();
+    // Re-apply search after re-render
+    setTimeout(function() {
+        var inputs = document.querySelectorAll('.player-search');
+        inputs.forEach(function(input) {
+            var side2 = input.dataset.side;
+            var val = input.value || '';
+            var rows = document.querySelectorAll('#playerList_' + side2 + ' .player-row');
+            rows.forEach(function(row) {
+                var name = row.dataset.name || '';
+                var number = row.dataset.number || '';
+                var match = name.indexOf(val.toLowerCase().trim()) !== -1 || number.indexOf(val.toLowerCase().trim()) !== -1;
+                row.style.display = match ? '' : 'none';
+            });
+        });
+    }, 50);
 }
 
 function updateGamePlayerFieldOnly(side, pid, field, val) {
@@ -1684,13 +1727,13 @@ function syncTeamColors(color) {
     if (team.id === S.awayId && awayPicker) awayPicker.value = color;
     if (team.id === S.homeId && homePicker) homePicker.value = color;
     saveState();
-    updateScorebug(); // updates scorebug team name color
-    renderView(); // stays on current tab (ROSTER)
+    updateScorebug();
+    renderView();
     toast('✅ Colors synced');
 }
 
 // ============================================================
-// ROSTER VIEW (FIXED – no inline JS bugs)
+// ROSTER VIEW
 // ============================================================
 function renderRoster() {
     var sortedTeams = S.teams.slice().sort(function(a, b) { return a.name.localeCompare(b.name); });
@@ -1785,7 +1828,7 @@ function renderRoster() {
 
     document.getElementById('main').innerHTML = html;
 
-    // Attach event listeners for dynamic roster fields (safer than inline onchange)
+    // Attach event listeners for dynamic roster fields
     var container = document.getElementById('main');
     if (container) {
         container.querySelectorAll('.roster-workspace input[data-field], .roster-workspace select[data-field]').forEach(function(el) {
@@ -2507,7 +2550,7 @@ if (awayPicker && awayTeam) awayPicker.value = awayTeam.color;
 if (homePicker && homeTeam) homePicker.value = homeTeam.color;
 
 console.log('🏈 Friday Night Live PA Console loaded successfully!');
-console.log('📋 Version: final – emojis, rounded buttons, roster fixed, color sync stays');
+console.log('📋 Version: v32 – 50/50 split, search, emoji buttons, rounded, roster fixed');
 console.log('🔧 Enjoy the game!');
 </script>
 </body>
