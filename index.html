@@ -356,6 +356,7 @@ var S = {
     undoStack: [], sessionId: null,
     lastEvent: { text: '🏈 Ready — Set possession to begin', type: 'info' },
     scorebugMode: 'full',
+    useTeamColor: false, // NEW: false = readable (contrast-safe), true = exact team color
     teams: [
         { id: 'h', name: 'Euless Trinity Trojans', abbr: 'ETT', color: '#1e3a5f', textColor: '#ffffff', logo: '', mascot: 'Trojans', coach: '', players: [] },
         { id: 's', name: 'Mansfield Berkner Rams', abbr: 'MBR', color: '#7f1d1d', textColor: '#ffffff', logo: '', mascot: 'Rams', coach: '', players: [] }
@@ -380,7 +381,7 @@ var S = {
     }
 };
 
-var STORAGE_KEY = 'fnl_v29';
+var STORAGE_KEY = 'fnl_v30';
 
 function toast(m) {
     var x = document.getElementById('toast');
@@ -462,6 +463,7 @@ function normalizeState() {
     if (!S.scorebugMode) S.scorebugMode = 'full';
     if (!S.rosterUndo) S.rosterUndo = [];
     if (!S.rosterRedo) S.rosterRedo = [];
+    if (S.useTeamColor === undefined) S.useTeamColor = false;
     S.gc.run = false;
 }
 
@@ -512,8 +514,6 @@ function getCategoryTooltip(categories) {
 function getContrastColor(hex) {
     if (!hex) return '#ffffff';
     var brightness = getColorBrightness(hex);
-    // If the color is bright (e.g. yellow, light blue, white), use it.
-    // If it's dark (e.g. dark blue, black, dark red), use white for readability on dark scorebug.
     return brightness > 128 ? hex : '#ffffff';
 }
 
@@ -815,6 +815,7 @@ function fnlCloudLoadSettingsOnly() {
             }
             if (data.md7 !== undefined) S.md7 = data.md7;
             if (data.gc && data.gc.max !== undefined) S.gc.max = data.gc.max;
+            if (data.useTeamColor !== undefined) S.useTeamColor = data.useTeamColor;
             saveState();
             renderAll();
             applyColors();
@@ -840,7 +841,7 @@ function fnlCloudLoadClientsOnly() {
             }
             saveState();
             renderAll();
-            updateHeaderBranding(); // FIXED: now updates header after loading clients
+            updateHeaderBranding();
             toast('✅ Clients loaded');
         })
         .catch(function(e) {
@@ -899,13 +900,18 @@ function updateScorebug() {
     var away = getTeam('away'), home = getTeam('home');
     var awayNameEl = document.getElementById('sbAwayName');
     var homeNameEl = document.getElementById('sbHomeName');
+    
+    // Determine which color to use based on toggle
+    var awayColor = S.useTeamColor ? away.color : getContrastColor(away.color);
+    var homeColor = S.useTeamColor ? home.color : getContrastColor(home.color);
+    
     if (awayNameEl) {
         awayNameEl.textContent = getTeamMascot(away);
-        awayNameEl.style.color = getContrastColor(away.color);  // FIXED: use contrast-aware color
+        awayNameEl.style.color = awayColor || '#ffffff';
     }
     if (homeNameEl) {
         homeNameEl.textContent = getTeamMascot(home);
-        homeNameEl.style.color = getContrastColor(home.color);  // FIXED: use contrast-aware color
+        homeNameEl.style.color = homeColor || '#ffffff';
     }
     var awayScoreEl = document.getElementById('sbAwayScore');
     var homeScoreEl = document.getElementById('sbHomeScore');
@@ -1097,7 +1103,6 @@ function toggleScorebugDisplay() {
 function updateTeamColor(side, color) {
     var team = getTeam(side);
     team.color = color;
-    // Auto-calculate text color for the game card headers, but scorebug uses getContrastColor()
     var brightness = getColorBrightness(color);
     team.textColor = brightness > 128 ? '#000000' : '#ffffff';
     var teamObj = S.teams.find(function(t) { return t.id === team.id; });
@@ -1661,25 +1666,22 @@ function setSideTeam(side, teamId) {
 }
 
 // ============================================================
-// SYNC COLORS – FIXED (no view switch, contrast-aware)
+// SYNC COLORS – FIXED (no view switch, contrast-aware toggle)
 // ============================================================
 function syncTeamColors(color) {
     var team = S.teams.find(function(t) { return t.id === S.cid; });
     if (!team) { toast('❌ No team selected'); return; }
     team.color = color;
-    // We keep textColor for card headers, but scorebug uses getContrastColor()
     var brightness = getColorBrightness(color);
     team.textColor = brightness > 128 ? '#000000' : '#ffffff';
-    // Update color pickers in scorebug
     var awayPicker = document.getElementById('awayColorPicker');
     var homePicker = document.getElementById('homeColorPicker');
     if (team.id === S.awayId && awayPicker) awayPicker.value = color;
     if (team.id === S.homeId && homePicker) homePicker.value = color;
     saveState();
-    // Refresh scorebug and current view (stays on ROSTER tab)
     updateScorebug();
-    renderView(); // stays on current tab, no switch to GAME
-    toast('✅ Colors synced – team name updated with readability check');
+    renderView(); // stays on current tab
+    toast('✅ Colors synced');
 }
 
 // ============================================================
@@ -2293,7 +2295,14 @@ function renderAdminContent() {
         colorFields.forEach(function(f) {
             c.innerHTML += '<div class="admin-color-item" style="display:flex;flex-direction:column;gap:2px;"><label style="font-size:0.6rem;font-weight:600;">' + f.label + '</label><input type="color" value="' + S.colors[f.key] + '" oninput="S.colors[\'' + f.key + '\']=this.value;applyColors();saveState()"></div>';
         });
-        c.innerHTML += '</div><div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;"><button class="hdr-btn" onclick="S.colors={scorebugBg:\'#0d0d1a\',scorebugText:\'#ffffff\',accent:\'#facc15\',teamCardAway:\'#e2e8f0\',teamCardHome:\'#e2e8f0\',teamCardBorder:\'#94a3b8\',awayHeaderBg:\'#1e3a5f\',homeHeaderBg:\'#7f1d1d\',awayCardBg:\'#e2e8f0\',homeCardBg:\'#e2e8f0\',quarterColor:\'#facc15\',clockColor:\'#00ff88\'};applyColors();saveState();renderAdmin();">↺ Reset</button><button class="hdr-btn" onclick="applyColors();toast(\'✅ Applied\')" style="background:#22c55e;">✅ Apply</button></div>';
+        // NEW: toggle for scorebug team name color mode
+        c.innerHTML += '</div><div style="margin-top:12px;padding:10px;background:var(--bg);border-radius:6px;border:1px solid var(--border);">';
+        c.innerHTML += '<label style="font-weight:700;font-size:0.65rem;display:flex;align-items:center;gap:8px;cursor:pointer;">';
+        c.innerHTML += '<input type="checkbox" ' + (S.useTeamColor ? 'checked' : '') + ' onchange="S.useTeamColor=this.checked;saveState();updateScorebug();toast(this.checked ? \'🎨 Team color mode ON\' : \'🎨 Readable mode ON\');">';
+        c.innerHTML += '🎨 <span style="font-weight:normal;">Use exact team color (scorebug) – uncheck for readable (contrast‑safe)</span>';
+        c.innerHTML += '</label></div>';
+        c.innerHTML += '<div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;"><button class="hdr-btn" onclick="S.colors={scorebugBg:\'#0d0d1a\',scorebugText:\'#ffffff\',accent:\'#facc15\',teamCardAway:\'#e2e8f0\',teamCardHome:\'#e2e8f0\',teamCardBorder:\'#94a3b8\',awayHeaderBg:\'#1e3a5f\',homeHeaderBg:\'#7f1d1d\',awayCardBg:\'#e2e8f0\',homeCardBg:\'#e2e8f0\',quarterColor:\'#facc15\',clockColor:\'#00ff88\'};S.useTeamColor=false;applyColors();saveState();renderAdmin();updateScorebug();toast(\'✅ Reset\');">↺ Reset</button>';
+        c.innerHTML += '<button class="hdr-btn" onclick="applyColors();toast(\'✅ Applied\')" style="background:#22c55e;">✅ Apply</button></div>';
     } else if (S.at === 'backup') {
         c.innerHTML = '<h4>Backup</h4><button class="hdr-btn" onclick="exportBackup()" data-tooltip="Export">📤 Export</button><button class="hdr-btn" onclick="document.getElementById(\'impf\').click()" data-tooltip="Import">📥 Import</button><input type="file" id="impf" accept=".json" style="display:none;" onchange="importBackup(this)">';
     } else if (S.at === 'cloud') {
@@ -2327,7 +2336,7 @@ function importBackup(input) {
             normalizeState(); 
             saveState(); 
             renderAll(); 
-            updateHeaderBranding(); // FIXED: update header after restore
+            updateHeaderBranding();
             toast('✅ Restored'); 
         } catch(e) { 
             toast('❌ Invalid file'); 
@@ -2411,7 +2420,7 @@ document.addEventListener('keydown', function(e) {
 });
 
 // ============================================================
-// CLOCK TICKER (fixed with status update on expiry)
+// CLOCK TICKER
 // ============================================================
 setInterval(function() {
     if (S.gc.run && S.gc.rem > 0) {
@@ -2458,8 +2467,8 @@ if (awayPicker && awayTeam) awayPicker.value = awayTeam.color;
 if (homePicker && homeTeam) homePicker.value = homeTeam.color;
 
 console.log('🏈 Friday Night Live PA Console loaded successfully!');
-console.log('📋 Version: v29 with all fixes applied');
-console.log('🔧 Features: Position categories, roster undo/redo, expanded colors, compact scorebug, contrast-aware team colors');
+console.log('📋 Version: v30 with scorebug color toggle');
+console.log('🔧 Features: Position categories, roster undo/redo, expanded colors, compact scorebug, scorebug team color toggle');
 </script>
 </body>
 </html>
