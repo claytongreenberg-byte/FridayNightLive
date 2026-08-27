@@ -391,7 +391,7 @@ var S = {
     }
 };
 
-var STORAGE_KEY = 'fnl_v33';
+var STORAGE_KEY = 'fnl_v34';
 
 function toast(m) {
     var x = document.getElementById('toast');
@@ -1747,7 +1747,7 @@ function syncTeamColors(color) {
 }
 
 // ============================================================
-// ROSTER VIEW - with enhanced parser
+// ROSTER VIEW - FIXED GRID LAYOUT
 // ============================================================
 function renderRoster() {
     var sortedTeams = S.teams.slice().sort(function(a, b) { return a.name.localeCompare(b.name); });
@@ -1806,29 +1806,30 @@ function renderRoster() {
     html += '<span class="legend-item"><span class="cat-dot other"></span> Other</span>';
     html += '</div>';
 
-    html += '<div style="display:grid;grid-template-columns:32px 1fr 70px 50px 70px 70px 26px;gap:3px;font-size:0.5rem;font-weight:700;margin-bottom:3px;opacity:0.6;">';
-    html += '<span>#</span><span>Name</span><span>Pos</span><span>Role</span><span>Notes</span><span>Pron</span><span></span>';
+    // ---- FIXED GRID LAYOUT - wider columns ----
+    html += '<div style="display:grid;grid-template-columns:30px 1fr 80px 70px 80px 70px 26px;gap:4px;font-size:0.5rem;font-weight:700;margin-bottom:4px;opacity:0.6;border-bottom:1px solid var(--border);padding-bottom:4px;">';
+    html += '<span>#</span><span>Name</span><span>Position</span><span>Role</span><span>Notes</span><span>Pron</span><span></span>';
     html += '</div>';
 
     selectedTeam.players.forEach(function(p, pidx) {
         var cats = p.categories || ['all'];
         var catClass = getCategoryClass(cats);
         var catTooltip = getCategoryTooltip(cats);
-        html += '<div style="display:grid;grid-template-columns:32px 1fr 70px 50px 70px 70px 26px;gap:3px;margin-bottom:2px;align-items:center;" data-row="' + pidx + '">';
-        html += '<input value="' + (p.n || '') + '" data-field="n" data-idx="' + pidx + '" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">';
-        html += '<input value="' + (p.na || '') + '" data-field="na" data-idx="' + pidx + '" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">';
-        html += '<div style="display:flex;align-items:center;gap:3px;">';
-        html += '<span class="cat-badge ' + catClass + '" title="' + catTooltip + '">' + catClass.toUpperCase() + '</span>';
-        html += '<select data-field="po" data-idx="' + pidx + '" style="flex:1;padding:2px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">';
+        html += '<div style="display:grid;grid-template-columns:30px 1fr 80px 70px 80px 70px 26px;gap:4px;margin-bottom:3px;align-items:center;padding:2px 0;border-bottom:1px solid rgba(0,0,0,0.05);" data-row="' + pidx + '">';
+        html += '<input value="' + (p.n || '') + '" data-field="n" data-idx="' + pidx + '" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;width:100%;">';
+        html += '<input value="' + (p.na || '') + '" data-field="na" data-idx="' + pidx + '" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;width:100%;">';
+        html += '<div style="display:flex;align-items:center;gap:3px;width:100%;">';
+        html += '<span class="cat-badge ' + catClass + '" title="' + catTooltip + '" style="flex-shrink:0;">' + catClass.toUpperCase() + '</span>';
+        html += '<select data-field="po" data-idx="' + pidx + '" style="flex:1;padding:2px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.55rem;min-width:40px;">';
         getAllPositions().forEach(function(o) {
             html += '<option ' + (p.po === o ? 'selected' : '') + '>' + o + '</option>';
         });
         html += '</select>';
         html += '</div>';
-        html += '<select data-field="st" data-idx="' + pidx + '" style="padding:2px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;"><option value="false" ' + (!p.st ? 'selected' : '') + '>Bench</option><option value="true" ' + (p.st ? 'selected' : '') + '>Starter</option></select>';
-        html += '<input value="' + (p.nt || '') + '" data-field="nt" data-idx="' + pidx + '" placeholder="Notes" style="padding:2px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">';
-        html += '<input value="' + (p.pron || '') + '" data-field="pron" data-idx="' + pidx + '" placeholder="Pron" style="padding:2px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;">';
-        html += '<button class="delete-btn" data-idx="' + pidx + '" data-team="' + selectedTeam.id + '" style="background:0 0;border:1px solid var(--border);border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#dc2626;">✕</button>';
+        html += '<select data-field="st" data-idx="' + pidx + '" style="padding:2px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.55rem;width:100%;"><option value="false" ' + (!p.st ? 'selected' : '') + '>Bench</option><option value="true" ' + (p.st ? 'selected' : '') + '>Starter</option></select>';
+        html += '<input value="' + (p.nt || '') + '" data-field="nt" data-idx="' + pidx + '" placeholder="Notes" style="padding:2px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.55rem;width:100%;">';
+        html += '<input value="' + (p.pron || '') + '" data-field="pron" data-idx="' + pidx + '" placeholder="Pron" style="padding:2px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.55rem;width:100%;">';
+        html += '<button class="delete-btn" data-idx="' + pidx + '" data-team="' + selectedTeam.id + '" style="background:0 0;border:1px solid var(--border);border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#dc2626;">✕</button>';
         html += '</div>';
     });
 
@@ -1871,7 +1872,7 @@ function renderRoster() {
 }
 
 // ============================================================
-// ENHANCED PARSER - Handles ALL Formats
+// ENHANCED PARSER
 // ============================================================
 function parseRosterText(teamId) {
     var tx = document.getElementById('parseArea').value.trim();
@@ -2153,7 +2154,7 @@ function exportTeamCSV(teamId) {
 }
 
 // ============================================================
-// REST OF FUNCTIONS (Clients, Log, Script, Admin, etc.)
+// CLIENTS VIEW
 // ============================================================
 function renderClients() {
     var html = '<div class="panel"><div class="panel-header">';
@@ -2674,7 +2675,7 @@ if (awayPicker && awayTeam) awayPicker.value = awayTeam.color;
 if (homePicker && homeTeam) homePicker.value = homeTeam.color;
 
 console.log('🏈 Friday Night Live PA Console loaded successfully!');
-console.log('📋 Version: v33 – 50/50 split, colored unit tabs, bigger labels, enhanced parser');
+console.log('📋 Version: v34 – 50/50 split, colored unit tabs, bigger labels, enhanced parser, fixed roster grid');
 console.log('🔧 Enjoy the game!');
 </script>
 </body>
