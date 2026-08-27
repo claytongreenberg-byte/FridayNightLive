@@ -109,7 +109,7 @@
         .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:#fff;padding:6px 14px;border-radius:16px;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;font-size:.75rem;backdrop-filter:blur(10px)}
         .toast.show{opacity:1}
         .player-list-body{flex:1;overflow-y:auto;padding:4px 5px}
-        .player-row{display:grid;grid-template-columns:4px 28px 1fr 80px 55px 55px 22px 22px;gap:3px;align-items:center;padding:4px 4px;border-bottom:1px solid rgba(0,0,0,.08);font-size:.6rem;border-left:4px solid transparent;min-height:32px;background:rgba(255,255,255,.4);border-radius:4px;margin-bottom:2px}
+        .player-row{display:grid;grid-template-columns:4px 28px 1fr 80px 80px 22px 22px;gap:3px;align-items:center;padding:4px 4px;border-bottom:1px solid rgba(0,0,0,.08);font-size:.6rem;border-left:4px solid transparent;min-height:32px;background:rgba(255,255,255,.4);border-radius:4px;margin-bottom:2px}
         .player-row:last-child{border-bottom:none}
         .player-row input,.player-row select{background:rgba(255,255,255,.7);border:1px solid var(--border);color:#0a0a0a;font-weight:700;padding:2px 4px;width:100%;font-size:.55rem;border-radius:3px;min-width:0;height:24px}
         .player-row input:focus,.player-row select:focus{border-color:var(--accent);outline:2px solid rgba(250,204,21,.3);background:#fff}
@@ -203,8 +203,16 @@
         .team-color-picker::-webkit-color-swatch-wrapper{padding:0}
         .team-color-picker::-webkit-color-swatch{border:none;border-radius:50%}
         .tooltip-js{position:fixed;z-index:10000;background:#1e293b;color:#fff;padding:4px 10px;border-radius:6px;font-size:.6rem;pointer-events:none;display:none;max-width:180px;border:1px solid #475569}
-        @media(max-width:1024px){.scorebug{padding:8px 10px;min-height:130px;flex-wrap:wrap}.scorebug.compact{min-height:50px;padding:4px 6px}.scorebug.compact .sb-block{padding:0 4px;min-width:30px}.scorebug.compact .sb-team-name{font-size:1rem!important}.scorebug.compact .sb-val{font-size:1.5rem;min-width:24px}.scorebug.compact .game-clock{font-size:1.5rem}.scorebug.compact .sb-qtr{font-size:1.5rem}.scorebug.compact .sb-label{font-size:.45rem}.sb-block{padding:0 8px;min-width:40px}.sb-team-name{font-size:1.6rem}.sb-val{font-size:2.8rem;min-width:38px}.sb-qtr{font-size:2.4rem}.game-clock{font-size:2.8rem}.sb-btn{width:24px;height:24px;font-size:10px}.sb-game-btns button{font-size:.5rem;padding:3px 8px;min-height:22px}.last-event{font-size:.7rem;min-height:28px;max-width:280px}.game-controls-row{padding:4px 8px;gap:3px;min-height:34px;flex-wrap:nowrap;overflow-x:auto}.game-controls-row .pos-btn{padding:2px 8px;font-size:.55rem;min-width:40px}.game-controls-row .to-btn{padding:2px 6px;font-size:.45rem}.game-controls-row .gc-btn{font-size:.45rem;padding:2px 4px;min-height:18px}.game-controls-row select,.game-controls-row input{font-size:.45rem;min-height:18px}.game-controls-row .yd-input{width:28px}.player-row{grid-template-columns:4px 24px 1fr 60px 50px 50px 20px 20px;font-size:.6rem}.player-row input,.player-row select{font-size:.55rem;padding:2px}.cat-badge{font-size:.5rem;padding:1px 5px}.cat-legend{font-size:.5rem;gap:8px}.brand-logo{height:28px;max-width:50px}.brand-text h1{font-size:.75rem}.brand-text p{font-size:.45rem}.hdr-btn{font-size:.5rem;padding:3px 6px;min-height:20px}.wall-clock,.weather-pill{font-size:.5rem;padding:2px 4px}.quick-cues{gap:4px;padding:4px}.quick-cues button{font-size:.6rem;padding:4px 8px;min-height:24px}}
-        @media(max-width:768px){.scorebug{padding:6px 6px;min-height:100px;flex-wrap:wrap}.scorebug.compact{min-height:40px;padding:3px 4px}.scorebug.compact .sb-block{padding:0 3px;min-width:24px}.scorebug.compact .sb-team-name{font-size:.8rem!important}.scorebug.compact .sb-val{font-size:1.2rem;min-width:20px}.scorebug.compact .game-clock{font-size:1.2rem}.scorebug.compact .sb-qtr{font-size:1.2rem}.scorebug.compact .sb-label{font-size:.4rem}.scorebug.compact .sb-btn{width:16px;height:16px;font-size:7px}.scorebug.compact .sb-game-btns button{font-size:.3rem;padding:1px 3px;min-height:14px;min-width:20px}.scorebug.compact .last-event{font-size:.4rem;min-height:16px;padding:1px 4px;max-width:100px}.sb-block{padding:0 4px;min-width:30px}.sb-team-name{font-size:1.2rem;max-width:80px}.sb-val{font-size:2rem;min-width:30px}.sb-qtr{font-size:1.8rem}.game-clock{font-size:2.2rem}.sb-btn{width:20px;height:20px;font-size:9px}.sb-game-btns button{font-size:.4rem;padding:2px 6px;min-height:18px}.last-event{font-size:.55rem;min-height:22px;max-width:160px}.game-controls-row{padding:3px 4px;gap:2px;min-height:28px;flex-wrap:nowrap;overflow-x:auto}.game-controls-row .pos-btn{padding:2px 6px;font-size:.5rem;min-width:32px}.game-controls-row .to-btn{padding:2px 5px;font-size:.4rem}.game-controls-row .gc-btn{font-size:.4rem;padding:2px 4px;min-height:16px}.game-controls-row select,.game-controls-row input{font-size:.4rem;min-height:16px}.game-controls-row .yd-input{width:24px}.game-controls-row .label{font-size:.4rem}.team-cards{flex-direction:column;height:auto;min-height:140px}.roster-layout{flex-direction:column}.team-sidebar{width:100%;max-height:100px}.admin-color-grid{grid-template-columns:1fr}.quick-cues button{font-size:.6rem;padding:4px 8px;min-height:24px}.player-row{grid-template-columns:4px 20px 1fr 50px 40px 40px 18px 18px;font-size:.5rem;gap:2px;padding:2px}.player-row input,.player-row select{font-size:.45rem;padding:1px 2px}.cat-badge{font-size:.4rem;padding:1px 4px}.st-toggle,.pin-btn,.delete-btn{width:16px;height:16px;font-size:.4rem}.cat-legend{font-size:.4rem;gap:4px}.brand-logo{height:24px;max-width:40px}.brand-text h1{font-size:.65rem}.brand-text p{font-size:.4rem}.hdr-btn{font-size:.45rem;padding:2px 5px;min-height:18px}.wall-clock,.weather-pill{font-size:.45rem;padding:2px 4px}}
+        .admin-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;padding:4px 0}
+        .admin-tab-btn{background:#334155;color:#fff;border:1px solid #475569;border-radius:8px;padding:6px 14px;font-size:.65rem;font-weight:700;cursor:pointer;transition:all .2s;min-height:32px;display:inline-flex;align-items:center;justify-content:center}
+        .admin-tab-btn:hover{background:#475569;transform:scale(1.03)}
+        .admin-tab-btn.active{background:var(--accent);color:#000;border:2px solid var(--accent);box-shadow:0 0 0 3px rgba(250,204,21,.3)}
+        .admin-color-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:500px}
+        .admin-color-item{display:flex;flex-direction:column;gap:2px}
+        .admin-color-item label{font-size:.6rem;font-weight:600}
+        .admin-color-item input[type="color"]{width:100%;height:30px;border:2px solid var(--border);border-radius:4px;cursor:pointer;padding:2px}
+        @media(max-width:1024px){.scorebug{padding:8px 10px;min-height:130px;flex-wrap:wrap}.scorebug.compact{min-height:50px;padding:4px 6px}.scorebug.compact .sb-block{padding:0 4px;min-width:30px}.scorebug.compact .sb-team-name{font-size:1rem!important}.scorebug.compact .sb-val{font-size:1.5rem;min-width:24px}.scorebug.compact .game-clock{font-size:1.5rem}.scorebug.compact .sb-qtr{font-size:1.5rem}.scorebug.compact .sb-label{font-size:.45rem}.sb-block{padding:0 8px;min-width:40px}.sb-team-name{font-size:1.6rem}.sb-val{font-size:2.8rem;min-width:38px}.sb-qtr{font-size:2.4rem}.game-clock{font-size:2.8rem}.sb-btn{width:24px;height:24px;font-size:10px}.sb-game-btns button{font-size:.5rem;padding:3px 8px;min-height:22px}.last-event{font-size:.7rem;min-height:28px;max-width:280px}.game-controls-row{padding:4px 8px;gap:3px;min-height:34px;flex-wrap:nowrap;overflow-x:auto}.game-controls-row .pos-btn{padding:2px 8px;font-size:.55rem;min-width:40px}.game-controls-row .to-btn{padding:2px 6px;font-size:.45rem}.game-controls-row .gc-btn{font-size:.45rem;padding:2px 4px;min-height:18px}.game-controls-row select,.game-controls-row input{font-size:.45rem;min-height:18px}.game-controls-row .yd-input{width:28px}.player-row{grid-template-columns:4px 24px 1fr 60px 60px 20px 20px;font-size:.6rem}.player-row input,.player-row select{font-size:.55rem;padding:2px}.cat-badge{font-size:.5rem;padding:1px 5px}.cat-legend{font-size:.5rem;gap:8px}.brand-logo{height:28px;max-width:50px}.brand-text h1{font-size:.75rem}.brand-text p{font-size:.45rem}.hdr-btn{font-size:.5rem;padding:3px 6px;min-height:20px}.wall-clock,.weather-pill{font-size:.5rem;padding:2px 4px}.quick-cues{gap:4px;padding:4px}.quick-cues button{font-size:.6rem;padding:4px 8px;min-height:24px}.admin-tabs{gap:4px}.admin-tab-btn{font-size:.55rem;padding:4px 10px;min-height:26px}}
+        @media(max-width:768px){.scorebug{padding:6px 6px;min-height:100px;flex-wrap:wrap}.scorebug.compact{min-height:40px;padding:3px 4px}.scorebug.compact .sb-block{padding:0 3px;min-width:24px}.scorebug.compact .sb-team-name{font-size:.8rem!important}.scorebug.compact .sb-val{font-size:1.2rem;min-width:20px}.scorebug.compact .game-clock{font-size:1.2rem}.scorebug.compact .sb-qtr{font-size:1.2rem}.scorebug.compact .sb-label{font-size:.4rem}.scorebug.compact .sb-btn{width:16px;height:16px;font-size:7px}.scorebug.compact .sb-game-btns button{font-size:.3rem;padding:1px 3px;min-height:14px;min-width:20px}.scorebug.compact .last-event{font-size:.4rem;min-height:16px;padding:1px 4px;max-width:100px}.sb-block{padding:0 4px;min-width:30px}.sb-team-name{font-size:1.2rem;max-width:80px}.sb-val{font-size:2rem;min-width:30px}.sb-qtr{font-size:1.8rem}.game-clock{font-size:2.2rem}.sb-btn{width:20px;height:20px;font-size:9px}.sb-game-btns button{font-size:.4rem;padding:2px 6px;min-height:18px}.last-event{font-size:.55rem;min-height:22px;max-width:160px}.game-controls-row{padding:3px 4px;gap:2px;min-height:28px;flex-wrap:nowrap;overflow-x:auto}.game-controls-row .pos-btn{padding:2px 6px;font-size:.5rem;min-width:32px}.game-controls-row .to-btn{padding:2px 5px;font-size:.4rem}.game-controls-row .gc-btn{font-size:.4rem;padding:2px 4px;min-height:16px}.game-controls-row select,.game-controls-row input{font-size:.4rem;min-height:16px}.game-controls-row .yd-input{width:24px}.game-controls-row .label{font-size:.4rem}.team-cards{flex-direction:column;height:auto;min-height:140px}.roster-layout{flex-direction:column}.team-sidebar{width:100%;max-height:100px}.admin-color-grid{grid-template-columns:1fr}.quick-cues button{font-size:.6rem;padding:4px 8px;min-height:24px}.player-row{grid-template-columns:4px 20px 1fr 50px 50px 18px 18px;font-size:.5rem;gap:2px;padding:2px}.player-row input,.player-row select{font-size:.45rem;padding:1px 2px}.cat-badge{font-size:.4rem;padding:1px 4px}.st-toggle,.pin-btn,.delete-btn{width:16px;height:16px;font-size:.4rem}.cat-legend{font-size:.4rem;gap:4px}.brand-logo{height:24px;max-width:40px}.brand-text h1{font-size:.65rem}.brand-text p{font-size:.4rem}.hdr-btn{font-size:.45rem;padding:2px 5px;min-height:18px}.wall-clock,.weather-pill{font-size:.45rem;padding:2px 4px}.admin-tabs{gap:3px}.admin-tab-btn{font-size:.5rem;padding:3px 8px;min-height:22px}}
         @media(pointer:coarse){.hdr-btn{min-height:36px!important;padding:6px 12px!important}.sb-btn{min-height:36px!important;min-width:36px!important;font-size:14px!important}.gc-btn,.pos-btn,.to-btn{min-height:34px!important;padding:4px 10px!important}.quick-cues button{min-height:36px!important;padding:6px 12px!important}.nav-link{padding:8px 12px!important;font-size:.7rem!important}.game-controls-row select,.game-controls-row input{min-height:30px!important;font-size:.6rem!important}.player-row input,.player-row select{min-height:28px!important;font-size:.65rem!important}.game-controls-row{flex-wrap:nowrap!important;overflow-x:auto!important}}
     </style>
 </head>
@@ -391,7 +399,7 @@ var S = {
     }
 };
 
-var STORAGE_KEY = 'fnl_v35';
+var STORAGE_KEY = 'fnl_v36';
 
 function toast(m) {
     var x = document.getElementById('toast');
@@ -440,8 +448,7 @@ function normalizeState() {
             if (!p.posFull) p.posFull = p.po || '';
             if (p.st === undefined) p.st = false;
             if (p.pinned === undefined) p.pinned = false;
-            if (p.nt === undefined) p.nt = '';
-            if (p.pron === undefined) p.pron = '';
+            if (p.nt === undefined) p.nt = ''; // Combined Notes/Pron
         });
     });
     if (!S.teams.find(function(t) { return t.id === S.awayId; })) S.awayId = S.teams[0].id;
@@ -609,7 +616,6 @@ function rosterUndo() {
             p.st = oldData.st !== undefined ? oldData.st : p.st;
             p.pinned = oldData.pinned !== undefined ? oldData.pinned : p.pinned;
             p.nt = oldData.nt || p.nt;
-            p.pron = oldData.pron || p.pron;
             p.categories = oldData.categories || p.categories;
         }
         toast('↩ Undo edit');
@@ -642,7 +648,6 @@ function rosterRedo() {
             p.st = newData.st !== undefined ? newData.st : p.st;
             p.pinned = newData.pinned !== undefined ? newData.pinned : p.pinned;
             p.nt = newData.nt || p.nt;
-            p.pron = newData.pron || p.pron;
             p.categories = newData.categories || p.categories;
         }
         toast('↪ Redo edit');
@@ -748,12 +753,14 @@ function fnlCloudLoadRostersOnly() {
                                     existingPlayer.posFull = player.posFull || player.po || existingPlayer.posFull;
                                     if (player.categories) existingPlayer.categories = player.categories;
                                     else if (player.posFull || player.po) existingPlayer.categories = getPositionCategories(player.posFull || player.po);
+                                    if (player.nt !== undefined) existingPlayer.nt = player.nt;
                                 } else {
                                     var newPlayer = { ...player };
                                     if (!newPlayer.categories && (newPlayer.posFull || newPlayer.po)) {
                                         newPlayer.categories = getPositionCategories(newPlayer.posFull || newPlayer.po);
                                     }
                                     if (!newPlayer.categories) newPlayer.categories = ['all'];
+                                    if (!newPlayer.nt) newPlayer.nt = '';
                                     existing.players.push(newPlayer);
                                 }
                             });
@@ -767,6 +774,7 @@ function fnlCloudLoadRostersOnly() {
                                 player.categories = getPositionCategories(player.posFull || player.po);
                             }
                             if (!player.categories) player.categories = ['all'];
+                            if (!player.nt) player.nt = '';
                             return player;
                         });
                         S.teams.push(newTeam);
@@ -1230,7 +1238,7 @@ function toggleOutdoor() {
 }
 
 // ============================================================
-// GAME VIEW - 50/50 split with search and pronunciation
+// GAME VIEW
 // ============================================================
 function renderGame() {
     var html = '';
@@ -1250,7 +1258,6 @@ function renderGame() {
     var awayColor = awayTeam.color || '#475569';
     var homeColor = homeTeam.color || '#475569';
 
-    // ---- GAME CONTROLS ROW ----
     html += '<div class="game-controls-row">';
     html += '<span class="label">🏈</span>';
     html += '<button class="pos-btn ' + (S.poss === 'away' ? 'active' : '') + '" onclick="setPossession(\'away\')" style="' + (S.poss === 'away' ? 'background:' + awayColor + ';border-color:' + awayColor + ';' : 'border-color:' + awayColor + ';') + '" data-tooltip="Give possession to Away">' + awayLogo + ' 🏹 ' + getTeamMascot(awayTeam) + (S.poss === 'away' ? ' 🏈' : '') + '</button>';
@@ -1276,15 +1283,12 @@ function renderGame() {
     html += '<button class="gc-btn load-btn" onclick="fnlCloudLoadGameState()" data-tooltip="Load game state from cloud">📥 LOAD</button>';
     html += '</div>';
 
-    // ---- 50/50 SPLIT TEAM CARDS ----
     html += '<div class="team-cards" style="display:flex;gap:8px;height:calc(100% - 120px);min-height:200px;flex:1;">';
     ['away','home'].forEach(function(side) {
         var team = getTeam(side);
         var filter = S[side === 'away' ? 'ua' : 'uh'] || 'all';
         var headerBg = side === 'away' ? (S.colors.awayHeaderBg || '#1e3a5f') : (S.colors.homeHeaderBg || '#7f1d1d');
         html += '<div class="team-card ' + side + '-card" style="flex:1;min-width:0;display:flex;flex-direction:column;border-radius:8px;overflow:hidden;">';
-        
-        // ---- CARD HEADER - BIGGER LABELS ----
         html += '<div class="card-head" style="background:' + headerBg + ';padding:8px 12px;min-height:44px;">';
         html += '<span style="font-size:1.2rem;font-weight:900;letter-spacing:1px;min-width:50px;">' + side.toUpperCase() + '</span>';
         if (team.logo) html += '<img class="mini-logo" src="' + team.logo + '" alt="">';
@@ -1292,7 +1296,6 @@ function renderGame() {
         html += '<button class="sb-btn" onclick="setPossession(\'' + side + '\')" style="width:28px;height:28px;font-size:12px;border-radius:50%!important;" data-tooltip="Give ball to this team">🏈</button>';
         html += '</div>';
 
-        // ---- UNIT TABS - BUTTON STYLE ----
         html += '<div class="unit-tabs" style="display:flex;gap:4px;padding:4px 8px;border-bottom:2px solid var(--border);flex-shrink:0;">';
         var allActive = filter === 'all' ? 'active' : '';
         html += '<button class="unit-tab all-tab ' + allActive + '" onclick="setFilterAndSearch(\'' + side + '\',\'all\')" data-tooltip="Show all players">ALL</button>';
@@ -1306,12 +1309,10 @@ function renderGame() {
         }
         html += '</div>';
 
-        // ---- SEARCH INPUT ----
         html += '<div style="display:flex;gap:4px;padding:4px 8px;border-bottom:1px solid var(--border);flex-shrink:0;">';
         html += '<input type="text" class="player-search" data-side="' + side + '" placeholder="🔍 Search # or name..." style="flex:1;padding:4px 8px;border-radius:4px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:0.65rem;min-width:0;">';
         html += '</div>';
 
-        // ---- PLAYER LIST - WITH PRONUNCIATION ----
         html += '<div class="player-list-body" id="playerList_' + side + '" style="flex:1;overflow-y:auto;padding:4px 5px;">';
         var allPosOptions = getAllPositionOptionsWithLabels();
         var players = getPlayers(side, filter);
@@ -1331,8 +1332,8 @@ function renderGame() {
             });
             html += '</select>';
             html += '</div>';
-            html += '<input value="' + (p.nt || '') + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'nt\',this.value)" placeholder="Notes" style="width:55px;font-size:0.5rem;" data-tooltip="Notes">';
-            html += '<input value="' + (p.pron || '') + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'pron\',this.value)" placeholder="Pron" style="width:55px;font-size:0.5rem;" data-tooltip="Pronunciation">';
+            // Combined Notes / Pron field
+            html += '<input value="' + (p.nt || '') + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'nt\',this.value)" placeholder="Notes / Pron" style="width:80px;font-size:0.5rem;" data-tooltip="Notes / Pronunciation">';
             html += '<button class="st-toggle ' + (p.st ? 'active' : '') + '" onclick="toggleStarterOnly(\'' + side + '\',\'' + p.id + '\')" title="Toggle starter status" data-tooltip="Toggle starter status">⭐</button>';
             html += '<button class="pin-btn ' + (isPinned ? 'active' : '') + '" onclick="togglePinOnly(\'' + side + '\',\'' + p.id + '\')" title="Pin to top" data-tooltip="Pin to top of list">📌</button>';
             html += '</div>';
@@ -1346,7 +1347,6 @@ function renderGame() {
     updateUndoButton();
     updateTimeoutDisplay();
 
-    // ---- Attach search event listeners ----
     document.querySelectorAll('.player-search').forEach(function(input) {
         input.addEventListener('input', function() {
             var side = this.dataset.side;
@@ -1747,7 +1747,7 @@ function syncTeamColors(color) {
 }
 
 // ============================================================
-// ROSTER VIEW - FIXED GRID
+// ROSTER VIEW - FIXED: Separate Category, Position, Role columns
 // ============================================================
 function renderRoster() {
     var sortedTeams = S.teams.slice().sort(function(a, b) { return a.name.localeCompare(b.name); });
@@ -1806,28 +1806,30 @@ function renderRoster() {
     html += '<span class="legend-item"><span class="cat-dot other"></span> Other</span>';
     html += '</div>';
 
-    html += '<div style="display:grid;grid-template-columns:30px 1fr 80px 70px 80px 70px 26px;gap:4px;font-size:0.5rem;font-weight:700;margin-bottom:4px;opacity:0.6;border-bottom:1px solid var(--border);padding-bottom:4px;">';
-    html += '<span>#</span><span>Name</span><span>Position</span><span>Role</span><span>Notes</span><span>Pron</span><span></span>';
+    // ---- FIXED: Separate Category, Position, Role columns ----
+    html += '<div style="display:grid;grid-template-columns:30px 1fr 70px 80px 70px 100px 26px;gap:4px;font-size:0.5rem;font-weight:700;margin-bottom:4px;opacity:0.6;border-bottom:1px solid var(--border);padding-bottom:4px;">';
+    html += '<span>#</span><span>Name</span><span>Category</span><span>Position</span><span>Role</span><span>Notes / Pron</span><span></span>';
     html += '</div>';
 
     selectedTeam.players.forEach(function(p, pidx) {
         var cats = p.categories || ['all'];
         var catClass = getCategoryClass(cats);
         var catTooltip = getCategoryTooltip(cats);
-        html += '<div style="display:grid;grid-template-columns:30px 1fr 80px 70px 80px 70px 26px;gap:4px;margin-bottom:3px;align-items:center;padding:2px 0;border-bottom:1px solid rgba(0,0,0,0.05);" data-row="' + pidx + '">';
+        html += '<div style="display:grid;grid-template-columns:30px 1fr 70px 80px 70px 100px 26px;gap:4px;margin-bottom:3px;align-items:center;padding:2px 0;border-bottom:1px solid rgba(0,0,0,0.05);" data-row="' + pidx + '">';
         html += '<input value="' + (p.n || '') + '" data-field="n" data-idx="' + pidx + '" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;width:100%;">';
         html += '<input value="' + (p.na || '') + '" data-field="na" data-idx="' + pidx + '" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;width:100%;">';
-        html += '<div style="display:flex;align-items:center;gap:3px;width:100%;">';
-        html += '<span class="cat-badge ' + catClass + '" title="' + catTooltip + '" style="flex-shrink:0;">' + catClass.toUpperCase() + '</span>';
-        html += '<select data-field="po" data-idx="' + pidx + '" style="flex:1;padding:2px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.55rem;min-width:40px;">';
+        // CATEGORY - badge only
+        html += '<span class="cat-badge ' + catClass + '" title="' + catTooltip + '" style="text-align:center;font-size:0.5rem;padding:2px 4px;white-space:nowrap;">' + catClass.toUpperCase() + '</span>';
+        // POSITION - dropdown only
+        html += '<select data-field="po" data-idx="' + pidx + '" style="padding:2px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.55rem;width:100%;">';
         getAllPositions().forEach(function(o) {
             html += '<option ' + (p.po === o ? 'selected' : '') + '>' + o + '</option>';
         });
         html += '</select>';
-        html += '</div>';
+        // ROLE - Starter/Bench dropdown
         html += '<select data-field="st" data-idx="' + pidx + '" style="padding:2px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.55rem;width:100%;"><option value="false" ' + (!p.st ? 'selected' : '') + '>Bench</option><option value="true" ' + (p.st ? 'selected' : '') + '>Starter</option></select>';
-        html += '<input value="' + (p.nt || '') + '" data-field="nt" data-idx="' + pidx + '" placeholder="Notes" style="padding:2px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.55rem;width:100%;">';
-        html += '<input value="' + (p.pron || '') + '" data-field="pron" data-idx="' + pidx + '" placeholder="Pron" style="padding:2px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.55rem;width:100%;">';
+        // NOTES/PRON - combined field (was nt + pron)
+        html += '<input value="' + (p.nt || '') + '" data-field="nt" data-idx="' + pidx + '" placeholder="Notes / Pron" style="padding:2px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.55rem;width:100%;">';
         html += '<button class="delete-btn" data-idx="' + pidx + '" data-team="' + selectedTeam.id + '" style="background:0 0;border:1px solid var(--border);border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#dc2626;">✕</button>';
         html += '</div>';
     });
@@ -1935,8 +1937,6 @@ function parseRosterText(teamId) {
                     posFull: pos, 
                     st: isStarter, 
                     nt: '', 
-                    pron: '', 
-                    ph: '', 
                     pinned: false, 
                     categories: getPositionCategories(pos) 
                 });
@@ -2002,8 +2002,6 @@ function parseRosterText(teamId) {
                 posFull: po, 
                 st: isStarter, 
                 nt: '', 
-                pron: '', 
-                ph: '', 
                 pinned: false, 
                 categories: getPositionCategories(po) 
             });
@@ -2106,7 +2104,7 @@ function deleteRosterPlayer(teamId, pidx) {
 function addPlayerToTeam(teamId) {
     var team = S.teams.find(function(t) { return t.id === teamId; });
     if (!team) return;
-    var player = { id: 'p' + Date.now(), n: '', na: 'New Player', po: 'QB', posFull: 'QB', st: false, nt: '', pron: '', ph: '', pinned: false, categories: getPositionCategories('QB') };
+    var player = { id: 'p' + Date.now(), n: '', na: 'New Player', po: 'QB', posFull: 'QB', st: false, nt: '', pinned: false, categories: getPositionCategories('QB') };
     team.players.push(player);
     pushRosterUndo(teamId, 'add', { ...player });
     saveState();
@@ -2128,9 +2126,9 @@ function printRoster(teamId) {
     if (!team) return;
     var html = '<html><head><title>' + team.name + ' Roster</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #000;padding:4px}</style></head><body>';
     html += '<h2>' + team.name + ' Roster</h2>';
-    html += '<table><tr><th>#</th><th>Name</th><th>Pos</th><th>Notes</th><th>Starter</th></tr>';
+    html += '<table><tr><th>#</th><th>Name</th><th>Pos</th><th>Starter</th><th>Notes</th></tr>';
     team.players.forEach(function(p) {
-        html += '<tr><td>' + p.n + '</td><td>' + p.na + '</td><td>' + (p.posFull || p.po) + '</td><td>' + (p.nt || '') + '</td><td>' + (p.st ? 'Yes' : 'No') + '</td></tr>';
+        html += '<tr><td>' + p.n + '</td><td>' + p.na + '</td><td>' + (p.posFull || p.po) + '</td><td>' + (p.st ? 'Yes' : 'No') + '</td><td>' + (p.nt || '') + '</td></tr>';
     });
     html += '</table></body></html>';
     safePrint(html);
@@ -2139,9 +2137,9 @@ function printRoster(teamId) {
 function exportTeamCSV(teamId) {
     var team = S.teams.find(function(t) { return t.id === teamId; });
     if (!team) return;
-    var csv = 'Number,Name,Position,Starter,Notes,Pronunciation\n';
+    var csv = 'Number,Name,Position,Starter,Notes\n';
     team.players.forEach(function(p) {
-        csv += '"' + p.n + '","' + p.na + '","' + (p.posFull || p.po) + '","' + (p.st ? 'Yes' : 'No') + '","' + (p.nt || '').replace(/"/g, '""') + '","' + (p.pron || '') + '"\n';
+        csv += '"' + p.n + '","' + p.na + '","' + (p.posFull || p.po) + '","' + (p.st ? 'Yes' : 'No') + '","' + (p.nt || '').replace(/"/g, '""') + '"\n';
     });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
@@ -2150,7 +2148,119 @@ function exportTeamCSV(teamId) {
 }
 
 // ============================================================
-// CLIENTS, LOG, SCRIPT, ADMIN (condensed for brevity - full working)
+// ADMIN VIEW - Fixed with button-style tabs
+// ============================================================
+function renderAdmin() {
+    var tabs = ['theme', 'clock', '7v7', 'timeouts', 'colors', 'backup', 'cloud', 'help'];
+    var labels = { theme: 'Theme', clock: 'Clock', '7v7': '7v7', timeouts: 'Timeouts', colors: 'Colors', backup: 'Backup', cloud: 'Cloud', help: 'Help' };
+    var html = '<div class="panel"><div class="panel-header">';
+    html += '<h3>⚙️ ADMIN</h3>';
+    html += '<div class="panel-actions">';
+    html += '<button class="hdr-btn" onclick="fnlCloudLoadSettingsOnly()" data-tooltip="Load settings from cloud (merges)">📥 LOAD SETTINGS</button>';
+    html += '</div></div>';
+    
+    html += '<div class="admin-tabs">';
+    tabs.forEach(function(x) {
+        var isActive = (S.at === x);
+        html += '<button class="admin-tab-btn ' + (isActive ? 'active' : '') + '" onclick="S.at=\'' + x + '\';renderAdmin();renderAdminContent();" data-tooltip="' + labels[x] + ' settings">' + labels[x] + '</button>';
+    });
+    html += '</div>';
+    
+    html += '<div id="ac"></div></div>';
+    document.getElementById('main').innerHTML = html;
+    renderAdminContent();
+}
+
+function renderAdminContent() {
+    var c = document.getElementById('ac');
+    if (!c) return;
+    
+    // Update active state of tabs
+    document.querySelectorAll('.admin-tab-btn').forEach(function(btn) {
+        var label = btn.textContent.trim().toLowerCase();
+        var tabMap = { 'theme':'theme', 'clock':'clock', '7v7':'7v7', 'timeouts':'timeouts', 'colors':'colors', 'backup':'backup', 'cloud':'cloud', 'help':'help' };
+        var isActive = (S.at === tabMap[label]);
+        btn.classList.toggle('active', isActive);
+    });
+    
+    if (S.at === 'theme') {
+        c.innerHTML = '<h4>Theme</h4><button class="hdr-btn" onclick="toggleTheme()" style="border-radius:8px!important;padding:6px 14px!important;">Toggle Theme</button> <button class="hdr-btn" onclick="toggleOutdoor()" data-tooltip="Outdoor" style="border-radius:8px!important;padding:6px 14px!important;">Toggle Outdoor</button>';
+    } else if (S.at === 'clock') {
+        c.innerHTML = '<h4>Clock Format</h4><label><input type="radio" name="cf" value="12h" ' + (S.cf === '12h' ? 'checked' : '') + ' onchange="S.cf=\'12h\';saveState();updateWallClock()"> 12h</label><label><input type="radio" name="cf" value="24h" ' + (S.cf === '24h' ? 'checked' : '') + ' onchange="S.cf=\'24h\';saveState();updateWallClock()"> 24h</label><br><label><input type="checkbox" ' + (S.cs ? 'checked' : '') + ' onchange="S.cs=this.checked;saveState();updateWallClock()"> Show seconds</label><br><br><label style="font-weight:700;">Quarter Length: <input type="number" value="' + Math.floor((S.gc.max || 480)/60) + '" min="1" max="15" style="width:50px;padding:3px;border:1px solid var(--border);border-radius:4px;" onchange="S.gc.max=this.value*60;if(S.gc.rem>S.gc.max)S.gc.rem=S.gc.max;saveState();updateGameClockDisplay();"> minutes</label>';
+    } else if (S.at === '7v7') {
+        c.innerHTML = '<h4>Game Mode</h4><button class="hdr-btn" onclick="S.md7=\'tackle\';saveState();renderAll();renderAdmin()" data-tooltip="11v11" style="border-radius:8px!important;padding:6px 14px!important;">' + (S.md7 === 'tackle' ? '✅ Tackle' : 'Tackle') + '</button><button class="hdr-btn" onclick="S.md7=\'7v7\';saveState();renderAll();renderAdmin()" data-tooltip="7v7" style="border-radius:8px!important;padding:6px 14px!important;">' + (S.md7 === '7v7' ? '✅ 7v7' : '7v7') + '</button>';
+    } else if (S.at === 'timeouts') {
+        c.innerHTML = '<h4>⏱️ Timeout Rules</h4><p style="font-size:0.65rem;opacity:0.7;margin-bottom:8px;">Configure timeouts per half and overtime.</p><div style="margin-bottom:12px;padding:10px;background:var(--bg);border-radius:6px;border:1px solid var(--border);"><h5 style="font-size:0.7rem;margin-bottom:6px;">🏈 11-Man Tackle</h5><div style="display:flex;gap:16px;flex-wrap:wrap;"><label style="font-size:0.65rem;">Per half: <input type="number" value="' + S.timeoutConfig.tackle.perHalf + '" min="0" max="5" style="width:50px;padding:3px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);" onchange="S.timeoutConfig.tackle.perHalf=parseInt(this.value)||0;saveState();toast(\'✅ Updated\');"></label><label style="font-size:0.65rem;">Per OT: <input type="number" value="' + S.timeoutConfig.tackle.overtimePerPeriod + '" min="0" max="3" style="width:50px;padding:3px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);" onchange="S.timeoutConfig.tackle.overtimePerPeriod=parseInt(this.value)||0;saveState();toast(\'✅ Updated\');"></label></div><p style="font-size:0.55rem;opacity:0.5;margin-top:4px;">Default: 3 per half, 1 per OT</p></div><div style="margin-bottom:12px;padding:10px;background:var(--bg);border-radius:6px;border:1px solid var(--border);"><h5 style="font-size:0.7rem;margin-bottom:6px;">🏈 7v7</h5><div style="display:flex;gap:16px;flex-wrap:wrap;"><label style="font-size:0.65rem;">Per half: <input type="number" value="' + S.timeoutConfig.sevens.perHalf + '" min="0" max="5" style="width:50px;padding:3px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);" onchange="S.timeoutConfig.sevens.perHalf=parseInt(this.value)||0;saveState();toast(\'✅ Updated\');"></label><label style="font-size:0.65rem;">Per OT: <input type="number" value="' + S.timeoutConfig.sevens.overtimePerPeriod + '" min="0" max="3" style="width:50px;padding:3px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);" onchange="S.timeoutConfig.sevens.overtimePerPeriod=parseInt(this.value)||0;saveState();toast(\'✅ Updated\');"></label></div><p style="font-size:0.55rem;opacity:0.5;margin-top:4px;">Default: 0</p></div><button class="hdr-btn" onclick="S.timeoutConfig={tackle:{perHalf:3,overtimePerPeriod:1},sevens:{perHalf:0,overtimePerPeriod:0}};saveState();renderAdmin();toast(\'✅ Reset\');" style="background:#f59e0b;color:#000;border-radius:8px!important;padding:6px 14px!important;">↺ Reset Defaults</button><button class="hdr-btn" onclick="applyTimeoutConfig();toast(\'✅ Applied\');" style="background:#22c55e;border-radius:8px!important;padding:6px 14px!important;">✅ Apply</button>';
+    } else if (S.at === 'colors') {
+        c.innerHTML = '<h4>🎨 Colors</h4><div class="admin-color-grid">';
+        var colorFields = [
+            { key: 'scorebugBg', label: 'Scorebug BG' },
+            { key: 'scorebugText', label: 'Scorebug Text' },
+            { key: 'accent', label: 'Accent' },
+            { key: 'teamCardAway', label: 'Away Card BG' },
+            { key: 'teamCardHome', label: 'Home Card BG' },
+            { key: 'teamCardBorder', label: 'Card Borders' },
+            { key: 'awayHeaderBg', label: 'Away Header BG' },
+            { key: 'homeHeaderBg', label: 'Home Header BG' },
+            { key: 'awayCardBg', label: 'Away Card BG' },
+            { key: 'homeCardBg', label: 'Home Card BG' },
+            { key: 'quarterColor', label: 'Quarter Color' },
+            { key: 'clockColor', label: 'Clock Color' }
+        ];
+        colorFields.forEach(function(f) {
+            c.innerHTML += '<div class="admin-color-item"><label>' + f.label + '</label><input type="color" value="' + S.colors[f.key] + '" oninput="S.colors[\'' + f.key + '\']=this.value;applyColors();saveState()"></div>';
+        });
+        c.innerHTML += '</div><div style="margin-top:12px;padding:10px;background:var(--bg);border-radius:6px;border:1px solid var(--border);">';
+        c.innerHTML += '<label style="font-weight:700;font-size:0.65rem;display:flex;align-items:center;gap:8px;cursor:pointer;">';
+        c.innerHTML += '<input type="checkbox" ' + (S.useTeamColor ? 'checked' : '') + ' onchange="S.useTeamColor=this.checked;saveState();updateScorebug();toast(this.checked ? \'🎨 Team color mode ON\' : \'🎨 Readable mode ON\');">';
+        c.innerHTML += '🎨 <span style="font-weight:normal;">Use exact team color (scorebug) – uncheck for readable (contrast‑safe)</span>';
+        c.innerHTML += '</label></div>';
+        c.innerHTML += '<div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;"><button class="hdr-btn" onclick="S.colors={scorebugBg:\'#0d0d1a\',scorebugText:\'#ffffff\',accent:\'#facc15\',teamCardAway:\'#e2e8f0\',teamCardHome:\'#e2e8f0\',teamCardBorder:\'#94a3b8\',awayHeaderBg:\'#1e3a5f\',homeHeaderBg:\'#7f1d1d\',awayCardBg:\'#e2e8f0\',homeCardBg:\'#e2e8f0\',quarterColor:\'#facc15\',clockColor:\'#00ff88\'};S.useTeamColor=true;applyColors();saveState();renderAdmin();updateScorebug();toast(\'✅ Reset\');" style="border-radius:8px!important;padding:6px 14px!important;">↺ Reset</button>';
+        c.innerHTML += '<button class="hdr-btn" onclick="applyColors();toast(\'✅ Applied\')" style="background:#22c55e;border-radius:8px!important;padding:6px 14px!important;">✅ Apply</button></div>';
+    } else if (S.at === 'backup') {
+        c.innerHTML = '<h4>Backup</h4><button class="hdr-btn" onclick="exportBackup()" data-tooltip="Export" style="border-radius:8px!important;padding:6px 14px!important;">📤 Export</button><button class="hdr-btn" onclick="document.getElementById(\'impf\').click()" data-tooltip="Import" style="border-radius:8px!important;padding:6px 14px!important;">📥 Import</button><input type="file" id="impf" accept=".json" style="display:none;" onchange="importBackup(this)">';
+    } else if (S.at === 'cloud') {
+        c.innerHTML = '<h4>Cloud Sync</h4><p style="font-size:0.65rem;opacity:0.6;margin-bottom:6px;">All data syncs via cloud. Use the buttons in each tab to load specific data.</p><button class="hdr-btn" onclick="fnlCloudSaveAll()" data-tooltip="Save all" style="background:#16a34a;border-color:#16a34a;border-radius:8px!important;padding:6px 14px!important;">💾 Save All to Cloud</button><br><br><h5 style="font-size:0.65rem;margin-top:6px;">Load Options:</h5><div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;"><button class="hdr-btn" onclick="fnlCloudLoadGameState()" style="border-radius:8px!important;padding:6px 14px!important;">📥 Game State</button><button class="hdr-btn" onclick="fnlCloudLoadRostersOnly()" style="border-radius:8px!important;padding:6px 14px!important;">📥 Rosters</button><button class="hdr-btn" onclick="fnlCloudLoadLogsOnly()" style="border-radius:8px!important;padding:6px 14px!important;">📥 Logs</button><button class="hdr-btn" onclick="fnlCloudLoadScriptOnly()" style="border-radius:8px!important;padding:6px 14px!important;">📥 Script</button><button class="hdr-btn" onclick="fnlCloudLoadSettingsOnly()" style="border-radius:8px!important;padding:6px 14px!important;">📥 Settings</button><button class="hdr-btn" onclick="fnlCloudLoadClientsOnly()" style="border-radius:8px!important;padding:6px 14px!important;">📥 Clients</button></div>';
+    } else if (S.at === 'help') {
+        c.innerHTML = '<h4>📖 Help</h4><ul style="padding-left:16px;line-height:1.6;font-size:0.7rem;"><li><kbd>Space</kbd> = Start/Stop clock</li><li><kbd>Ctrl+S</kbd> = Save all to cloud</li><li><kbd>Ctrl+Z</kbd> = Undo last event</li><li><strong>Possession:</strong> Click AWAY or HOME in the gold row</li><li><strong>Clock:</strong> Click ▶ to start, ⏸ to pause</li><li><strong>Timeouts:</strong> Pause clock automatically</li><li><strong>Injury:</strong> Pauses clock, no timeout charged</li><li><strong>Undo:</strong> Reverses the last scoring event</li><li>Hover any icon for a tooltip</li></ul>';
+    }
+}
+
+function applyTimeoutConfig() {
+    var timeoutCount = S.md7 === '7v7' ? S.timeoutConfig.sevens.perHalf : S.timeoutConfig.tackle.perHalf;
+    if (S.gameState === 'READY' || S.gameState === 'FIRST_HALF' || S.gameState === 'HALFTIME' || S.gameState === 'SECOND_HALF') {
+        S.timeouts = { away: timeoutCount, home: timeoutCount };
+        updateTimeoutDisplay();
+        saveState();
+        toast('✅ Timeouts set to ' + timeoutCount + ' per team');
+    } else {
+        toast('ℹ️ Settings saved. Will apply on next game start.');
+    }
+}
+
+function exportBackup() { var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(S)], { type: 'application/json' })); a.download = 'fnl_backup.json'; a.click(); }
+
+function importBackup(input) { 
+    var f = input.files[0]; 
+    if (!f) return; 
+    var r = new FileReader(); 
+    r.onload = function(ev) { 
+        try { 
+            S = JSON.parse(ev.target.result); 
+            normalizeState(); 
+            saveState(); 
+            renderAll(); 
+            updateHeaderBranding();
+            toast('✅ Restored'); 
+        } catch(e) { 
+            toast('❌ Invalid file'); 
+        } 
+    }; 
+    r.readAsText(f); 
+}
+
+// ============================================================
+// CLIENTS VIEW
 // ============================================================
 function renderClients() {
     var html = '<div class="panel"><div class="panel-header">';
@@ -2444,103 +2554,6 @@ function printScript() { safePrint('<html><head><title>Script</title></head><bod
 function clearScript() { if (!confirm('Clear script?')) return; S.script = ''; document.getElementById('scriptEditor').innerHTML = ''; saveState(); toast('🗑️ Cleared'); }
 function uploadScriptFile(input) { var f = input.files[0]; if (!f) return; if (f.name.endsWith('.docx')) { toast('⚠️ .docx not supported. Use .txt or .md'); return; } var r = new FileReader(); r.onload = function(ev) { var ed = document.getElementById('scriptEditor'); if (ed) ed.innerText = ev.target.result; toast('✅ Script uploaded'); }; r.readAsText(f); }
 
-// ============================================================
-// ADMIN VIEW
-// ============================================================
-function renderAdmin() {
-    var tabs = ['theme', 'clock', '7v7', 'timeouts', 'colors', 'backup', 'cloud', 'help'];
-    var labels = { theme: 'Theme', clock: 'Clock', '7v7': '7v7', timeouts: 'Timeouts', colors: 'Colors', backup: 'Backup', cloud: 'Cloud', help: 'Help' };
-    var html = '<div class="panel"><div class="panel-header">';
-    html += '<h3>⚙️ ADMIN</h3>';
-    html += '<div class="panel-actions">';
-    html += '<button class="hdr-btn" onclick="fnlCloudLoadSettingsOnly()" data-tooltip="Load settings from cloud (merges)">📥 LOAD SETTINGS</button>';
-    html += '</div></div>';
-    html += '<div class="admin-tabs">';
-    tabs.forEach(function(x) { html += '<button class="admin-tab ' + (S.at === x ? 'active' : '') + '" onclick="S.at=\'' + x + '\';renderAdmin()">' + labels[x] + '</button>'; });
-    html += '</div><div id="ac"></div></div>';
-    document.getElementById('main').innerHTML = html;
-    renderAdminContent();
-}
-
-function renderAdminContent() {
-    var c = document.getElementById('ac');
-    if (!c) return;
-    if (S.at === 'theme') {
-        c.innerHTML = '<h4>Theme</h4><button class="hdr-btn" onclick="toggleTheme()">Toggle Theme</button> <button class="hdr-btn" onclick="toggleOutdoor()" data-tooltip="Outdoor">Toggle Outdoor</button>';
-    } else if (S.at === 'clock') {
-        c.innerHTML = '<h4>Clock Format</h4><label><input type="radio" name="cf" value="12h" ' + (S.cf === '12h' ? 'checked' : '') + ' onchange="S.cf=\'12h\';saveState();updateWallClock()"> 12h</label><label><input type="radio" name="cf" value="24h" ' + (S.cf === '24h' ? 'checked' : '') + ' onchange="S.cf=\'24h\';saveState();updateWallClock()"> 24h</label><br><label><input type="checkbox" ' + (S.cs ? 'checked' : '') + ' onchange="S.cs=this.checked;saveState();updateWallClock()"> Show seconds</label><br><br><label style="font-weight:700;">Quarter Length: <input type="number" value="' + Math.floor((S.gc.max || 480)/60) + '" min="1" max="15" style="width:50px;padding:3px;border:1px solid var(--border);border-radius:4px;" onchange="S.gc.max=this.value*60;if(S.gc.rem>S.gc.max)S.gc.rem=S.gc.max;saveState();updateGameClockDisplay();"> minutes</label>';
-    } else if (S.at === '7v7') {
-        c.innerHTML = '<h4>Game Mode</h4><button class="hdr-btn" onclick="S.md7=\'tackle\';saveState();renderAll();renderAdmin()" data-tooltip="11v11">' + (S.md7 === 'tackle' ? '✅ Tackle' : 'Tackle') + '</button><button class="hdr-btn" onclick="S.md7=\'7v7\';saveState();renderAll();renderAdmin()" data-tooltip="7v7">' + (S.md7 === '7v7' ? '✅ 7v7' : '7v7') + '</button>';
-    } else if (S.at === 'timeouts') {
-        c.innerHTML = '<h4>⏱️ Timeout Rules</h4><p style="font-size:0.65rem;opacity:0.7;margin-bottom:8px;">Configure timeouts per half and overtime.</p><div style="margin-bottom:12px;padding:10px;background:var(--bg);border-radius:6px;border:1px solid var(--border);"><h5 style="font-size:0.7rem;margin-bottom:6px;">🏈 11-Man Tackle</h5><div style="display:flex;gap:16px;flex-wrap:wrap;"><label style="font-size:0.65rem;">Per half: <input type="number" value="' + S.timeoutConfig.tackle.perHalf + '" min="0" max="5" style="width:50px;padding:3px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);" onchange="S.timeoutConfig.tackle.perHalf=parseInt(this.value)||0;saveState();toast(\'✅ Updated\');"></label><label style="font-size:0.65rem;">Per OT: <input type="number" value="' + S.timeoutConfig.tackle.overtimePerPeriod + '" min="0" max="3" style="width:50px;padding:3px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);" onchange="S.timeoutConfig.tackle.overtimePerPeriod=parseInt(this.value)||0;saveState();toast(\'✅ Updated\');"></label></div><p style="font-size:0.55rem;opacity:0.5;margin-top:4px;">Default: 3 per half, 1 per OT</p></div><div style="margin-bottom:12px;padding:10px;background:var(--bg);border-radius:6px;border:1px solid var(--border);"><h5 style="font-size:0.7rem;margin-bottom:6px;">🏈 7v7</h5><div style="display:flex;gap:16px;flex-wrap:wrap;"><label style="font-size:0.65rem;">Per half: <input type="number" value="' + S.timeoutConfig.sevens.perHalf + '" min="0" max="5" style="width:50px;padding:3px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);" onchange="S.timeoutConfig.sevens.perHalf=parseInt(this.value)||0;saveState();toast(\'✅ Updated\');"></label><label style="font-size:0.65rem;">Per OT: <input type="number" value="' + S.timeoutConfig.sevens.overtimePerPeriod + '" min="0" max="3" style="width:50px;padding:3px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);" onchange="S.timeoutConfig.sevens.overtimePerPeriod=parseInt(this.value)||0;saveState();toast(\'✅ Updated\');"></label></div><p style="font-size:0.55rem;opacity:0.5;margin-top:4px;">Default: 0</p></div><button class="hdr-btn" onclick="S.timeoutConfig={tackle:{perHalf:3,overtimePerPeriod:1},sevens:{perHalf:0,overtimePerPeriod:0}};saveState();renderAdmin();toast(\'✅ Reset\');" style="background:#f59e0b;color:#000;">↺ Reset Defaults</button><button class="hdr-btn" onclick="applyTimeoutConfig();toast(\'✅ Applied\');" style="background:#22c55e;">✅ Apply</button>';
-    } else if (S.at === 'colors') {
-        c.innerHTML = '<h4>🎨 Colors</h4><div class="admin-color-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:500px;">';
-        var colorFields = [
-            { key: 'scorebugBg', label: 'Scorebug BG' },
-            { key: 'scorebugText', label: 'Scorebug Text' },
-            { key: 'accent', label: 'Accent' },
-            { key: 'teamCardAway', label: 'Away Card BG' },
-            { key: 'teamCardHome', label: 'Home Card BG' },
-            { key: 'teamCardBorder', label: 'Card Borders' },
-            { key: 'awayHeaderBg', label: 'Away Header BG' },
-            { key: 'homeHeaderBg', label: 'Home Header BG' },
-            { key: 'awayCardBg', label: 'Away Card BG' },
-            { key: 'homeCardBg', label: 'Home Card BG' },
-            { key: 'quarterColor', label: 'Quarter Color' },
-            { key: 'clockColor', label: 'Clock Color' }
-        ];
-        colorFields.forEach(function(f) {
-            c.innerHTML += '<div class="admin-color-item" style="display:flex;flex-direction:column;gap:2px;"><label style="font-size:0.6rem;font-weight:600;">' + f.label + '</label><input type="color" value="' + S.colors[f.key] + '" oninput="S.colors[\'' + f.key + '\']=this.value;applyColors();saveState()"></div>';
-        });
-        c.innerHTML += '</div><div style="margin-top:12px;padding:10px;background:var(--bg);border-radius:6px;border:1px solid var(--border);">';
-        c.innerHTML += '<label style="font-weight:700;font-size:0.65rem;display:flex;align-items:center;gap:8px;cursor:pointer;">';
-        c.innerHTML += '<input type="checkbox" ' + (S.useTeamColor ? 'checked' : '') + ' onchange="S.useTeamColor=this.checked;saveState();updateScorebug();toast(this.checked ? \'🎨 Team color mode ON\' : \'🎨 Readable mode ON\');">';
-        c.innerHTML += '🎨 <span style="font-weight:normal;">Use exact team color (scorebug) – uncheck for readable (contrast‑safe)</span>';
-        c.innerHTML += '</label></div>';
-        c.innerHTML += '<div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;"><button class="hdr-btn" onclick="S.colors={scorebugBg:\'#0d0d1a\',scorebugText:\'#ffffff\',accent:\'#facc15\',teamCardAway:\'#e2e8f0\',teamCardHome:\'#e2e8f0\',teamCardBorder:\'#94a3b8\',awayHeaderBg:\'#1e3a5f\',homeHeaderBg:\'#7f1d1d\',awayCardBg:\'#e2e8f0\',homeCardBg:\'#e2e8f0\',quarterColor:\'#facc15\',clockColor:\'#00ff88\'};S.useTeamColor=true;applyColors();saveState();renderAdmin();updateScorebug();toast(\'✅ Reset\');">↺ Reset</button>';
-        c.innerHTML += '<button class="hdr-btn" onclick="applyColors();toast(\'✅ Applied\')" style="background:#22c55e;">✅ Apply</button></div>';
-    } else if (S.at === 'backup') {
-        c.innerHTML = '<h4>Backup</h4><button class="hdr-btn" onclick="exportBackup()" data-tooltip="Export">📤 Export</button><button class="hdr-btn" onclick="document.getElementById(\'impf\').click()" data-tooltip="Import">📥 Import</button><input type="file" id="impf" accept=".json" style="display:none;" onchange="importBackup(this)">';
-    } else if (S.at === 'cloud') {
-        c.innerHTML = '<h4>Cloud Sync</h4><p style="font-size:0.65rem;opacity:0.6;margin-bottom:6px;">All data syncs via cloud. Use the buttons in each tab to load specific data.</p><button class="hdr-btn" onclick="fnlCloudSaveAll()" data-tooltip="Save all" style="background:#16a34a;border-color:#16a34a;">💾 Save All to Cloud</button><br><br><h5 style="font-size:0.65rem;margin-top:6px;">Load Options:</h5><div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;"><button class="hdr-btn" onclick="fnlCloudLoadGameState()">📥 Game State</button><button class="hdr-btn" onclick="fnlCloudLoadRostersOnly()">📥 Rosters</button><button class="hdr-btn" onclick="fnlCloudLoadLogsOnly()">📥 Logs</button><button class="hdr-btn" onclick="fnlCloudLoadScriptOnly()">📥 Script</button><button class="hdr-btn" onclick="fnlCloudLoadSettingsOnly()">📥 Settings</button><button class="hdr-btn" onclick="fnlCloudLoadClientsOnly()">📥 Clients</button></div>';
-    } else if (S.at === 'help') {
-        c.innerHTML = '<h4>📖 Help</h4><ul style="padding-left:16px;line-height:1.6;font-size:0.7rem;"><li><kbd>Space</kbd> = Start/Stop clock</li><li><kbd>Ctrl+S</kbd> = Save all to cloud</li><li><kbd>Ctrl+Z</kbd> = Undo last event</li><li><strong>Possession:</strong> Click AWAY or HOME in the gold row</li><li><strong>Clock:</strong> Click ▶ to start, ⏸ to pause</li><li><strong>Timeouts:</strong> Pause clock automatically</li><li><strong>Injury:</strong> Pauses clock, no timeout charged</li><li><strong>Undo:</strong> Reverses the last scoring event</li><li>Hover any icon for a tooltip</li></ul>';
-    }
-}
-
-function applyTimeoutConfig() {
-    var timeoutCount = S.md7 === '7v7' ? S.timeoutConfig.sevens.perHalf : S.timeoutConfig.tackle.perHalf;
-    if (S.gameState === 'READY' || S.gameState === 'FIRST_HALF' || S.gameState === 'HALFTIME' || S.gameState === 'SECOND_HALF') {
-        S.timeouts = { away: timeoutCount, home: timeoutCount };
-        updateTimeoutDisplay();
-        saveState();
-        toast('✅ Timeouts set to ' + timeoutCount + ' per team');
-    } else {
-        toast('ℹ️ Settings saved. Will apply on next game start.');
-    }
-}
-
-function exportBackup() { var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(S)], { type: 'application/json' })); a.download = 'fnl_backup.json'; a.click(); }
-
-function importBackup(input) { 
-    var f = input.files[0]; 
-    if (!f) return; 
-    var r = new FileReader(); 
-    r.onload = function(ev) { 
-        try { 
-            S = JSON.parse(ev.target.result); 
-            normalizeState(); 
-            saveState(); 
-            renderAll(); 
-            updateHeaderBranding();
-            toast('✅ Restored'); 
-        } catch(e) { 
-            toast('❌ Invalid file'); 
-        } 
-    }; 
-    r.readAsText(f); 
-}
-
 function printLU() {
     var html = '<html><head><title>Starting Lineups</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse;margin-bottom:16px}th,td{border:1px solid #000;padding:4px}</style></head><body>';
     ['away','home'].forEach(function(side) {
@@ -2646,7 +2659,8 @@ if (awayPicker && awayTeam) awayPicker.value = awayTeam.color;
 if (homePicker && homeTeam) homePicker.value = homeTeam.color;
 
 console.log('🏈 Friday Night Live PA Console loaded successfully!');
-console.log('📋 Version: v35 – All fixes applied');
+console.log('📋 Version: v36 – All fixes applied');
+console.log('🔧 Enjoy the game!');
 </script>
 </body>
 </html>
