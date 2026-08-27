@@ -564,10 +564,15 @@ function getPlayers(side, filter) {
     var t = getTeam(side);
     if (!t) return [];
     var list = t.players.slice();
+    
+    // ---- SORTING (Starters first, then pinned, then number) ----
     list.sort(function(a, b) {
+        if (a.st !== b.st) return (a.st ? -1 : 1);
         if ((a.pinned || false) !== (b.pinned || false)) return (b.pinned || false) - (a.pinned || false);
         return (parseInt(a.n) || 999) - (parseInt(b.n) || 999);
     });
+    
+    // ---- FILTERING (ALL / OFF / DEF / ST) ----
     if (filter === 'all') return list;
     if (filter === 'offense' || filter === 'defense' || filter === 'special') {
         list = list.filter(function(p) {
