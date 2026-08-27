@@ -1237,29 +1237,33 @@ function renderGame() {
     var awayColor = awayTeam.color || '#475569';
     var homeColor = homeTeam.color || '#475569';
 
-    html += '<div class="game-controls-row">';
+     html += '<div class="game-controls-row">';
+    // POSSESSION
     html += '<span class="label">🏈</span>';
-    html += '<button class="pos-btn ' + (S.poss === 'away' ? 'active' : '') + '" onclick="setPossession(\'away\')" style="' + (S.poss === 'away' ? 'background:' + awayColor + ';border-color:' + awayColor + ';' : 'border-color:' + awayColor + ';') + '" data-tooltip="Give possession to Away">' + awayLogo + ' ' + getTeamMascot(awayTeam) + '</button>';
-    html += '<button class="pos-btn ' + (S.poss === 'home' ? 'active' : '') + '" onclick="setPossession(\'home\')" style="' + (S.poss === 'home' ? 'background:' + homeColor + ';border-color:' + homeColor + ';' : 'border-color:' + homeColor + ';') + '" data-tooltip="Give possession to Home">' + homeLogo + ' ' + getTeamMascot(homeTeam) + '</button>';
-    html += '<button class="to-btn" onclick="useTimeout(\'away\')" data-tooltip="Call away timeout">⏱ AWAY</button>';
-    html += '<button class="to-btn" onclick="useTimeout(\'home\')" data-tooltip="Call home timeout">⏱ HOME</button>';
+    html += '<button class="pos-btn ' + (S.poss === 'away' ? 'active' : '') + '" onclick="setPossession(\'away\')" style="' + (S.poss === 'away' ? 'background:' + awayColor + ';border-color:' + awayColor + ';' : 'border-color:' + awayColor + ';') + '" data-tooltip="Give possession to Away">' + awayLogo + ' 🏹 ' + getTeamMascot(awayTeam) + '</button>';
+    html += '<button class="pos-btn ' + (S.poss === 'home' ? 'active' : '') + '" onclick="setPossession(\'home\')" style="' + (S.poss === 'home' ? 'background:' + homeColor + ';border-color:' + homeColor + ';' : 'border-color:' + homeColor + ';') + '" data-tooltip="Give possession to Home">' + homeLogo + ' 🏠 ' + getTeamMascot(homeTeam) + '</button>';
+    html += '<button class="to-btn" onclick="useTimeout(\'away\')" data-tooltip="Call away timeout">⏱️ AWAY</button>';
+    html += '<button class="to-btn" onclick="useTimeout(\'home\')" data-tooltip="Call home timeout">⏱️ HOME</button>';
     html += '<button class="to-btn injury-btn" onclick="injuryTimeout()" data-tooltip="Injury timeout (clock paused, no TO charged)">🆘 INJ</button>';
-    html += '<span class="clock-status ' + (S.gc.run ? 'running' : 'paused') + '" id="clockStatusIndicator" data-tooltip="Clock status">' + (S.gc.run ? '▶ LIVE' : '⏸ PAUSED') + '</span>';
+    html += '<span class="clock-status ' + (S.gc.run ? 'running' : 'paused') + '" id="clockStatusIndicator" data-tooltip="Clock status">' + (S.gc.run ? '▶️ LIVE' : '⏸️ PAUSED') + '</span>';
     html += '<span class="divider"></span>';
-    html += '<span class="label">DOWN</span>';
+    // DOWN & DISTANCE
+    html += '<span class="label">⬇️</span>';
     html += '<select onchange="setDown(this.value)" data-tooltip="Set down">' + [1,2,3,4].map(function(d) { return '<option ' + (d === S.down ? 'selected' : '') + '>' + d + '</option>'; }).join('') + '</select>';
-    html += '<span class="label">YDS</span>';
+    html += '<span class="label">📏</span>';
     html += '<input type="number" value="' + S.dist + '" min="1" max="99" style="width:32px;" onchange="setDist(this.value)" class="yd-input" data-tooltip="Set yards to go">';
-    html += '<button class="gc-btn" onclick="adjustYards(-1)" data-tooltip="-1 yard">-1</button>';
-    html += '<button class="gc-btn" onclick="adjustYards(1)" data-tooltip="+1 yard">+1</button>';
+    html += '<button class="gc-btn" onclick="adjustYards(-1)" data-tooltip="-1 yard">➖</button>';
+    html += '<button class="gc-btn" onclick="adjustYards(1)" data-tooltip="+1 yard">➕</button>';
     html += '<span class="divider"></span>';
-    html += '<span class="label">SCORE</span>';
-    html += '<button class="gc-btn td" onclick="quickScore(\'td\')" data-tooltip="Touchdown +6">TD</button>';
-    html += '<button class="gc-btn fg" onclick="quickScore(\'fg\')" data-tooltip="Field Goal +3">FG</button>';
-    html += '<button class="gc-btn twopt" onclick="quickScore(\'twopt\')" data-tooltip="2-Point Conversion +2">2PT</button>';
-    html += '<button class="gc-btn pat" onclick="quickScore(\'pat\')" data-tooltip="PAT +1">PAT</button>';
-    html += '<button class="gc-btn safety" onclick="quickScore(\'safety\')" data-tooltip="Safety +2">Safe</button>';
-    html += '<button class="gc-btn load-btn" onclick="fnlCloudLoadGameState()" data-tooltip="Load game state from cloud">📥LOAD</button>';
+    // SCORING
+    html += '<span class="label">⚡</span>';
+    html += '<button class="gc-btn td" onclick="quickScore(\'td\')" data-tooltip="Touchdown +6">🏈 TD</button>';
+    html += '<button class="gc-btn fg" onclick="quickScore(\'fg\')" data-tooltip="Field Goal +3">🎯 FG</button>';
+    html += '<button class="gc-btn twopt" onclick="quickScore(\'twopt\')" data-tooltip="2-Point Conversion +2">➕ 2PT</button>';
+    html += '<button class="gc-btn pat" onclick="quickScore(\'pat\')" data-tooltip="PAT +1">🎯 PAT</button>';
+    html += '<button class="gc-btn safety" onclick="quickScore(\'safety\')" data-tooltip="Safety +2">🛡️ Safe</button>';
+    // LOAD GAME STATE
+    html += '<button class="gc-btn load-btn" onclick="fnlCloudLoadGameState()" data-tooltip="Load game state from cloud">📥 LOAD</button>';
     html += '</div>';
 
     html += '<div class="team-cards">';
