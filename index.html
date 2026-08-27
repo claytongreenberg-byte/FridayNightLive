@@ -7,7 +7,8 @@
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
         :root{--accent:#facc15;--bg:#f1f5f9;--surface:#e2e8f0;--text:#0f172a;--border:#94a3b8;--footer-bg:#1a1a1a;--footer-text:#f1f5f9;--scorebug-bg:#0d0d1a;--scorebug-text:#ffffff;--team-card-away:#e2e8f0;--team-card-home:#e2e8f0;--badge-offense:#2563eb;--badge-defense:#dc2626;--badge-special:#16a34a;--badge-both:#8b5cf6;--badge-other:#6b7280}
-        body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden;font-size:14px}
+        html,body{height:100%;overflow:hidden}
+        body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;font-size:14px}
         select{-webkit-appearance:menulist;appearance:menulist}
         header{background:linear-gradient(180deg,#1a3a0e,#0f2a08);padding:6px 10px;border-bottom:3px solid var(--accent);flex-shrink:0}
         .hdr-top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
@@ -18,7 +19,7 @@
         .brand-text p{font-size:.5rem;color:var(--accent);opacity:.9}
         .hdr-top-right{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
         .wall-clock,.weather-pill{color:var(--accent);font-weight:700;font-size:.6rem;background:rgba(0,0,0,.4);border:1px solid var(--accent);border-radius:5px;padding:2px 6px;white-space:nowrap}
-        .hdr-btn{background:#334155;color:#fff;border:1px solid #475569;border-radius:16px;padding:4px 8px;font-size:.58rem;cursor:pointer;white-space:nowrap;min-height:24px;transition:all .15s;display:inline-flex;align-items:center;gap:4px}
+        .hdr-btn{background:#334155;color:#fff;border:1px solid #475569;border-radius:16px;padding:4px 8px;font-size:.58rem;cursor:pointer;white-space:nowrap;min-height:24px;transition:all .15s;display:inline-flex;align-items:center;gap:4px;border-radius:16px!important}
         .hdr-btn:hover{background:#475569;transform:scale(1.02)}
         .hdr-btn.save-btn{background:#16a34a;border-color:#16a34a}
         .hdr-btn.save-btn:hover{background:#15803d}
@@ -67,27 +68,27 @@
         .game-clock.paused{color:var(--sb-text);opacity:.4}
         .game-clock.clock-warning{color:#ff6b6b;animation:clockPulse 1s infinite}
         @keyframes clockPulse{0%,100%{opacity:1}50%{opacity:.3}}
-        .sb-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:#fff;width:28px;height:28px;border-radius:50%;font-size:12px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all .15s}
+        .sb-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:#fff;width:28px;height:28px;border-radius:50%;font-size:12px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all .15s;border-radius:50%!important}
         .sb-btn:hover{background:var(--accent);color:#000;transform:scale(1.1)}
         .sb-btn:active{transform:scale(.9)}
         .sb-game-btns{display:flex;gap:4px;flex-wrap:wrap;justify-content:center}
-        .sb-game-btns button{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:#fff;border-radius:10px;padding:5px 12px;font-size:.6rem;font-weight:700;cursor:pointer;min-height:28px;min-width:40px;transition:all .15s}
+        .sb-game-btns button{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:#fff;border-radius:10px;padding:5px 12px;font-size:.6rem;font-weight:700;cursor:pointer;min-height:28px;min-width:40px;transition:all .15s;border-radius:10px!important}
         .sb-game-btns button:hover{background:var(--accent);color:#000;transform:scale(1.04)}
         .sb-game-btns button:active{transform:scale(.95)}
         .sb-game-btns button.half-active{background:#f59e0b;color:#000}
         .sb-game-btns button.final-active{background:#dc2626;color:#fff}
         .sb-game-btns button:disabled{opacity:.2;cursor:not-allowed;transform:none!important}
-        .dd-ticker{padding:5px 14px;border-radius:6px;font-weight:800;font-size:.8rem;text-align:center;color:#fff;letter-spacing:.5px;text-shadow:0 1px 4px rgba(0,0,0,.8);background:#1a1a2e;min-height:28px;border:1px solid rgba(255,255,255,.05)}
+        .dd-ticker{padding:5px 14px;border-radius:6px;font-weight:800;font-size:.8rem;text-align:center;color:#fff;letter-spacing:.5px;text-shadow:0 1px 4px rgba(0,0,0,.8);background:#1a1a2e;min-height:28px;border:1px solid rgba(255,255,255,.05);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
         .timeout-display{display:flex;gap:4px;align-items:center;margin-top:3px}
         .timeout-dot{width:10px;height:10px;border-radius:50%;background:#4ade80;transition:all .3s;box-shadow:0 0 10px rgba(74,222,128,.4)}
         .timeout-dot.used{background:#334155;opacity:.25;box-shadow:none}
         .timeout-zero{font-size:.6rem;font-weight:800;color:#f87171;letter-spacing:.5px}
         .timeout-label{font-size:.45rem;color:var(--sb-text);opacity:.4;letter-spacing:.5px}
-        .last-event{background:rgba(0,0,0,.7);border:2px solid var(--accent);border-radius:8px;padding:6px 14px;text-align:center;font-weight:800;font-size:.85rem;color:#fff;min-height:34px;display:flex;align-items:center;justify-content:center;transition:all .3s;flex:1;max-width:450px;box-shadow:inset 0 0 40px rgba(250,204,21,.05)}
+        .last-event{background:rgba(0,0,0,.7);border:2px solid var(--accent);border-radius:8px;padding:6px 14px;text-align:center;font-weight:800;font-size:.85rem;color:#fff;min-height:34px;display:flex;align-items:center;justify-content:center;transition:all .3s;flex:1;max-width:450px;box-shadow:inset 0 0 40px rgba(250,204,21,.05);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
         nav{background:#1a1a1a;display:flex;gap:4px;padding:0 10px;flex-shrink:0;overflow-x:auto;border-bottom:1px solid rgba(255,255,255,.05)}
-        .nav-link{background:0 0;border:none;color:#999;padding:6px 10px;font-weight:700;cursor:pointer;font-size:.65rem;white-space:nowrap;transition:all .15s}
+        .nav-link{background:0 0;border:none;color:#999;padding:6px 10px;font-weight:700;cursor:pointer;font-size:.65rem;white-space:nowrap;transition:all .15s;border-radius:6px 6px 0 0!important}
         .nav-link:hover{color:#fff}
-        .nav-link.active{background:var(--accent);color:#000;border-radius:6px 6px 0 0}
+        .nav-link.active{background:var(--accent);color:#000}
         main{flex:1;overflow:auto;padding:6px}
         .panel{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px}
         .roster-layout{display:flex;gap:8px;height:100%}
@@ -95,7 +96,7 @@
         .team-item{padding:4px 6px;border-radius:4px;margin-bottom:2px;cursor:pointer;font-weight:600;font-size:.6rem;color:var(--text)}
         .team-item.active{background:var(--accent);color:#000}
         .roster-workspace{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px;overflow-y:auto}
-        .cat-badge{font-size:.55rem;font-weight:800;padding:1px 6px;border-radius:4px;white-space:nowrap;display:inline-block;cursor:help;letter-spacing:.3px;border:1px solid rgba(255,255,255,.2);text-shadow:0 1px 2px rgba(0,0,0,.2);transition:all .2s;line-height:1.3}
+        .cat-badge{font-size:.55rem;font-weight:800;padding:1px 6px;border-radius:4px;white-space:nowrap;display:inline-block;cursor:help;letter-spacing:.3px;border:1px solid rgba(255,255,255,.2);text-shadow:0 1px 2px rgba(0,0,0,.2);transition:all .2s;line-height:1.3;border-radius:4px!important}
         .cat-badge:hover{transform:scale(1.1);box-shadow:0 2px 8px rgba(0,0,0,.3)}
         .cat-badge.offense{background:var(--badge-offense);color:#fff}
         .cat-badge.defense{background:var(--badge-defense);color:#fff}
@@ -125,26 +126,28 @@
         .cat-dot.special{background:var(--badge-special)}
         .cat-dot.both{background:var(--badge-both)}
         .cat-dot.other{background:#c9a227}
-        .st-toggle,.pin-btn{background:0 0;border:1px solid var(--border);border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:.45rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .st-toggle,.pin-btn{background:0 0;border:1px solid var(--border);border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:.45rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;border-radius:50%!important}
         .st-toggle.active{background:var(--accent);color:#000;border-color:var(--accent)}
         .pin-btn.active{background:var(--accent);color:#000;border-color:var(--accent)}
-        .delete-btn{background:0 0;border:1px solid var(--border);border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#dc2626}
+        .delete-btn{background:0 0;border:1px solid var(--border);border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#dc2626;border-radius:50%!important}
         .delete-btn:hover{background:#dc2626;color:#fff;border-color:#dc2626}
         .quick-cues{display:flex;gap:6px;flex-wrap:wrap;padding:6px 10px;background:rgba(250,204,21,.08);border:2px solid var(--accent);border-radius:8px;margin-bottom:8px}
-        .quick-cues button{font-size:.7rem;padding:6px 14px;min-height:32px;border-radius:6px;background:#334155;color:#fff;border:2px solid #475569;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap;flex:1 0 auto;min-width:80px}
+        .quick-cues button{font-size:.7rem;padding:6px 14px;min-height:32px;border-radius:6px;background:#334155;color:#fff;border:2px solid #475569;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap;flex:1 0 auto;min-width:80px;border-radius:6px!important}
         .quick-cues button:hover{transform:scale(1.03);border-color:var(--accent);background:#475569}
         .quick-cues button:active{transform:scale(.95)}
         .quick-cues button.flag{background:#dc2626;border-color:#b91c1c}
         .quick-cues button.flag:hover{background:#b91c1c}
-        .game-controls-row{display:flex;flex-wrap:nowrap;align-items:center;gap:4px;padding:4px 10px;background:var(--bg);border:2px solid var(--accent);border-radius:8px;margin-bottom:6px;box-shadow:0 2px 16px rgba(250,204,21,.08);min-height:40px;overflow-x:auto}
+        .game-controls-row{display:flex;flex-wrap:nowrap;align-items:center;gap:4px;padding:4px 10px;background:var(--bg);border:2px solid var(--accent);border-radius:8px;margin-bottom:6px;box-shadow:0 2px 16px rgba(250,204,21,.08);min-height:40px;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;white-space:nowrap}
+        .game-controls-row::-webkit-scrollbar{height:4px}
+        .game-controls-row::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px}
         .game-controls-row .label{font-weight:800;font-size:.5rem;text-transform:uppercase;letter-spacing:.3px;color:var(--text);opacity:.4;margin-right:1px;white-space:nowrap}
         .game-controls-row .divider{width:1px;height:24px;background:var(--border);opacity:.2;margin:0 2px;flex-shrink:0}
-        .game-controls-row .pos-btn{padding:2px 10px;font-size:.65rem;font-weight:700;min-width:48px;border-radius:6px;border:2px solid #475569;cursor:pointer;transition:all .15s;background:#334155;color:#fff;display:flex;align-items:center;gap:3px;justify-content:center;white-space:nowrap;flex-shrink:0}
+        .game-controls-row .pos-btn{padding:2px 10px;font-size:.65rem;font-weight:700;min-width:48px;border-radius:6px;border:2px solid #475569;cursor:pointer;transition:all .15s;background:#334155;color:#fff;display:flex;align-items:center;gap:3px;justify-content:center;white-space:nowrap;flex-shrink:0;border-radius:6px!important}
         .game-controls-row .pos-btn:hover{transform:scale(1.04)}
         .game-controls-row .pos-btn:active{transform:scale(.95)}
         .game-controls-row .pos-btn.active{color:#fff;border-color:var(--accent);box-shadow:0 0 20px rgba(250,204,21,.15)}
         .game-controls-row .pos-btn .team-logo{width:14px;height:14px;border-radius:50%;object-fit:cover}
-        .game-controls-row .to-btn{padding:2px 8px;font-size:.5rem;font-weight:700;border-radius:6px;border:0;cursor:pointer;background:#f97316;color:#fff;transition:all .15s;white-space:nowrap;flex-shrink:0}
+        .game-controls-row .to-btn{padding:2px 8px;font-size:.5rem;font-weight:700;border-radius:6px;border:0;cursor:pointer;background:#f97316;color:#fff;transition:all .15s;white-space:nowrap;flex-shrink:0;border-radius:6px!important}
         .game-controls-row .to-btn:hover{transform:scale(1.04);background:#ea580c}
         .game-controls-row .to-btn.injury-btn{background:#dc2626}
         .game-controls-row .to-btn.injury-btn:hover{background:#b91c1c}
@@ -153,7 +156,7 @@
         .game-controls-row .clock-status.paused{color:#facc15;opacity:1}
         .game-controls-row select,.game-controls-row input{padding:2px 4px;border-radius:4px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:.5rem;min-height:20px;flex-shrink:0}
         .game-controls-row .yd-input{width:32px}
-        .game-controls-row .gc-btn{background:#334155;color:#fff;border:1px solid #475569;border-radius:6px;padding:2px 5px;font-weight:700;font-size:.5rem;cursor:pointer;min-height:20px;transition:all .15s;white-space:nowrap;flex-shrink:0}
+        .game-controls-row .gc-btn{background:#334155;color:#fff;border:1px solid #475569;border-radius:6px;padding:2px 5px;font-weight:700;font-size:.5rem;cursor:pointer;min-height:20px;transition:all .15s;white-space:nowrap;flex-shrink:0;border-radius:6px!important}
         .game-controls-row .gc-btn:hover{background:#475569}
         .game-controls-row .gc-btn.td{background:#dc2626;border-color:#dc2626}
         .game-controls-row .gc-btn.fg{background:#2563eb;border-color:#2563eb}
@@ -168,7 +171,7 @@
         .card-head select{flex:1;padding:3px 5px;border-radius:4px;background:#fff;color:#000;font-size:.7rem;min-height:24px;border:1px solid rgba(255,255,255,.3)}
         .card-head select option{color:#000}
         .card-head .mini-logo{width:22px;height:22px;object-fit:cover;border-radius:50%;flex-shrink:0}
-        .card-head .sb-btn{width:22px;height:22px;font-size:10px}
+        .card-head .sb-btn{width:22px;height:22px;font-size:10px;border-radius:50%!important}
         .unit-tabs{display:flex;gap:3px;padding:2px 5px;border-bottom:1px solid var(--border);flex-shrink:0}
         .unit-tab{background:0 0;border:none;padding:3px 6px;cursor:pointer;font-weight:700;font-size:.5rem;border-radius:4px;transition:all .15s}
         .unit-tab.active{color:#000}
@@ -180,48 +183,27 @@
         .unit-tab.defense-tab.active{background:var(--badge-defense);color:#fff}
         .unit-tab.special-tab{color:var(--badge-special)}
         .unit-tab.special-tab.active{background:var(--badge-special);color:#fff}
-        .sb-mode-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:#fff;width:32px;height:32px;border-radius:50%;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+        .sb-mode-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:#fff;width:32px;height:32px;border-radius:50%;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;border-radius:50%!important}
         .sb-mode-btn:hover{background:var(--accent);color:#000}
-        .sb-toggle-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:#fff;width:32px;height:32px;border-radius:50%;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+        .sb-toggle-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:#fff;width:32px;height:32px;border-radius:50%;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;border-radius:50%!important}
         .sb-toggle-btn:hover{background:var(--accent);color:#000}
         .sb-color-picker-wrapper{display:flex;align-items:center;gap:4px;margin-top:2px}
         .team-color-picker{width:22px;height:22px;border:2px solid rgba(255,255,255,.2);border-radius:50%;cursor:pointer;padding:0;background:transparent}
         .team-color-picker::-webkit-color-swatch-wrapper{padding:0}
         .team-color-picker::-webkit-color-swatch{border:none;border-radius:50%}
+        .tooltip-js{position:fixed;z-index:10000;background:#1e293b;color:#fff;padding:4px 10px;border-radius:6px;font-size:.6rem;pointer-events:none;display:none;max-width:180px;border:1px solid #475569}
         @media(max-width:1024px){.scorebug{padding:8px 10px;min-height:130px;flex-wrap:wrap}.scorebug.compact{min-height:50px;padding:4px 6px}.scorebug.compact .sb-block{padding:0 4px;min-width:30px}.scorebug.compact .sb-team-name{font-size:1rem!important}.scorebug.compact .sb-val{font-size:1.5rem;min-width:24px}.scorebug.compact .game-clock{font-size:1.5rem}.scorebug.compact .sb-qtr{font-size:1.5rem}.scorebug.compact .sb-label{font-size:.45rem}.sb-block{padding:0 8px;min-width:40px}.sb-team-name{font-size:1.6rem}.sb-val{font-size:2.8rem;min-width:38px}.sb-qtr{font-size:2.4rem}.game-clock{font-size:2.8rem}.sb-btn{width:24px;height:24px;font-size:10px}.sb-game-btns button{font-size:.5rem;padding:3px 8px;min-height:22px}.last-event{font-size:.7rem;min-height:28px;max-width:280px}.game-controls-row{padding:4px 8px;gap:3px;min-height:34px;flex-wrap:nowrap;overflow-x:auto}.game-controls-row .pos-btn{padding:2px 8px;font-size:.55rem;min-width:40px}.game-controls-row .to-btn{padding:2px 6px;font-size:.45rem}.game-controls-row .gc-btn{font-size:.45rem;padding:2px 4px;min-height:18px}.game-controls-row select,.game-controls-row input{font-size:.45rem;min-height:18px}.game-controls-row .yd-input{width:28px}.player-row{grid-template-columns:4px 24px 1fr 60px 50px 24px 18px;font-size:.6rem}.player-row input,.player-row select{font-size:.55rem;padding:2px}.cat-badge{font-size:.5rem;padding:1px 5px}.cat-legend{font-size:.5rem;gap:8px}.brand-logo{height:28px;max-width:50px}.brand-text h1{font-size:.75rem}.brand-text p{font-size:.45rem}.hdr-btn{font-size:.5rem;padding:3px 6px;min-height:20px}.wall-clock,.weather-pill{font-size:.5rem;padding:2px 4px}.quick-cues{gap:4px;padding:4px}.quick-cues button{font-size:.6rem;padding:4px 8px;min-height:24px}}
         @media(max-width:768px){.scorebug{padding:6px 6px;min-height:100px;flex-wrap:wrap}.scorebug.compact{min-height:40px;padding:3px 4px}.scorebug.compact .sb-block{padding:0 3px;min-width:24px}.scorebug.compact .sb-team-name{font-size:.8rem!important}.scorebug.compact .sb-val{font-size:1.2rem;min-width:20px}.scorebug.compact .game-clock{font-size:1.2rem}.scorebug.compact .sb-qtr{font-size:1.2rem}.scorebug.compact .sb-label{font-size:.4rem}.scorebug.compact .sb-btn{width:16px;height:16px;font-size:7px}.scorebug.compact .sb-game-btns button{font-size:.3rem;padding:1px 3px;min-height:14px;min-width:20px}.scorebug.compact .last-event{font-size:.4rem;min-height:16px;padding:1px 4px;max-width:100px}.sb-block{padding:0 4px;min-width:30px}.sb-team-name{font-size:1.2rem;max-width:80px}.sb-val{font-size:2rem;min-width:30px}.sb-qtr{font-size:1.8rem}.game-clock{font-size:2.2rem}.sb-btn{width:20px;height:20px;font-size:9px}.sb-game-btns button{font-size:.4rem;padding:2px 6px;min-height:18px}.last-event{font-size:.55rem;min-height:22px;max-width:160px}.game-controls-row{padding:3px 4px;gap:2px;min-height:28px;flex-wrap:nowrap;overflow-x:auto}.game-controls-row .pos-btn{padding:2px 6px;font-size:.5rem;min-width:32px}.game-controls-row .to-btn{padding:2px 5px;font-size:.4rem}.game-controls-row .gc-btn{font-size:.4rem;padding:2px 4px;min-height:16px}.game-controls-row select,.game-controls-row input{font-size:.4rem;min-height:16px}.game-controls-row .yd-input{width:24px}.game-controls-row .label{font-size:.4rem}.team-cards{flex-direction:column;height:auto;min-height:140px}.roster-layout{flex-direction:column}.team-sidebar{width:100%;max-height:100px}.admin-color-grid{grid-template-columns:1fr}.quick-cues button{font-size:.6rem;padding:4px 8px;min-height:24px}.player-row{grid-template-columns:4px 20px 1fr 50px 40px 20px 16px;font-size:.5rem;gap:2px;padding:2px}.player-row input,.player-row select{font-size:.45rem;padding:1px 2px}.cat-badge{font-size:.4rem;padding:1px 4px}.st-toggle,.pin-btn,.delete-btn{width:16px;height:16px;font-size:.4rem}.cat-legend{font-size:.4rem;gap:4px}.brand-logo{height:24px;max-width:40px}.brand-text h1{font-size:.65rem}.brand-text p{font-size:.4rem}.hdr-btn{font-size:.45rem;padding:2px 5px;min-height:18px}.wall-clock,.weather-pill{font-size:.45rem;padding:2px 4px}}
-           @media (max-width: 768px) {
-            ... existing mobile styles ...
-        }
-
-        /* ===== ADD THIS FOR IPAD TOUCH SUPPORT ===== */
         @media (pointer: coarse) {
-            .sb-btn, .hdr-btn, .gc-btn, .pos-btn, .to-btn, .quick-cues button {
-                min-height: 44px !important;
-                min-width: 44px !important;
-                padding: 8px 14px !important;
-            }
-            .game-controls-row .yd-input {
-                min-height: 36px !important;
-            }
-            .player-row input, .player-row select {
-                min-height: 30px !important;
-                font-size: 0.8rem !important;
-            }
-            .sb-btn {
-                min-height: 36px !important;
-                min-width: 36px !important;
-            }
-            .hdr-btn {
-                min-height: 36px !important;
-            }
-            .nav-link {
-                padding: 10px 14px !important;
-                font-size: 0.8rem !important;
-            }
+            .hdr-btn{min-height:36px!important;padding:6px 12px!important}
+            .sb-btn{min-height:36px!important;min-width:36px!important;font-size:14px!important}
+            .gc-btn,.pos-btn,.to-btn{min-height:34px!important;padding:4px 10px!important}
+            .quick-cues button{min-height:36px!important;padding:6px 12px!important}
+            .nav-link{padding:8px 12px!important;font-size:.7rem!important}
+            .game-controls-row select,.game-controls-row input{min-height:30px!important;font-size:.6rem!important}
+            .player-row input,.player-row select{min-height:28px!important;font-size:.65rem!important}
+            .game-controls-row{flex-wrap:nowrap!important;overflow-x:auto!important}
         }
-    </style>
-</head>
     </style>
 </head>
 <body>
@@ -243,7 +225,7 @@
             <span class="save-status" id="saveStatus">💾 Auto-saved</span>
             <button class="hdr-btn save-btn" onclick="fnlCloudSaveAll()" data-tooltip="Save all data to cloud">💾 SAVE ALL</button>
             <button class="hdr-btn" id="themeBtn" onclick="toggleTheme()" data-tooltip="Toggle dark/light theme">🌙 Dark</button>
-            <button class="hdr-btn" id="outdoorBtn" onclick="toggleOutdoor()" data-tooltip="Toggle outdoor mode (larger text)">🌤</button>
+            <button class="hdr-btn" id="outdoorBtn" onclick="toggleOutdoor()" data-tooltip="Toggle outdoor mode">🌤</button>
             <button class="hdr-btn" onclick="printLU()" data-tooltip="Print starting lineups">🖨️</button>
             <button class="hdr-btn undo-btn" onclick="undoLastEvent()" id="undoBtn" disabled data-tooltip="Undo last action (Ctrl+Z)">↩ Undo</button>
             <button class="hdr-btn" onclick="resetGame()" style="background:#dc2626;" data-tooltip="Reset entire game">RESET</button>
@@ -351,12 +333,6 @@ var POSITION_CATEGORIES = {
     SPECIAL: ['K','P','KR','PR']
 };
 
-function normalizePosition(pos) {
-    if (!pos) return '';
-    var map = {'C':'Center','G':'Guard','T':'Tackle','QB':'QB','RB':'RB','WR':'WR','TE':'TE','DT':'DT','DE':'DE','LB':'LB','CB':'CB','S':'S','DL':'DL','MLB':'MLB','OLB':'OLB','ILB':'ILB','SS':'SS','FS':'FS','DB':'DB','K':'K','P':'P','KR':'KR','PR':'PR','LS':'LS'};
-    return map[pos.toUpperCase()] || pos;
-}
-
 function getAllPositions() {
     var result = [];
     result = result.concat(POSITION_CATEGORIES.OFFENSE);
@@ -388,7 +364,7 @@ var S = {
     undoStack: [], sessionId: null,
     lastEvent: { text: '🏈 Ready — Set possession to begin', type: 'info' },
     scorebugMode: 'full',
-    useTeamColor: false, // NEW: false = readable (contrast-safe), true = exact team color
+    useTeamColor: true,
     teams: [
         { id: 'h', name: 'Euless Trinity Trojans', abbr: 'ETT', color: '#1e3a5f', textColor: '#ffffff', logo: '', mascot: 'Trojans', coach: '', players: [] },
         { id: 's', name: 'Mansfield Berkner Rams', abbr: 'MBR', color: '#7f1d1d', textColor: '#ffffff', logo: '', mascot: 'Rams', coach: '', players: [] }
@@ -413,7 +389,7 @@ var S = {
     }
 };
 
-var STORAGE_KEY = 'fnl_v30';
+var STORAGE_KEY = 'fnl_v31';
 
 function toast(m) {
     var x = document.getElementById('toast');
@@ -495,7 +471,7 @@ function normalizeState() {
     if (!S.scorebugMode) S.scorebugMode = 'full';
     if (!S.rosterUndo) S.rosterUndo = [];
     if (!S.rosterRedo) S.rosterRedo = [];
-    if (S.useTeamColor === undefined) S.useTeamColor = false;
+    if (S.useTeamColor === undefined) S.useTeamColor = true;
     S.gc.run = false;
 }
 
@@ -534,18 +510,12 @@ function getCategoryClass(categories) {
     return 'other';
 }
 
-function getCategoryTooltip(categories) {
-    if (!categories || categories.length === 0 || categories[0] === 'all') return 'Unknown Position';
-    var labels = [];
-    if (categories.indexOf('offense') !== -1) labels.push('Offense');
-    if (categories.indexOf('defense') !== -1) labels.push('Defense');
-    if (categories.indexOf('special') !== -1) labels.push('Special Teams');
-    return labels.join(' + ') || 'Unknown';
-}
-
 function getContrastColor(hex) {
     if (!hex) return '#ffffff';
-    var brightness = getColorBrightness(hex);
+    var r = parseInt(hex.slice(1,3), 16);
+    var g = parseInt(hex.slice(3,5), 16);
+    var b = parseInt(hex.slice(5,7), 16);
+    var brightness = (r * 299 + g * 587 + b * 114) / 1000;
     return brightness > 128 ? hex : '#ffffff';
 }
 
@@ -933,7 +903,6 @@ function updateScorebug() {
     var awayNameEl = document.getElementById('sbAwayName');
     var homeNameEl = document.getElementById('sbHomeName');
     
-    // Determine which color to use based on toggle
     var awayColor = S.useTeamColor ? away.color : getContrastColor(away.color);
     var homeColor = S.useTeamColor ? home.color : getContrastColor(home.color);
     
@@ -1698,7 +1667,7 @@ function setSideTeam(side, teamId) {
 }
 
 // ============================================================
-// SYNC COLORS – FIXED (no view switch, contrast-aware toggle)
+// SYNC COLORS
 // ============================================================
 function syncTeamColors(color) {
     var team = S.teams.find(function(t) { return t.id === S.cid; });
@@ -1712,7 +1681,7 @@ function syncTeamColors(color) {
     if (team.id === S.homeId && homePicker) homePicker.value = color;
     saveState();
     updateScorebug();
-    renderView(); // stays on current tab
+    renderView();
     toast('✅ Colors synced');
 }
 
@@ -2327,13 +2296,12 @@ function renderAdminContent() {
         colorFields.forEach(function(f) {
             c.innerHTML += '<div class="admin-color-item" style="display:flex;flex-direction:column;gap:2px;"><label style="font-size:0.6rem;font-weight:600;">' + f.label + '</label><input type="color" value="' + S.colors[f.key] + '" oninput="S.colors[\'' + f.key + '\']=this.value;applyColors();saveState()"></div>';
         });
-        // NEW: toggle for scorebug team name color mode
         c.innerHTML += '</div><div style="margin-top:12px;padding:10px;background:var(--bg);border-radius:6px;border:1px solid var(--border);">';
         c.innerHTML += '<label style="font-weight:700;font-size:0.65rem;display:flex;align-items:center;gap:8px;cursor:pointer;">';
         c.innerHTML += '<input type="checkbox" ' + (S.useTeamColor ? 'checked' : '') + ' onchange="S.useTeamColor=this.checked;saveState();updateScorebug();toast(this.checked ? \'🎨 Team color mode ON\' : \'🎨 Readable mode ON\');">';
         c.innerHTML += '🎨 <span style="font-weight:normal;">Use exact team color (scorebug) – uncheck for readable (contrast‑safe)</span>';
         c.innerHTML += '</label></div>';
-        c.innerHTML += '<div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;"><button class="hdr-btn" onclick="S.colors={scorebugBg:\'#0d0d1a\',scorebugText:\'#ffffff\',accent:\'#facc15\',teamCardAway:\'#e2e8f0\',teamCardHome:\'#e2e8f0\',teamCardBorder:\'#94a3b8\',awayHeaderBg:\'#1e3a5f\',homeHeaderBg:\'#7f1d1d\',awayCardBg:\'#e2e8f0\',homeCardBg:\'#e2e8f0\',quarterColor:\'#facc15\',clockColor:\'#00ff88\'};S.useTeamColor=false;applyColors();saveState();renderAdmin();updateScorebug();toast(\'✅ Reset\');">↺ Reset</button>';
+        c.innerHTML += '<div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;"><button class="hdr-btn" onclick="S.colors={scorebugBg:\'#0d0d1a\',scorebugText:\'#ffffff\',accent:\'#facc15\',teamCardAway:\'#e2e8f0\',teamCardHome:\'#e2e8f0\',teamCardBorder:\'#94a3b8\',awayHeaderBg:\'#1e3a5f\',homeHeaderBg:\'#7f1d1d\',awayCardBg:\'#e2e8f0\',homeCardBg:\'#e2e8f0\',quarterColor:\'#facc15\',clockColor:\'#00ff88\'};S.useTeamColor=true;applyColors();saveState();renderAdmin();updateScorebug();toast(\'✅ Reset\');">↺ Reset</button>';
         c.innerHTML += '<button class="hdr-btn" onclick="applyColors();toast(\'✅ Applied\')" style="background:#22c55e;">✅ Apply</button></div>';
     } else if (S.at === 'backup') {
         c.innerHTML = '<h4>Backup</h4><button class="hdr-btn" onclick="exportBackup()" data-tooltip="Export">📤 Export</button><button class="hdr-btn" onclick="document.getElementById(\'impf\').click()" data-tooltip="Import">📥 Import</button><input type="file" id="impf" accept=".json" style="display:none;" onchange="importBackup(this)">';
@@ -2499,8 +2467,7 @@ if (awayPicker && awayTeam) awayPicker.value = awayTeam.color;
 if (homePicker && homeTeam) homePicker.value = homeTeam.color;
 
 console.log('🏈 Friday Night Live PA Console loaded successfully!');
-console.log('📋 Version: v30 with scorebug color toggle');
-console.log('🔧 Features: Position categories, roster undo/redo, expanded colors, compact scorebug, scorebug team color toggle');
+console.log('📋 Version: v31 – PC optimized with tooltips, emoji buttons, and stable layout');
 </script>
 </body>
 </html>
