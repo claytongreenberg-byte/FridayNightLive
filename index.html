@@ -500,7 +500,14 @@ function getCategoryClass(categories) {
     if (hasSpecial) return 'special';
     return 'other';
 }
-
+function getCategoryTooltip(categories) {
+    if (!categories || categories.length === 0 || categories[0] === 'all') return 'Unknown Position';
+    var labels = [];
+    if (categories.indexOf('offense') !== -1) labels.push('Offense');
+    if (categories.indexOf('defense') !== -1) labels.push('Defense');
+    if (categories.indexOf('special') !== -1) labels.push('Special Teams');
+    return labels.join(' + ') || 'Unknown';
+}
 function getContrastColor(hex) {
     if (!hex) return '#ffffff';
     var r = parseInt(hex.slice(1,3), 16);
