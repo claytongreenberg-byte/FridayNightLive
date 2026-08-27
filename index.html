@@ -509,6 +509,14 @@ function getCategoryTooltip(categories) {
     return labels.join(' + ') || 'Unknown';
 }
 
+function getContrastColor(hex) {
+    if (!hex) return '#ffffff';
+    var brightness = getColorBrightness(hex);
+    // If the color is bright (e.g. yellow, light blue, white), use it.
+    // If it's dark (e.g. dark blue, black, dark red), use white for readability on dark scorebug.
+    return brightness > 128 ? hex : '#ffffff';
+}
+
 function getAllPositionOptionsWithLabels() {
     var basePositions = S.md7 === '7v7' ? S.p7 : getAllPositions();
     var allPosStrings = new Set();
@@ -893,11 +901,11 @@ function updateScorebug() {
     var homeNameEl = document.getElementById('sbHomeName');
     if (awayNameEl) {
         awayNameEl.textContent = getTeamMascot(away);
-        awayNameEl.style.color = away.textColor || '#ffffff';
+        awayNameEl.style.color = getContrastColor(away.color);  // FIXED: use contrast-aware color
     }
     if (homeNameEl) {
         homeNameEl.textContent = getTeamMascot(home);
-        homeNameEl.style.color = home.textColor || '#ffffff';
+        homeNameEl.style.color = getContrastColor(home.color);  // FIXED: use contrast-aware color
     }
     var awayScoreEl = document.getElementById('sbAwayScore');
     var homeScoreEl = document.getElementById('sbHomeScore');
@@ -986,7 +994,7 @@ function chQuarter(delta) {
         S.gc.rem = S.gc.max || 480;
         S.gc.run = false;
         updateGameClockDisplay();
-        updateClockStatusIndicator(); // FIXED: update status on quarter change
+        updateClockStatusIndicator();
         toast('⏱️ Qtr changed — Clock reset');
     }
     updateScorebug();
@@ -1003,7 +1011,7 @@ function startGC() {
     toast('▶️ Clock running');
     updateGameClockDisplay();
     saveState();
-    renderGame(); // renderGame will call updateClockStatusIndicator internally
+    renderGame();
 }
 
 function pauseGC() {
@@ -1011,7 +1019,7 @@ function pauseGC() {
     toast('⏸️ Clock paused');
     updateGameClockDisplay();
     saveState();
-    renderGame(); // renderGame will call updateClockStatusIndicator internally
+    renderGame();
 }
 
 function resetGC() {
@@ -1019,7 +1027,7 @@ function resetGC() {
     S.gc.rem = S.gc.max || 480;
     updateGameClockDisplay();
     saveState();
-    renderGame(); // renderGame will call updateClockStatusIndicator internally
+    renderGame();
 }
 
 function setPossession(side) {
@@ -1089,6 +1097,7 @@ function toggleScorebugDisplay() {
 function updateTeamColor(side, color) {
     var team = getTeam(side);
     team.color = color;
+    // Auto-calculate text color for the game card headers, but scorebug uses getContrastColor()
     var brightness = getColorBrightness(color);
     team.textColor = brightness > 128 ? '#000000' : '#ffffff';
     var teamObj = S.teams.find(function(t) { return t.id === team.id; });
@@ -1300,7 +1309,7 @@ function renderGame() {
     });
     html += '</div>';
     document.getElementById('main').innerHTML = html;
-    updateClockStatusIndicator();  // ensure status is correct after render
+    updateClockStatusIndicator();
     applyColors();
     updateUndoButton();
     updateTimeoutDisplay();
@@ -1417,7 +1426,7 @@ function setHalftime() {
     setLastEvent('⏸️ HALFTIME — Timeouts reset', 'info');
     updateScorebug();
     updateGameClockDisplay();
-    updateClockStatusIndicator(); // FIXED: update status
+    updateClockStatusIndicator();
     updateGameStateBadge();
     saveState();
     toast('⏸️ Halftime');
@@ -1652,6 +1661,28 @@ function setSideTeam(side, teamId) {
 }
 
 // ============================================================
+// SYNC COLORS – FIXED (no view switch, contrast-aware)
+// ============================================================
+function syncTeamColors(color) {
+    var team = S.teams.find(function(t) { return t.id === S.cid; });
+    if (!team) { toast('❌ No team selected'); return; }
+    team.color = color;
+    // We keep textColor for card headers, but scorebug uses getContrastColor()
+    var brightness = getColorBrightness(color);
+    team.textColor = brightness > 128 ? '#000000' : '#ffffff';
+    // Update color pickers in scorebug
+    var awayPicker = document.getElementById('awayColorPicker');
+    var homePicker = document.getElementById('homeColorPicker');
+    if (team.id === S.awayId && awayPicker) awayPicker.value = color;
+    if (team.id === S.homeId && homePicker) homePicker.value = color;
+    saveState();
+    // Refresh scorebug and current view (stays on ROSTER tab)
+    updateScorebug();
+    renderView(); // stays on current tab, no switch to GAME
+    toast('✅ Colors synced – team name updated with readability check');
+}
+
+// ============================================================
 // ROSTER VIEW
 // ============================================================
 function renderRoster() {
@@ -1684,7 +1715,7 @@ function renderRoster() {
     html += '<input id="etn" value="' + selectedTeam.name + '" placeholder="Team Name" style="flex:1;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.7rem;">';
     html += '<input id="eta" value="' + (selectedTeam.abbr || '') + '" placeholder="ABBR" maxlength="4" style="width:55px;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);text-transform:uppercase;font-size:0.7rem;">';
     html += '<input type="color" id="etc" value="' + selectedTeam.color + '" style="width:35px;height:28px;" onchange="syncTeamColors(this.value)">';
-    html += '<button class="hdr-btn" onclick="syncTeamColors(document.getElementById(\'etc\').value)" data-tooltip="Sync color to text color">🔄 Sync</button>';
+    html += '<button class="hdr-btn" onclick="syncTeamColors(document.getElementById(\'etc\').value)" data-tooltip="Sync color to text color (scorebug)">🔄 Sync</button>';
     html += '<input id="etm" value="' + (selectedTeam.mascot || '') + '" placeholder="Mascot" style="width:80px;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.7rem;">';
     html += '<input id="etco" value="' + (selectedTeam.coach || '') + '" placeholder="Coach" style="width:80px;padding:5px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.7rem;">';
     html += '<img id="etl" src="' + selectedTeam.logo + '" style="width:28px;height:28px;border-radius:50%;object-fit:cover;' + (selectedTeam.logo ? '' : 'display:none') + '">';
@@ -1753,7 +1784,6 @@ function newTeam() {
 function saveTeam() {
     var team = S.teams.find(function(t) { return t.id === S.cid; });
     if (!team) return;
-    var oldName = team.name;
     team.name = document.getElementById('etn').value;
     team.abbr = document.getElementById('eta').value.toUpperCase();
     team.color = document.getElementById('etc').value;
@@ -1763,23 +1793,6 @@ function saveTeam() {
     renderRoster();
     updateScorebug();
     toast('✅ Team saved');
-}
-
-function syncTeamColors(color) {
-    var team = S.teams.find(function(t) { return t.id === S.cid; });
-    if (!team) return;
-    team.color = color;
-    var brightness = getColorBrightness(color);
-    team.textColor = brightness > 128 ? '#000000' : '#ffffff';
-    var awayPicker = document.getElementById('awayColorPicker');
-    var homePicker = document.getElementById('homeColorPicker');
-    if (team.id === S.awayId && awayPicker) awayPicker.value = color;
-    if (team.id === S.homeId && homePicker) homePicker.value = color;
-    saveState();
-    renderRoster();
-    updateScorebug();
-    renderGame();
-    toast('✅ Colors synced');
 }
 
 function updatePlayerCategories(teamId, pidx, pos) {
@@ -2408,7 +2421,7 @@ setInterval(function() {
             S.gc.run = false; 
             toast('⏰ Clock expired!'); 
             setLastEvent('⏰ Clock expired', 'info');
-            updateClockStatusIndicator(); // FIXED: update status when clock hits zero
+            updateClockStatusIndicator();
         }
     }
 }, 1000);
@@ -2446,7 +2459,7 @@ if (homePicker && homeTeam) homePicker.value = homeTeam.color;
 
 console.log('🏈 Friday Night Live PA Console loaded successfully!');
 console.log('📋 Version: v29 with all fixes applied');
-console.log('🔧 Features: Position categories, roster undo/redo, expanded colors, compact scorebug');
+console.log('🔧 Features: Position categories, roster undo/redo, expanded colors, compact scorebug, contrast-aware team colors');
 </script>
 </body>
 </html>
