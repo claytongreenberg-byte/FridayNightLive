@@ -2356,20 +2356,21 @@ function renderClients() {
         keys.forEach(function(pin) {
             var client = S.cp[pin];
             var isActive = (pin === S.ap);
-            html += '<div class="client-item" style="' + (isActive ? 'border-color: var(--accent); background: rgba(250,204,21,0.05);' : '') + '">';
+            // FIX: Ensures clear white text on a dark grey background
+            html += '<div class="client-item" style="background:#334155;border:1px solid #475569;color:#ffffff;display:flex;align-items:center;gap:8px;padding:8px;border-radius:6px;margin-bottom:6px;' + (isActive ? 'border-color:#facc15; background:#374151;' : '') + '">';
             html += '<div style="position:relative;flex-shrink:0;">';
             if (client.logo) {
-                html += '<img src="' + client.logo + '" class="client-logo" alt="' + client.n + '">';
+                html += '<img src="' + client.logo + '" class="client-logo" alt="' + client.n + '" style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.2);">';
             } else {
-                html += '<div class="client-logo" style="background:' + (isActive ? 'var(--accent)' : '#334155') + ';display:flex;align-items:center;justify-content:center;font-weight:700;color:' + (isActive ? '#000' : '#fff') + ';font-size:1.2rem;">' + (client.n ? client.n[0].toUpperCase() : '?') + '</div>';
+                html += '<div class="client-logo" style="background:' + (isActive ? '#facc15' : '#475569') + ';display:flex;align-items:center;justify-content:center;font-weight:700;color:' + (isActive ? '#000' : '#fff') + ';font-size:1.2rem;width:32px;height:32px;border-radius:50%;">' + (client.n ? client.n[0].toUpperCase() : '?') + '</div>';
             }
             html += '<button class="sb-btn" onclick="uploadClientLogo(\'' + pin + '\')" style="position:absolute;bottom:-6px;right:-6px;width:18px;height:18px;font-size:8px;" data-tooltip="Upload logo">📷</button>';
             html += '</div>';
-            html += '<span style="font-weight:700;font-size:0.7rem;flex:1;">' + pin + '</span>';
-            html += '<span style="flex:2;font-size:0.7rem;">' + (client.n || 'Unnamed') + '</span>';
-            html += '<button class="hdr-btn" onclick="selectClient(\'' + pin + '\')" data-tooltip="Select this client" style="font-size:0.5rem;padding:2px 6px;' + (isActive ? 'background:var(--accent);color:#000;' : '') + '">' + (isActive ? '✅' : 'Select') + '</button>';
-            html += '<button class="hdr-btn" onclick="editClient(\'' + pin + '\')" data-tooltip="Edit client" style="font-size:0.5rem;padding:2px 6px;">✏️</button>';
-            html += '<button class="hdr-btn" style="background:#dc2626;font-size:0.5rem;padding:2px 6px;" onclick="deleteClient(\'' + pin + '\')" data-tooltip="Delete client">🗑️</button>';
+            html += '<span style="font-weight:700;font-size:0.7rem;flex:1;color:#ffffff;">' + pin + '</span>';
+            html += '<span style="flex:2;font-size:0.7rem;color:#ffffff;">' + (client.n || 'Unnamed') + '</span>';
+            html += '<button class="hdr-btn" onclick="selectClient(\'' + pin + '\')" data-tooltip="Select this client" style="font-size:0.5rem;padding:2px 6px;' + (isActive ? 'background:#facc15;color:#000;border-color:#facc15;' : 'background:#475569;color:#fff;border-color:#64748b;') + '">' + (isActive ? '✅' : 'Select') + '</button>';
+            html += '<button class="hdr-btn" onclick="editClient(\'' + pin + '\')" data-tooltip="Edit client" style="font-size:0.5rem;padding:2px 6px;background:#475569;color:#fff;">✏️</button>';
+            html += '<button class="hdr-btn" style="background:#dc2626;font-size:0.5rem;padding:2px 6px;color:#fff;" onclick="deleteClient(\'' + pin + '\')" data-tooltip="Delete client">🗑️</button>';
             html += '</div>';
         });
     }
@@ -2379,7 +2380,6 @@ function renderClients() {
     html += '</div></div>';
     document.getElementById('main').innerHTML = html;
 }
-
 function uploadClientLogo(pin) {
     var input = document.createElement('input');
     input.type = 'file';
