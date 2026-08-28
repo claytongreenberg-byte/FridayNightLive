@@ -2480,6 +2480,8 @@ function updateHeaderBranding() {
     var brandContainer = document.getElementById('brandContainer');
     var brandLogo = document.getElementById('brandLogo');
     var brandSubtitle = document.getElementById('brandSubtitle');
+    
+    // Determine active client
     var activeClient = null;
     var activePin = S.ap;
     if (!activePin || !S.cp[activePin]) {
@@ -2492,38 +2494,50 @@ function updateHeaderBranding() {
     if (activePin && S.cp[activePin]) {
         activeClient = S.cp[activePin];
     }
-    var existingClientLogo = document.getElementById('clientHeaderLogo');
-    var existingClientName = document.getElementById('clientHeaderName');
-    if (existingClientLogo) existingClientLogo.remove();
-    if (existingClientName) existingClientName.remove();
-    if (activeClient) {
-        brandSubtitle.textContent = activeClient.n || 'PA CONSOLE';
-        brandSubtitle.style.color = 'var(--accent)';
-        if (activeClient.logo) {
-            var logoImg = document.createElement('img');
-            logoImg.id = 'clientHeaderLogo';
-            logoImg.src = activeClient.logo;
-            logoImg.className = 'client-header-logo';
-            logoImg.alt = activeClient.n || 'Client';
-            brandContainer.appendChild(logoImg);
-        } else {
-            var initial = document.createElement('div');
-            initial.id = 'clientHeaderLogo';
-            initial.className = 'client-header-logo';
-            initial.style.cssText = 'background:' + (S.colors.accent || '#facc15') + ';display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1rem;color:#000;width:36px;height:36px;border-radius:50%;border:2px solid var(--accent);margin-left:8px;flex-shrink:0;';
-            initial.textContent = activeClient.n ? activeClient.n[0].toUpperCase() : '?';
-            brandContainer.appendChild(initial);
-        }
-        var nameSpan = document.createElement('span');
-        nameSpan.id = 'clientHeaderName';
-        nameSpan.className = 'client-header-name';
-        nameSpan.textContent = activeClient.n || '';
-        brandContainer.appendChild(nameSpan);
-    } else {
+
+    // Remove old wrapper if it exists
+    var existingWrap = document.getElementById('clientHeaderWrap');
+    if (existingWrap) existingWrap.remove();
+
+    // Reset brand subtitle if no client
+    if (!activeClient) {
         brandSubtitle.textContent = 'PA CONSOLE';
         brandSubtitle.style.color = 'var(--accent)';
         brandLogo.style.display = 'inline-block';
+        return;
     }
+
+    // Update subtitle
+    brandSubtitle.textContent = activeClient.n || 'PA CONSOLE';
+    brandSubtitle.style.color = 'var(--accent)';
+
+    // Create a dedicated wrapper right next to the logo
+    var wrap = document.createElement('div');
+    wrap.id = 'clientHeaderWrap';
+    // Force it to be a flex item, small size, and aligned
+    wrap.style.cssText = 'display:flex;align-items:center;gap:8px;margin-left:10px;max-width:180px;white-space:nowrap;overflow:hidden;flex-shrink:0;';
+
+    // Add Logo
+    if (activeClient.logo) {
+        var logoImg = document.createElement('img');
+        logoImg.src = activeClient.logo;
+        logoImg.alt = activeClient.n || 'Client';
+        logoImg.style.cssText = 'width:36px !important;height:36px !important;max-width:36px !important;max-height:36px !important;object-fit:contain;border-radius:50%;border:2px solid var(--accent);background:#fff;flex-shrink:0;';
+        wrap.appendChild(logoImg);
+    } else {
+        var initial = document.createElement('div');
+        initial.textContent = activeClient.n ? activeClient.n[0].toUpperCase() : '?';
+        initial.style.cssText = 'background:' + (S.colors.accent || '#facc15') + ';display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1rem;color:#000;width:36px;height:36px;border-radius:50%;border:2px solid var(--accent);flex-shrink:0;';
+        wrap.appendChild(initial);
+    }
+
+    // Add Client Name (White and readable)
+    var nameSpan = document.createElement('span');
+    nameSpan.textContent = activeClient.n || '';
+    nameSpan.style.cssText = 'color:#ffffff;font-size:0.65rem;font-weight:700;overflow:hidden;text-overflow:ellipsis;';
+    wrap.appendChild(nameSpan);
+
+    brandContainer.appendChild(wrap);
 }
 
 // ============================================================
