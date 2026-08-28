@@ -68,6 +68,18 @@
         .scorebug.compact .last-event{font-size:.55rem;min-height:22px;padding:2px 8px;max-width:200px}
         .scorebug.compact .timeout-display{display:none}
         .scorebug.compact .sb-row{gap:2px}
+        /* FIX: Shrink mode/toggle buttons in compact mode */
+.scorebug.compact ~ .sb-mode-btn, 
+.scorebug.compact ~ .sb-toggle-btn,
+.hdr-bottom .sb-mode-btn.compact,
+.hdr-bottom .sb-toggle-btn.compact {
+    width: 20px !important;
+    height: 20px !important;
+    font-size: 10px !important;
+    min-width: 20px !important;
+    min-height: 20px !important;
+    margin-top: 4px;
+}
         /* FIX: Compact Mode Buttons */
         .scorebug.compact .sb-mode-btn,
         .scorebug.compact .sb-toggle-btn {
