@@ -68,6 +68,18 @@
         .scorebug.compact .last-event{font-size:.55rem;min-height:22px;padding:2px 8px;max-width:200px}
         .scorebug.compact .timeout-display{display:none}
         .scorebug.compact .sb-row{gap:2px}
+        /* FIX: Hide top tags and tighten blocks in compact mode */
+.scorebug.compact .sb-network-tag,
+.scorebug.compact .live-pill {
+    display: none !important;
+}
+.scorebug.compact .sb-block {
+    padding: 0 4px;
+}
+.scorebug.compact .sb-team-name {
+    line-height: 1;
+    margin-bottom: 0;
+}
         /* FIX: Shrink mode/toggle buttons in compact mode */
 .scorebug.compact ~ .sb-mode-btn, 
 .scorebug.compact ~ .sb-toggle-btn,
