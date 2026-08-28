@@ -11,7 +11,6 @@
         body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;font-size:14px}
         select{-webkit-appearance:menulist;appearance:menulist}
         
-        /* HEADER */
         header{background:linear-gradient(180deg,#1a3a0e,#0f2a08);padding:6px 10px;border-bottom:3px solid var(--accent);flex-shrink:0; transition: all 0.3s ease;}
         .hdr-top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
         .hdr-top-left{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;min-width:0;position:relative;z-index:1000}
@@ -76,14 +75,12 @@
         .dd-ticker{padding:5px 14px;border-radius:6px;font-weight:800;font-size:.8rem;text-align:center;color:#fff;letter-spacing:.5px;text-shadow:0 1px 4px rgba(0,0,0,.8);background:#1a1a2e;min-height:28px;border:1px solid rgba(255,255,255,.05);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;transition:all 0.3s ease}
         .dd-ticker.hidden{display:none !important}
 
-        /* NAVIGATION */
         nav{background:#1a1a1a;display:flex;gap:4px;padding:0 10px;flex-shrink:0;overflow-x:auto;border-bottom:1px solid rgba(255,255,255,.05)}
         .nav-link{background:0 0;border:none;color:#999;padding:6px 10px;font-weight:700;cursor:pointer;font-size:.65rem;white-space:nowrap;transition:all .15s;border-radius:6px 6px 0 0!important}
         .nav-link:hover{color:#fff}
         .nav-link.active{background:var(--accent);color:#000}
         main{flex:1;overflow:auto;padding:6px;transition:all 0.3s ease}
 
-        /* GAME VIEW & CONTROLS */
         .panel{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px}
         .quick-cues{display:flex;gap:6px;flex-wrap:wrap;padding:6px 10px;background:rgba(250,204,21,.08);border:2px solid var(--accent);border-radius:8px;margin-bottom:8px}
         .quick-cues button{font-size:.7rem;padding:6px 14px;min-height:32px;border-radius:6px;background:#334155;color:#fff;border:2px solid #475569;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap;flex:1 0 auto;min-width:80px;border-radius:6px!important}
@@ -118,7 +115,6 @@
         .game-controls-row .gc-btn.load-btn{background:linear-gradient(135deg,#334155,#1e293b);border-color:#475569;color:#fff}
         .game-controls-row .gc-btn.load-btn:hover{background:linear-gradient(135deg,#475569,#334155);transform:scale(1.05)}
         
-        /* TEAM SPLIT VIEW */
         .team-cards{display:flex;gap:8px;height:calc(100% - 50px);min-height:200px;flex:1;transition:height 0.3s ease}
         .team-card{flex:1;min-width:0;display:flex;flex-direction:column;border-radius:8px;overflow:hidden;background:var(--surface);border:1px solid var(--border);}
         .card-head{padding:8px 12px;font-weight:800;display:flex;align-items:center;gap:8px;color:#fff;font-size:1.1rem;flex-shrink:0;min-height:44px}
@@ -139,7 +135,6 @@
         .unit-tab.special-tab{background:var(--badge-special);border-color:var(--badge-special);color:#fff}
         .unit-tab.special-tab.active{background:#fff;border-color:var(--badge-special);color:var(--badge-special);box-shadow:0 0 0 2px rgba(22,163,74,.3)}
         
-        /* PLAYER LIST */
         .player-list-body{flex:1;overflow-y:auto;padding:4px 5px;transition:all 0.3s ease}
         .player-row{display:grid;grid-template-columns:4px 28px 1fr 80px 80px 22px 22px 22px;gap:3px;align-items:center;padding:4px 4px;border-bottom:1px solid rgba(0,0,0,.08);font-size:.65rem;border-left:4px solid transparent;min-height:36px;background:rgba(255,255,255,.4);border-radius:4px;margin-bottom:2px;transition:all 0.2s ease}
         .player-row:last-child{border-bottom:none}
@@ -155,12 +150,6 @@
         .player-row.compact-row {min-height: 22px !important;padding: 1px 3px !important;font-size: 0.5rem !important;gap: 2px !important;}
         .player-row.compact-row input, .player-row.compact-row select {height: 18px !important;font-size: 0.45rem !important;padding: 1px 2px !important;}
         .player-row.compact-row .st-toggle, .player-row.compact-row .pin-btn, .player-row.compact-row .delete-btn {width: 16px !important;height: 16px !important;font-size: 0.35rem !important;}
-        .player-row.compact-row .st-toggle {font-size: 0.4rem !important;}
-        .player-row.compact-row .pin-btn {font-size: 0.4rem !important;}
-        .player-row.compact-row .delete-btn {font-size: 7px !important;}
-        .scorebug-hidden .player-row.compact-row {min-height: 18px !important;padding: 1px 2px !important;gap: 1px !important;}
-        .scorebug-hidden .player-row.compact-row input, .scorebug-hidden .player-row.compact-row select {height: 16px !important;font-size: 0.4rem !important;padding: 0px 2px !important;}
-        .scorebug-hidden .player-row.compact-row .st-toggle, .scorebug-hidden .player-row.compact-row .pin-btn, .scorebug-hidden .player-row.compact-row .delete-btn {width: 14px !important;height: 14px !important;font-size: 0.3rem !important;}
         .st-toggle,.pin-btn{background:rgba(255,255,255,.5);border:1px solid var(--border);border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:.5rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
         .st-toggle:hover,.pin-btn:hover{transform:scale(1.1)}
         .st-toggle.active{background:var(--accent);color:#000;border-color:var(--accent)}
@@ -168,7 +157,6 @@
         .delete-btn{background:0 0;border:1px solid var(--border);border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#dc2626;border-radius:50%!important}
         .delete-btn:hover{background:#dc2626;color:#fff;border-color:#dc2626}
 
-        /* FOOTER & MISC */
         footer{background:var(--footer-bg);color:var(--footer-text);padding:3px 8px;text-align:center;font-size:.5rem;flex-shrink:0;border-top:1px solid var(--accent)}
         .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:#fff;padding:6px 14px;border-radius:16px;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;font-size:.75rem;backdrop-filter:blur(10px)}
         .toast.show{opacity:1}
@@ -185,14 +173,12 @@
         .cat-legend{display:flex;gap:12px;flex-wrap:wrap;padding:6px 8px;background:var(--bg);border-radius:4px;border:1px solid var(--border);margin-bottom:8px;font-size:.55rem;font-weight:600}
         .cat-legend .legend-item{display:flex;align-items:center;gap:4px}
 
-        /* ROSTER VIEW */
         .roster-layout{display:flex;gap:8px;height:100%}
         .team-sidebar{width:150px;flex-shrink:0;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px;overflow-y:auto}
         .team-item{padding:4px 6px;border-radius:4px;margin-bottom:2px;cursor:pointer;font-weight:600;font-size:.6rem;color:var(--text)}
         .team-item.active{background:var(--accent);color:#000}
         .roster-workspace{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px;overflow-y:auto}
 
-        /* ADMIN VIEW */
         .admin-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;padding:4px 0}
         .admin-tab-btn{background:#334155;color:#fff;border:1px solid #475569;border-radius:8px;padding:6px 14px;font-size:.65rem;font-weight:700;cursor:pointer;transition:all .2s;min-height:32px;display:inline-flex;align-items:center;justify-content:center}
         .admin-tab-btn:hover{background:#475569;transform:scale(1.03)}
@@ -205,7 +191,6 @@
         .team-color-picker::-webkit-color-swatch-wrapper{padding:0}
         .team-color-picker::-webkit-color-swatch{border:none;border-radius:50%}
 
-        /* MEDIA QUERIES */
         @media(max-width:1024px){
             .scorebug{padding:8px 10px;min-height:130px;flex-wrap:wrap}
             .sb-block{padding:0 8px;min-width:40px}
@@ -361,6 +346,11 @@
 
 <script>
 // ============================================================
+// DEFINE EARLY TO PREVENT CRASHES
+// ============================================================
+var tooltipEl = document.getElementById('tooltip');
+
+// ============================================================
 // CONSTANTS
 // ============================================================
 var MAX_UNDO = 50;
@@ -515,6 +505,38 @@ function normalizeState() {
     if (S.compactRows === undefined) S.compactRows = false;
     if (S.scorebugVisible === undefined) S.scorebugVisible = true;
     S.gc.run = false;
+}
+
+// ============================================================
+// TOOLTIPS (Early initialization to prevent crashes)
+// ============================================================
+document.addEventListener('mouseover', function(e) {
+    var t = e.target.closest('[data-tooltip]');
+    if (t) {
+        if (tooltipEl) {
+            tooltipEl.textContent = t.getAttribute('data-tooltip');
+            tooltipEl.style.display = 'block';
+            positionTooltip(e.clientX, e.clientY);
+        }
+    }
+});
+document.addEventListener('mousemove', function(e) {
+    if (tooltipEl && tooltipEl.style.display === 'block') positionTooltip(e.clientX, e.clientY);
+});
+document.addEventListener('mouseout', function(e) {
+    if (!e.target.closest('[data-tooltip]') && tooltipEl) tooltipEl.style.display = 'none';
+});
+
+function positionTooltip(x, y) {
+    if (!tooltipEl) return;
+    var left = x + 15, top = y + 15;
+    var rect = tooltipEl.getBoundingClientRect();
+    if (left + rect.width > window.innerWidth) left = x - rect.width - 15;
+    if (left < 5) left = 5;
+    if (top + rect.height > window.innerHeight) top = y - rect.height - 15;
+    if (top < 5) top = 5;
+    tooltipEl.style.left = left + 'px';
+    tooltipEl.style.top = top + 'px';
 }
 
 // ============================================================
@@ -776,36 +798,6 @@ function getContrastColor(hex) {
     var b = parseInt(hex.slice(5,7), 16);
     var brightness = (r * 299 + g * 587 + b * 114) / 1000;
     return brightness > 128 ? hex : '#ffffff';
-}
-
-// ============================================================
-// TOOLTIPS
-// ============================================================
-var tooltipEl = document.getElementById('tooltip');
-document.addEventListener('mouseover', function(e) {
-    var t = e.target.closest('[data-tooltip]');
-    if (t) {
-        tooltipEl.textContent = t.getAttribute('data-tooltip');
-        tooltipEl.style.display = 'block';
-        positionTooltip(e.clientX, e.clientY);
-    }
-});
-document.addEventListener('mousemove', function(e) {
-    if (tooltipEl.style.display === 'block') positionTooltip(e.clientX, e.clientY);
-});
-document.addEventListener('mouseout', function(e) {
-    if (!e.target.closest('[data-tooltip]')) tooltipEl.style.display = 'none';
-});
-
-function positionTooltip(x, y) {
-    var left = x + 15, top = y + 15;
-    var rect = tooltipEl.getBoundingClientRect();
-    if (left + rect.width > window.innerWidth) left = x - rect.width - 15;
-    if (left < 5) left = 5;
-    if (top + rect.height > window.innerHeight) top = y - rect.height - 15;
-    if (top < 5) top = 5;
-    tooltipEl.style.left = left + 'px';
-    tooltipEl.style.top = top + 'px';
 }
 
 // ============================================================
