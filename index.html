@@ -6,7 +6,6 @@
     <title>Friday Night Live – PA Console</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
-                /* FIX: Client Header Logo Size */
         .client-header-logo {
             width: 36px !important;
             height: 36px !important;
@@ -36,7 +35,7 @@
         select{-webkit-appearance:menulist;appearance:menulist}
         header{background:linear-gradient(180deg,#1a3a0e,#0f2a08);padding:6px 10px;border-bottom:3px solid var(--accent);flex-shrink:0}
         .hdr-top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
-       .hdr-top-left{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;min-width:0;position:relative;z-index:1000}
+        .hdr-top-left{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;min-width:0;position:relative;z-index:1000}
         .brand-logo{height:32px;width:auto;max-width:60px;object-fit:contain;flex-shrink:0}
         .brand-text{display:flex;flex-direction:column;line-height:1.1}
         .brand-text h1{font-size:.85rem;color:#fff;white-space:nowrap}
@@ -50,11 +49,12 @@
         .hdr-btn.undo-btn{background:#dc2626;border-color:#dc2626}
         .hdr-btn.undo-btn:hover{background:#b91c1c}
         .hdr-btn.undo-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
-        .hdr-bottom{display:flex;justify-content:center;align-items:center;gap:6px;margin-top:6px}
+        .hdr-bottom{display:flex;justify-content:center;align-items:center;gap:6px;margin-top:6px;transition:all 0.3s ease}
+        .hdr-bottom.compact{display:none}
         .save-status{font-size:.5rem;color:var(--accent);background:rgba(0,0,0,.4);padding:2px 8px;border-radius:10px;white-space:nowrap}
         .save-status.saved{color:#4ade80}
         .save-status.offline{color:#facc15}
-        .scorebug-wrap{width:100%;display:flex;flex-direction:column;gap:4px}
+        .scorebug-wrap{width:100%;display:flex;flex-direction:column;gap:4px;transition:all 0.3s ease}
         .scorebug{position:relative;display:flex;align-items:stretch;justify-content:center;gap:0;background:var(--scorebug-bg);border:3px solid var(--accent);border-radius:12px;padding:12px 18px 10px;flex-wrap:nowrap;width:100%;box-shadow:0 4px 30px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.08);--sb-text:#ffffff;min-height:160px;transition:all .3s ease}
         .scorebug.compact{padding:6px 10px 4px;min-height:60px;border-radius:8px}
         .scorebug.compact .sb-block{padding:0 6px}
@@ -68,38 +68,10 @@
         .scorebug.compact .last-event{font-size:.55rem;min-height:22px;padding:2px 8px;max-width:200px}
         .scorebug.compact .timeout-display{display:none}
         .scorebug.compact .sb-row{gap:2px}
-        /* FIX: Hide top tags and tighten blocks in compact mode */
-.scorebug.compact .sb-network-tag,
-.scorebug.compact .live-pill {
-    display: none !important;
-}
-.scorebug.compact .sb-block {
-    padding: 0 4px;
-}
-.scorebug.compact .sb-team-name {
-    line-height: 1;
-    margin-bottom: 0;
-}
-        /* FIX: Shrink mode/toggle buttons in compact mode */
-.scorebug.compact ~ .sb-mode-btn, 
-.scorebug.compact ~ .sb-toggle-btn,
-.hdr-bottom .sb-mode-btn.compact,
-.hdr-bottom .sb-toggle-btn.compact {
-    width: 20px !important;
-    height: 20px !important;
-    font-size: 10px !important;
-    min-width: 20px !important;
-    min-height: 20px !important;
-    margin-top: 4px;
-}
-        /* FIX: Compact Mode Buttons */
-        .scorebug.compact .sb-mode-btn,
-        .scorebug.compact .sb-toggle-btn {
-            width: 20px;
-            height: 20px;
-            font-size: 10px;
-            margin-top: 2px;
-        }
+        .scorebug.compact .sb-network-tag,
+        .scorebug.compact .live-pill {display: none !important;}
+        .scorebug.compact .sb-block {padding: 0 4px;}
+        .scorebug.compact .sb-team-name {line-height: 1;margin-bottom: 0;}
         .sb-network-tag{position:absolute;top:-11px;left:16px;background:var(--accent);color:#000;font-weight:900;font-size:.65rem;letter-spacing:2px;padding:3px 14px;border-radius:4px;text-transform:uppercase;box-shadow:0 2px 12px rgba(0,0,0,.6)}
         .live-pill{position:absolute;top:-11px;right:16px;background:#dc2626;color:#fff;font-weight:800;font-size:.55rem;padding:3px 14px;border-radius:10px;display:none;align-items:center;gap:6px;letter-spacing:1px;box-shadow:0 2px 12px rgba(0,0,0,.6)}
         .live-pill.show{display:inline-flex}
@@ -134,7 +106,8 @@
         .sb-game-btns button.half-active{background:#f59e0b;color:#000}
         .sb-game-btns button.final-active{background:#dc2626;color:#fff}
         .sb-game-btns button:disabled{opacity:.2;cursor:not-allowed;transform:none!important}
-        .dd-ticker{padding:5px 14px;border-radius:6px;font-weight:800;font-size:.8rem;text-align:center;color:#fff;letter-spacing:.5px;text-shadow:0 1px 4px rgba(0,0,0,.8);background:#1a1a2e;min-height:28px;border:1px solid rgba(255,255,255,.05);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+        .dd-ticker{padding:5px 14px;border-radius:6px;font-weight:800;font-size:.8rem;text-align:center;color:#fff;letter-spacing:.5px;text-shadow:0 1px 4px rgba(0,0,0,.8);background:#1a1a2e;min-height:28px;border:1px solid rgba(255,255,255,.05);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;transition:all 0.3s ease}
+        .dd-ticker.hidden{display:none !important}
         .timeout-display{display:flex;gap:4px;align-items:center;margin-top:3px}
         .timeout-dot{width:10px;height:10px;border-radius:50%;background:#4ade80;transition:all .3s;box-shadow:0 0 10px rgba(74,222,128,.4)}
         .timeout-dot.used{background:#334155;opacity:.25;box-shadow:none}
@@ -145,7 +118,7 @@
         .nav-link{background:0 0;border:none;color:#999;padding:6px 10px;font-weight:700;cursor:pointer;font-size:.65rem;white-space:nowrap;transition:all .15s;border-radius:6px 6px 0 0!important}
         .nav-link:hover{color:#fff}
         .nav-link.active{background:var(--accent);color:#000}
-        main{flex:1;overflow:auto;padding:6px}
+        main{flex:1;overflow:auto;padding:6px;transition:all 0.3s ease}
         .panel{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px}
         .roster-layout{display:flex;gap:8px;height:100%}
         .team-sidebar{width:150px;flex-shrink:0;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px;overflow-y:auto}
@@ -164,10 +137,10 @@
         footer{background:var(--footer-bg);color:var(--footer-text);padding:3px 8px;text-align:center;font-size:.5rem;flex-shrink:0;border-top:1px solid var(--accent)}
         .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:#fff;padding:6px 14px;border-radius:16px;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;font-size:.75rem;backdrop-filter:blur(10px)}
         .toast.show{opacity:1}
-        .player-list-body{flex:1;overflow-y:auto;padding:4px 5px}
-        .player-row{display:grid;grid-template-columns:4px 28px 1fr 80px 80px 22px 22px 22px;gap:3px;align-items:center;padding:4px 4px;border-bottom:1px solid rgba(0,0,0,.08);font-size:.6rem;border-left:4px solid transparent;min-height:32px;background:rgba(255,255,255,.4);border-radius:4px;margin-bottom:2px}
+        .player-list-body{flex:1;overflow-y:auto;padding:4px 5px;transition:all 0.3s ease}
+        .player-row{display:grid;grid-template-columns:4px 28px 1fr 80px 80px 22px 22px 22px;gap:3px;align-items:center;padding:4px 4px;border-bottom:1px solid rgba(0,0,0,.08);font-size:.6rem;border-left:4px solid transparent;min-height:32px;background:rgba(255,255,255,.4);border-radius:4px;margin-bottom:2px;transition:all 0.2s ease}
         .player-row:last-child{border-bottom:none}
-        .player-row input,.player-row select{background:rgba(255,255,255,.7);border:1px solid var(--border);color:#0a0a0a;font-weight:700;padding:2px 4px;width:100%;font-size:.55rem;border-radius:3px;min-width:0;height:24px}
+        .player-row input,.player-row select{background:rgba(255,255,255,.7);border:1px solid var(--border);color:#0a0a0a;font-weight:700;padding:2px 4px;width:100%;font-size:.55rem;border-radius:3px;min-width:0;height:24px;transition:all 0.2s ease}
         .player-row input:focus,.player-row select:focus{border-color:var(--accent);outline:2px solid rgba(250,204,21,.3);background:#fff}
         .player-row.starter{background:rgba(251,191,36,.12);border-left:4px solid var(--accent)}
         .player-row.pinned{background:rgba(250,204,21,.15);border-left-color:var(--accent)!important}
@@ -176,6 +149,46 @@
         .player-row.category-special{border-left-color:var(--badge-special)}
         .player-row.category-both{border-left-color:var(--badge-both)}
         .player-row.category-other{border-left-color:#c9a227}
+        .player-row.compact-row {
+            min-height: 22px !important;
+            padding: 1px 3px !important;
+            font-size: 0.5rem !important;
+            gap: 2px !important;
+        }
+        .player-row.compact-row input,
+        .player-row.compact-row select {
+            height: 18px !important;
+            font-size: 0.45rem !important;
+            padding: 1px 2px !important;
+        }
+        .player-row.compact-row .st-toggle,
+        .player-row.compact-row .pin-btn,
+        .player-row.compact-row .delete-btn {
+            width: 16px !important;
+            height: 16px !important;
+            font-size: 0.35rem !important;
+        }
+        .player-row.compact-row .st-toggle {font-size: 0.4rem !important;}
+        .player-row.compact-row .pin-btn {font-size: 0.4rem !important;}
+        .player-row.compact-row .delete-btn {font-size: 7px !important;}
+        .scorebug-hidden .player-row.compact-row {
+            min-height: 18px !important;
+            padding: 1px 2px !important;
+            gap: 1px !important;
+        }
+        .scorebug-hidden .player-row.compact-row input,
+        .scorebug-hidden .player-row.compact-row select {
+            height: 16px !important;
+            font-size: 0.4rem !important;
+            padding: 0px 2px !important;
+        }
+        .scorebug-hidden .player-row.compact-row .st-toggle,
+        .scorebug-hidden .player-row.compact-row .pin-btn,
+        .scorebug-hidden .player-row.compact-row .delete-btn {
+            width: 14px !important;
+            height: 14px !important;
+            font-size: 0.3rem !important;
+        }
         .st-toggle,.pin-btn{background:rgba(255,255,255,.5);border:1px solid var(--border);border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:.5rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
         .st-toggle:hover,.pin-btn:hover{transform:scale(1.1)}
         .st-toggle.active{background:var(--accent);color:#000;border-color:var(--accent)}
@@ -267,6 +280,10 @@
         .admin-color-item{display:flex;flex-direction:column;gap:2px}
         .admin-color-item label{font-size:.6rem;font-weight:600}
         .admin-color-item input[type="color"]{width:100%;height:30px;border:2px solid var(--border);border-radius:4px;cursor:pointer;padding:2px}
+        .team-cards{height:calc(100% - 120px);min-height:200px;transition:all 0.3s ease}
+        .scorebug-hidden .team-cards{height:calc(100% - 20px) !important;min-height:400px !important}
+        .scorebug-hidden .dd-ticker{display:none !important}
+        .scorebug-hidden .hdr-bottom{min-height:auto !important;padding:2px 0 !important}
         @media(max-width:1024px){.scorebug{padding:8px 10px;min-height:130px;flex-wrap:wrap}.scorebug.compact{min-height:50px;padding:4px 6px}.scorebug.compact .sb-block{padding:0 4px;min-width:30px}.scorebug.compact .sb-team-name{font-size:1rem!important}.scorebug.compact .sb-val{font-size:1.5rem;min-width:24px}.scorebug.compact .game-clock{font-size:1.5rem}.scorebug.compact .sb-qtr{font-size:1.5rem}.scorebug.compact .sb-label{font-size:.45rem}.sb-block{padding:0 8px;min-width:40px}.sb-team-name{font-size:1.6rem}.sb-val{font-size:2.8rem;min-width:38px}.sb-qtr{font-size:2.4rem}.game-clock{font-size:2.8rem}.sb-btn{width:24px;height:24px;font-size:10px}.sb-game-btns button{font-size:.5rem;padding:3px 8px;min-height:22px}.last-event{font-size:.7rem;min-height:28px;max-width:280px}.game-controls-row{padding:4px 8px;gap:3px;min-height:34px;flex-wrap:nowrap;overflow-x:auto}.game-controls-row .pos-btn{padding:2px 8px;font-size:.55rem;min-width:40px}.game-controls-row .to-btn{padding:2px 6px;font-size:.45rem}.game-controls-row .gc-btn{font-size:.45rem;padding:2px 4px;min-height:18px}.game-controls-row select,.game-controls-row input{font-size:.45rem;min-height:18px}.game-controls-row .yd-input{width:28px}.player-row{grid-template-columns:4px 24px 1fr 60px 60px 20px 20px 20px;font-size:.6rem}.player-row input,.player-row select{font-size:.55rem;padding:2px}.cat-badge{font-size:.5rem;padding:1px 5px}.cat-legend{font-size:.5rem;gap:8px}.brand-logo{height:28px;max-width:50px}.brand-text h1{font-size:.75rem}.brand-text p{font-size:.45rem}.hdr-btn{font-size:.5rem;padding:3px 6px;min-height:20px}.wall-clock,.weather-pill{font-size:.5rem;padding:2px 4px}.quick-cues{gap:4px;padding:4px}.quick-cues button{font-size:.6rem;padding:4px 8px;min-height:24px}.admin-tabs{gap:4px}.admin-tab-btn{font-size:.55rem;padding:4px 10px;min-height:26px}}
         @media(max-width:768px){.scorebug{padding:6px 6px;min-height:100px;flex-wrap:wrap}.scorebug.compact{min-height:40px;padding:3px 4px}.scorebug.compact .sb-block{padding:0 3px;min-width:24px}.scorebug.compact .sb-team-name{font-size:.8rem!important}.scorebug.compact .sb-val{font-size:1.2rem;min-width:20px}.scorebug.compact .game-clock{font-size:1.2rem}.scorebug.compact .sb-qtr{font-size:1.2rem}.scorebug.compact .sb-label{font-size:.4rem}.scorebug.compact .sb-btn{width:16px;height:16px;font-size:7px}.scorebug.compact .sb-game-btns button{font-size:.3rem;padding:1px 3px;min-height:14px;min-width:20px}.scorebug.compact .last-event{font-size:.4rem;min-height:16px;padding:1px 4px;max-width:100px}.sb-block{padding:0 4px;min-width:30px}.sb-team-name{font-size:1.2rem;max-width:80px}.sb-val{font-size:2rem;min-width:30px}.sb-qtr{font-size:1.8rem}.game-clock{font-size:2.2rem}.sb-btn{width:20px;height:20px;font-size:9px}.sb-game-btns button{font-size:.4rem;padding:2px 6px;min-height:18px}.last-event{font-size:.55rem;min-height:22px;max-width:160px}.game-controls-row{padding:3px 4px;gap:2px;min-height:28px;flex-wrap:nowrap;overflow-x:auto}.game-controls-row .pos-btn{padding:2px 6px;font-size:.5rem;min-width:32px}.game-controls-row .to-btn{padding:2px 5px;font-size:.4rem}.game-controls-row .gc-btn{font-size:.4rem;padding:2px 4px;min-height:16px}.game-controls-row select,.game-controls-row input{font-size:.4rem;min-height:16px}.game-controls-row .yd-input{width:24px}.game-controls-row .label{font-size:.4rem}.team-cards{flex-direction:column;height:auto;min-height:140px}.roster-layout{flex-direction:column}.team-sidebar{width:100%;max-height:100px}.admin-color-grid{grid-template-columns:1fr}.quick-cues button{font-size:.6rem;padding:4px 8px;min-height:24px}.player-row{grid-template-columns:4px 20px 1fr 50px 50px 18px 18px 18px;font-size:.5rem;gap:2px;padding:2px}.player-row input,.player-row select{font-size:.45rem;padding:1px 2px}.cat-badge{font-size:.4rem;padding:1px 4px}.st-toggle,.pin-btn,.delete-btn{width:16px;height:16px;font-size:.4rem}.cat-legend{font-size:.4rem;gap:4px}.brand-logo{height:24px;max-width:40px}.brand-text h1{font-size:.65rem}.brand-text p{font-size:.4rem}.hdr-btn{font-size:.45rem;padding:2px 5px;min-height:18px}.wall-clock,.weather-pill{font-size:.45rem;padding:2px 4px}.admin-tabs{gap:3px}.admin-tab-btn{font-size:.5rem;padding:3px 8px;min-height:22px}}
         @media(pointer:coarse){.hdr-btn{min-height:36px!important;padding:6px 12px!important}.sb-btn{min-height:36px!important;min-width:36px!important;font-size:14px!important}.gc-btn,.pos-btn,.to-btn{min-height:34px!important;padding:4px 10px!important}.quick-cues button{min-height:36px!important;padding:6px 12px!important}.nav-link{padding:8px 12px!important;font-size:.7rem!important}.game-controls-row select,.game-controls-row input{min-height:30px!important;font-size:.6rem!important}.player-row input,.player-row select{min-height:28px!important;font-size:.65rem!important}.game-controls-row{flex-wrap:nowrap!important;overflow-x:auto!important}}
@@ -297,7 +314,7 @@
             <button class="hdr-btn" onclick="resetGame()" style="background:#dc2626;" data-tooltip="Reset entire game">RESET</button>
         </div>
     </div>
-    <div class="hdr-bottom">
+    <div class="hdr-bottom" id="hdrBottom">
         <div class="scorebug-wrap">
             <div class="scorebug" id="scorebug">
                 <span class="sb-network-tag">Voice of DFW Live</span>
@@ -376,7 +393,7 @@
             <div class="dd-ticker" id="ddTicker">🏈 SET POSSESSION TO BEGIN</div>
         </div>
         <button class="sb-mode-btn" onclick="toggleScorebugMode()" id="sbModeBtn" data-tooltip="Toggle compact scorebug">📏</button>
-        <button class="sb-toggle-btn" onclick="toggleScorebugDisplay()" data-tooltip="Toggle scoreboard visibility">👁️</button>
+        <button class="sb-toggle-btn" onclick="toggleScorebugDisplay()" id="sbToggleBtn" data-tooltip="Toggle scoreboard visibility">👁️</button>
     </div>
 </header>
 
@@ -431,6 +448,8 @@ var S = {
     lastEvent: { text: '🏈 Ready — Set possession to begin', type: 'info' },
     scorebugMode: 'full',
     useTeamColor: true,
+    compactRows: false,
+    scorebugVisible: true,
     teams: [
         { id: 'h', name: 'Euless Trinity Trojans', abbr: 'ETT', color: '#1e3a5f', textColor: '#ffffff', logo: '', mascot: 'Trojans', coach: '', players: [] },
         { id: 's', name: 'Mansfield Berkner Rams', abbr: 'MBR', color: '#7f1d1d', textColor: '#ffffff', logo: '', mascot: 'Rams', coach: '', players: [] }
@@ -537,6 +556,8 @@ function normalizeState() {
     if (!S.rosterUndo) S.rosterUndo = [];
     if (!S.rosterRedo) S.rosterRedo = [];
     if (S.useTeamColor === undefined) S.useTeamColor = true;
+    if (S.compactRows === undefined) S.compactRows = false;
+    if (S.scorebugVisible === undefined) S.scorebugVisible = true;
     S.gc.run = false;
 }
 
@@ -621,14 +642,12 @@ function getPlayers(side, filter) {
     if (!t) return [];
     var list = t.players.slice();
     
-    // ---- SORTING (Starters first, then pinned, then number) ----
     list.sort(function(a, b) {
         if (a.st !== b.st) return (a.st ? -1 : 1);
         if ((a.pinned || false) !== (b.pinned || false)) return (b.pinned || false) - (a.pinned || false);
         return (parseInt(a.n) || 999) - (parseInt(b.n) || 999);
     });
     
-    // ---- FILTERING (ALL / OFF / DEF / ST) ----
     if (filter === 'all') return list;
     if (filter === 'offense' || filter === 'defense' || filter === 'special') {
         list = list.filter(function(p) {
@@ -973,6 +992,7 @@ function renderAll() {
     updateGameClockDisplay();
     updateGameStateBadge();
     updateUndoButton();
+    updateScorebugVisibility();
 }
 
 // ============================================================
@@ -1170,8 +1190,16 @@ function toggleScorebugMode() {
     var btn = document.getElementById('sbModeBtn');
     if (btn) btn.textContent = S.scorebugMode === 'compact' ? '📏 Compact' : '📏';
     
-    // FIX: Directly force small dimensions in compact mode
-    applyScorebugButtonSize();
+    // Resize the mode buttons
+    var modeBtn = document.getElementById('sbModeBtn');
+    var toggleBtn = document.querySelector('.sb-toggle-btn');
+    if (S.scorebugMode === 'compact') {
+        if (modeBtn) { modeBtn.style.width = '20px'; modeBtn.style.height = '20px'; modeBtn.style.fontSize = '10px'; modeBtn.style.minWidth = '20px'; modeBtn.style.minHeight = '20px'; }
+        if (toggleBtn) { toggleBtn.style.width = '20px'; toggleBtn.style.height = '20px'; toggleBtn.style.fontSize = '10px'; toggleBtn.style.minWidth = '20px'; toggleBtn.style.minHeight = '20px'; }
+    } else {
+        if (modeBtn) { modeBtn.style.width = ''; modeBtn.style.height = ''; modeBtn.style.fontSize = ''; modeBtn.style.minWidth = ''; modeBtn.style.minHeight = ''; }
+        if (toggleBtn) { toggleBtn.style.width = ''; toggleBtn.style.height = ''; toggleBtn.style.fontSize = ''; toggleBtn.style.minWidth = ''; toggleBtn.style.minHeight = ''; }
+    }
     
     toast(S.scorebugMode === 'compact' ? '📏 Compact scorebug' : '📏 Full scorebug');
     saveState();
@@ -1179,49 +1207,67 @@ function toggleScorebugMode() {
 
 function toggleScorebugDisplay() {
     var sb = document.getElementById('scorebug');
-    if (sb) {
-        sb.style.display = sb.style.display === 'none' ? 'flex' : 'none';
-        toast(sb.style.display === 'none' ? '👁️ Scorebug hidden' : '👁️ Scorebug shown');
+    var ddTicker = document.getElementById('ddTicker');
+    
+    if (!sb) return;
+    
+    S.scorebugVisible = !S.scorebugVisible;
+    
+    if (S.scorebugVisible) {
+        sb.style.display = 'flex';
+        if (ddTicker) ddTicker.classList.remove('hidden');
+        document.body.classList.remove('scorebug-hidden');
+        document.getElementById('sbToggleBtn').textContent = '👁️';
+    } else {
+        sb.style.display = 'none';
+        if (ddTicker) ddTicker.classList.add('hidden');
+        document.body.classList.add('scorebug-hidden');
+        document.getElementById('sbToggleBtn').textContent = '👁️‍🗨️';
+    }
+    
+    setTimeout(function() {
+        if (S.v === 'sport') renderGame();
+        adjustTeamCardHeights();
+    }, 50);
+    
+    toast(S.scorebugVisible ? '👁️ Scorebug shown' : '👁️ Scorebug hidden - more room for players');
+    saveState();
+}
+
+function adjustTeamCardHeights() {
+    var teamCards = document.querySelector('.team-cards');
+    if (!teamCards) return;
+    
+    var headerHeight = document.querySelector('header')?.offsetHeight || 80;
+    var navHeight = document.querySelector('nav')?.offsetHeight || 30;
+    var footerHeight = document.querySelector('footer')?.offsetHeight || 20;
+    var mainEl = document.getElementById('main');
+    var availableHeight = window.innerHeight - headerHeight - navHeight - footerHeight - 20;
+    
+    if (mainEl) {
+        mainEl.style.height = Math.max(availableHeight, 400) + 'px';
     }
 }
 
-// Helper function to dynamically resize the buttons based on mode
-function applyScorebugButtonSize() {
-    var modeBtn = document.getElementById('sbModeBtn');
-    var toggleBtn = document.querySelector('.sb-toggle-btn');
+window.addEventListener('resize', function() {
+    adjustTeamCardHeights();
+});
 
-    if (S.scorebugMode === 'compact') {
-        // Set compact sizes
-        if (modeBtn) {
-            modeBtn.style.width = '20px';
-            modeBtn.style.height = '20px';
-            modeBtn.style.fontSize = '10px';
-            modeBtn.style.minWidth = '20px';
-            modeBtn.style.minHeight = '20px';
-        }
-        if (toggleBtn) {
-            toggleBtn.style.width = '20px';
-            toggleBtn.style.height = '20px';
-            toggleBtn.style.fontSize = '10px';
-            toggleBtn.style.minWidth = '20px';
-            toggleBtn.style.minHeight = '20px';
-        }
+function updateScorebugVisibility() {
+    var sb = document.getElementById('scorebug');
+    var ddTicker = document.getElementById('ddTicker');
+    if (!sb) return;
+    
+    if (S.scorebugVisible) {
+        sb.style.display = 'flex';
+        if (ddTicker) ddTicker.classList.remove('hidden');
+        document.body.classList.remove('scorebug-hidden');
+        document.getElementById('sbToggleBtn').textContent = '👁️';
     } else {
-        // Restore original full sizes
-        if (modeBtn) {
-            modeBtn.style.width = '';
-            modeBtn.style.height = '';
-            modeBtn.style.fontSize = '';
-            modeBtn.style.minWidth = '';
-            modeBtn.style.minHeight = '';
-        }
-        if (toggleBtn) {
-            toggleBtn.style.width = '';
-            toggleBtn.style.height = '';
-            toggleBtn.style.fontSize = '';
-            toggleBtn.style.minWidth = '';
-            toggleBtn.style.minHeight = '';
-        }
+        sb.style.display = 'none';
+        if (ddTicker) ddTicker.classList.add('hidden');
+        document.body.classList.add('scorebug-hidden');
+        document.getElementById('sbToggleBtn').textContent = '👁️‍🗨️';
     }
 }
 
@@ -1356,6 +1402,12 @@ function renderGame() {
     html += '<button class="flag" onclick="quickPenalty()" data-tooltip="Flag a penalty">🚩 FLAG</button>';
     html += '</div>';
 
+    // Compact rows toggle button
+    html += '<div style="display:flex;gap:4px;margin-bottom:6px;align-items:center;flex-wrap:wrap;">';
+    html += '<button class="hdr-btn" onclick="toggleCompactRows()" data-tooltip="Toggle compact player rows" style="font-size:0.5rem;padding:2px 8px;">' + (S.compactRows ? '📏 Compact ON' : '📏 Compact OFF') + '</button>';
+    html += '<span style="font-size:0.45rem;opacity:0.5;margin-left:4px;">Auto-compact when filtering</span>';
+    html += '</div>';
+
     var awayTeam = getTeam('away');
     var homeTeam = getTeam('home');
     var awayLogo = awayTeam.logo ? '<img class="team-logo" src="' + awayTeam.logo + '" alt="">' : '';
@@ -1388,6 +1440,8 @@ function renderGame() {
     html += '<button class="gc-btn load-btn" onclick="fnlCloudLoadGameState()" data-tooltip="Load game state from cloud">📥 LOAD</button>';
     html += '</div>';
 
+    var useCompactRows = S.compactRows || S.ua !== 'all' || S.uh !== 'all';
+    
     html += '<div class="team-cards" style="display:flex;gap:8px;height:calc(100% - 120px);min-height:200px;flex:1;">';
     ['away','home'].forEach(function(side) {
         var team = getTeam(side);
@@ -1425,7 +1479,8 @@ function renderGame() {
             var cats = p.categories || ['all'];
             var catClass = getCategoryClass(cats);
             var isPinned = p.pinned || false;
-            html += '<div class="player-row category-' + catClass + (isPinned ? ' pinned' : '') + (p.st ? ' starter' : '') + '" data-name="' + (p.na || '').toLowerCase() + '" data-number="' + (p.n || '') + '">';
+            var rowClass = useCompactRows ? ' compact-row' : '';
+            html += '<div class="player-row category-' + catClass + (isPinned ? ' pinned' : '') + (p.st ? ' starter' : '') + rowClass + '" data-name="' + (p.na || '').toLowerCase() + '" data-number="' + (p.n || '') + '">';
             html += '<div style="width:4px;border-radius:2px;" title="Category bar"></div>';
             html += '<input value="' + (p.n || '') + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'n\',this.value)" style="width:28px;" placeholder="#" data-tooltip="Jersey number">';
             html += '<input value="' + (p.na || '') + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'na\',this.value)" placeholder="Name" data-tooltip="Player name">';
@@ -1440,7 +1495,6 @@ function renderGame() {
             html += '<input value="' + (p.nt || '') + '" onchange="updateGamePlayerFieldOnly(\'' + side + '\',\'' + p.id + '\',\'nt\',this.value)" placeholder="Notes / Pron" style="width:80px;font-size:0.5rem;" data-tooltip="Notes / Pronunciation">';
             html += '<button class="st-toggle ' + (p.st ? 'active' : '') + '" onclick="toggleStarterOnly(\'' + side + '\',\'' + p.id + '\')" title="Toggle starter status" data-tooltip="Toggle starter status">⭐</button>';
             html += '<button class="pin-btn ' + (isPinned ? 'active' : '') + '" onclick="togglePinOnly(\'' + side + '\',\'' + p.id + '\')" title="Pin to top" data-tooltip="Pin to top of list">📌</button>';
-            // NEW: Delete button on game card
             html += '<button class="delete-btn" onclick="deleteGamePlayer(\'' + side + '\',\'' + p.id + '\')" title="Delete player" data-tooltip="Delete player" style="background:0 0;border:1px solid var(--border);border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#dc2626;">✕</button>';
             html += '</div>';
         });
@@ -1452,6 +1506,8 @@ function renderGame() {
     applyColors();
     updateUndoButton();
     updateTimeoutDisplay();
+    updateScorebugVisibility();
+    adjustTeamCardHeights();
 
     document.querySelectorAll('.player-search').forEach(function(input) {
         input.addEventListener('input', function() {
@@ -1483,6 +1539,16 @@ function deleteGamePlayer(side, pid) {
     saveState();
     renderGame();
     toast('🗑️ Deleted ' + player.na);
+}
+
+// ============================================================
+// COMPACT ROWS TOGGLE
+// ============================================================
+function toggleCompactRows() {
+    S.compactRows = !S.compactRows;
+    saveState();
+    renderGame();
+    toast(S.compactRows ? '📏 Compact rows ON' : '📏 Compact rows OFF');
 }
 
 function setFilterAndSearch(side, f) {
@@ -1870,7 +1936,7 @@ function syncTeamColors(color) {
 }
 
 // ============================================================
-// ROSTER VIEW - FIXED: Separate Category, Position, Role columns
+// ROSTER VIEW
 // ============================================================
 function renderRoster() {
     var sortedTeams = S.teams.slice().sort(function(a, b) { return a.name.localeCompare(b.name); });
@@ -1919,7 +1985,6 @@ function renderRoster() {
     html += '<div style="display:flex;gap:4px;margin-bottom:8px;">';
     html += '<button class="hdr-btn ' + (selectedTeam.id === S.awayId ? 'active' : '') + '" onclick="setSideTeam(\'away\',\'' + selectedTeam.id + '\')" data-tooltip="Set as away">✈️ Away</button>';
     html += '<button class="hdr-btn ' + (selectedTeam.id === S.homeId ? 'active' : '') + '" onclick="setSideTeam(\'home\',\'' + selectedTeam.id + '\')" data-tooltip="Set as home">🏠 Home</button>';
-    // NEW: Sort by # button
     html += '<button class="hdr-btn" onclick="sortRosterByNumber(\'' + selectedTeam.id + '\')" data-tooltip="Sort roster by jersey number">📊 Sort by #</button>';
     html += '</div>';
 
@@ -1931,7 +1996,6 @@ function renderRoster() {
     html += '<span class="legend-item"><span class="cat-dot other"></span> Other</span>';
     html += '</div>';
 
-    // ---- FIXED: Separate Category, Position, Role columns ----
     html += '<div style="display:grid;grid-template-columns:30px 1fr 70px 80px 70px 100px 26px;gap:4px;font-size:0.5rem;font-weight:700;margin-bottom:4px;opacity:0.6;border-bottom:1px solid var(--border);padding-bottom:4px;">';
     html += '<span>#</span><span>Name</span><span>Category</span><span>Position</span><span>Role</span><span>Notes / Pron</span><span></span>';
     html += '</div>';
@@ -1943,17 +2007,13 @@ function renderRoster() {
         html += '<div style="display:grid;grid-template-columns:30px 1fr 70px 80px 70px 100px 26px;gap:4px;margin-bottom:3px;align-items:center;padding:2px 0;border-bottom:1px solid rgba(0,0,0,0.05);" data-row="' + pidx + '">';
         html += '<input value="' + (p.n || '') + '" data-field="n" data-idx="' + pidx + '" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;width:100%;">';
         html += '<input value="' + (p.na || '') + '" data-field="na" data-idx="' + pidx + '" style="padding:3px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.6rem;width:100%;">';
-        // CATEGORY - badge only
         html += '<span class="cat-badge ' + catClass + '" title="' + catTooltip + '" style="text-align:center;font-size:0.5rem;padding:2px 4px;white-space:nowrap;">' + catClass.toUpperCase() + '</span>';
-        // POSITION - dropdown only
         html += '<select data-field="po" data-idx="' + pidx + '" style="padding:2px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.55rem;width:100%;">';
         getAllPositions().forEach(function(o) {
             html += '<option ' + (p.po === o ? 'selected' : '') + '>' + o + '</option>';
         });
         html += '</select>';
-        // ROLE - Starter/Bench dropdown
         html += '<select data-field="st" data-idx="' + pidx + '" style="padding:2px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.55rem;width:100%;"><option value="false" ' + (!p.st ? 'selected' : '') + '>Bench</option><option value="true" ' + (p.st ? 'selected' : '') + '>Starter</option></select>';
-        // NOTES/PRON - combined field (was nt + pron)
         html += '<input value="' + (p.nt || '') + '" data-field="nt" data-idx="' + pidx + '" placeholder="Notes / Pron" style="padding:2px;border-radius:3px;border:1px solid var(--border);background:transparent;color:#0a0a0a;font-weight:700;font-size:0.55rem;width:100%;">';
         html += '<button class="delete-btn" data-idx="' + pidx + '" data-team="' + selectedTeam.id + '" style="background:0 0;border:1px solid var(--border);border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#dc2626;">✕</button>';
         html += '</div>';
@@ -1963,7 +2023,6 @@ function renderRoster() {
     html += '<div style="margin-top:8px;display:flex;gap:4px;flex-wrap:wrap;">';
     html += '<textarea id="parseArea" placeholder="Paste roster (Number Name Position)" style="flex:2;min-width:150px;height:40px;padding:4px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.6rem;"></textarea>';
     html += '<button class="hdr-btn" onclick="parseRosterText(\'' + selectedTeam.id + '\')" data-tooltip="Parse roster text (replaces)">📝 Parse</button>';
-    // NEW: Add Parsed button
     html += '<button class="hdr-btn" onclick="addParsedRosterText(\'' + selectedTeam.id + '\')" data-tooltip="Add parsed text to existing roster (no replace)">➕ Add Parsed</button>';
     html += '<input type="file" accept=".txt,.csv" onchange="uploadRosterFile(\'' + selectedTeam.id + '\',this)" data-tooltip="Upload file" style="font-size:0.6rem;">';
     html += '</div>';
@@ -1999,7 +2058,7 @@ function renderRoster() {
 }
 
 // ============================================================
-// ENHANCED PARSER (Refactored for Add/Replace functionality)
+// ENHANCED PARSER
 // ============================================================
 function processRosterText(tx) {
     var positions = getAllPositions();
@@ -2151,7 +2210,6 @@ function parseRosterText(teamId) {
     }
 }
 
-// NEW: Add to existing roster without replacing
 function addParsedRosterText(teamId) {
     var tx = document.getElementById('parseArea').value.trim();
     var team = S.teams.find(function(t) { return t.id === teamId; });
@@ -2161,12 +2219,8 @@ function addParsedRosterText(teamId) {
     var out = processRosterText(tx);
     
     if (out.length) {
-        var oldLength = team.players.length;
-        // Track individual additions for undo
         out.forEach(function(p) { pushRosterUndo(teamId, 'add', { ...p }); });
-        
         team.players = team.players.concat(out);
-        // Force numeric sort after append
         team.players.sort(function(a,b) { return (parseInt(a.n)||999) - (parseInt(b.n)||999); });
         saveState();
         renderRoster();
@@ -2176,7 +2230,6 @@ function addParsedRosterText(teamId) {
     }
 }
 
-// NEW: Sort roster by jersey number
 function sortRosterByNumber(teamId) {
     var team = S.teams.find(function(t) { return t.id === teamId; });
     if (!team) return;
@@ -2185,6 +2238,27 @@ function sortRosterByNumber(teamId) {
     saveState();
     renderRoster();
     toast('📊 Roster sorted by #');
+}
+
+function uploadRosterFile(teamId, input) {
+    var f = input.files[0];
+    if (!f) return;
+    var r = new FileReader();
+    r.onload = function(ev) {
+        document.getElementById('parseArea').value = ev.target.result;
+        if (confirm('Replace entire roster or append to existing?\n\nClick OK to REPLACE\nCancel to APPEND')) {
+            parseRosterText(teamId);
+        } else {
+            addParsedRosterText(teamId);
+        }
+        input.value = '';
+    };
+    r.readAsText(f);
+}
+
+function updateSaveStatus(show) {
+    // Status is updated by saveState - this is a stub to prevent errors
+    return;
 }
 
 function selectTeam(id) { S.cid = id; renderRoster(); }
@@ -2252,7 +2326,6 @@ function deleteTeamById(id) {
 function updatePlayerField(teamId, pidx, field, val) {
     var team = S.teams.find(function(t) { return t.id === teamId; });
     if (!team || !team.players[pidx]) return;
-    var oldVal = team.players[pidx][field];
     team.players[pidx][field] = val;
     saveState();
     renderRoster();
@@ -2297,7 +2370,6 @@ function printRoster(teamId) {
     html += '<h2>' + team.name + ' Roster</h2>';
     html += '<table><tr><th>#</th><th>Name</th><th>Pos</th><th>Starter</th><th>Notes</th></tr>';
     
-    // FIX: Ensure numeric sort by # for printing
     var sortedPlayers = team.players.slice().sort(function(a,b) { return (parseInt(a.n)||999) - (parseInt(b.n)||999); });
     
     sortedPlayers.forEach(function(p) {
@@ -2321,7 +2393,7 @@ function exportTeamCSV(teamId) {
 }
 
 // ============================================================
-// ADMIN VIEW - Fixed with button-style tabs
+// ADMIN VIEW
 // ============================================================
 function renderAdmin() {
     var tabs = ['theme', 'clock', '7v7', 'timeouts', 'colors', 'backup', 'cloud', 'help'];
@@ -2348,7 +2420,6 @@ function renderAdminContent() {
     var c = document.getElementById('ac');
     if (!c) return;
     
-    // Update active state of tabs
     document.querySelectorAll('.admin-tab-btn').forEach(function(btn) {
         var label = btn.textContent.trim().toLowerCase();
         var tabMap = { 'theme':'theme', 'clock':'clock', '7v7':'7v7', 'timeouts':'timeouts', 'colors':'colors', 'backup':'backup', 'cloud':'cloud', 'help':'help' };
@@ -2448,7 +2519,6 @@ function renderClients() {
         keys.forEach(function(pin) {
             var client = S.cp[pin];
             var isActive = (pin === S.ap);
-            // FIX: Ensures clear white text on a dark grey background
             html += '<div class="client-item" style="background:#334155;border:1px solid #475569;color:#ffffff;display:flex;align-items:center;gap:8px;padding:8px;border-radius:6px;margin-bottom:6px;' + (isActive ? 'border-color:#facc15; background:#374151;' : '') + '">';
             html += '<div style="position:relative;flex-shrink:0;">';
             if (client.logo) {
@@ -2472,6 +2542,7 @@ function renderClients() {
     html += '</div></div>';
     document.getElementById('main').innerHTML = html;
 }
+
 function uploadClientLogo(pin) {
     var input = document.createElement('input');
     input.type = 'file';
@@ -2549,7 +2620,6 @@ function updateHeaderBranding() {
     var brandLogo = document.getElementById('brandLogo');
     var brandSubtitle = document.getElementById('brandSubtitle');
     
-    // Determine active client
     var activeClient = null;
     var activePin = S.ap;
     if (!activePin || !S.cp[activePin]) {
@@ -2563,11 +2633,9 @@ function updateHeaderBranding() {
         activeClient = S.cp[activePin];
     }
 
-    // Remove old wrapper if it exists
     var existingWrap = document.getElementById('clientHeaderWrap');
     if (existingWrap) existingWrap.remove();
 
-    // Reset brand subtitle if no client
     if (!activeClient) {
         brandSubtitle.textContent = 'PA CONSOLE';
         brandSubtitle.style.color = 'var(--accent)';
@@ -2575,80 +2643,13 @@ function updateHeaderBranding() {
         return;
     }
 
-    // Update subtitle
     brandSubtitle.textContent = activeClient.n || 'PA CONSOLE';
     brandSubtitle.style.color = 'var(--accent)';
 
-    // Create a dedicated wrapper right next to the logo
     var wrap = document.createElement('div');
     wrap.id = 'clientHeaderWrap';
-    // Force it to be a flex item, small size, and aligned
-    wrap.style.cssText = 'display:flex;align-items:center;gap:8px;margin-left:10px;max-width:180px;white-space:nowrap;overflow:hidden;flex-shrink:0;';
-
-    // Add Logo
-    if (activeClient.logo) {
-        var logoImg = document.createElement('img');
-        logoImg.src = activeClient.logo;
-        logoImg.alt = activeClient.n || 'Client';
-        logoImg.style.cssText = 'width:36px !important;height:36px !important;max-width:36px !important;max-height:36px !important;object-fit:contain;border-radius:50%;border:2px solid var(--accent);background:#fff;flex-shrink:0;';
-        wrap.appendChild(logoImg);
-    } else {
-        var initial = document.createElement('div');
-        initial.textContent = activeClient.n ? activeClient.n[0].toUpperCase() : '?';
-        initial.style.cssText = 'background:' + (S.colors.accent || '#facc15') + ';display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1rem;color:#000;width:36px;height:36px;border-radius:50%;border:2px solid var(--accent);flex-shrink:0;';
-        wrap.appendChild(initial);
-    }
-
-    // Add Client Name (White and readable)
-    var nameSpan = document.createElement('span');
-    nameSpan.textContent = activeClient.n || '';
-    nameSpan.style.cssText = 'color:#ffffff;font-size:0.65rem;font-weight:700;overflow:hidden;text-overflow:ellipsis;';
-    wrap.appendChild(nameSpan);
-
-    brandContainer.appendChild(wrap);
-}
-function updateHeaderBranding() {
-    var brandContainer = document.getElementById('brandContainer');
-    var brandLogo = document.getElementById('brandLogo');
-    var brandSubtitle = document.getElementById('brandSubtitle');
-    
-    // Determine active client
-    var activeClient = null;
-    var activePin = S.ap;
-    if (!activePin || !S.cp[activePin]) {
-        var keys = Object.keys(S.cp);
-        if (keys.length > 0) {
-            activePin = keys[0];
-            S.ap = activePin;
-        }
-    }
-    if (activePin && S.cp[activePin]) {
-        activeClient = S.cp[activePin];
-    }
-
-    // Remove old wrapper if it exists
-    var existingWrap = document.getElementById('clientHeaderWrap');
-    if (existingWrap) existingWrap.remove();
-
-    // Reset brand subtitle if no client
-    if (!activeClient) {
-        brandSubtitle.textContent = 'PA CONSOLE';
-        brandSubtitle.style.color = 'var(--accent)';
-        brandLogo.style.display = 'inline-block';
-        return;
-    }
-
-    // Update subtitle
-    brandSubtitle.textContent = activeClient.n || 'PA CONSOLE';
-    brandSubtitle.style.color = 'var(--accent)';
-
-    // Create a dedicated wrapper right next to the logo
-    var wrap = document.createElement('div');
-    wrap.id = 'clientHeaderWrap';
-    // Force it to be a flex item, small size, and aligned
     wrap.style.cssText = 'display:flex;align-items:center;gap:8px;margin-left:10px;max-width:180px;white-space:nowrap;overflow:hidden;flex-shrink:0;position:relative;z-index:1000;';
 
-    // Add Logo
     if (activeClient.logo) {
         var logoImg = document.createElement('img');
         logoImg.src = activeClient.logo;
@@ -2662,7 +2663,6 @@ function updateHeaderBranding() {
         wrap.appendChild(initial);
     }
 
-    // Add Client Name (White and readable)
     var nameSpan = document.createElement('span');
     nameSpan.textContent = activeClient.n || '';
     nameSpan.style.cssText = 'color:#ffffff;font-size:0.65rem;font-weight:700;overflow:hidden;text-overflow:ellipsis;text-shadow:1px 1px 2px #000;';
@@ -2670,6 +2670,7 @@ function updateHeaderBranding() {
 
     brandContainer.appendChild(wrap);
 }
+
 // ============================================================
 // LOG VIEW
 // ============================================================
@@ -2888,17 +2889,17 @@ updateGameClockDisplay();
 updateGameStateBadge();
 applyColors();
 updateUndoButton();
-updateSaveStatus(true);
 S.gc.run = false;
 saveState();
 updateHeaderBranding();
+updateScorebugVisibility();
+adjustTeamCardHeights();
 
 if (S.scorebugMode === 'compact') {
     var sb = document.getElementById('scorebug');
     if (sb) sb.classList.add('compact');
     var btn = document.getElementById('sbModeBtn');
     if (btn) btn.textContent = '📏 Compact';
-    applyScorebugButtonSize(); // Ensures buttons are small immediately on load
 }
 
 var awayTeam = getTeam('away');
@@ -2910,8 +2911,7 @@ if (homePicker && homeTeam) homePicker.value = homeTeam.color;
 
 console.log('🏈 Friday Night Live PA Console loaded successfully!');
 console.log('📋 Version: v36 – All fixes applied');
-console.log('🔧 Enjoy the game!');
+console.log('🔧 Ready for game time!');
 </script>
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v3d52b47920f24c319d37e2661827c42b1787588026925" integrity="sha512-d9sL6GJLXn6fInD1+TVXhTcQOsmxeHfmHAvwGDIxp5TO+uo1fiWW7mHomMj4MLRlCsJDTqXzWLHJFFlPCEIj/A==" data-cf-beacon='{"version":"2024.11.0","token":"f39674ce5a5d4963a6033a5fb03cf801","r":1}' crossorigin="anonymous"></script>
 </body>
 </html>
