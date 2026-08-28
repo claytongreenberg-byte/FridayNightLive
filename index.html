@@ -604,10 +604,7 @@ function renderGame() {
     html += '<button class="flag" onclick="quickPenalty()" data-tooltip="Flag a penalty">🚩 FLAG</button>';
     html += '</div>';
 
-    html += '<div style="display:flex;gap:4px;margin-bottom:6px;align-items:center;flex-wrap:wrap;">';
-    html += '<button class="hdr-btn" onclick="toggleCompactRows()" data-tooltip="Toggle compact player rows" style="font-size:0.5rem;padding:2px 8px;">' + (S.compactRows ? '📏 Compact ON' : '📏 Compact OFF') + '</button>';
-    html += '<span style="font-size:0.45rem;opacity:0.5;margin-left:4px;">Auto-compact when filtering</span>';
-    html += '</div>';
+  \
 
     var awayTeam = getTeam('away');
     var homeTeam = getTeam('home');
@@ -637,10 +634,11 @@ function renderGame() {
     html += '<button class="gc-btn fg" onclick="quickScore(\'fg\')" data-tooltip="Field Goal +3">🎯 FG</button>';
     html += '<button class="gc-btn twopt" onclick="quickScore(\'twopt\')" data-tooltip="2-Point Conversion +2">➕ 2PT</button>';
     html += '<button class="gc-btn pat" onclick="quickScore(\'pat\')" data-tooltip="PAT +1">🎯 PAT</button>';
-    html += '<button class="gc-btn safety" onclick="quickScore(\'safety\')" data-tooltip="Safety +2">🛡️ Safe</button>';
+    
+        html += '<button class="gc-btn safety" onclick="quickScore(\'safety\')" data-tooltip="Safety +2">🛡️ Safe</button>';
+    html += '<button class="gc-btn" onclick="toggleCompactRows()" data-tooltip="Toggle compact player rows" style="background:#475569;">' + (S.compactRows ? '📏 Compact ON' : '📏 Compact OFF') + '</button>';
     html += '<button class="gc-btn load-btn" onclick="fnlCloudLoadGameState()" data-tooltip="Load game state from cloud">📥 LOAD</button>';
     html += '</div>';
-
     var useCompactRows = S.compactRows || S.ua !== 'all' || S.uh !== 'all';
     
     html += '<div class="team-cards" id="teamCardsContainer">';
