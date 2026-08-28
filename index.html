@@ -1157,6 +1157,10 @@ function toggleScorebugMode() {
     sb.classList.toggle('compact', S.scorebugMode === 'compact');
     var btn = document.getElementById('sbModeBtn');
     if (btn) btn.textContent = S.scorebugMode === 'compact' ? '📏 Compact' : '📏';
+    
+    // FIX: Directly force small dimensions in compact mode
+    applyScorebugButtonSize();
+    
     toast(S.scorebugMode === 'compact' ? '📏 Compact scorebug' : '📏 Full scorebug');
     saveState();
 }
@@ -1166,6 +1170,46 @@ function toggleScorebugDisplay() {
     if (sb) {
         sb.style.display = sb.style.display === 'none' ? 'flex' : 'none';
         toast(sb.style.display === 'none' ? '👁️ Scorebug hidden' : '👁️ Scorebug shown');
+    }
+}
+
+// Helper function to dynamically resize the buttons based on mode
+function applyScorebugButtonSize() {
+    var modeBtn = document.getElementById('sbModeBtn');
+    var toggleBtn = document.querySelector('.sb-toggle-btn');
+
+    if (S.scorebugMode === 'compact') {
+        // Set compact sizes
+        if (modeBtn) {
+            modeBtn.style.width = '20px';
+            modeBtn.style.height = '20px';
+            modeBtn.style.fontSize = '10px';
+            modeBtn.style.minWidth = '20px';
+            modeBtn.style.minHeight = '20px';
+        }
+        if (toggleBtn) {
+            toggleBtn.style.width = '20px';
+            toggleBtn.style.height = '20px';
+            toggleBtn.style.fontSize = '10px';
+            toggleBtn.style.minWidth = '20px';
+            toggleBtn.style.minHeight = '20px';
+        }
+    } else {
+        // Restore original full sizes
+        if (modeBtn) {
+            modeBtn.style.width = '';
+            modeBtn.style.height = '';
+            modeBtn.style.fontSize = '';
+            modeBtn.style.minWidth = '';
+            modeBtn.style.minHeight = '';
+        }
+        if (toggleBtn) {
+            toggleBtn.style.width = '';
+            toggleBtn.style.height = '';
+            toggleBtn.style.fontSize = '';
+            toggleBtn.style.minWidth = '';
+            toggleBtn.style.minHeight = '';
+        }
     }
 }
 
@@ -2780,6 +2824,7 @@ if (S.scorebugMode === 'compact') {
     if (sb) sb.classList.add('compact');
     var btn = document.getElementById('sbModeBtn');
     if (btn) btn.textContent = '📏 Compact';
+    applyScorebugButtonSize(); // Ensures buttons are small immediately on load
 }
 
 var awayTeam = getTeam('away');
