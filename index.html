@@ -6,6 +6,30 @@
     <title>Friday Night Live – PA Console</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
+                /* FIX: Client Header Logo Size */
+        .client-header-logo {
+            width: 36px !important;
+            height: 36px !important;
+            max-width: 36px !important;
+            max-height: 36px !important;
+            object-fit: contain;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            background: #fff;
+            margin-left: 8px;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .client-header-name {
+            font-size: 0.6rem;
+            color: var(--accent);
+            font-weight: 700;
+            margin-left: 6px;
+            max-width: 120px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
         :root{--accent:#facc15;--bg:#f1f5f9;--surface:#e2e8f0;--text:#0f172a;--border:#94a3b8;--footer-bg:#1a1a1a;--footer-text:#f1f5f9;--scorebug-bg:#0d0d1a;--scorebug-text:#ffffff;--team-card-away:#e2e8f0;--team-card-home:#e2e8f0;--badge-offense:#2563eb;--badge-defense:#dc2626;--badge-special:#16a34a;--badge-both:#8b5cf6;--badge-other:#6b7280}
         html,body{height:100%;overflow:hidden}
         body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;font-size:14px}
