@@ -1022,8 +1022,46 @@ function processRosterText(tx) {
             console.warn('Skipped line ' + (lineNo + 1) + ': ' + rawLine, err.message);
         }
     });
-    return out;
-}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             function sortRosterByNumber(teamId) { var team = S.teams.find(function(t) { return t.id === teamId; }); if (!team) return; pushRosterUndo(teamId, 'edit', { players: team.players.slice() }); team.players.sort(function(a,b) { return (parseInt(a.n)||999) - (parseInt(b.n)||999); }); saveState(); renderRoster(); toast('📊 Roster sorted by #'); }
+       return out;
+}
+function parseRosterText(teamId) {
+    var area = document.getElementById('parseArea');
+    if (!area) return toast('⚠️ Open the Roster tab first');
+    var tx = area.value.trim();
+    var team = S.teams.find(function(t) { return t.id === teamId; });
+    if (!team) return;
+    if (!tx) return toast('⚠️ Empty input');
+    var out = processRosterText(tx);
+    if (out.length) {
+        pushRosterUndo(teamId, 'delete', { players: team.players.slice() });
+        team.players = out;
+        saveState();
+        renderRoster();
+        toast('✅ ' + out.length + ' players parsed (REPLACED)');
+    } else {
+        toast('❌ No players found. Format: "Number Name Position" or "Name Position"');
+    }
+}
+function addParsedRosterText(teamId) {
+    var area = document.getElementById('parseArea');
+    if (!area) return toast('⚠️ Open the Roster tab first');
+    var tx = area.value.trim();
+    var team = S.teams.find(function(t) { return t.id === teamId; });
+    if (!team) return;
+    if (!tx) return toast('⚠️ Empty input');
+    var out = processRosterText(tx);
+    if (out.length) {
+        out.forEach(function(p) { pushRosterUndo(teamId, 'add', { ...p }); });
+        team.players = team.players.concat(out);
+        team.players.sort(function(a,b) { return (parseInt(a.n)||999) - (parseInt(b.n)||999); });
+        saveState();
+        renderRoster();
+        toast('✅ Added ' + out.length + ' players (Total: ' + team.players.length + ')');
+    } else {
+        toast('❌ No players found. Format: "Number Name Position" or "Name Position"');
+    }
+}
+function sortRosterByNumber(teamId) { var team = S.teams.find(function(t) { return t.id === teamId; }); if (!team) return; pushRosterUndo(teamId, 'edit', { players: team.players.slice() }); team.players.sort(function(a,b) { return (parseInt(a.n)||999) - (parseInt(b.n)||999); }); saveState(); renderRoster(); toast('📊 Roster sorted by #'); }
 function uploadRosterFile(teamId, input) { var f = input.files[0]; if (!f) return; var r = new FileReader(); r.onload = function(ev) { document.getElementById('parseArea').value = ev.target.result; if (confirm('Replace entire roster or append to existing?\n\nClick OK to REPLACE\nCancel to APPEND')) { parseRosterText(teamId); } else { addParsedRosterText(teamId); } input.value = ''; }; r.readAsText(f); }
 function selectTeam(id) { S.cid = id; renderRoster(); }
 function newTeam() { var name = prompt('Team name:'); if (!name) return; S.teams.push({ id: 't' + Date.now(), name: name, abbr: '', color: '#1e3a5f', textColor: '#ffffff', logo: '', mascot: '', coach: '', players: [] }); S.cid = S.teams[S.teams.length - 1].id; saveState(); renderRoster(); }
