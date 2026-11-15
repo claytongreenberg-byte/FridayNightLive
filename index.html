@@ -152,7 +152,9 @@
         .player-row.compact-row input, .player-row.compact-row select {height: 18px !important;font-size: 0.45rem !important;padding: 1px 2px !important;}
         .player-row.compact-row .st-toggle, .player-row.compact-row .pin-btn, .player-row.compact-row .delete-btn {width: 16px !important;height: 16px !important;font-size: 0.35rem !important;}
         /* 7v7 roster-only view: big # and name, plain read-only table */
-        .c7-bar{display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--bg);border:1px solid var(--border);border-radius:8px;margin-bottom:8px;flex-shrink:0}
+        .c7-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:6px 10px;background:var(--bg);border:1px solid var(--border);border-radius:8px;margin-bottom:8px;flex-shrink:0}
+        .c7-bar .hdr-btn{font-size:.75rem;padding:6px 10px}
+        .c7-mins{width:56px;padding:5px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:.85rem;text-align:center}
         .c7-time{font-size:2.1rem;font-weight:900;font-variant-numeric:tabular-nums;min-width:105px;text-align:center;line-height:1}
         .seven-table{width:100%;border-collapse:collapse}
         .seven-table th{font-size:.7rem;text-transform:uppercase;letter-spacing:.4px;opacity:.6;text-align:left;padding:4px 8px;border-bottom:2px solid var(--border);position:sticky;top:0;background:var(--bg)}
@@ -402,7 +404,7 @@ var S = {
     as: 0, hs: 0, q: 1, down: 1, dist: 10, poss: 'home',
     gameState: 'READY',
     gc: { rem: 480, run: false, max: 480 },
-    c7: { rem: 900, run: false },
+    c7: { rem: 900, run: false, dur: 900 },
     md7: 'tackle', p7: ['QB','Center','WR','WR','WR','DB','DB'],
     cf: '12h', cs: true,
     awayId: 'h', homeId: 's',
@@ -521,7 +523,8 @@ function normalizeState() {
     if (!S.rosterRedo) S.rosterRedo = [];
     if (S.useTeamColor === undefined) S.useTeamColor = true;
     if (S.compactRows === undefined) S.compactRows = false;
-    if (!S.c7) S.c7 = { rem: 900, run: false };
+    if (!S.c7) S.c7 = { rem: 900, run: false, dur: 900 };
+    if (!S.c7.dur) S.c7.dur = 900;
     if (S.scorebugVisible === undefined) S.scorebugVisible = true;
     S.gc.run = false;
     S.c7.run = false;
@@ -634,10 +637,11 @@ window.addEventListener('resize', function() {
 // (No scoring, possession, downs or timeouts on this page.)
 // ============================================================
 function c7Fmt() { var m = Math.floor((S.c7.rem || 0) / 60); var s = (S.c7.rem || 0) % 60; return m + ':' + String(s).padStart(2, '0'); }
-function updateC7Display() { var el = document.getElementById('c7Clock'); if (el) el.textContent = c7Fmt(); var btn = document.getElementById('c7Toggle'); if (btn) btn.textContent = S.c7.run ? '⏸ Pause' : '▶ Start'; }
+function updateC7Display() { var el = document.getElementById('c7Clock'); if (el) el.textContent = c7Fmt(); var btn = document.getElementById('c7Toggle'); if (btn) btn.textContent = S.c7.run ? '⏸ Pause' : '▶ Start'; var rb = document.getElementById('c7ResetBtn'); if (rb) rb.textContent = '↺ ' + Math.floor((S.c7.dur || 900) / 60) + ':00'; }
 function toggleC7() { if (!S.c7.run && S.c7.rem <= 0) { toast('⏳ Clock at zero — reset to run it again'); return; } S.c7.run = !S.c7.run; updateC7Display(); saveState(); }
 function c7Adjust(delta) { S.c7.run = false; S.c7.rem = Math.max(0, Math.min(99 * 60 + 59, S.c7.rem + delta)); updateC7Display(); saveState(); }
-function c7Reset() { S.c7.run = false; S.c7.rem = 900; updateC7Display(); saveState(); toast('⏱️ 7v7 clock reset to 15:00'); }
+function c7Reset() { S.c7.run = false; S.c7.rem = S.c7.dur || 900; updateC7Display(); saveState(); toast('⏱️ 7v7 clock reset to ' + Math.floor((S.c7.dur || 900) / 60) + ':00'); }
+function c7SetMinutes() { var el = document.getElementById('c7Mins'); var mins = el ? (parseInt(el.value, 10) || 15) : 15; mins = Math.max(1, Math.min(99, mins)); S.c7.dur = mins * 60; S.c7.rem = S.c7.dur; S.c7.run = false; if (el) el.value = String(mins); updateC7Display(); saveState(); toast('⏱️ 7v7 clock set to ' + mins + ':00'); }
 function renderGame7v7() {
     var html = '';
     html += '<div class="c7-bar">';
@@ -645,8 +649,9 @@ function renderGame7v7() {
     html += '<button class="hdr-btn" id="c7Toggle" onclick="toggleC7()">' + (S.c7.run ? '⏸ Pause' : '▶ Start') + '</button>';
     html += '<button class="hdr-btn" onclick="c7Adjust(-60)" data-tooltip="Take a minute off">−1:00</button>';
     html += '<button class="hdr-btn" onclick="c7Adjust(60)" data-tooltip="Add a minute">+1:00</button>';
-    html += '<button class="hdr-btn" onclick="c7Reset()" data-tooltip="Back to 15:00">↺ 15:00</button>';
-    html += '<span style="opacity:.6;font-size:.7rem;">7v7 clock — Space starts / stops it</span>';
+    html += '<button class="hdr-btn" id="c7ResetBtn" onclick="c7Reset()" data-tooltip="Reset to the set time">↺ ' + Math.floor((S.c7.dur || 900) / 60) + ':00</button>';
+    html += '<input type="number" id="c7Mins" class="c7-mins" value="' + Math.floor((S.c7.dur || 900) / 60) + '" min="1" max="99" data-tooltip="Minutes per period">';
+    html += '<button class="hdr-btn" onclick="c7SetMinutes()" data-tooltip="Set the clock to this many minutes">Set</button>';
     html += '</div>';
     html += '<div class="team-cards" id="teamCardsContainer">';
     ['away','home'].forEach(function(side) {
@@ -1216,6 +1221,7 @@ updateGameStateBadge();
 applyColors();
 updateUndoButton();
 S.gc.run = false;
+S.c7.run = false;
 saveState();
 updateHeaderBranding();
 updateScorebugVisibility();
